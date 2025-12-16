@@ -200,6 +200,35 @@
 
 
   "promotion_income":"Doanh thu quảng bá",
-  "address_detection_records": "Lịch sử khấu trừ cho việc xác minh địa chỉ"
-
+  "address_detection_records": "Lịch sử khấu trừ cho việc xác minh địa chỉ",
+  
+  "command_energy_menu": "⚡️ Thuê năng lượng nhanh bằng lệnh",
+  "command_energy_desc": "⚡️ Thuê năng lượng nhanh bằng lệnh\n\n1. Lệnh: 1 Số lượng: 65000 (1 giao dịch) Giá: {1_times_cost_trx} (TRX)\n2. Lệnh: 2 Số lượng: 131000 (2 giao dịch) Giá: {2_times_cost_trx} (TRX)\n3. Lệnh: 3 Số lượng: 195000 (3 giao dịch) Giá: {3_times_cost_trx} (TRX)\n4. Lệnh: 4 Số lượng: 260000 (4 giao dịch) Giá: {4_times_cost_trx} (TRX)\n5. Lệnh: 5 Số lượng: 325000 (5 giao dịch) Giá: {5_times_cost_trx} (TRX)\n\n⚠️ Địa chỉ nhận không có U — cần 2 giao dịch năng lượng!\n\n⏰ Năng lượng theo lệnh chỉ hiệu lực trong 1 giờ!\n⚠️ Chế độ này không cần xác nhận — năng lượng đến ngay lập tức! Hãy cẩn thận khi sử dụng!\n♻️ Nếu bạn liên kết từ 2 địa chỉ trở lên, gửi lệnh sẽ hiện danh sách địa chỉ — chọn 1 cái để thuê năng lượng ngay!",
+  "member_telegram_menu": "🌟 Thành viên Telegram",
+  "member_telegram_desc": "🌟 Giá sao: 0.03 U/sao\n(Hỗ trợ mua từ 50–10.000 sao mỗi lần)\n\n\n🌟 Giá thành viên:\n3 tháng: 17 U\n6 tháng: 27 U\n1 năm: 47 U\n\n\n\nKhông nạp qua HuiWang — chỉ chấp nhận nạp từ ví USDT!",
+  "member_telegram_second_menu": "🌟 Mua thành viên",
+  "star_telegram_second_menu": "⭐️ Mua sao",
+  "telegram_id_menu": "✈️ Số ẩn danh",
+  "3_month_premium_fee": "Thành viên 3 tháng giá ",
+  "6_month_premium_fee": "Thành viên 6 tháng giá ",
+  "12_month_premium_fee": "Thành viên 12 tháng giá ",
+  "3_month_premium": "Thành viên 3 tháng",
+  "6_month_premium": "Thành viên 6 tháng",
+  "12_month_premium": "Thành viên 12 tháng",
+  "premium_activation_username": "Tên người dùng kích hoạt Premium (bắt buộc có @)",
+  "premium_activation_tips": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Thành viên Telegram: {premium_package}\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n🚫 Không dùng ví sàn hoặc ví tập trung để chuyển",
+  "balance_pay_order": "Thanh toán bằng số dư",
+  "activate_current_user": "🎁 Kích hoạt cho người dùng hiện tại",
+  "activate_current_user_tips1": "Vui lòng gửi tên người dùng Telegram cần kích hoạt thành viên\n▫ Ví dụ:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\nBạn đã chọn thành viên Telegram Premium {month} tháng\n▫ Giá: {price}U",
+  "activate_current_user_tips": "Vui lòng gửi tên người dùng Telegram cần kích hoạt thành viên\n▫ Ví dụ:\n▫ @{username}\n\nBạn đã chọn thành viên Telegram Premium {month} tháng\n▫ Giá: {price}U",
+  "insufficient_balance_tips": "⚠️ Số dư không đủ, vui lòng nạp trước\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅ Đã mua thành công gói Telegram {month_package}",
+  "purchase_stars_tips": "Vui lòng gửi tên người dùng Telegram cần mua sao\n▫ Ví dụ:\n▫ @{username}\n\nBạn đã chọn {count} sao\n▫ Giá: {price}U",
+  "purchase_stars_current_user": "🎁 Mua cho người dùng hiện tại",
+  "purchase_telegram_stars_tips": "Vui lòng chọn số lượng sao (Telegram Stars) muốn mua:",
+  "purchase_telegram_products_tips": "Vui lòng chọn sản phẩm Telegram để kích hoạt hoặc mua:",
+  "purchase_telegram_stars": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Sao Telegram: {stars} sao\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n🚫 Không dùng ví sàn hoặc ví tập trung để chuyển",
+  "successfully_purchased_stars": "✅ Đã mua thành công {count} sao. Vui lòng chờ đợi. Nếu có vấn đề, hãy liên hệ hỗ trợ.",
+  "anonymous_mobile": "✈️ Số ẩn danh\n➖➖➖➖➖➖➖➖➖➖\nSố chính thức NFT888 vĩnh viễn không bị xóa\n\nChống mất số • Tăng giá nhanh • Có thể thu hồi • Ổn định cao\n\n\"Một số dùng ba đời — người đi rồi, số vẫn còn\"\n\nSố ẩn danh 【+888】\nTelegram đã phát hành số điện thoại ảo giới hạn dưới dạng NFT trên blockchain TON. Người dùng có thể đăng ký mà không cần SIM và nhận mã xác minh trực tiếp trên Fragment.\n\nTài khoản ẩn danh 【username】\nTên người dùng ẩn danh cũng là NFT trên blockchain TON, giống như số +888. Người dùng có thể gắn vào tài khoản cá nhân, nhóm, kênh hoặc bot. Khác biệt là số ẩn danh dùng để đăng ký, còn username thì không.\n\nĐể nhận số hoặc username ẩn danh, bạn cần địa chỉ ví trên mạng TON.",
+  "customer_service": "💁 Liên hệ hỗ trợ"
 }

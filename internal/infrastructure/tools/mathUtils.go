@@ -79,6 +79,17 @@ func StringMultiply(s string, n float64) (string, error) {
 	return fmt.Sprintf("%v", result), nil
 }
 
+func StringMultiply2(s string, n float64) string {
+	// 将字符串转换为 int64
+	num, _ := strconv.ParseFloat(s, 64)
+
+	// 执行乘法运算
+	result := num * n
+
+	// 将结果转换回字符串
+	return fmt.Sprintf("%v", result)
+}
+
 func AddStringsAsFloats(a, b string) string {
 	// 1. 将第一个字符串转换成 float64
 	num1, err := strconv.ParseFloat(a, 64)

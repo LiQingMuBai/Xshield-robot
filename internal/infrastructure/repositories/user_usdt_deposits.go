@@ -2,11 +2,13 @@ package repositories
 
 import (
 	"context"
-	_ "github.com/go-sql-driver/mysql"
 	"ushield_bot/internal/request"
 
-	"gorm.io/gorm"
+	_ "github.com/go-sql-driver/mysql"
+
 	"ushield_bot/internal/domain"
+
+	"gorm.io/gorm"
 )
 
 type UserUSDTDepositsRepo struct {
@@ -68,4 +70,10 @@ func (r *UserUSDTDepositsRepo) Query(ctx context.Context, orderNo string) (domai
 		Find(&depositRecord, "order_no = ?", orderNo).Error
 	return depositRecord, err
 
+}
+
+func (r *UserUSDTDepositsRepo) Update(ctx context.Context, orderNo string, _status int64) error {
+	return r.db.WithContext(ctx).Model(&domain.UserUSDTDeposits{}).
+		Where("order_no = ?", orderNo).
+		Update("status", _status).Error
 }

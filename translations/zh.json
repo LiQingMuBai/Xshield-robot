@@ -225,6 +225,42 @@
   "ushield_additional_services_ecs": "\uD83D\uDCE1海外服务器",
   "ushield_additional_services_ecs_desc": "购买匿名海外服务器ECS",
 
-  "promotion_income":"推广收入"
+  "promotion_income":"推广收入",
+
+
+  "command_energy_menu": "\uD83D\uDD79指令闪租",
+
+  "command_energy_desc": "\uD83D\uDD79指令快捷租赁\n\n1.命令：1    数量：65000(1笔)    \t价格：{1_times_cost_trx}(TRX) \n2.命令：2    数量：131000(2笔)    价格：{2_times_cost_trx}(TRX)  \n3.命令：3    数量：195000(3笔)    价格：{3_times_cost_trx}(TRX)  \n4.命令：4    数量：260000(4笔)    价格：{4_times_cost_trx}(TRX) \n5.命令：5    数量：325000(5笔)    价格：{5_times_cost_trx}(TRX) \n\n⚠\uFE0F对方地址无 U 需要两笔能量！\n\n⏰指令模式能量一小时有效！\n⚠\uFE0F此模式无需确认，收到命令能量秒到！小心使用哦！\n♻\uFE0F如绑定 2 个以上地址，发送命令弹出地址，选择即可秒租能量！",
+
+  "member_telegram_menu": "\uD83D\uDC8E电报会员",
+  "member_telegram_desc": "\uD83C\uDF1F星星价格： 0.03 U/个\n(支持单次购买50-10000个星星)\n\n\n\uD83D\uDC8E会员价格：\n3个月会员：17 U\n6个月会员：27 U\n1年会员：    47 U\n\n\n\n不要用汇旺充值，只能钱包u充值！",
+  "member_telegram_second_menu": "\uD83D\uDC8E购买会员",
+  "star_telegram_second_menu": "⭐\uFE0F购买星星",
+
+  "telegram_id_menu": "✈️匿名号码",
+  "3_month_premium_fee": "3个月会员 售价 ",
+  "6_month_premium_fee": "6个月会员 售价 ",
+  "12_month_premium_fee": "12个月会员 售价 ",
+
+  "3_month_premium": "3个月会员",
+  "6_month_premium": "6个月会员",
+  "12_month_premium": "12个月会员",
+
+  "premium_activation_username": "开通高级会员用户名（需要携带@符号）",
+  "premium_activation_tips": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机会员：{premium_package}Telegram Premium会员\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n\uD83D\uDEAB请勿使用交易所或中心化钱包转账",
+  "balance_pay_order": "余额支付",
+  "activate_current_user": "🎁给当前用户开通",
+  "activate_current_user_tips1": "请发送您需要开通Telegram会员账号\n▫例如：\n▫@{username}\n▫<code>https://t.me/{username}</code>\n\n您选择了 {month}个月 Telegram Premium会员\n▫售价: {price}U",
+  "activate_current_user_tips": "请发送您需要开通Telegram会员账号\n▫例如：\n▫@{username}\n\n您选择了 {month}个月 Telegram Premium会员\n▫售价: {price}U",
+  "insufficient_balance_tips": "⚠\uFE0F余额不足，请先充值\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅成功购买telegram{month_package}",
+  "purchase_stars_tips": "请发送您需要购买星星的飞机账号\n▫例如：\n▫@{username}\n\n您选择了 {count}星星\n▫售价: {price}U",
+  "purchase_stars_current_user": "🎁给当前用户购买",
+  "purchase_telegram_stars_tips": "请选择购买星星(Telegram Stars)的数量:",
+  "purchase_telegram_products_tips": "请选择开通、购买 Telegram 产品:",
+  "purchase_telegram_stars": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机星星：{stars}星星\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n\uD83D\uDEAB请勿使用交易所或中心化钱包转账",
+  "successfully_purchased_stars": "✅成功购买{count}星星，请耐心等待，有任何问题，请联系客服",
+  "anonymous_mobile": "✈匿名号码\n➖➖➖➖➖➖➖➖➖➖\n官方NFT888号码永久不注销\n\n防止销号 增值快 可回收 稳定高\n\n一个号码传三代，人走了号还在\n\n匿名号码【+888】\nTelegram 在 TON 区块链上发布了有限的虚拟电话号码作为NFT收藏品。 Telegram 用户可以使用这些号码进行注册，无需 SIM 卡，并直接在 Fragment 上接收注册、或登录验证码。\n\n匿名账号【用户名】\n匿名账号【用户名】与匿名号码【+888】一样，也是在TON 区块链上发行的NFT收藏品。Telegram 用户可以使用用户名绑定到飞机号（个人号、群组、频道、机器人等）上使用，区别在于匿名号码可注册，而用户名不可注册。\n\n匿名号码与匿名账号，需要TON链的钱包地址方可接收。",
+  "customer_service": "💁联系客服"
 }
 

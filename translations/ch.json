@@ -205,5 +205,36 @@
 
   "promotion_income":"推廣收入",
 
-  "address_detection_records": "地址驗證扣款記錄"
+  "address_detection_records": "地址驗證扣款記錄",
+
+  "command_energy_menu": "⚡️指令閃租",
+  "command_energy_desc": "⚡️指令快捷租賃\n\n1. 指令：1 數量：65000（1筆）\t價格：{1_times_cost_trx}（TRX）\n2. 指令：2 數量：131000（2筆） 價格：{2_times_cost_trx}（TRX）\n3. 指令：3 數量：195000（3筆） 價格：{3_times_cost_trx}（TRX）\n4. 指令：4 數量：260000（4筆） 價格：{4_times_cost_trx}（TRX）\n5. 指令：5 數量：325000（5筆） 價格：{5_times_cost_trx}（TRX）\n\n⚠️對方地址無 U 需要兩筆能量！\n\n⏰指令模式能量一小時有效！\n⚠️此模式無需確認，收到指令能量秒到！小心使用哦！\n♻️如綁定 2 個以上地址，發送指令彈出地址，選擇即可秒租能量！",
+  "member_telegram_menu": "🌟電報會員",
+  "member_telegram_desc": "🌟星星價格： 0.03 U/個\n（支持單次購買50-10000個星星）\n\n\n🌟會員價格：\n3個月會員：17 U\n6個月會員：27 U\n1年會員： 47 U\n\n\n\n唔好用匯旺充值，只能錢包U充值！",
+  "member_telegram_second_menu": "🌟購買會員",
+  "star_telegram_second_menu": "⭐️購買星星",
+  "telegram_id_menu": "✈️匿名號碼",
+  "3_month_premium_fee": "3個月會員 售價 ",
+  "6_month_premium_fee": "6個月會員 售價 ",
+  "12_month_premium_fee": "12個月會員 售價 ",
+  "3_month_premium": "3個月會員",
+  "6_month_premium": "6個月會員",
+  "12_month_premium": "12個月會員",
+  "premium_activation_username": "開通高級會員用戶名（需要攜帶@符號）",
+
+  "premium_activation_tips": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機會員：{premium_package}Telegram Premium會員\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n🚫請勿使用交易所或中心化錢包轉賬",
+  "balance_pay_order": "餘額支付",
+  "activate_current_user": "🎁幫當前用戶開通",
+  "activate_current_user_tips1": "請發送你需要開通 Telegram 會員的帳號\n▫例如：\n▫@{username}\n▫<code>https://t.me/{username}</code>\n\n你選擇咗 {month} 個月 Telegram Premium 會員\n▫售價: {price}U",
+  "activate_current_user_tips": "請發送你需要開通 Telegram 會員的帳號\n▫例如：\n▫@{username}\n\n你選擇咗 {month} 個月 Telegram Premium 會員\n▫售價: {price}U",
+  "insufficient_balance_tips": "⚠️餘額不足，請先充值\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅成功購買 Telegram {month_package}",
+  "purchase_stars_tips": "請發送你需要購買星星的飛機帳號\n▫例如：\n▫@{username}\n\n你選擇咗 {count} 星星\n▫售價: {price}U",
+  "purchase_stars_current_user": "🎁幫當前用戶購買",
+  "purchase_telegram_stars_tips": "請選擇購買星星（Telegram Stars）的數量：",
+  "purchase_telegram_products_tips": "請選擇開通或購買 Telegram 產品：",
+  "purchase_telegram_stars": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機星星：{stars}星星\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n🚫請勿使用交易所或中心化錢包轉賬",
+  "successfully_purchased_stars": "✅成功購買 {count} 星星，請耐心等待，有任何問題，請聯絡客服",
+  "anonymous_mobile": "✈️匿名號碼\n➖➖➖➖➖➖➖➖➖➖\n官方 NFT888 號碼永久唔會註銷\n\n防止銷號 • 增值快 • 可回收 • 穩定高\n\n「一個號碼傳三代，人走咗號仲在」\n\n匿名號碼【+888】\nTelegram 在 TON 區塊鏈上推出限量虛擬電話號碼，作為 NFT 收藏品。用戶無需 SIM 卡即可用呢啲號碼註冊，並直接喺 Fragment 接收驗證碼。\n\n匿名帳號【用戶名】\n匿名用戶名同匿名號碼【+888】一樣，都係 TON 區塊鏈上發行嘅 NFT 收藏品。Telegram 用戶可以將用戶名綁定到個人帳號、群組、頻道或機械人上使用。分別在於匿名號碼可用來註冊，而用戶名則唔可以。\n\n要接收匿名號碼或匿名帳號，你需要提供 TON 鏈上嘅錢包地址。",
+  "customer_service": "💁聯絡客服"
 }

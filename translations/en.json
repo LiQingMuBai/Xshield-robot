@@ -200,6 +200,35 @@
 
   "promotion_income":"Promotion Revenue",
 
-  "address_detection_records": "Address verification deduction record"
+  "address_detection_records": "Address verification deduction record",
 
+  "command_energy_menu": "⚡️ Quick Energy Rental via Command",
+  "command_energy_desc": "⚡️ Quick Energy Rental via Command\n\n1. Command: 1 Amount: 65000 (1 tx) Price: {1_times_cost_trx} (TRX)\n2. Command: 2 Amount: 131000 (2 tx) Price: {2_times_cost_trx} (TRX)\n3. Command: 3 Amount: 195000 (3 tx) Price: {3_times_cost_trx} (TRX)\n4. Command: 4 Amount: 260000 (4 tx) Price: {4_times_cost_trx} (TRX)\n5. Command: 5 Amount: 325000 (5 tx) Price: {5_times_cost_trx} (TRX)\n\n⚠️ Recipient address has no U — requires two energy transactions!\n\n⏰ Command-mode energy is valid for only 1 hour!\n⚠️ No confirmation needed — energy arrives instantly! Use with caution!\n♻️ If you’ve linked 2+ addresses, sending a command will pop up your address list — just select one to rent energy instantly!",
+  "member_telegram_menu": "🌟 Telegram Premium",
+  "member_telegram_desc": "🌟 Star price: 0.03 U each\n(Supports single purchase of 50–10,000 stars)\n\n\n🌟 Membership prices:\n3 months: 17 U\n6 months: 27 U\n1 year: 47 U\n\n\n\nDo NOT top up via HuiWang — only wallet USDT accepted!",
+  "member_telegram_second_menu": "🌟 Buy Membership",
+  "star_telegram_second_menu": "⭐️ Buy Stars",
+  "telegram_id_menu": "✈️ Anonymous Number",
+  "3_month_premium_fee": "3-month membership price ",
+  "6_month_premium_fee": "6-month membership price ",
+  "12_month_premium_fee": "12-month membership price ",
+  "3_month_premium": "3-month membership",
+  "6_month_premium": "6-month membership",
+  "12_month_premium": "12-month membership",
+  "premium_activation_username": "Username for Premium activation (must include @)",
+  "premium_activation_tips": "⚠️ ↓↓ Please pay the exact amount, or it won’t be credited ↓↓\n---------------------------------\n🌟 Telegram Premium: {premium_package}\n🌟 Username: @{username}\n🌟 Display name: {nickname}\n🌟 Payment amount: <code>{amount}</code> USDT\n🌟 Receiving address: <code>{address}</code>\n(Click to copy)\n---------------------------------\n\n‼️ Please double-check the decimal digits of the amount\n🚫 Do NOT send from exchanges or centralized wallets",
+  "balance_pay_order": "Pay with Balance",
+  "activate_current_user": "🎁 Activate for Current User",
+  "activate_current_user_tips1": "Please send the Telegram username you want to activate Premium for\n▫ Example:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\nYou selected {month}-month Telegram Premium\n▫ Price: {price}U",
+  "activate_current_user_tips": "Please send the Telegram username you want to activate Premium for\n▫ Example:\n▫ @{username}\n\nYou selected {month}-month Telegram Premium\n▫ Price: {price}U",
+  "insufficient_balance_tips": "⚠️ Insufficient balance. Please top up first\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅ Successfully purchased Telegram {month_package}",
+  "purchase_stars_tips": "Please send the Telegram username you want to buy stars for\n▫ Example:\n▫ @{username}\n\nYou selected {count} stars\n▫ Price: {price}U",
+  "purchase_stars_current_user": "🎁 Buy for Current User",
+  "purchase_telegram_stars_tips": "Please select the number of Telegram Stars to purchase:",
+  "purchase_telegram_products_tips": "Please select the Telegram product to activate or purchase:",
+  "purchase_telegram_stars": "⚠️ ↓↓ Please pay the exact amount, or it won’t be credited ↓↓\n---------------------------------\n🌟 Telegram Stars: {stars}\n🌟 Username: @{username}\n🌟 Display name: {nickname}\n🌟 Payment amount: <code>{amount}</code> USDT\n🌟 Receiving address: <code>{address}</code>\n(Click to copy)\n---------------------------------\n\n‼️ Please double-check the decimal digits of the amount\n🚫 Do NOT send from exchanges or centralized wallets",
+  "successfully_purchased_stars": "✅ Successfully purchased {count} stars. Please wait patiently. Contact support if you have any issues.",
+  "anonymous_mobile": "✈️ Anonymous Number\n➖➖➖➖➖➖➖➖➖➖\nOfficial NFT888 numbers are never deactivated\n\nPrevent account loss • Fast appreciation • Recyclable • Highly stable\n\n\"One number lasts three generations — when you’re gone, the number remains\"\n\nAnonymous Number 【+888】\nTelegram has released limited virtual phone numbers as NFT collectibles on the TON blockchain. Users can register without a SIM card and receive verification codes directly on Fragment.\n\nAnonymous Account 【Username】\nAnonymous usernames, like +888 numbers, are NFT collectibles issued on the TON blockchain. Telegram users can bind them to personal accounts, groups, channels, or bots. The key difference: anonymous numbers can be used for registration; usernames cannot.\n\nTo receive an anonymous number or username, you need a TON blockchain wallet address.",
+  "customer_service": "💁 Contact Support"
 }

@@ -22,6 +22,64 @@ func NewCatfeeService(apiKey, apiSecret, url string) (*CatfeeService, error) {
 	return &CatfeeService{apiKey: apiKey, apiSecret: apiSecret, url: url}, nil
 }
 
+type PremiumDataResp struct {
+	Code    int    `json:"code"`
+	Msg     string `json:"msg"`
+	SubCode string `json:"sub_code"`
+	SubMsg  string `json:"sub_msg"`
+	Data    struct {
+		ClientOrderID string `json:"client_order_id"`
+		Username      string `json:"username"`
+		Months        int    `json:"months"`
+		UsdtSun       int    `json:"usdt_sun"`
+		CreatedAt     int    `json:"created_at"`
+		Status        string `json:"status"`
+	} `json:"data"`
+}
+
+// 购买电报会员
+func (s CatfeeService) Premium(username string, months string) (PremiumDataResp, error) {
+	method := "POST" // 可以修改为 "GET", "PUT", "DELETE"
+
+	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
+	//Host: api.catfee.io
+	//CF-ACCESS-KEY: text
+	//CF-ACCESS-SIGN: text
+	//CF-ACCESS-TIMESTAMP: text
+	//Accept: */*
+	path := "/v1/premium?username=" + username + "&months=" + months
+	//// 生成请求头
+	timestamp := s.GenerateTimestamp()
+	queryParams := map[string]string{}
+
+	requestPath := s.BuildRequestPath(path, queryParams)
+	signature := s.GenerateSignature(timestamp, method, requestPath)
+
+	// 创建请求 URL
+	url := s.url + requestPath
+
+	// 发送请求
+	resp, err := s.CreateRequest(url, method, timestamp, signature)
+	if err != nil {
+		log.Fatal("Error making request:", err)
+	}
+	// 读取并输出响应
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("Error reading response:", err)
+	}
+
+	// 解析JSON响应
+	var dataResp PremiumDataResp
+	err = json.Unmarshal(body, &dataResp)
+	if err != nil {
+		fmt.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+	}
+
+	return dataResp, nil
+
+}
+
 // 增加
 func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, error) {
 	method := "GET" // 可以修改为 "GET", "PUT", "DELETE"

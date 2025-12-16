@@ -202,6 +202,35 @@
 
 
   "promotion_income":"プロモーション収入",
-  "address_detection_records": "住所確認による課金記録"
-
+  "address_detection_records": "住所確認による課金記録",
+  
+  "command_energy_menu": "⚡️ コマンドで即時エネルギー貸出",
+  "command_energy_desc": "⚡️ コマンドで即時エネルギー貸出\n\n1. コマンド: 1 数量: 65000 (1件) 価格: {1_times_cost_trx} (TRX)\n2. コマンド: 2 数量: 131000 (2件) 価格: {2_times_cost_trx} (TRX)\n3. コマンド: 3 数量: 195000 (3件) 価格: {3_times_cost_trx} (TRX)\n4. コマンド: 4 数量: 260000 (4件) 価格: {4_times_cost_trx} (TRX)\n5. コマンド: 5 数量: 325000 (5件) 価格: {5_times_cost_trx} (TRX)\n\n⚠️ 相手のアドレスにUがありません — エネルギー2件必要です！\n\n⏰ コマンドモードのエネルギーは1時間のみ有効です！\n⚠️ このモードは確認不要で、コマンド受信と同時にエネルギーが即時到着します！ご注意ください！\n♻️ 2つ以上のアドレスを紐付けている場合、コマンド送信時にアドレス一覧が表示されます — 選択するだけで即時貸出完了！",
+  "member_telegram_menu": "🌟 Telegramプレミアム",
+  "member_telegram_desc": "🌟 スター価格: 0.03 U/個\n(1回の購入は50～10,000個まで対応)\n\n\n🌟 プレミアム料金:\n3か月: 17 U\n6か月: 27 U\n1年: 47 U\n\n\n\nHuiWangでのチャージは不可 — ウォレットUでのみチャージ可能です！",
+  "member_telegram_second_menu": "🌟 プレミアムを購入",
+  "star_telegram_second_menu": "⭐️ スターを購入",
+  "telegram_id_menu": "✈️ 匿名番号",
+  "3_month_premium_fee": "3か月プレミアム 価格 ",
+  "6_month_premium_fee": "6か月プレミアム 価格 ",
+  "12_month_premium_fee": "12か月プレミアム 価格 ",
+  "3_month_premium": "3か月プレミアム",
+  "6_month_premium": "6か月プレミアム",
+  "12_month_premium": "12か月プレミアム",
+  "premium_activation_username": "プレミアム有効化ユーザー名（@必須）",
+  "premium_activation_tips": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramプレミアム: {premium_package}\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n🚫 取引所や中央集権型ウォレットからの送金は禁止です",
+  "balance_pay_order": "残高で支払う",
+  "activate_current_user": "🎁 現在のユーザーに適用",
+  "activate_current_user_tips1": "プレミアムを適用したいTelegramユーザー名を送信してください\n▫ 例:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\n{month}か月のTelegramプレミアムを選択しました\n▫ 価格: {price}U",
+  "activate_current_user_tips": "プレミアムを適用したいTelegramユーザー名を送信してください\n▫ 例:\n▫ @{username}\n\n{month}か月のTelegramプレミアムを選択しました\n▫ 価格: {price}U",
+  "insufficient_balance_tips": "⚠️ 残高不足です。先にチャージしてください\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅ Telegram {month_package} の購入が完了しました",
+  "purchase_stars_tips": "スターを購入したいTelegramユーザー名を送信してください\n▫ 例:\n▫ @{username}\n\n{count}個のスターを選択しました\n▫ 価格: {price}U",
+  "purchase_stars_current_user": "🎁 現在のユーザーに購入",
+  "purchase_telegram_stars_tips": "購入するTelegramスターの数量を選択してください:",
+  "purchase_telegram_products_tips": "Telegram製品の購入または有効化を選択してください:",
+  "purchase_telegram_stars": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramスター: {stars}個\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n🚫 取引所や中央集権型ウォレットからの送金は禁止です",
+  "successfully_purchased_stars": "✅ {count}個のスターの購入が完了しました。しばらくお待ちください。問題がある場合はサポートへお問い合わせください。",
+  "anonymous_mobile": "✈️ 匿名番号\n➖➖➖➖➖➖➖➖➖➖\n公式NFT888番号は永久に削除されません\n\nアカウント消失防止 • 価値急騰 • 再利用可能 • 高安定性\n\n「1つの番号は3世代続く — 人がいなくなっても、番号は残る」\n\n匿名番号【+888】\nTelegramはTONブロックチェーン上で限定的な仮想電話番号をNFTコレクションとしてリリースしました。ユーザーはSIMカードなしで登録でき、Fragmentで直接認証コードを受信できます。\n\n匿名アカウント【ユーザー名】\n匿名ユーザー名も+888番号と同様、TONブロックチェーン上のNFTコレクションです。個人アカウント、グループ、チャンネル、ボットなどに紐付けられます。違いは、匿名番号は登録に使えますが、ユーザー名は登録用途には使えません。\n\n匿名番号またはユーザー名を受け取るには、TONチェーンのウォレットアドレスが必要です。",
+  "customer_service": "💁 サポートに連絡"
 }

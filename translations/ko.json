@@ -200,6 +200,36 @@
   "ushield_additional_services_ecs_desc": "익명 해외 서버(ECS) 구매 가능",
 
   "promotion_income":"프로모션 수익",
-  "address_detection_records": "주소 검증 관련 공제 내역"
+  "address_detection_records": "주소 검증 관련 공제 내역",
 
+
+  "command_energy_menu": "⚡️ 명령어로 에너지 빠른 대여",
+  "command_energy_desc": "⚡️ 명령어로 에너지 빠른 대여\n\n1. 명령어: 1 수량: 65000(1건) 가격: {1_times_cost_trx}(TRX)\n2. 명령어: 2 수량: 131000(2건) 가격: {2_times_cost_trx}(TRX)\n3. 명령어: 3 수량: 195000(3건) 가격: {3_times_cost_trx}(TRX)\n4. 명령어: 4 수량: 260000(4건) 가격: {4_times_cost_trx}(TRX)\n5. 명령어: 5 수량: 325000(5건) 가격: {5_times_cost_trx}(TRX)\n\n⚠️ 상대방 주소에 U가 없으면 에너지 2건 필요!\n\n⏰ 명령어 모드의 에너지는 1시간 동안만 유효합니다!\n⚠️ 이 모드는 확인 없이 즉시 에너지가 도착합니다! 신중히 사용하세요!\n♻️ 2개 이상의 주소를 연결한 경우, 명령어를 보내면 주소 목록이 표시되며 선택만 하면 즉시 에너지를 대여할 수 있습니다!",
+  "member_telegram_menu": "🌟 텔레그램 프리미엄",
+  "member_telegram_desc": "🌟 스타 가격: 0.03 U/개\n(한 번에 50~10,000개 구매 가능)\n\n\n🌟 프리미엄 요금:\n3개월: 17 U\n6개월: 27 U\n1년: 47 U\n\n\n\n후이왕(HuiWang)으로 충전하지 마세요! 지갑 U로만 충전 가능합니다!",
+  "member_telegram_second_menu": "🌟 프리미엄 구독하기",
+  "star_telegram_second_menu": "⭐️ 스타 구매하기",
+  "telegram_id_menu": "✈️ 익명 번호",
+  "3_month_premium_fee": "3개월 프리미엄 가격 ",
+  "6_month_premium_fee": "6개월 프리미엄 가격 ",
+  "12_month_premium_fee": "12개월 프리미엄 가격 ",
+  "3_month_premium": "3개월 프리미엄",
+  "6_month_premium": "6개월 프리미엄",
+  "12_month_premium": "12개월 프리미엄",
+  "premium_activation_username": "프리미엄 활성화할 사용자명(@ 포함 필수)",
+  "premium_activation_tips": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 프리미엄: {premium_package}\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n🚫 거래소 또는 중앙화 지갑에서 송금하지 마세요",
+  "balance_pay_order": "잔액으로 결제",
+  "activate_current_user": "🎁 현재 사용자에게 개통",
+  "activate_current_user_tips1": "프리미엄을 개통할 텔레그램 계정을 보내주세요\n▫ 예시:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\n{month}개월 텔레그램 프리미엄을 선택하셨습니다\n▫ 가격: {price}U",
+  "activate_current_user_tips": "프리미엄을 개통할 텔레그램 계정을 보내주세요\n▫ 예시:\n▫ @{username}\n\n{month}개월 텔레그램 프리미엄을 선택하셨습니다\n▫ 가격: {price}U",
+  "insufficient_balance_tips": "⚠️ 잔액이 부족합니다. 먼저 충전해주세요\n➖➖➖➖➖➖➖➖➖➖\n",
+  "successfully_purchased_telegram": "✅ 텔레그램 {month_package} 구매 성공",
+  "purchase_stars_tips": "스타를 구매할 텔레그램 계정을 보내주세요\n▫ 예시:\n▫ @{username}\n\n{count}개의 스타를 선택하셨습니다\n▫ 가격: {price}U",
+  "purchase_stars_current_user": "🎁 현재 사용자에게 구매",
+  "purchase_telegram_stars_tips": "구매할 스타(Telegram Stars) 수량을 선택하세요:",
+  "purchase_telegram_products_tips": "텔레그램 제품을 선택하여 개통 또는 구매하세요:",
+  "purchase_telegram_stars": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 스타: {stars}개\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n🚫 거래소 또는 중앙화 지갑에서 송금하지 마세요",
+  "successfully_purchased_stars": "✅ {count}개의 스타 구매 성공! 잠시 기다려 주세요. 문제가 있으면 고객센터에 문의하세요.",
+  "anonymous_mobile": "✈️ 익명 번호\n➖➖➖➖➖➖➖➖➖➖\n공식 NFT888 번호는 영구적으로 삭제되지 않습니다\n\n계정 삭제 방지 • 가치 급등 • 재판매 가능 • 안정성 최고\n\n\"한 번 번호를 가지면 삼대가 쓴다 — 사람이 떠나도 번호는 남는다\"\n\n익명 번호 【+888】\n텔레그램은 TON 블록체인 상에서 한정된 가상 전화번호를 NFT 컬렉션으로 출시했습니다. 사용자는 SIM 카드 없이도 이 번호로 가입하고 Fragment에서 직접 인증 코드를 받을 수 있습니다.\n\n익명 계정 【사용자명】\n익명 사용자명도 +888 번호와 마찬가지로 TON 블록체인에서 발행된 NFT 컬렉션입니다. 텔레그램 사용자는 이를 개인 계정, 그룹, 채널, 봇 등에 연결할 수 있습니다. 차이점은 익명 번호는 가입에 사용 가능하지만, 사용자명은 가입에 사용할 수 없습니다.\n\n익명 번호 및 사용자명 수령을 위해서는 TON 체인 지갑 주소가 필요합니다.",
+  "customer_service": "💁 고객센터 문의"
 }

@@ -11,6 +11,8 @@ import (
 	"strings"
 	"ushield_bot/internal/service/additional"
 	"ushield_bot/internal/service/catfee"
+	"ushield_bot/internal/service/command"
+	"ushield_bot/internal/service/member"
 	"ushield_bot/internal/service/yhb"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -499,26 +501,32 @@ func handleStartCommand(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbota
 			tgbotapi.NewKeyboardButton("🖊️"+global.Translations[_lang]["transaction_plans"]),
 			//tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[_lang]["smart_transaction_plans"], "click_smart_transaction_plan"),
 			tgbotapi.NewKeyboardButton("🤖"+global.Translations[_lang]["catfee_smart_transaction_menu"]),
+			//tgbotapi.NewKeyboardButton("🤖"+global.Translations[_lang]["catfee_smart_transaction_menu"]),
 
 			//tgbotapi.NewKeyboardButton("⚡"+global.Translations[_lang]["energy_swap"]),
 			//tgbotapi.NewKeyboardButton("🖊️"+global.Translations[_lang]["transaction_plans"]),
 			//tgbotapi.NewKeyboardButton("🤖"+global.Translations[_lang]["smart_transaction_plans"]),
 		),
+
 		tgbotapi.NewKeyboardButtonRow(
+			//tgbotapi.NewKeyboardButton(global.Translations[_lang]["command_energy_menu"]),
+			tgbotapi.NewKeyboardButton("✅"+global.Translations[_lang]["usdt_trx_swap"]),
+			tgbotapi.NewKeyboardButton(global.Translations[_lang]["member_telegram_menu"]),
+
+			tgbotapi.NewKeyboardButton("🔃"+global.Translations[_lang]["coin_swap_coin_menu"]),
+			//tgbotapi.NewKeyboardButton("🧧"+global.Translations[_lang]["yhb_menu"]),
+			//tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
+
+		),
+		tgbotapi.NewKeyboardButtonRow(
+
 			tgbotapi.NewKeyboardButton("🕸"+global.Translations[_lang]["address_trace_menu"]),
 			tgbotapi.NewKeyboardButton("🔍"+global.Translations[_lang]["address_check"]),
 			tgbotapi.NewKeyboardButton("🚨"+global.Translations[_lang]["usdt_freeze_alert"]),
 		),
 		tgbotapi.NewKeyboardButtonRow(
 
-			tgbotapi.NewKeyboardButton("✅"+global.Translations[_lang]["usdt_trx_swap"]),
-			tgbotapi.NewKeyboardButton("🔃"+global.Translations[_lang]["coin_swap_coin_menu"]),
-			//tgbotapi.NewKeyboardButton("🧧"+global.Translations[_lang]["yhb_menu"]),
-			//tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
-
 			tgbotapi.NewKeyboardButton("🛒"+global.Translations[_lang]["ushield_additional_services_menu"]),
-		),
-		tgbotapi.NewKeyboardButtonRow(
 			tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
 		),
 	)
@@ -555,6 +563,10 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 	}
 
 	switch message.Text {
+	case global.Translations[_lang]["member_telegram_menu"]:
+		member.MenuNavigate(_lang, db, message.Chat.ID, bot)
+	case global.Translations[_lang]["command_energy_menu"]:
+		command.MenuNavigate(_lang, db, message.Chat.ID, bot)
 	case "🛒" + global.Translations[_lang]["ushield_additional_services_menu"]:
 		additional.MenuNavigate(_lang, db, message.Chat.ID, bot)
 	case "🔃" + global.Translations[_lang]["coin_swap_coin_menu"]:
@@ -575,7 +587,6 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 		service.MenuNavigateBundlePackage(_lang, db, message.Chat.ID, bot, "TRX")
 	case "🤖" + global.Translations[_lang]["catfee_smart_transaction_menu"]:
 		catfee.MenuNavigateCatfeeSmartTransactionPlans(_lang, db, message.Chat.ID, bot, "TRX")
-
 	case "⚡" + global.Translations[_lang]["energy_swap"]:
 		service.MenuNavigateEnergyExchange(_lang, db, message, bot)
 	case "👤" + global.Translations[_lang]["my_account"]:
@@ -980,6 +991,18 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 
 		case strings.HasPrefix(status, "catfee_remove_address"):
 			catfee.CustodyAddressRemove(_lang, cache, db, bot, message, catfeeClient)
+
+		case strings.HasPrefix(status, "premium_user_rent_month"):
+			_month := strings.ReplaceAll(status, "premium_user_rent_month", "")
+
+			fmt.Printf("message text: %s\n", message.Text)
+			member.Rent(_lang, cache, db, bot, message.Text, message.Chat.ID, _month)
+
+		case strings.HasPrefix(status, "purchase_telegram_stars"):
+			count := strings.ReplaceAll(status, "purchase_telegram_stars", "")
+
+			fmt.Printf("message text: %s\n", message.Text)
+			member.Purchase(_lang, cache, db, bot, message.Text, message.Chat.ID, count)
 
 		}
 	}
@@ -1951,9 +1974,230 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["ushield_additional_services_ecs_desc"]+"\n"+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_contact"], "{ushield_additional_services_contact}", ushield_additional_services_contact)+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_wallet"], "{ushield_additional_services_wallet}", ushield_additional_services_wallet))
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
-
+	case strings.HasPrefix(callbackQuery.Data, "click_buy_month_"):
+		month := strings.ReplaceAll(callbackQuery.Data, "click_buy_month_", "")
+		fmt.Printf("month: %s\n", month)
+		member.MenuNavigateForMonth(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, month)
 		//default:
 		//	responseText = "未知选项"
+
+	case strings.HasPrefix(callbackQuery.Data, "activate_current_user_"):
+		month := strings.ReplaceAll(callbackQuery.Data, "activate_current_user_", "")
+		fmt.Printf("month: %s\n", month)
+		//fmt.Printf("username: %s\n", callbackQuery.Message.From.UserName)
+		fmt.Printf("username: %s\n", callbackQuery.Message.Chat.UserName)
+		//fmt.Printf("chatid: %s\n", callbackQuery.Message.From.)
+		//member.MenuNavigateForMonth(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, month)
+		member.Rent(_lang, cache, db, bot, callbackQuery.Message.Chat.UserName, callbackQuery.Message.Chat.ID, month)
+
+	case strings.HasPrefix(callbackQuery.Data, "pay_premium_order_"):
+		orderNO := strings.ReplaceAll(callbackQuery.Data, "pay_premium_order_", "")
+		fmt.Printf("支付订单 %s\n", orderNO)
+		usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
+		record, _ := usdtDepositRepo.Query(context.Background(), orderNO)
+
+		userRepo := repositories.NewUserRepository(db)
+		user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+		if IsEmpty(user.Amount) {
+			user.Amount = "0"
+		}
+		if IsEmpty(user.TronAmount) {
+			user.TronAmount = "0"
+		}
+
+		if flag, _ := CompareNumberStrings(user.Amount, record.Amount); flag < 0 {
+			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+				"<b>"+"🔍"+global.Translations[_lang]["insufficient_balance_tips"]+"</b>"+"\n"+
+					"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+					"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
+					"💰"+global.Translations[_lang]["balance"]+"\n"+
+					"- TRX：   "+user.TronAmount+"\n"+
+					"-  USDT："+user.Amount)
+			msg.ParseMode = "HTML"
+			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+				),
+			)
+
+			msg.ReplyMarkup = inlineKeyboard
+			msg.ParseMode = "HTML"
+			bot.Send(msg)
+			return
+		}
+
+		balance, _ := SubtractStringNumbers(user.Amount, record.Amount, 1)
+		fmt.Printf("USDT balance %s", balance)
+		user.Amount = balance
+		err = userRepo.Update2(context.Background(), &user)
+		if err != nil {
+			fmt.Println("支付失败")
+		}
+
+		//调用catfee支付会员
+
+		tgOrderDB := repositories.NewTelegramPremiumOrderRepository(db)
+		orderRecord, _ := tgOrderDB.Query(context.Background(), orderNO)
+
+		tgOrderDB.Update(context.Background(), orderNO, 1)
+
+		//catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month)
+
+		//设置用户状态
+		//orderNO, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order_no")
+		tips := global.Translations[_lang]["successfully_purchased_telegram"]
+		tips = strings.ReplaceAll(tips, "{month_package}", global.Translations[_lang][orderRecord.Month+"_month_premium"])
+		msg_order := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+			global.Translations[_lang]["order_id"]+"：TOPUP-"+orderNO+" , "+tips)
+		msg_order.ParseMode = "HTML"
+		//msg.DisableWebPagePreview = true
+		bot.Send(msg_order)
+
+		//修改placeholder 0
+		//修改 depositorder 2
+		usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
+		usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		usdtDepositRepo.Update(context.Background(), orderNO, 2)
+
+	case strings.HasPrefix(callbackQuery.Data, "cancel_premium_order_"):
+		orderNO := strings.ReplaceAll(callbackQuery.Data, "cancel_premium_order_", "")
+		fmt.Printf("取消支付订单 %s\n", orderNO)
+
+		usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
+		record, _ := usdtDepositRepo.Query(context.Background(), orderNO)
+
+		usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
+		usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		usdtDepositRepo.Update(context.Background(), orderNO, 2)
+
+		//设置用户状态
+		//orderNO, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order_no")
+		msg_order := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+			global.Translations[_lang]["order_id"]+"：TOPUP-"+orderNO+" , "+global.Translations[_lang]["cancel_order_tips"])
+		msg_order.ParseMode = "HTML"
+		//msg.DisableWebPagePreview = true
+		bot.Send(msg_order)
+
+	case strings.HasPrefix(callbackQuery.Data, "purchase_star_menu"):
+		member.MenuStarNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
+	case strings.HasPrefix(callbackQuery.Data, "purchase_telegram_premium"):
+		member.MenuNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
+
+	case strings.HasPrefix(callbackQuery.Data, "click_purchase_stars_"):
+		count := strings.ReplaceAll(callbackQuery.Data, "click_purchase_stars_", "")
+		fmt.Printf("count: %s\n", count)
+		member.MenuNavigateForStar(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, count)
+
+	case strings.HasPrefix(callbackQuery.Data, "purchase_stars_current_user_"):
+		count := strings.ReplaceAll(callbackQuery.Data, "purchase_stars_current_user_", "")
+		fmt.Printf("数量: %s\n", count)
+		//fmt.Printf("username: %s\n", callbackQuery.Message.From.UserName)
+		fmt.Printf("username: %s\n", callbackQuery.Message.Chat.UserName)
+		//fmt.Printf("chatid: %s\n", callbackQuery.Message.From.)
+		//member.MenuNavigateForMonth(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, month)
+		member.Purchase(_lang, cache, db, bot, callbackQuery.Message.Chat.UserName, callbackQuery.Message.Chat.ID, count)
+
+	case strings.HasPrefix(callbackQuery.Data, "purchase_stars_"):
+		orderNO := strings.ReplaceAll(callbackQuery.Data, "purchase_stars_", "")
+		fmt.Printf("支付订单 %s\n", orderNO)
+		usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
+		record, _ := usdtDepositRepo.Query(context.Background(), orderNO)
+
+		userRepo := repositories.NewUserRepository(db)
+		user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+		if IsEmpty(user.Amount) {
+			user.Amount = "0"
+		}
+		if IsEmpty(user.TronAmount) {
+			user.TronAmount = "0"
+		}
+
+		if flag, _ := CompareNumberStrings(user.Amount, record.Amount); flag < 0 {
+			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+				"<b>"+"🔍"+global.Translations[_lang]["insufficient_balance_tips"]+"</b>"+"\n"+
+					"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+					"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
+					"💰"+global.Translations[_lang]["balance"]+"\n"+
+					"- TRX：   "+user.TronAmount+"\n"+
+					"-  USDT："+user.Amount)
+			msg.ParseMode = "HTML"
+			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+				),
+			)
+
+			msg.ReplyMarkup = inlineKeyboard
+			msg.ParseMode = "HTML"
+			bot.Send(msg)
+			return
+		}
+
+		balance, _ := SubtractStringNumbers(user.Amount, record.Amount, 1)
+		fmt.Printf("USDT balance %s", balance)
+		user.Amount = balance
+		err = userRepo.Update2(context.Background(), &user)
+		if err != nil {
+			fmt.Println("支付失败")
+		}
+
+		//调用catfee支付会员
+
+		tgOrderDB := repositories.NewTelegramStarsOrderRepository(db)
+		orderRecord, _ := tgOrderDB.Query(context.Background(), orderNO)
+
+		tgOrderDB.Update(context.Background(), orderNO, 1)
+
+		//catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month)
+
+		//设置用户状态
+		//orderNO, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order_no")
+		tips := global.Translations[_lang]["successfully_purchased_stars"]
+		tips = strings.ReplaceAll(tips, "{count}", orderRecord.Stars)
+		msg_order := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+			global.Translations[_lang]["order_id"]+"：TOPUP-"+orderNO+" , "+tips)
+		msg_order.ParseMode = "HTML"
+		//msg.DisableWebPagePreview = true
+		bot.Send(msg_order)
+
+		//修改placeholder 0
+		//修改 depositorder 2
+		usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
+		usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		usdtDepositRepo.Update(context.Background(), orderNO, 2)
+
+	case strings.HasPrefix(callbackQuery.Data, "cancel_stars_"):
+		orderNO := strings.ReplaceAll(callbackQuery.Data, "cancel_stars_", "")
+		fmt.Printf("取消支付订单 %s\n", orderNO)
+
+		usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
+		record, _ := usdtDepositRepo.Query(context.Background(), orderNO)
+
+		usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
+		usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		usdtDepositRepo.Update(context.Background(), orderNO, 2)
+
+		//设置用户状态
+		//orderNO, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order_no")
+		msg_order := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+			global.Translations[_lang]["order_id"]+"：TOPUP-"+orderNO+" , "+global.Translations[_lang]["cancel_order_tips"])
+		msg_order.ParseMode = "HTML"
+		//msg.DisableWebPagePreview = true
+		bot.Send(msg_order)
+
+		//case strings.HasPrefix(callbackQuery.Data, "cancel_stars_"):
+		//	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["ushield_additional_services_ecs_desc"]+"\n"+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_contact"], "{ushield_additional_services_contact}", ushield_additional_services_contact)+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_wallet"], "{ushield_additional_services_wallet}", ushield_additional_services_wallet))
+		//	msg.ParseMode = "HTML"
+		//	bot.Send(msg)
+
+	case strings.HasPrefix(callbackQuery.Data, "purchase_anonymous_mobile"):
+
+		member.MenuMobileNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
+
 	}
 
 	// 发送新消息作为响应
