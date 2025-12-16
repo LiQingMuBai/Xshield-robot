@@ -2041,7 +2041,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 		tgOrderDB.Update(context.Background(), orderNO, 1)
 
-		//catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month)
+		catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month)
 
 		//设置用户状态
 		//orderNO, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order_no")
