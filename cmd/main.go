@@ -993,12 +993,22 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 			catfee.CustodyAddressRemove(_lang, cache, db, bot, message, catfeeClient)
 
 		case strings.HasPrefix(status, "premium_user_rent_month"):
+			username := message.Text
+			if len(username) < 4 || !strings.Contains(username, "@") {
+				return
+			}
+
 			_month := strings.ReplaceAll(status, "premium_user_rent_month", "")
 
 			fmt.Printf("message text: %s\n", message.Text)
-			member.Rent(_lang, cache, db, bot, message.Text, message.Chat.ID, _month)
+
+			member.Rent(_lang, cache, db, bot, username, message.Chat.ID, _month)
 
 		case strings.HasPrefix(status, "purchase_telegram_stars"):
+			username := message.Text
+			if len(username) < 4 || !strings.Contains(username, "@") {
+				return
+			}
 			count := strings.ReplaceAll(status, "purchase_telegram_stars", "")
 
 			fmt.Printf("message text: %s\n", message.Text)
