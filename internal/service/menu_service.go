@@ -87,8 +87,17 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 
 	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{energy_cost}", energy_cost), "{energy_cost_2x}", energy_cost_2x), "{receiveAddress}", receiveAddress), "{energy_cost_10x}", energy_cost_10x)
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
+	videoPath := "./static/Dior.png"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+	msg.Caption = targetStr
 	msg.ReplyMarkup = inlineKeyboard
+	//msg.SupportsStreaming = true // 启用流式播放（推荐）
+
+	//msg := tgbotapi.new(message.Chat.ID, targetStr)
+	//msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 	//str := ""

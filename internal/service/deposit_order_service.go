@@ -93,13 +93,27 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 		log.Printf("Error creating usdtDeposit: %v", errsg)
 	}
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-		global.Translations[_lang]["order_id"]+"：TOPUP-"+usdtDeposit.OrderNO+"\n"+
-			global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[_lang]["copy_text_tips"]+"\n"+
-			global.Translations[_lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
-			global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
-			global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
-			global.Translations[_lang]["amount_suffix_tips"]+"\n")
+	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+	//	global.Translations[_lang]["order_id"]+"：TOPUP-"+usdtDeposit.OrderNO+"\n"+
+	//		global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[_lang]["copy_text_tips"]+"\n"+
+	//		global.Translations[_lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
+	//		global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
+	//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
+	//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
+
+	videoPath := "./static/Audi.png"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+	msg.Caption = global.Translations[_lang]["order_id"] + "：TOPUP-" + usdtDeposit.OrderNO + "\n" +
+		global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " USDT " + global.Translations[_lang]["copy_text_tips"] + "\n" +
+		global.Translations[_lang]["receive_address"] + "<code>" + usdtDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
+		global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
+		global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(usdtDeposit.CreatedAt) + "\n" +
+		global.Translations[_lang]["amount_suffix_tips"] + "\n"
+	//msg.ReplyMarkup = inlineKeyboard
+
 	//originStr := global.Translations[_lang]["deposit_tips"]
 	//
 	//targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{order_no}", usdtDeposit.OrderNO), "{amount}", realTransferAmount), "{receiveAddress}", usdtDeposit.Address), "{createdAt}", Format4Chinesese(usdtDeposit.CreatedAt))
@@ -300,13 +314,18 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	//		"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+
 	//		"转账10分钟后没到账及时联系"+"\n")
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-		global.Translations[_lang]["order_id"]+"：TOPUP-"+trxDeposit.OrderNO+"\n"+
-			global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" TRX "+global.Translations[_lang]["copy_text_tips"]+"\n"+
-			global.Translations[_lang]["receive_address"]+"<code>"+trxDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
-			global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
-			global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(trxDeposit.CreatedAt)+"\n"+
-			global.Translations[_lang]["amount_suffix_tips"]+"\n")
+	videoPath := "./static/Audi.png"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+	msg.Caption = global.Translations[_lang]["order_id"] + "：TOPUP-" + trxDeposit.OrderNO + "\n" +
+		global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " TRX " + global.Translations[_lang]["copy_text_tips"] + "\n" +
+		global.Translations[_lang]["receive_address"] + "<code>" + trxDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
+		global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
+		global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(trxDeposit.CreatedAt) + "\n" +
+		global.Translations[_lang]["amount_suffix_tips"] + "\n"
+
 	//"⚠️注意："+"\n"+
 	//"▫️注意小数点 "+realTransferAmount+" usdt 转错金额不能到账"+"\n"+
 	//"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+

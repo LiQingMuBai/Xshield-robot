@@ -37,6 +37,38 @@ type PremiumDataResp struct {
 	} `json:"data"`
 }
 
+// 下单
+func (s CatfeeService) Order(_address string) {
+	method := "POST" // Can be "GET", "PUT", or "DELETE"
+	path := "/v1/order"
+
+	// Example: Create order
+	queryParams := map[string]string{
+		"quantity": "65000",
+		"receiver": _address,
+		"duration": "1h",
+	}
+
+	timestamp := s.GenerateTimestamp()
+	requestPath := s.BuildRequestPath(path, queryParams)
+	signature := s.GenerateSignature(timestamp, method, requestPath)
+
+	url := s.url + requestPath
+
+	resp, err := s.CreateRequest(url, method, timestamp, signature)
+	if err != nil {
+		log.Fatal("Error making request:", err)
+	}
+
+	body, err := ioutil.ReadAll(resp.Body)
+	if err != nil {
+		log.Fatal("Error reading response:", err)
+	}
+
+	fmt.Println("Response Status:", resp.Status)
+	fmt.Println("Response Body:", string(body))
+}
+
 // 购买电报会员
 func (s CatfeeService) Premium(username string, months string) (PremiumDataResp, error) {
 	method := "POST" // 可以修改为 "GET", "PUT", "DELETE"
