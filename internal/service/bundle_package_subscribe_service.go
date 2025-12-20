@@ -287,11 +287,21 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang string, db *gorm.DB, chatID int64
 			if user.BundleTimes > 0 {
 				builder.WriteString(global.Translations[_lang]["dispatch_now"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
+				builder.WriteString("_1")
 				builder.WriteString("\n") // 添加分隔符
 
 				//builder.WriteString(strconv.FormatInt(order.Id, 10))
 				//builder.WriteString("\n") // 添加分隔符
 			}
+			if user.BundleTimes > 1 {
+				builder.WriteString("\n") // 添加分隔符
+				builder.WriteString(global.Translations[_lang]["dispatch_now_2"] + ":/dispatchNow")
+				builder.WriteString(strconv.FormatInt(order.Id, 10))
+				builder.WriteString("_2")
+				builder.WriteString("\n") // 添加分隔符
+
+			}
+
 			//builder.WriteString("\n")
 			builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
 			//builder.WriteString("\n")            // 添加分隔符

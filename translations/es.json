@@ -78,6 +78,7 @@
   "remaining": "Restante:",
   "used": "     Usado:",
   "dispatch_now": "Enviar energía ahora",
+  "dispatch_now_2": "Enviar energía ahora 2 trans.",
   "dispatch_other": "Enviar energía a otra dirección",
   "add_address": "Agregar dirección",
   "remove_address": "Eliminar dirección",

@@ -78,6 +78,7 @@
   "remaining": "남음:",
   "used": "     사용됨:",
   "dispatch_now": "원클릭 발송",
+  "dispatch_now_2":"원클릭 발송 2 거래",
   "dispatch_other": "다른 주소로 발송",
   "add_address": "주소 추가",
   "remove_address": "주소 삭제",

@@ -78,6 +78,7 @@
   "remaining": "残り:",
   "used": "     使用済:",
   "dispatch_now": "ワンクリック送信",
+  "dispatch_now_2":"ワンクリック送信 2 取引",
   "dispatch_other": "他のアドレスへ送信",
   "add_address": "アドレス追加",
   "remove_address": "アドレス削除",
