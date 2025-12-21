@@ -223,7 +223,7 @@
   "12_month_premium": "12個月會員",
   "premium_activation_username": "開通高級會員用戶名（需要攜帶@符號）",
 
-  "premium_activation_tips": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機會員：{premium_package}Telegram Premium會員\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n🚫請勿使用交易所或中心化錢包轉賬",
+  "premium_activation_tips": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機會員：{premium_package}Telegram Premium會員\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n",
   "balance_pay_order": "餘額支付",
   "activate_current_user": "🎁幫當前用戶開通",
   "activate_current_user_tips1": "請發送你需要開通 Telegram 會員的帳號\n▫例如：\n▫@{username}\n▫<code>https://t.me/{username}</code>\n\n你選擇咗 {month} 個月 Telegram Premium 會員\n▫售價: {price}U",
@@ -234,7 +234,7 @@
   "purchase_stars_current_user": "🎁幫當前用戶購買",
   "purchase_telegram_stars_tips": "請選擇購買星星（Telegram Stars）的數量：",
   "purchase_telegram_products_tips": "請選擇開通或購買 Telegram 產品：",
-  "purchase_telegram_stars": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機星星：{stars}星星\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n🚫請勿使用交易所或中心化錢包轉賬",
+  "purchase_telegram_stars": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機星星：{stars}星星\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n",
   "successfully_purchased_stars": "✅成功購買 {count} 星星，請耐心等待，有任何問題，請聯絡客服",
   "anonymous_mobile": "✈️匿名號碼\n➖➖➖➖➖➖➖➖➖➖\n官方 NFT888 號碼永久唔會註銷\n\n防止銷號 • 增值快 • 可回收 • 穩定高\n\n「一個號碼傳三代，人走咗號仲在」\n\n匿名號碼【+888】\nTelegram 在 TON 區塊鏈上推出限量虛擬電話號碼，作為 NFT 收藏品。用戶無需 SIM 卡即可用呢啲號碼註冊，並直接喺 Fragment 接收驗證碼。\n\n匿名帳號【用戶名】\n匿名用戶名同匿名號碼【+888】一樣，都係 TON 區塊鏈上發行嘅 NFT 收藏品。Telegram 用戶可以將用戶名綁定到個人帳號、群組、頻道或機械人上使用。分別在於匿名號碼可用來註冊，而用戶名則唔可以。\n\n要接收匿名號碼或匿名帳號，你需要提供 TON 鏈上嘅錢包地址。",
   "customer_service": "💁聯絡客服"

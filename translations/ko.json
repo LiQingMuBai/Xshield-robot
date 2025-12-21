@@ -218,7 +218,7 @@
   "6_month_premium": "6개월 프리미엄",
   "12_month_premium": "12개월 프리미엄",
   "premium_activation_username": "프리미엄 활성화할 사용자명(@ 포함 필수)",
-  "premium_activation_tips": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 프리미엄: {premium_package}\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n🚫 거래소 또는 중앙화 지갑에서 송금하지 마세요",
+  "premium_activation_tips": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 프리미엄: {premium_package}\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n",
   "balance_pay_order": "잔액으로 결제",
   "activate_current_user": "🎁 현재 사용자에게 개통",
   "activate_current_user_tips1": "프리미엄을 개통할 텔레그램 계정을 보내주세요\n▫ 예시:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\n{month}개월 텔레그램 프리미엄을 선택하셨습니다\n▫ 가격: {price}U",
@@ -229,7 +229,7 @@
   "purchase_stars_current_user": "🎁 현재 사용자에게 구매",
   "purchase_telegram_stars_tips": "구매할 스타(Telegram Stars) 수량을 선택하세요:",
   "purchase_telegram_products_tips": "텔레그램 제품을 선택하여 개통 또는 구매하세요:",
-  "purchase_telegram_stars": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 스타: {stars}개\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n🚫 거래소 또는 중앙화 지갑에서 송금하지 마세요",
+  "purchase_telegram_stars": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 스타: {stars}개\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n",
   "successfully_purchased_stars": "✅ {count}개의 스타 구매 성공! 잠시 기다려 주세요. 문제가 있으면 고객센터에 문의하세요.",
   "anonymous_mobile": "✈️ 익명 번호\n➖➖➖➖➖➖➖➖➖➖\n공식 NFT888 번호는 영구적으로 삭제되지 않습니다\n\n계정 삭제 방지 • 가치 급등 • 재판매 가능 • 안정성 최고\n\n\"한 번 번호를 가지면 삼대가 쓴다 — 사람이 떠나도 번호는 남는다\"\n\n익명 번호 【+888】\n텔레그램은 TON 블록체인 상에서 한정된 가상 전화번호를 NFT 컬렉션으로 출시했습니다. 사용자는 SIM 카드 없이도 이 번호로 가입하고 Fragment에서 직접 인증 코드를 받을 수 있습니다.\n\n익명 계정 【사용자명】\n익명 사용자명도 +888 번호와 마찬가지로 TON 블록체인에서 발행된 NFT 컬렉션입니다. 텔레그램 사용자는 이를 개인 계정, 그룹, 채널, 봇 등에 연결할 수 있습니다. 차이점은 익명 번호는 가입에 사용 가능하지만, 사용자명은 가입에 사용할 수 없습니다.\n\n익명 번호 및 사용자명 수령을 위해서는 TON 체인 지갑 주소가 필요합니다.",
   "customer_service": "💁 고객센터 문의"

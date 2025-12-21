@@ -217,7 +217,7 @@
   "6_month_premium": "Thành viên 6 tháng",
   "12_month_premium": "Thành viên 12 tháng",
   "premium_activation_username": "Tên người dùng kích hoạt Premium (bắt buộc có @)",
-  "premium_activation_tips": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Thành viên Telegram: {premium_package}\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n🚫 Không dùng ví sàn hoặc ví tập trung để chuyển",
+  "premium_activation_tips": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Thành viên Telegram: {premium_package}\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n",
   "balance_pay_order": "Thanh toán bằng số dư",
   "activate_current_user": "🎁 Kích hoạt cho người dùng hiện tại",
   "activate_current_user_tips1": "Vui lòng gửi tên người dùng Telegram cần kích hoạt thành viên\n▫ Ví dụ:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\nBạn đã chọn thành viên Telegram Premium {month} tháng\n▫ Giá: {price}U",
@@ -228,7 +228,7 @@
   "purchase_stars_current_user": "🎁 Mua cho người dùng hiện tại",
   "purchase_telegram_stars_tips": "Vui lòng chọn số lượng sao (Telegram Stars) muốn mua:",
   "purchase_telegram_products_tips": "Vui lòng chọn sản phẩm Telegram để kích hoạt hoặc mua:",
-  "purchase_telegram_stars": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Sao Telegram: {stars} sao\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n🚫 Không dùng ví sàn hoặc ví tập trung để chuyển",
+  "purchase_telegram_stars": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Sao Telegram: {stars} sao\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n",
   "successfully_purchased_stars": "✅ Đã mua thành công {count} sao. Vui lòng chờ đợi. Nếu có vấn đề, hãy liên hệ hỗ trợ.",
   "anonymous_mobile": "✈️ Số ẩn danh\n➖➖➖➖➖➖➖➖➖➖\nSố chính thức NFT888 vĩnh viễn không bị xóa\n\nChống mất số • Tăng giá nhanh • Có thể thu hồi • Ổn định cao\n\n\"Một số dùng ba đời — người đi rồi, số vẫn còn\"\n\nSố ẩn danh 【+888】\nTelegram đã phát hành số điện thoại ảo giới hạn dưới dạng NFT trên blockchain TON. Người dùng có thể đăng ký mà không cần SIM và nhận mã xác minh trực tiếp trên Fragment.\n\nTài khoản ẩn danh 【username】\nTên người dùng ẩn danh cũng là NFT trên blockchain TON, giống như số +888. Người dùng có thể gắn vào tài khoản cá nhân, nhóm, kênh hoặc bot. Khác biệt là số ẩn danh dùng để đăng ký, còn username thì không.\n\nĐể nhận số hoặc username ẩn danh, bạn cần địa chỉ ví trên mạng TON.",
   "customer_service": "💁 Liên hệ hỗ trợ"

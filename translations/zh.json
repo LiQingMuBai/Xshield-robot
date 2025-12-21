@@ -248,7 +248,7 @@
   "12_month_premium": "12个月会员",
 
   "premium_activation_username": "开通高级会员用户名（需要携带@符号）",
-  "premium_activation_tips": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机会员：{premium_package}Telegram Premium会员\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n\uD83D\uDEAB请勿使用交易所或中心化钱包转账",
+  "premium_activation_tips": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机会员：{premium_package}Telegram Premium会员\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n",
   "balance_pay_order": "余额支付",
   "activate_current_user": "🎁给当前用户开通",
   "activate_current_user_tips1": "请发送您需要开通Telegram会员账号\n▫例如：\n▫@{username}\n▫<code>https://t.me/{username}</code>\n\n您选择了 {month}个月 Telegram Premium会员\n▫售价: {price}U",
@@ -259,7 +259,7 @@
   "purchase_stars_current_user": "🎁给当前用户购买",
   "purchase_telegram_stars_tips": "请选择购买星星(Telegram Stars)的数量:",
   "purchase_telegram_products_tips": "请选择开通、购买 Telegram 产品:",
-  "purchase_telegram_stars": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机星星：{stars}星星\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n\uD83D\uDEAB请勿使用交易所或中心化钱包转账",
+  "purchase_telegram_stars": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机星星：{stars}星星\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n",
   "successfully_purchased_stars": "✅成功购买{count}星星，请耐心等待，有任何问题，请联系客服",
   "anonymous_mobile": "✈匿名号码\n➖➖➖➖➖➖➖➖➖➖\n官方NFT888号码永久不注销\n\n防止销号 增值快 可回收 稳定高\n\n一个号码传三代，人走了号还在\n\n匿名号码【+888】\nTelegram 在 TON 区块链上发布了有限的虚拟电话号码作为NFT收藏品。 Telegram 用户可以使用这些号码进行注册，无需 SIM 卡，并直接在 Fragment 上接收注册、或登录验证码。\n\n匿名账号【用户名】\n匿名账号【用户名】与匿名号码【+888】一样，也是在TON 区块链上发行的NFT收藏品。Telegram 用户可以使用用户名绑定到飞机号（个人号、群组、频道、机器人等）上使用，区别在于匿名号码可注册，而用户名不可注册。\n\n匿名号码与匿名账号，需要TON链的钱包地址方可接收。",
   "customer_service": "💁联系客服"

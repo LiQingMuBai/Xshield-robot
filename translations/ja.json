@@ -219,7 +219,7 @@
   "6_month_premium": "6か月プレミアム",
   "12_month_premium": "12か月プレミアム",
   "premium_activation_username": "プレミアム有効化ユーザー名（@必須）",
-  "premium_activation_tips": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramプレミアム: {premium_package}\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n🚫 取引所や中央集権型ウォレットからの送金は禁止です",
+  "premium_activation_tips": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramプレミアム: {premium_package}\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n",
   "balance_pay_order": "残高で支払う",
   "activate_current_user": "🎁 現在のユーザーに適用",
   "activate_current_user_tips1": "プレミアムを適用したいTelegramユーザー名を送信してください\n▫ 例:\n▫ @{username}\n▫ <code>https://t.me/{username}</code>\n\n{month}か月のTelegramプレミアムを選択しました\n▫ 価格: {price}U",
@@ -230,7 +230,7 @@
   "purchase_stars_current_user": "🎁 現在のユーザーに購入",
   "purchase_telegram_stars_tips": "購入するTelegramスターの数量を選択してください:",
   "purchase_telegram_products_tips": "Telegram製品の購入または有効化を選択してください:",
-  "purchase_telegram_stars": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramスター: {stars}個\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n🚫 取引所や中央集権型ウォレットからの送金は禁止です",
+  "purchase_telegram_stars": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramスター: {stars}個\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n",
   "successfully_purchased_stars": "✅ {count}個のスターの購入が完了しました。しばらくお待ちください。問題がある場合はサポートへお問い合わせください。",
   "anonymous_mobile": "✈️ 匿名番号\n➖➖➖➖➖➖➖➖➖➖\n公式NFT888番号は永久に削除されません\n\nアカウント消失防止 • 価値急騰 • 再利用可能 • 高安定性\n\n「1つの番号は3世代続く — 人がいなくなっても、番号は残る」\n\n匿名番号【+888】\nTelegramはTONブロックチェーン上で限定的な仮想電話番号をNFTコレクションとしてリリースしました。ユーザーはSIMカードなしで登録でき、Fragmentで直接認証コードを受信できます。\n\n匿名アカウント【ユーザー名】\n匿名ユーザー名も+888番号と同様、TONブロックチェーン上のNFTコレクションです。個人アカウント、グループ、チャンネル、ボットなどに紐付けられます。違いは、匿名番号は登録に使えますが、ユーザー名は登録用途には使えません。\n\n匿名番号またはユーザー名を受け取るには、TONチェーンのウォレットアドレスが必要です。",
   "customer_service": "💁 サポートに連絡"

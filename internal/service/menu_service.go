@@ -149,7 +149,14 @@ func MenuNavigateSwapExchange(_lang string, db *gorm.DB, message *tgbotapi.Messa
 
 	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{trx_amount}", usdt_swap_trx_amount), "{swap_address}", usdt_swap_trx_swap_address), "{min_amount}", usdt_swap_trx_min_amount), "{max_amount}", usdt_swap_trx_max_amount)
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
+	videoPath := "./static/Prada.png"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+	msg.Caption = targetStr
+
+	//msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
 	//msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
