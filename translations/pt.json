@@ -232,5 +232,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ Pague o valor exato, caso contrário não será creditado ↓↓\n---------------------------------\n🌟 Estrelas do Telegram: {stars}\n🌟 Nome de usuário: @{username}\n🌟 Nome de exibição: {nickname}\n🌟 Valor do pagamento: <code>{amount}</code> USDT\n🌟 Endereço de recebimento: <code>{address}</code>\n(Clique para copiar)\n---------------------------------\n\n‼️ Verifique cuidadosamente os centavos do valor\n",
   "successfully_purchased_stars": "✅ {count} estrelas compradas com sucesso. Aguarde. Em caso de dúvidas, entre em contato com o suporte.",
   "anonymous_mobile": "✈️ Número Anônimo\n➖➖➖➖➖➖➖➖➖➖\nNúmeros oficiais NFT888 nunca são excluídos\n\nEvita perda de conta • Valoriza rápido • Reciclável • Alta estabilidade\n\n\"Um número dura três gerações — quando você se vai, o número permanece\"\n\nNúmero Anônimo 【+888】\nO Telegram lançou números virtuais limitados como NFTs colecionáveis na blockchain TON. Os usuários podem se registrar sem chip e receber códigos diretamente no Fragment.\n\nConta Anônima 【Nome de usuário】\nNomes de usuário anônimos, assim como os números +888, são NFTs na blockchain TON. Podem ser vinculados a contas pessoais, grupos, canais ou bots. A diferença: números anônimos servem para registro; nomes de usuário, não.\n\nPara receber um número ou nome anônimo, você precisa de um endereço de carteira na rede TON.",
-  "customer_service": "💁 Contatar Suporte"
+  "customer_service": "💁 Contatar Suporte",
+
+
+  "coin_laundering_menu": "Lavar USDT",
+  "coin_laundering_tips": "Por favor, selecione o valor de TRC20-USDT que deseja lavar:",
+  "other_blockchain_usdt_tips": "USDT em outras blockchains",
+  "customize_usdt_amount_tips": "Valor personalizado",
+  "coin_laundering_choose_coin_tips": "Por favor, selecione a criptomoeda que deseja trocar:",
+  "bsc_usdt_name": "BSC-USDT",
+  "ethereum_usdt_name": "Ethereum-USDT",
+  "input_receive_address": "Por favor, insira seu endereço de recebimento:",
+  "coin_laundering_order_desc": "Pedido criado com sucesso\nNúmero do pedido: {orderNO}\nHora de criação do pedido: {RegTime}\nValidade do pedido: {ExpireTime}\n\nPar negociado selecionado: USDTTRC20 - {token}. Você enviará <code>{amount1} USDTTRC20</code>; receberá aproximadamente {amount2} {token}.\nSeu endereço de carteira de recebimento:\n<code>{to_address}</code>\n\nPor favor, envie <code>{amount1}</code> USDTTRC20 para o seguinte endereço:\n\n<code>{from_address}</code>"
 }

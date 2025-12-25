@@ -231,5 +231,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ Please pay the exact amount, or it won’t be credited ↓↓\n---------------------------------\n🌟 Telegram Stars: {stars}\n🌟 Username: @{username}\n🌟 Display name: {nickname}\n🌟 Payment amount: <code>{amount}</code> USDT\n🌟 Receiving address: <code>{address}</code>\n(Click to copy)\n---------------------------------\n\n‼️ Please double-check the decimal digits of the amount\n",
   "successfully_purchased_stars": "✅ Successfully purchased {count} stars. Please wait patiently. Contact support if you have any issues.",
   "anonymous_mobile": "✈️ Anonymous Number\n➖➖➖➖➖➖➖➖➖➖\nOfficial NFT888 numbers are never deactivated\n\nPrevent account loss • Fast appreciation • Recyclable • Highly stable\n\n\"One number lasts three generations — when you’re gone, the number remains\"\n\nAnonymous Number 【+888】\nTelegram has released limited virtual phone numbers as NFT collectibles on the TON blockchain. Users can register without a SIM card and receive verification codes directly on Fragment.\n\nAnonymous Account 【Username】\nAnonymous usernames, like +888 numbers, are NFT collectibles issued on the TON blockchain. Telegram users can bind them to personal accounts, groups, channels, or bots. The key difference: anonymous numbers can be used for registration; usernames cannot.\n\nTo receive an anonymous number or username, you need a TON blockchain wallet address.",
-  "customer_service": "💁 Contact Support"
+  "customer_service": "💁 Contact Support",
+
+
+  "coin_laundering_menu": "\uD83E\uDD42Wash USDT",
+  "coin_laundering_tips": "Please select the amount of TRC20-USDT you wish to wash:",
+  "other_blockchain_usdt_tips": "USDT on other blockchains",
+  "customize_usdt_amount_tips": "Custom amount",
+  "coin_laundering_choose_coin_tips": "Please select the cryptocurrency you wish to exchange for:",
+  "bsc_usdt_name": "BSC-USDT",
+  "ethereum_usdt_name": "Ethereum-USDT",
+  "input_receive_address": "Please enter your receiving address:",
+  "coin_laundering_order_desc": "Order created successfully\nOrder No. {orderNO}\nOrder creation time: {RegTime}\nOrder expiration time: {ExpireTime}\n\nSelected trading pair: USDTTRC20 - {token}. You will send <code>{amount1} USDTTRC20</code>; you will receive approximately {amount2} {token}.\nYour receiving wallet address is:\n<code>{to_address}</code>\n\nPlease send <code>{amount1}</code> USDTTRC20 to the following address:\n\n<code>{from_address}</code>"
 }

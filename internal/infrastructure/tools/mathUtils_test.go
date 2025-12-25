@@ -7,8 +7,8 @@ import (
 
 func TestCompareNumberStrings(t *testing.T) {
 
-	a := "0"
-	b := "4000"
+	a := "4000"
+	b := "4000.001"
 	value, err := CompareNumberStrings(a, b)
 	if err != nil {
 

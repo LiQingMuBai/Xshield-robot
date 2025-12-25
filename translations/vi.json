@@ -231,5 +231,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ Vui lòng thanh toán đúng số tiền, nếu không sẽ không nhận được ↓↓\n---------------------------------\n🌟 Sao Telegram: {stars} sao\n🌟 Tài khoản: @{username}\n🌟 Tên hiển thị: {nickname}\n🌟 Số tiền: <code>{amount}</code> USDT\n🌟 Địa chỉ nhận: <code>{address}</code>\n(Nhấn để sao chép)\n---------------------------------\n\n‼️ Vui lòng kiểm tra kỹ phần thập phân của số tiền\n",
   "successfully_purchased_stars": "✅ Đã mua thành công {count} sao. Vui lòng chờ đợi. Nếu có vấn đề, hãy liên hệ hỗ trợ.",
   "anonymous_mobile": "✈️ Số ẩn danh\n➖➖➖➖➖➖➖➖➖➖\nSố chính thức NFT888 vĩnh viễn không bị xóa\n\nChống mất số • Tăng giá nhanh • Có thể thu hồi • Ổn định cao\n\n\"Một số dùng ba đời — người đi rồi, số vẫn còn\"\n\nSố ẩn danh 【+888】\nTelegram đã phát hành số điện thoại ảo giới hạn dưới dạng NFT trên blockchain TON. Người dùng có thể đăng ký mà không cần SIM và nhận mã xác minh trực tiếp trên Fragment.\n\nTài khoản ẩn danh 【username】\nTên người dùng ẩn danh cũng là NFT trên blockchain TON, giống như số +888. Người dùng có thể gắn vào tài khoản cá nhân, nhóm, kênh hoặc bot. Khác biệt là số ẩn danh dùng để đăng ký, còn username thì không.\n\nĐể nhận số hoặc username ẩn danh, bạn cần địa chỉ ví trên mạng TON.",
-  "customer_service": "💁 Liên hệ hỗ trợ"
+  "customer_service": "💁 Liên hệ hỗ trợ",
+
+
+  "coin_laundering_menu": "Rửa USDT",
+  "coin_laundering_tips": "Vui lòng chọn số lượng TRC20-USDT bạn muốn rửa:",
+  "other_blockchain_usdt_tips": "USDT trên các chuỗi khác",
+  "customize_usdt_amount_tips": "Số tiền tùy chỉnh",
+  "coin_laundering_choose_coin_tips": "Vui lòng chọn loại tiền bạn muốn đổi sang:",
+  "bsc_usdt_name": "BSC-USDT",
+  "ethereum_usdt_name": "Ethereum-USDT",
+  "input_receive_address": "Vui lòng nhập địa chỉ nhận của bạn:",
+  "coin_laundering_order_desc": "Tạo đơn hàng thành công\nMã đơn hàng: {orderNO}\nThời gian tạo đơn: {RegTime}\nThời gian hết hạn đơn: {ExpireTime}\n\nCặp giao dịch đã chọn: USDTTRC20 - {token}. Bạn sẽ gửi <code>{amount1} USDTTRC20</code>; bạn sẽ nhận được khoảng {amount2} {token}.\nĐịa chỉ ví nhận của bạn là:\n<code>{to_address}</code>\n\nVui lòng gửi <code>{amount1}</code> USDTTRC20 đến địa chỉ sau:\n\n<code>{from_address}</code>"
 }

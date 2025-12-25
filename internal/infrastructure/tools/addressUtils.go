@@ -2,9 +2,12 @@ package tools
 
 import (
 	"encoding/hex"
-	"golang.org/x/crypto/sha3"
 	"regexp"
 	"strings"
+
+	"github.com/btcsuite/btcd/btcutil"
+	"github.com/btcsuite/btcd/chaincfg"
+	"golang.org/x/crypto/sha3"
 )
 
 // IsValidAddress 验证波场地址是否有效
@@ -42,6 +45,15 @@ func isValidBase58Address(address string) bool {
 func isValidHexAddress(address string) bool {
 	matched, _ := regexp.MatchString(`^41[0-9a-fA-F]{40}$`, address)
 	return matched
+}
+
+// IsValidBitcoinAddress 判断字符串是否为有效的比特币主网地址
+func IsValidBitcoinAddress(address string) bool {
+	_, err := btcutil.DecodeAddress(address, &chaincfg.MainNetParams)
+	if err == nil {
+		return true
+	}
+	return false
 }
 
 // IsValidEthereumAddress 检查字符串是否为有效的以太坊地址

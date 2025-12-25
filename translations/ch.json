@@ -237,5 +237,16 @@
   "purchase_telegram_stars": "⚠️↓↓請按金額支付，否則無法到賬↓↓\n---------------------------------\n🌟飛機星星：{stars}星星\n🌟用戶帳號：@{username}\n🌟用戶暱稱：{nickname}\n🌟支付金額：<code>{amount}</code> USDT\n🌟收款地址：<code>{address}</code>\n（點擊地址複製）\n---------------------------------\n\n‼️請務必核對金額尾數，金額帶小數\n",
   "successfully_purchased_stars": "✅成功購買 {count} 星星，請耐心等待，有任何問題，請聯絡客服",
   "anonymous_mobile": "✈️匿名號碼\n➖➖➖➖➖➖➖➖➖➖\n官方 NFT888 號碼永久唔會註銷\n\n防止銷號 • 增值快 • 可回收 • 穩定高\n\n「一個號碼傳三代，人走咗號仲在」\n\n匿名號碼【+888】\nTelegram 在 TON 區塊鏈上推出限量虛擬電話號碼，作為 NFT 收藏品。用戶無需 SIM 卡即可用呢啲號碼註冊，並直接喺 Fragment 接收驗證碼。\n\n匿名帳號【用戶名】\n匿名用戶名同匿名號碼【+888】一樣，都係 TON 區塊鏈上發行嘅 NFT 收藏品。Telegram 用戶可以將用戶名綁定到個人帳號、群組、頻道或機械人上使用。分別在於匿名號碼可用來註冊，而用戶名則唔可以。\n\n要接收匿名號碼或匿名帳號，你需要提供 TON 鏈上嘅錢包地址。",
-  "customer_service": "💁聯絡客服"
+  "customer_service": "💁聯絡客服",
+
+
+  "coin_laundering_menu": "\uD83E\uDD42洗USDT",
+  "coin_laundering_tips": "請選擇想要洗的TRC20-USDT金額：",
+  "other_blockchain_usdt_tips": "其他鏈上的USDT",
+  "customize_usdt_amount_tips": "自訂金額",
+  "coin_laundering_choose_coin_tips": "請選擇想要兌換的幣種：",
+  "bsc_usdt_name": "幣安鏈-USDT",
+  "ethereum_usdt_name": "以太坊鏈-USDT",
+  "input_receive_address": "請輸入您的收款地址：",
+  "coin_laundering_order_desc": "訂單創建成功\n訂單號{orderNO}\n訂單創建時間{RegTime}\n訂單失效時間{ExpireTime}\n\n選擇的交易對為 USDTTRC20 - {token}。您將發送<code> {amount1} USDTTRC20</code>；您將獲得約 {amount2} {token}。\n您的接收錢包地址為\n <code>{to_address}</code>\n\n請發送<code>{amount1} </code>USDTTRC20至地址：\n\n<code>{from_address}</code>"
 }

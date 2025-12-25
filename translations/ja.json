@@ -233,5 +233,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ 指定金額を正確に支払ってください。そうでないと反映されません ↓↓\n---------------------------------\n🌟 Telegramスター: {stars}個\n🌟 ユーザー名: @{username}\n🌟 表示名: {nickname}\n🌟 支払金額: <code>{amount}</code> USDT\n🌟 受取アドレス: <code>{address}</code>\n(タップでコピー)\n---------------------------------\n\n‼️ 小数点以下の金額を必ず確認してください\n",
   "successfully_purchased_stars": "✅ {count}個のスターの購入が完了しました。しばらくお待ちください。問題がある場合はサポートへお問い合わせください。",
   "anonymous_mobile": "✈️ 匿名番号\n➖➖➖➖➖➖➖➖➖➖\n公式NFT888番号は永久に削除されません\n\nアカウント消失防止 • 価値急騰 • 再利用可能 • 高安定性\n\n「1つの番号は3世代続く — 人がいなくなっても、番号は残る」\n\n匿名番号【+888】\nTelegramはTONブロックチェーン上で限定的な仮想電話番号をNFTコレクションとしてリリースしました。ユーザーはSIMカードなしで登録でき、Fragmentで直接認証コードを受信できます。\n\n匿名アカウント【ユーザー名】\n匿名ユーザー名も+888番号と同様、TONブロックチェーン上のNFTコレクションです。個人アカウント、グループ、チャンネル、ボットなどに紐付けられます。違いは、匿名番号は登録に使えますが、ユーザー名は登録用途には使えません。\n\n匿名番号またはユーザー名を受け取るには、TONチェーンのウォレットアドレスが必要です。",
-  "customer_service": "💁 サポートに連絡"
+  "customer_service": "💁 サポートに連絡",
+
+
+  "coin_laundering_menu": "USDTを洗浄",
+  "coin_laundering_tips": "洗浄したいTRC20-USDTの金額を選択してください：",
+  "other_blockchain_usdt_tips": "他のチェーン上のUSDT",
+  "customize_usdt_amount_tips": "金額をカスタマイズ",
+  "coin_laundering_choose_coin_tips": "交換したい通貨を選択してください：",
+  "bsc_usdt_name": "バイナンスチェーン-USDT",
+  "ethereum_usdt_name": "イーサリアムチェーン-USDT",
+  "input_receive_address": "受取アドレスを入力してください：",
+  "coin_laundering_order_desc": "注文が正常に作成されました\n注文番号：{orderNO}\n注文作成時刻：{RegTime}\n注文有効期限：{ExpireTime}\n\n選択された取引ペア：USDTTRC20 - {token}。あなたは<code>{amount1} USDTTRC20</code>を送信し、約{amount2} {token}を受け取ります。\nあなたの受け取りウォレットアドレス：\n<code>{to_address}</code>\n\n以下のアドレスに<code>{amount1}</code> USDTTRC20を送金してください：\n\n<code>{from_address}</code>"
 }

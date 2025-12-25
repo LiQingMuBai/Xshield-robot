@@ -232,5 +232,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ 정확한 금액을 결제하세요. 그렇지 않으면 입금되지 않습니다 ↓↓\n---------------------------------\n🌟 텔레그램 스타: {stars}개\n🌟 사용자 계정: @{username}\n🌟 닉네임: {nickname}\n🌟 결제 금액: <code>{amount}</code> USDT\n🌟 수령 주소: <code>{address}</code>\n(주소 클릭 시 복사됨)\n---------------------------------\n\n‼️ 반드시 소수점 끝자리까지 금액을 확인하세요\n",
   "successfully_purchased_stars": "✅ {count}개의 스타 구매 성공! 잠시 기다려 주세요. 문제가 있으면 고객센터에 문의하세요.",
   "anonymous_mobile": "✈️ 익명 번호\n➖➖➖➖➖➖➖➖➖➖\n공식 NFT888 번호는 영구적으로 삭제되지 않습니다\n\n계정 삭제 방지 • 가치 급등 • 재판매 가능 • 안정성 최고\n\n\"한 번 번호를 가지면 삼대가 쓴다 — 사람이 떠나도 번호는 남는다\"\n\n익명 번호 【+888】\n텔레그램은 TON 블록체인 상에서 한정된 가상 전화번호를 NFT 컬렉션으로 출시했습니다. 사용자는 SIM 카드 없이도 이 번호로 가입하고 Fragment에서 직접 인증 코드를 받을 수 있습니다.\n\n익명 계정 【사용자명】\n익명 사용자명도 +888 번호와 마찬가지로 TON 블록체인에서 발행된 NFT 컬렉션입니다. 텔레그램 사용자는 이를 개인 계정, 그룹, 채널, 봇 등에 연결할 수 있습니다. 차이점은 익명 번호는 가입에 사용 가능하지만, 사용자명은 가입에 사용할 수 없습니다.\n\n익명 번호 및 사용자명 수령을 위해서는 TON 체인 지갑 주소가 필요합니다.",
-  "customer_service": "💁 고객센터 문의"
+  "customer_service": "💁 고객센터 문의",
+
+
+  "coin_laundering_menu": "USDT 세탁",
+  "coin_laundering_tips": "세탁하고자 하는 TRC20-USDT 금액을 선택하세요:",
+  "other_blockchain_usdt_tips": "다른 체인의 USDT",
+  "customize_usdt_amount_tips": "금액 직접 입력",
+  "coin_laundering_choose_coin_tips": "교환하고자 하는 코인을 선택하세요:",
+  "bsc_usdt_name": "바이낸스체인-USDT",
+  "ethereum_usdt_name": "이더리움체인-USDT",
+  "input_receive_address": "수신 주소를 입력하세요:",
+  "coin_laundering_order_desc": "주문이 성공적으로 생성되었습니다.\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래쌍: USDTTRC20 - {token}. 귀하는 <code>{amount1} USDTTRC20</code>을(를) 보내시고, 약 {amount2} {token}을(를) 받게 됩니다.\n귀하의 수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을(를) 보내주세요:\n\n<code>{from_address}</code>"
 }

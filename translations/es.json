@@ -233,5 +233,16 @@
   "purchase_telegram_stars": "⚠️ ↓↓ Paga el monto exacto o no se acreditará ↓↓\n---------------------------------\n🌟 Estrellas de Telegram: {stars}\n🌟 Usuario: @{username}\n🌟 Nombre público: {nickname}\n🌟 Monto a pagar: <code>{amount}</code> USDT\n🌟 Dirección de recepción: <code>{address}</code>\n(Haz clic para copiar)\n---------------------------------\n\n‼️ Verifica los decimales del monto\n",
   "successfully_purchased_stars": "✅ Compraste {count} estrellas con éxito. Por favor, ten paciencia. Si tienes problemas, contacta al soporte.",
   "anonymous_mobile": "✈️ Número Anónimo\n➖➖➖➖➖➖➖➖➖➖\nLos números oficiales NFT888 nunca se eliminan\n\nEvita pérdida de cuenta • Se revaloriza rápido • Reciclable • Muy estable\n\n«Un número dura tres generaciones: cuando tú te vas, el número sigue»\n\nNúmero Anónimo 【+888】\nTelegram lanzó números telefónicos virtuales limitados como NFT coleccionables en la blockchain TON. Los usuarios pueden registrarse sin tarjeta SIM y recibir códigos de verificación directamente en Fragment.\n\nCuenta Anónima 【Nombre de usuario】\nLos nombres de usuario anónimos, al igual que los números +888, son NFT en la blockchain TON. Se pueden vincular a cuentas personales, grupos, canales o bots. La diferencia: los números anónimos sirven para registrarse; los nombres de usuario, no.\n\nPara recibir un número o nombre anónimo, necesitas una dirección de billetera en la red TON.",
-  "customer_service": "💁 Contactar al soporte"
+  "customer_service": "💁 Contactar al soporte",
+
+
+  "coin_laundering_menu": "\uD83E\uDD42Lavar USDT",
+  "coin_laundering_tips": "Por favor, seleccione la cantidad de TRC20-USDT que desea lavar:",
+  "other_blockchain_usdt_tips": "USDT en otras cadenas",
+  "customize_usdt_amount_tips": "Cantidad personalizada",
+  "coin_laundering_choose_coin_tips": "Por favor, seleccione la criptomoneda a la que desea cambiar:",
+  "bsc_usdt_name": "BSC-USDT",
+  "ethereum_usdt_name": "Ethereum-USDT",
+  "input_receive_address": "Por favor, introduzca su dirección de recepción:",
+  "coin_laundering_order_desc": "Pedido creado con éxito\nNúmero de pedido: {orderNO}\nHora de creación del pedido: {RegTime}\nHora de vencimiento del pedido: {ExpireTime}\n\nPar de operación seleccionado: USDTTRC20 - {token}. Usted enviará <code>{amount1} USDTTRC20</code>; recibirá aproximadamente {amount2} {token}.\nSu dirección de billetera receptora es:\n<code>{to_address}</code>\n\nPor favor, envíe <code>{amount1}</code> USDTTRC20 a la siguiente dirección:\n\n<code>{from_address}</code>"
 }
