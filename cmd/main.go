@@ -9,9 +9,11 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"ushield_bot/internal/infrastructure/3rd/fixedfloat"
 	"ushield_bot/internal/service/additional"
 	"ushield_bot/internal/service/catfee"
 	"ushield_bot/internal/service/command"
+	"ushield_bot/internal/service/launder"
 	"ushield_bot/internal/service/member"
 	"ushield_bot/internal/service/yhb"
 
@@ -538,7 +540,7 @@ func handleStartCommand(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbota
 			tgbotapi.NewKeyboardButton("🚨"+global.Translations[_lang]["usdt_freeze_alert"]),
 		),
 		tgbotapi.NewKeyboardButtonRow(
-
+			tgbotapi.NewKeyboardButton("🥂"+global.Translations[_lang]["coin_laundering_menu"]),
 			tgbotapi.NewKeyboardButton("🛒"+global.Translations[_lang]["ushield_additional_services_menu"]),
 			tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
 		),
@@ -576,6 +578,10 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 	}
 
 	switch message.Text {
+	case "🥂" + global.Translations[_lang]["coin_laundering_menu"]:
+
+		fmt.Printf("洗U步骤开始\n")
+		launder.MenuLaunderNavigate(_lang, db, message.Chat.ID, bot)
 	case global.Translations[_lang]["member_telegram_menu"]:
 		member.MenuNavigate(_lang, db, message.Chat.ID, bot)
 	case global.Translations[_lang]["command_energy_menu"]:
@@ -1026,6 +1032,141 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 
 			fmt.Printf("message text: %s\n", message.Text)
 			member.Purchase(_lang, cache, db, bot, message.Text, message.Chat.ID, count)
+
+		case strings.HasPrefix(status, "click_laundering_"):
+
+			content := strings.ReplaceAll(status, "click_laundering_", "")
+			fmt.Printf("内容: %s\n", content)
+			fmt.Printf("输入内容: %s\n", message.Text)
+			token := strings.Split(content, "_")[0]
+			amount := strings.Split(content, "_")[1]
+			fmt.Printf("状态 代币: %s - 金额: %s\n", token, amount)
+
+			if strings.ToUpper(token) != "BTC" && !IsValidEthereumAddress(message.Text) {
+				msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
+				msg.ParseMode = "HTML"
+				bot.Send(msg)
+				return
+			}
+
+			valid := IsValidBitcoinAddress(message.Text)
+			fmt.Printf("valid: %v\n", valid)
+			if strings.ToUpper(token) == "BTC" && !IsValidBitcoinAddress(message.Text) {
+				msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
+				msg.ParseMode = "HTML"
+				bot.Send(msg)
+				return
+			}
+
+			//fixedfloat 生成订单
+
+			api := fixedfloat.New("AZxSXXl6VwqSgJkkC6HovFyxWib0ZPUNVBOO8Fkt", "vOGKrbXgFBepGBEze90EUUHHnsLzjQHC8197WtRC")
+
+			params := map[string]interface{}{
+				"fromCcy": "USDTTRC",
+				//"toCcy":     "USDT",
+				"type": fixedfloat.TypeFloat,
+				//"amount":    1000,
+				"direction": "from",
+				//"toAddress": "0xF510e53EF8DA4e45FFA59EB554511a7410E5eFD3",
+				"refcode": "r8ck81xa",
+				"ref":     "r8ck81xa",
+				"afftax":  1,
+			}
+
+			params["toCcy"] = token
+			params["amount"] = amount
+			params["toAddress"] = message.Text
+			params["refcode"] = "r8ck81xa"
+			params["ref"] = "r8ck81xa"
+			params["afftax"] = 1
+			rawMap, err := api.Create(params)
+
+			if err != nil {
+				return
+			}
+
+			from, to, ok := fixedfloat.ExtractFromAndTo(rawMap)
+			if !ok {
+				fmt.Println("Failed to extract from/to")
+				return
+			}
+
+			fmt.Println("From Address:", from.Address)
+			fmt.Println("From Amount:", *from.Amount)
+			fmt.Println("To Address:", to.Address)
+			fmt.Println("To Amount:", *to.Amount)
+
+			timeInfo, ok := fixedfloat.ExtractTime(rawMap)
+			if !ok {
+				fmt.Println("Failed to extract time")
+				return
+			}
+
+			fmt.Printf("Reg (Unix): %.0f\n", timeInfo.Reg)
+			fmt.Printf("Expiration (Unix): %.0f\n", timeInfo.Expiration)
+			fmt.Printf("Left: %.0f seconds\n", timeInfo.Left)
+
+			// 转为 time.Time（可读时间）
+			regTime := time.Unix(int64(timeInfo.Reg), 0)
+			expTime := time.Unix(int64(timeInfo.Expiration), 0)
+			fmt.Println("Reg Time:", regTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+			fmt.Println("Expire Time:", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+
+			id, status, ok := fixedfloat.ExtractIDAndStatus(rawMap)
+			if !ok {
+				fmt.Println("Failed to extract id or status")
+				return
+			}
+
+			fmt.Printf("ID: %s\n", id)
+			fmt.Printf("Status: %s\n", status)
+
+			desc := global.Translations[_lang]["coin_laundering_order_desc"]
+
+			if token == "BSC" {
+				token = "BNB"
+			}
+
+			desc = strings.ReplaceAll(desc, "{RegTime}", regTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+			desc = strings.ReplaceAll(desc, "{ExpireTime}", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+			desc = strings.ReplaceAll(desc, "{token}", token)
+			desc = strings.ReplaceAll(desc, "{amount1}", amount)
+			desc = strings.ReplaceAll(desc, "{amount2}", *to.Amount)
+			desc = strings.ReplaceAll(desc, "{from_address}", from.Address)
+			desc = strings.ReplaceAll(desc, "{to_address}", to.Address)
+			desc = strings.ReplaceAll(desc, "{orderNO}", id)
+
+			fromAddress := from.Address
+			size := 300
+
+			filename, err := fixedfloat.GenerateQRCodeWithTimestamp(fromAddress, size)
+			fmt.Printf("filename: %s\n", filename)
+
+			videoPath := "/Users/masion/Documents/GitHub/multi-lang-mist-bot/" + filename
+
+			// 创建视频消息（从本地文件）
+			msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+			msg.Caption = "✅ " + desc
+
+			//msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+desc)
+			msg.ParseMode = "HTML"
+			bot.Send(msg)
+
+			orderDB := repositories.NewCoinLaunderingOrderRepo(db)
+
+			var order domain.CoinLaunderingOrder
+			order.OrderNO = id
+			order.Amount = amount
+			order.Token = token
+			order.FromAddress = fromAddress
+			order.ToAddress = to.Address
+			order.ChatID = message.Chat.ID
+			order.Status = 0
+			order.CreatedAt = time.Now()
+
+			orderDB.Create(context.Background(), &order)
 
 		}
 	}
@@ -2220,6 +2361,41 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 	case strings.HasPrefix(callbackQuery.Data, "purchase_anonymous_mobile"):
 
 		member.MenuMobileNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
+
+	case strings.HasPrefix(callbackQuery.Data, "click_launder_"):
+		amount := strings.ReplaceAll(callbackQuery.Data, "click_launder_", "")
+		fmt.Printf("金额amount: %s\n", amount)
+		launder.MenuNavigateForLaunder(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, amount)
+
+	case strings.HasPrefix(callbackQuery.Data, "click_laundering_"):
+		content := strings.ReplaceAll(callbackQuery.Data, "click_laundering_", "")
+		fmt.Printf("内容: %s\n", content)
+		amount := strings.Split(content, "_")[1]
+		token := strings.Split(content, "_")[0]
+		fmt.Printf("代币: %s - 金额: %s\n", token, amount)
+
+		expiration := 1 * time.Minute // 短时间缓存空值
+
+		//设置用户状态
+		cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "click_laundering_"+content, expiration)
+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "💬"+global.Translations[_lang]["input_receive_address"]+"\n")
+		msg.ParseMode = "HTML"
+		bot.Send(msg)
+
+		//launder.MenuNavigateForLaunder(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, amount)
+
+		//api := fixedfloat.New("AtHmGIAucigijgkqaTiOvuGTArkBrm4pparh7V5E", "jDDzTJKmB8jfzhlxfZuXtdNnNQLrSjaGiKg2e4kf")
+
+		//params := map[string]interface{}{
+		//	"fromCcy":   "USDTTRC",
+		//	"toCcy":     "USDT",
+		//	"type":      fixedfloat.TypeFloat,
+		//	"amount":    1000,
+		//	"direction": "from",
+		//	"toAddress": "0xF510e53EF8DA4e45FFA59EB554511a7410E5eFD3",
+		//}
+		//order, err := api.Create(params)
 
 	}
 

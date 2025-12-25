@@ -266,7 +266,7 @@
 
 
 
-  "coin_laundering_menu": "\uD83E\uDD42洗USDT",
+  "coin_laundering_menu": "洗USDT",
   "coin_laundering_tips": "请选择想要洗的TRC20-USDT金额:",
   "other_blockchain_usdt_tips": "其他链上的USDT",
   "customize_usdt_amount_tips": "自定义金额",

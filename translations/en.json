@@ -234,7 +234,7 @@
   "customer_service": "💁 Contact Support",
 
 
-  "coin_laundering_menu": "\uD83E\uDD42Wash USDT",
+  "coin_laundering_menu": "Wash USDT",
   "coin_laundering_tips": "Please select the amount of TRC20-USDT you wish to wash:",
   "other_blockchain_usdt_tips": "USDT on other blockchains",
   "customize_usdt_amount_tips": "Custom amount",

@@ -240,7 +240,7 @@
   "customer_service": "💁聯絡客服",
 
 
-  "coin_laundering_menu": "\uD83E\uDD42洗USDT",
+  "coin_laundering_menu": "洗USDT",
   "coin_laundering_tips": "請選擇想要洗的TRC20-USDT金額：",
   "other_blockchain_usdt_tips": "其他鏈上的USDT",
   "customize_usdt_amount_tips": "自訂金額",
