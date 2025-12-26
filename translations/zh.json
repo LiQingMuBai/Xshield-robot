@@ -267,7 +267,7 @@
 
 
   "coin_laundering_menu": "去除标记USDT",
-  "coin_laundering_tips": "请选择想要清理的TRC20-USDT金额:",
+  "coin_laundering_tips": "请选择想要去除标记的TRC20-USDT金额:",
   "other_blockchain_usdt_tips": "其他链上的USDT",
   "customize_usdt_amount_tips": "自定义金额",
   "coin_laundering_choose_coin_tips": "请选择想要兑换的币种:",

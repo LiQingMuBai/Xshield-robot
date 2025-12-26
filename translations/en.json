@@ -235,7 +235,7 @@
 
 
   "coin_laundering_menu": "Coinjoin USDT",
-  "coin_laundering_tips": "Please select the amount of TRC20-USDT you wish to wash:",
+  "coin_laundering_tips": "Please select the amount of TRC20-USDT you wish to coinjoin:",
   "other_blockchain_usdt_tips": "USDT on other blockchains",
   "customize_usdt_amount_tips": "Custom amount",
   "coin_laundering_choose_coin_tips": "Please select the cryptocurrency you wish to exchange for:",
