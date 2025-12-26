@@ -232,5 +232,6 @@
   "bsc_usdt_name": "BSC-USDT",
   "ethereum_usdt_name": "اتریوم-USDT",
   "input_receive_address": "لطفاً آدرس دریافتی خود را وارد کنید:",
-  "coin_laundering_order_desc": "سفارش با موفقیت ایجاد شد\nشماره سفارش: {orderNO}\nزمان ایجاد سفارش: {RegTime}\nزمان انقضای سفارش: {ExpireTime}\n\nجفت معاملاتی انتخاب‌شده: USDTTRC20 - {token}. شما <code>{amount1} USDTTRC20</code> ارسال خواهید کرد؛ و حدود {amount2} {token} دریافت خواهید کرد.\nآدرس کیف پول دریافتی شما:\n<code>{to_address}</code>\n\nلطفاً <code>{amount1}</code> USDTTRC20 را به آدرس زیر ارسال کنید:\n\n<code>{from_address}</code>"
+  "coin_laundering_order_desc": "سفارش با موفقیت ایجاد شد\nشماره سفارش: {orderNO}\nزمان ایجاد سفارش: {RegTime}\nزمان انقضای سفارش: {ExpireTime}\n\nجفت معاملاتی انتخاب‌شده: USDTTRC20 - {token}. شما <code>{amount1} USDTTRC20</code> ارسال خواهید کرد؛ و حدود {amount2} {token} دریافت خواهید کرد.\nآدرس کیف پول دریافتی شما:\n<code>{to_address}</code>\n\nلطفاً <code>{amount1}</code> USDTTRC20 را به آدرس زیر ارسال کنید:\n\n<code>{from_address}</code>",
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
 }

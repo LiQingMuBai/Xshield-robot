@@ -28,7 +28,14 @@ func MenuNavigateCoin2CoinSwap(_lang string, db *gorm.DB, message *tgbotapi.Mess
 	row := tgbotapi.NewInlineKeyboardRow(btn)
 	keyboard := tgbotapi.NewInlineKeyboardMarkup(row)
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["coin_swap_coin_tips"])
+	//msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["coin_swap_coin_tips"])
+
+	videoPath := "./static/fixedfloat.jpg"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
+	msg.Caption = global.Translations[_lang]["fixedfloat_rules"] + "\n\n" + global.Translations[_lang]["coin_swap_coin_tips"]
+
 	msg.ReplyMarkup = keyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)

@@ -83,9 +83,14 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 	}
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
-	// 创建视频消息（从本地文件）
-	videoMsg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["coin_laundering_tips"])
+	videoPath := "./static/fixedfloat.jpg"
 
+	// 创建视频消息（从本地文件）
+	videoMsg := tgbotapi.NewPhoto(_chatID, tgbotapi.FilePath(videoPath))
+	videoMsg.Caption = global.Translations[_lang]["fixedfloat_rules"] + "\n\n" + global.Translations[_lang]["coin_laundering_tips"]
+	// 创建视频消息（从本地文件）
+	//videoMsg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["coin_laundering_tips"])
+	videoMsg.ParseMode = "HTML"
 	videoMsg.ReplyMarkup = inlineKeyboard
 	//videoMsg.SupportsStreaming = true // 启用流式播放（推荐）
 

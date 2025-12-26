@@ -243,5 +243,6 @@
   "bsc_usdt_name": "BSC-USDT",
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Por favor, insira seu endereço de recebimento:",
-  "coin_laundering_order_desc": "Pedido criado com sucesso\nNúmero do pedido: {orderNO}\nHora de criação do pedido: {RegTime}\nValidade do pedido: {ExpireTime}\n\nPar negociado selecionado: USDTTRC20 - {token}. Você enviará <code>{amount1} USDTTRC20</code>; receberá aproximadamente {amount2} {token}.\nSeu endereço de carteira de recebimento:\n<code>{to_address}</code>\n\nPor favor, envie <code>{amount1}</code> USDTTRC20 para o seguinte endereço:\n\n<code>{from_address}</code>"
+  "coin_laundering_order_desc": "Pedido criado com sucesso\nNúmero do pedido: {orderNO}\nHora de criação do pedido: {RegTime}\nValidade do pedido: {ExpireTime}\n\nPar negociado selecionado: USDTTRC20 - {token}. Você enviará <code>{amount1} USDTTRC20</code>; receberá aproximadamente {amount2} {token}.\nSeu endereço de carteira de recebimento:\n<code>{to_address}</code>\n\nPor favor, envie <code>{amount1}</code> USDTTRC20 para o seguinte endereço:\n\n<code>{from_address}</code>",
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
 }

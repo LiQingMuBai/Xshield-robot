@@ -234,7 +234,7 @@
   "customer_service": "💁 Contact Support",
 
 
-  "coin_laundering_menu": "Wash USDT",
+  "coin_laundering_menu": "Coinjoin USDT",
   "coin_laundering_tips": "Please select the amount of TRC20-USDT you wish to wash:",
   "other_blockchain_usdt_tips": "USDT on other blockchains",
   "customize_usdt_amount_tips": "Custom amount",
@@ -242,5 +242,6 @@
   "bsc_usdt_name": "BSC-USDT",
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Please enter your receiving address:",
-  "coin_laundering_order_desc": "Order created successfully\nOrder No. {orderNO}\nOrder creation time: {RegTime}\nOrder expiration time: {ExpireTime}\n\nSelected trading pair: USDTTRC20 - {token}. You will send <code>{amount1} USDTTRC20</code>; you will receive approximately {amount2} {token}.\nYour receiving wallet address is:\n<code>{to_address}</code>\n\nPlease send <code>{amount1}</code> USDTTRC20 to the following address:\n\n<code>{from_address}</code>"
+  "coin_laundering_order_desc": "Order created successfully\nOrder No. {orderNO}\nOrder creation time: {RegTime}\nOrder expiration time: {ExpireTime}\n\nSelected trading pair: USDTTRC20 - {token}. You will send <code>{amount1} USDTTRC20</code>; you will receive approximately {amount2} {token}.\nYour receiving wallet address is:\n<code>{to_address}</code>\n\nPlease send <code>{amount1}</code> USDTTRC20 to the following address:\n\n<code>{from_address}</code>",
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
 }

@@ -243,5 +243,6 @@
   "bsc_usdt_name": "바이낸스체인-USDT",
   "ethereum_usdt_name": "이더리움체인-USDT",
   "input_receive_address": "수신 주소를 입력하세요:",
-  "coin_laundering_order_desc": "주문이 성공적으로 생성되었습니다.\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래쌍: USDTTRC20 - {token}. 귀하는 <code>{amount1} USDTTRC20</code>을(를) 보내시고, 약 {amount2} {token}을(를) 받게 됩니다.\n귀하의 수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을(를) 보내주세요:\n\n<code>{from_address}</code>"
+  "coin_laundering_order_desc": "주문이 성공적으로 생성되었습니다.\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래쌍: USDTTRC20 - {token}. 귀하는 <code>{amount1} USDTTRC20</code>을(를) 보내시고, 약 {amount2} {token}을(를) 받게 됩니다.\n귀하의 수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을(를) 보내주세요:\n\n<code>{from_address}</code>",
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
 }

@@ -1128,6 +1128,10 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 				token = "BNB"
 			}
 
+			if token == "USDT" {
+				token = "USDTERC20"
+			}
+
 			desc = strings.ReplaceAll(desc, "{RegTime}", regTime.UTC().Format("2006-01-02 15:04:05 UTC"))
 			desc = strings.ReplaceAll(desc, "{ExpireTime}", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
 			desc = strings.ReplaceAll(desc, "{token}", token)
@@ -1143,7 +1147,9 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 			filename, err := fixedfloat.GenerateQRCodeWithTimestamp(fromAddress, size)
 			fmt.Printf("filename: %s\n", filename)
 
-			videoPath := "/Users/masion/Documents/GitHub/multi-lang-mist-bot/" + filename
+			//videoPath := "/Users/masion/Documents/GitHub/multi-lang-mist-bot/" + filename
+
+			videoPath := "/root/ushield-telegram-bot/old/" + filename
 
 			// 创建视频消息（从本地文件）
 			msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
