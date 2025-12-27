@@ -93,7 +93,13 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
-	msg := tgbotapi.NewMessage(chatID, tips)
+	videoPath := "./static/Audi.png"
+
+	// 创建视频消息（从本地文件）
+	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
+	msg.Caption = tips
+
+	//msg := tgbotapi.NewMessage(chatID, tips)
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
