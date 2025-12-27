@@ -206,7 +206,7 @@
 
   "command_energy_menu": "⚡️ Aluguel Rápido de Energia por Comando",
   "command_energy_desc": "⚡️ Aluguel Rápido de Energia por Comando\n\n1. Comando: 1 Quantidade: 65000 (1 transação) Preço: {1_times_cost_trx} (TRX)\n2. Comando: 2 Quantidade: 131000 (2 transações) Preço: {2_times_cost_trx} (TRX)\n3. Comando: 3 Quantidade: 195000 (3 transações) Preço: {3_times_cost_trx} (TRX)\n4. Comando: 4 Quantidade: 260000 (4 transações) Preço: {4_times_cost_trx} (TRX)\n5. Comando: 5 Quantidade: 325000 (5 transações) Preço: {5_times_cost_trx} (TRX)\n\n⚠️ O endereço do destinatário não tem U — requer duas transações de energia!\n\n⏰ A energia no modo comando é válida por apenas 1 hora!\n⚠️ Este modo não exige confirmação — a energia chega instantaneamente! Use com cuidado!\n♻️ Se você vinculou 2 ou mais endereços, ao enviar o comando aparecerá uma lista — basta selecionar um para alugar energia imediatamente!",
-  "member_telegram_menu": "🌟 Membro Telegram",
+  "member_telegram_menu": "\uD83D\uDC8E Membro Telegram",
   "member_telegram_desc": "🌟 Preço das estrelas: 0,03 U cada\n(Suporta compra única de 50 a 10.000 estrelas)\n\n\n🌟 Preços da assinatura:\n3 meses: 17 U\n6 meses: 27 U\n1 ano: 47 U\n\n\n\nNão recarregue via HuiWang — só aceitamos USDT da carteira!",
   "member_telegram_second_menu": "🌟 Comprar Assinatura",
   "star_telegram_second_menu": "⭐️ Comprar Estrelas",

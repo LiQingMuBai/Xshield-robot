@@ -206,7 +206,7 @@
 
   "command_energy_menu": "⚡️ 명령어로 에너지 빠른 대여",
   "command_energy_desc": "⚡️ 명령어로 에너지 빠른 대여\n\n1. 명령어: 1 수량: 65000(1건) 가격: {1_times_cost_trx}(TRX)\n2. 명령어: 2 수량: 131000(2건) 가격: {2_times_cost_trx}(TRX)\n3. 명령어: 3 수량: 195000(3건) 가격: {3_times_cost_trx}(TRX)\n4. 명령어: 4 수량: 260000(4건) 가격: {4_times_cost_trx}(TRX)\n5. 명령어: 5 수량: 325000(5건) 가격: {5_times_cost_trx}(TRX)\n\n⚠️ 상대방 주소에 U가 없으면 에너지 2건 필요!\n\n⏰ 명령어 모드의 에너지는 1시간 동안만 유효합니다!\n⚠️ 이 모드는 확인 없이 즉시 에너지가 도착합니다! 신중히 사용하세요!\n♻️ 2개 이상의 주소를 연결한 경우, 명령어를 보내면 주소 목록이 표시되며 선택만 하면 즉시 에너지를 대여할 수 있습니다!",
-  "member_telegram_menu": "🌟 텔레그램 프리미엄",
+  "member_telegram_menu": "\uD83D\uDC8E 텔레그램 프리미엄",
   "member_telegram_desc": "🌟 스타 가격: 0.03 U/개\n(한 번에 50~10,000개 구매 가능)\n\n\n🌟 프리미엄 요금:\n3개월: 17 U\n6개월: 27 U\n1년: 47 U\n\n\n\n후이왕(HuiWang)으로 충전하지 마세요! 지갑 U로만 충전 가능합니다!",
   "member_telegram_second_menu": "🌟 프리미엄 구독하기",
   "star_telegram_second_menu": "⭐️ 스타 구매하기",

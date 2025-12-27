@@ -205,7 +205,7 @@
 
   "command_energy_menu": "⚡️ Quick Energy Rental via Command",
   "command_energy_desc": "⚡️ Quick Energy Rental via Command\n\n1. Command: 1 Amount: 65000 (1 tx) Price: {1_times_cost_trx} (TRX)\n2. Command: 2 Amount: 131000 (2 tx) Price: {2_times_cost_trx} (TRX)\n3. Command: 3 Amount: 195000 (3 tx) Price: {3_times_cost_trx} (TRX)\n4. Command: 4 Amount: 260000 (4 tx) Price: {4_times_cost_trx} (TRX)\n5. Command: 5 Amount: 325000 (5 tx) Price: {5_times_cost_trx} (TRX)\n\n⚠️ Recipient address has no U — requires two energy transactions!\n\n⏰ Command-mode energy is valid for only 1 hour!\n⚠️ No confirmation needed — energy arrives instantly! Use with caution!\n♻️ If you’ve linked 2+ addresses, sending a command will pop up your address list — just select one to rent energy instantly!",
-  "member_telegram_menu": "🌟 Telegram Premium",
+  "member_telegram_menu": "\uD83D\uDC8E Telegram Premium",
   "member_telegram_desc": "🌟 Star price: 0.03 U each\n(Supports single purchase of 50–10,000 stars)\n\n\n🌟 Membership prices:\n3 months: 17 U\n6 months: 27 U\n1 year: 47 U\n\n\n\nDo NOT top up via HuiWang — only wallet USDT accepted!",
   "member_telegram_second_menu": "🌟 Buy Membership",
   "star_telegram_second_menu": "⭐️ Buy Stars",

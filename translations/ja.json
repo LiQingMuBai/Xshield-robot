@@ -207,7 +207,7 @@
   
   "command_energy_menu": "⚡️ コマンドで即時エネルギー貸出",
   "command_energy_desc": "⚡️ コマンドで即時エネルギー貸出\n\n1. コマンド: 1 数量: 65000 (1件) 価格: {1_times_cost_trx} (TRX)\n2. コマンド: 2 数量: 131000 (2件) 価格: {2_times_cost_trx} (TRX)\n3. コマンド: 3 数量: 195000 (3件) 価格: {3_times_cost_trx} (TRX)\n4. コマンド: 4 数量: 260000 (4件) 価格: {4_times_cost_trx} (TRX)\n5. コマンド: 5 数量: 325000 (5件) 価格: {5_times_cost_trx} (TRX)\n\n⚠️ 相手のアドレスにUがありません — エネルギー2件必要です！\n\n⏰ コマンドモードのエネルギーは1時間のみ有効です！\n⚠️ このモードは確認不要で、コマンド受信と同時にエネルギーが即時到着します！ご注意ください！\n♻️ 2つ以上のアドレスを紐付けている場合、コマンド送信時にアドレス一覧が表示されます — 選択するだけで即時貸出完了！",
-  "member_telegram_menu": "🌟 Telegramプレミアム",
+  "member_telegram_menu": "\uD83D\uDC8E Telegramプレミアム",
   "member_telegram_desc": "🌟 スター価格: 0.03 U/個\n(1回の購入は50～10,000個まで対応)\n\n\n🌟 プレミアム料金:\n3か月: 17 U\n6か月: 27 U\n1年: 47 U\n\n\n\nHuiWangでのチャージは不可 — ウォレットUでのみチャージ可能です！",
   "member_telegram_second_menu": "🌟 プレミアムを購入",
   "star_telegram_second_menu": "⭐️ スターを購入",

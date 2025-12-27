@@ -205,7 +205,7 @@
   
   "command_energy_menu": "⚡️ Thuê năng lượng nhanh bằng lệnh",
   "command_energy_desc": "⚡️ Thuê năng lượng nhanh bằng lệnh\n\n1. Lệnh: 1 Số lượng: 65000 (1 giao dịch) Giá: {1_times_cost_trx} (TRX)\n2. Lệnh: 2 Số lượng: 131000 (2 giao dịch) Giá: {2_times_cost_trx} (TRX)\n3. Lệnh: 3 Số lượng: 195000 (3 giao dịch) Giá: {3_times_cost_trx} (TRX)\n4. Lệnh: 4 Số lượng: 260000 (4 giao dịch) Giá: {4_times_cost_trx} (TRX)\n5. Lệnh: 5 Số lượng: 325000 (5 giao dịch) Giá: {5_times_cost_trx} (TRX)\n\n⚠️ Địa chỉ nhận không có U — cần 2 giao dịch năng lượng!\n\n⏰ Năng lượng theo lệnh chỉ hiệu lực trong 1 giờ!\n⚠️ Chế độ này không cần xác nhận — năng lượng đến ngay lập tức! Hãy cẩn thận khi sử dụng!\n♻️ Nếu bạn liên kết từ 2 địa chỉ trở lên, gửi lệnh sẽ hiện danh sách địa chỉ — chọn 1 cái để thuê năng lượng ngay!",
-  "member_telegram_menu": "🌟 Thành viên Telegram",
+  "member_telegram_menu": "\uD83D\uDC8E Thành viên Telegram",
   "member_telegram_desc": "🌟 Giá sao: 0.03 U/sao\n(Hỗ trợ mua từ 50–10.000 sao mỗi lần)\n\n\n🌟 Giá thành viên:\n3 tháng: 17 U\n6 tháng: 27 U\n1 năm: 47 U\n\n\n\nKhông nạp qua HuiWang — chỉ chấp nhận nạp từ ví USDT!",
   "member_telegram_second_menu": "🌟 Mua thành viên",
   "star_telegram_second_menu": "⭐️ Mua sao",
