@@ -315,11 +315,16 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			)
 
 			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
+			sent, _ := bot.Send(msg)
 			expiration := 1 * time.Minute // 短时间缓存空值
 
 			//设置用户状态
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "TRX_"+trxDeposit.OrderNO, expiration)
+
+			expirationOrder := 1 * time.Minute // 短时间缓存空值
+			//设置用户状态
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expirationOrder)
+
 			return
 		}
 
@@ -430,12 +435,16 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			)
 
 			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
+			sent, _ := bot.Send(msg)
 
 			expiration := 1 * time.Minute // 短时间缓存空值
 
 			//设置用户状态
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "USDT_"+usdtDeposit.OrderNO, expiration)
+
+			expirationOrder := 1 * time.Minute // 短时间缓存空值
+			//设置用户状态
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expirationOrder)
 			return
 		}
 	}

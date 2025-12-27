@@ -2250,6 +2250,16 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		//msg.DisableWebPagePreview = true
 		bot.Send(msg_order)
 
+		prevMessageIDStr, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order")
+
+		prevMessageID, err := strconv.Atoi(prevMessageIDStr)
+		if err != nil {
+			fmt.Println("转换失败:", err)
+			//return
+		}
+
+		bot.Request(tgbotapi.DeleteMessageConfig{ChatID: callbackQuery.Message.Chat.ID, MessageID: prevMessageID})
+
 	case strings.HasPrefix(callbackQuery.Data, "purchase_star_menu"):
 		member.MenuStarNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
 	case strings.HasPrefix(callbackQuery.Data, "purchase_telegram_premium"):
@@ -2358,6 +2368,16 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		msg_order.ParseMode = "HTML"
 		//msg.DisableWebPagePreview = true
 		bot.Send(msg_order)
+
+		prevMessageIDStr, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order")
+
+		prevMessageID, err := strconv.Atoi(prevMessageIDStr)
+		if err != nil {
+			fmt.Println("转换失败:", err)
+			//return
+		}
+
+		bot.Request(tgbotapi.DeleteMessageConfig{ChatID: callbackQuery.Message.Chat.ID, MessageID: prevMessageID})
 
 		//case strings.HasPrefix(callbackQuery.Data, "cancel_stars_"):
 		//	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["ushield_additional_services_ecs_desc"]+"\n"+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_contact"], "{ushield_additional_services_contact}", ushield_additional_services_contact)+strings.ReplaceAll(global.Translations[_lang]["ushield_additional_services_wallet"], "{ushield_additional_services_wallet}", ushield_additional_services_wallet))

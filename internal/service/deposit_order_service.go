@@ -136,12 +136,17 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
-	bot.Send(msg)
+	sent, _ := bot.Send(msg)
 
 	expiration := 1 * time.Minute // 短时间缓存空值
 
 	//设置用户状态
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "USDT_"+usdtDeposit.OrderNO, expiration)
+
+	expirationOrder := 1 * time.Minute // 短时间缓存空值
+	//设置用户状态
+	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expirationOrder)
+
 }
 
 func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
@@ -152,6 +157,18 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	msg_order.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
 	bot.Send(msg_order)
+
+	prevMessageIDStr, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order")
+
+	prevMessageID, err := strconv.Atoi(prevMessageIDStr)
+	if err != nil {
+		fmt.Println("转换失败:", err)
+		//return
+	}
+
+	bot.Request(tgbotapi.DeleteMessageConfig{ChatID: callbackQuery.Message.Chat.ID, MessageID: prevMessageID})
+
+	//prevMessageID
 
 	if strings.Contains(orderNO, "TRX_") {
 
@@ -342,9 +359,13 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
-	bot.Send(msg)
+	sent, _ := bot.Send(msg)
 	expiration := 1 * time.Minute // 短时间缓存空值
 
 	//设置用户状态
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "TRX_"+trxDeposit.OrderNO, expiration)
+	expirationOrder := 1 * time.Minute // 短时间缓存空值
+	//设置用户状态
+	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expirationOrder)
+
 }

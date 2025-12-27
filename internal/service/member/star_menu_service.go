@@ -205,6 +205,10 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	msg.ReplyMarkup = inlineKeyboard
 
 	msg.ParseMode = "HTML"
-	bot.Send(msg)
+	sent, _ := bot.Send(msg)
+
+	expiration := 1 * time.Minute // 短时间缓存空值
+	//设置用户状态
+	cache.Set(strconv.FormatInt(chatID, 10)+"_order", strconv.Itoa(sent.MessageID), expiration)
 
 }
