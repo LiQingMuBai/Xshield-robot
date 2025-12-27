@@ -181,7 +181,7 @@
 
   "catfee_smart_transaction_menu": "智能托管",
   "catfee_smart_transaction_pay_button": "请支付",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE 智能托管套餐订单创建成功\n\n套餐：",
+  "catfee_smart_transaction_head_1": "✅ 智能托管套餐订单创建成功\n\n套餐：",
   "catfee_smart_transaction_head_2": "\n\n支付金额：",
   "catfee_smart_transaction_head_3": "\n收款地址：",
   "catfee_smart_transaction_head_4": "\n\n订单有效期：10 分钟\n\n⚠\uFE0F 请务必准确输入尾数金额，否则将无法入账！",

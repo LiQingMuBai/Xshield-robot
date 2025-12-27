@@ -166,7 +166,7 @@
 
   "catfee_smart_transaction_menu": "การฝากอัจฉริยะ",
   "catfee_smart_transaction_pay_button": "กรุณาชำระเงิน",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE สร้างคำสั่งซื้อแพ็กเกจการฝากอัจฉริยะสำเร็จแล้ว\nแพ็กเกจ: ",
+  "catfee_smart_transaction_head_1": "✅  สร้างคำสั่งซื้อแพ็กเกจการฝากอัจฉริยะสำเร็จแล้ว\nแพ็กเกจ: ",
   "catfee_smart_transaction_head_2": "\nจำนวนเงินที่ต้องชำระ: ",
   "catfee_smart_transaction_head_3": "\nที่อยู่รับเงิน: ",
   "catfee_smart_transaction_head_4": "\nอายุการใช้งานคำสั่งซื้อ: 10 นาที\n⚠\uFE0F กรุณาใส่จำนวนเงินให้ถูกต้อง ไม่เช่นนั้นจะไม่สามารถรับเงินได้!",

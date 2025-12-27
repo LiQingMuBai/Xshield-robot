@@ -169,7 +169,7 @@
 
   "catfee_smart_transaction_menu": "スマートカストディ",
   "catfee_smart_transaction_pay_button": "お支払いください",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE スマートカストディパッケージ注文が作成されました\nパッケージ：",
+  "catfee_smart_transaction_head_1": "✅  スマートカストディパッケージ注文が作成されました\nパッケージ：",
   "catfee_smart_transaction_head_2": "\n支払い金額：",
   "catfee_smart_transaction_head_3": "\n受取アドレス：",
   "catfee_smart_transaction_head_4": "\n注文の有効期限：10分\n⚠\uFE0F 正確な金額を入力してください。そうでないと入金されません！",

@@ -160,7 +160,7 @@
 
   "catfee_smart_transaction_menu": "Умное хранение",
   "catfee_smart_transaction_pay_button": "Оплатить",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE Успешно создан заказ на пакет умного хранения\nПакет: ",
+  "catfee_smart_transaction_head_1": "✅  Успешно создан заказ на пакет умного хранения\nПакет: ",
   "catfee_smart_transaction_head_2": "\nСумма оплаты: ",
   "catfee_smart_transaction_head_3": "\nАдрес для получения: ",
   "catfee_smart_transaction_head_4": "\nСрок действия заказа: 10 минут\n⚠\uFE0F Обязательно вводите точную сумму, иначе платеж не зачислится!",

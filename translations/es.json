@@ -169,7 +169,7 @@
 
   "catfee_smart_transaction_menu": "Custodia Inteligente",
   "catfee_smart_transaction_pay_button": "Por favor, pague",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE Pedido del paquete de custodia inteligente creado con éxito\nPaquete: ",
+  "catfee_smart_transaction_head_1": "✅  Pedido del paquete de custodia inteligente creado con éxito\nPaquete: ",
   "catfee_smart_transaction_head_2": "\nMonto del pago: ",
   "catfee_smart_transaction_head_3": "\nDirección de recepción: ",
   "catfee_smart_transaction_head_4": "\nValidez del pedido: 10 minutos\n⚠\uFE0F Asegúrese de ingresar el monto exacto, de lo contrario el pago no se acreditará.",

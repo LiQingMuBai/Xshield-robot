@@ -168,7 +168,7 @@
 
   "catfee_smart_transaction_menu": "Smart Custody",
   "catfee_smart_transaction_pay_button": "Please Pay",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE Smart Custody Package Order Created Successfully\nPackage: ",
+  "catfee_smart_transaction_head_1": "✅  Smart Custody Package Order Created Successfully\nPackage: ",
   "catfee_smart_transaction_head_2": "\nPayment Amount: ",
   "catfee_smart_transaction_head_3": "\nReceiving Address: ",
   "catfee_smart_transaction_head_4": "\nOrder Validity: 10 Minutes\n⚠\uFE0F Please be sure to enter the exact amount, otherwise the payment will not be credited!",

@@ -174,7 +174,7 @@
 
   "catfee_smart_transaction_menu": "智能託管",
   "catfee_smart_transaction_pay_button": "請支付",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE 智能託管套餐訂單創建成功\n套餐：",
+  "catfee_smart_transaction_head_1": "✅  智能託管套餐訂單創建成功\n套餐：",
   "catfee_smart_transaction_head_2": "\n支付金額：",
   "catfee_smart_transaction_head_3": "\n收款地址：",
   "catfee_smart_transaction_head_4": "\n訂單有效期：10 分鐘\n⚠\uFE0F 請務必準確輸入尾數金額，否則將無法入帳！",

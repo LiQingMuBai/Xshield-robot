@@ -169,7 +169,7 @@
 
   "catfee_smart_transaction_menu": "Ủy thác thông minh",
   "catfee_smart_transaction_pay_button": "Vui lòng thanh toán",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE Tạo đơn đặt hàng gói ủy thác thông minh thành công\nGói: ",
+  "catfee_smart_transaction_head_1": "✅  Tạo đơn đặt hàng gói ủy thác thông minh thành công\nGói: ",
   "catfee_smart_transaction_head_2": "\nSố tiền thanh toán: ",
   "catfee_smart_transaction_head_3": "\nĐịa chỉ nhận: ",
   "catfee_smart_transaction_head_4": "\nThời hạn đơn hàng: 10 phút\n⚠\uFE0F Vui lòng nhập chính xác số tiền, nếu không sẽ không thể ghi nhận!",

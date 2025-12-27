@@ -169,7 +169,7 @@
 
   "catfee_smart_transaction_menu": "스마트 위탁",
   "catfee_smart_transaction_pay_button": "결제하기",
-  "catfee_smart_transaction_head_1": "\uD83E\uDDFE 스마트 위탁 패키지 주문이 성공적으로 생성되었습니다\n패키지: ",
+  "catfee_smart_transaction_head_1": "✅  스마트 위탁 패키지 주문이 성공적으로 생성되었습니다\n패키지: ",
   "catfee_smart_transaction_head_2": "\n결제 금액: ",
   "catfee_smart_transaction_head_3": "\n수취 주소: ",
   "catfee_smart_transaction_head_4": "\n주문 유효 기간: 10분\n⚠\uFE0F 반드시 정확한 금액을 입력하십시오. 그렇지 않으면 입금되지 않습니다!",

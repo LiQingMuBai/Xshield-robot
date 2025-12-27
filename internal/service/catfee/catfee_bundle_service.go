@@ -292,18 +292,23 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
 			//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
 
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-				//"🧾 智能托管套餐订单创建成功\n\n套餐："+bundlePackage.Name+"\n\n支付金额："+realTransferAmount+bundlePackage.Token+"\n收款地址："+"<code>"+trxDeposit.Address+"</code>"+"\n\n"+global.Translations[_lang]["order_id"]+"：PKG-"+trxDeposit.OrderNO+"\n\n订单有效期：10 分钟\n\n⚠️ 请务必准确输入尾数金额，否则将无法入账！")
+			videoPath := "./static/Audi.png"
 
-				global.Translations[_lang]["catfee_smart_transaction_head_1"]+
-					bundlePackage.Name+global.Translations[_lang]["catfee_smart_transaction_head_2"]+
-					"<code>"+realTransferAmount+"</code>"+
-					bundlePackage.Token+
-					global.Translations[_lang]["catfee_smart_transaction_head_3"]+
-					"<code>"+trxDeposit.Address+"</code>"+"\n\n"+
-					global.Translations[_lang]["order_id"]+"：PKG-"+
-					trxDeposit.OrderNO+
-					global.Translations[_lang]["catfee_smart_transaction_head_4"])
+			// 创建视频消息（从本地文件）
+			msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+			msg.Caption =
+			//"🧾 智能托管套餐订单创建成功\n\n套餐："+bundlePackage.Name+"\n\n支付金额："+realTransferAmount+bundlePackage.Token+"\n收款地址："+"<code>"+trxDeposit.Address+"</code>"+"\n\n"+global.Translations[_lang]["order_id"]+"：PKG-"+trxDeposit.OrderNO+"\n\n订单有效期：10 分钟\n\n⚠️ 请务必准确输入尾数金额，否则将无法入账！")
+
+				global.Translations[_lang]["catfee_smart_transaction_head_1"] +
+					bundlePackage.Name + global.Translations[_lang]["catfee_smart_transaction_head_2"] +
+					"<code>" + realTransferAmount + "</code>" +
+					bundlePackage.Token +
+					global.Translations[_lang]["catfee_smart_transaction_head_3"] +
+					"<code>" + trxDeposit.Address + "</code>" + "\n\n" +
+					global.Translations[_lang]["order_id"] + "：PKG-" +
+					trxDeposit.OrderNO +
+					global.Translations[_lang]["catfee_smart_transaction_head_4"]
 
 			msg.ParseMode = "HTML"
 
@@ -414,16 +419,20 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
 			//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
 
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-				global.Translations[_lang]["catfee_smart_transaction_head_1"]+
-					bundlePackage.Name+global.Translations[_lang]["catfee_smart_transaction_head_2"]+
-					"<code>"+realTransferAmount+"</code>"+
-					bundlePackage.Token+
-					global.Translations[_lang]["catfee_smart_transaction_head_3"]+
-					"<code>"+usdtDeposit.Address+"</code>"+"\n\n"+
-					global.Translations[_lang]["order_id"]+"：PKG-"+
-					usdtDeposit.OrderNO+
-					global.Translations[_lang]["catfee_smart_transaction_head_4"])
+			videoPath := "./static/Audi.png"
+
+			// 创建视频消息（从本地文件）
+			msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
+
+			msg.Caption = global.Translations[_lang]["catfee_smart_transaction_head_1"] +
+				bundlePackage.Name + global.Translations[_lang]["catfee_smart_transaction_head_2"] +
+				"<code>" + realTransferAmount + "</code>" +
+				bundlePackage.Token +
+				global.Translations[_lang]["catfee_smart_transaction_head_3"] +
+				"<code>" + usdtDeposit.Address + "</code>" + "\n\n" +
+				global.Translations[_lang]["order_id"] + "：PKG-" +
+				usdtDeposit.OrderNO +
+				global.Translations[_lang]["catfee_smart_transaction_head_4"]
 
 			msg.ParseMode = "HTML"
 
