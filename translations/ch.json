@@ -249,6 +249,6 @@
   "ethereum_usdt_name": "以太坊鏈-USDT",
   "input_receive_address": "請輸入您的收款地址：",
   "coin_laundering_order_desc": "訂單創建成功\n訂單號{orderNO}\n訂單創建時間{RegTime}\n訂單失效時間{ExpireTime}\n\n選擇的交易對為 USDTTRC20 - {token}。您將發送<code> {amount1} USDTTRC20</code>；您將獲得約 {amount2} {token}。\n您的接收錢包地址為\n <code>{to_address}</code>\n\n請發送<code>{amount1} </code>USDTTRC20至地址：\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
 
 }

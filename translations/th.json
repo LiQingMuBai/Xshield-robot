@@ -243,6 +243,6 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "กรุณาใส่ที่อยู่รับเงินของคุณ:",
   "coin_laundering_order_desc": "สร้างคำสั่งซื้อสำเร็จ\nหมายเลขคำสั่งซื้อ: {orderNO}\nเวลาสร้างคำสั่งซื้อ: {RegTime}\nเวลาหมดอายุคำสั่งซื้อ: {ExpireTime}\n\nคู่เทรดที่เลือกคือ USDTTRC20 - {token} คุณจะส่ง <code>{amount1} USDTTRC20</code> และจะได้รับประมาณ {amount2} {token}\nที่อยู่กระเป๋าเงินรับของคุณคือ:\n<code>{to_address}</code>\n\nกรุณาส่ง <code>{amount1}</code> USDTTRC20 ไปยังที่อยู่ต่อไปนี้:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
 }
 

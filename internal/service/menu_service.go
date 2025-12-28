@@ -25,7 +25,9 @@ func MenuNavigateCoin2CoinSwap(_lang string, db *gorm.DB, message *tgbotapi.Mess
 	dictRepo := repositories.NewSysDictionariesRepo(db)
 	fixfloatedUrlStr, _ := dictRepo.GetDictionaryDetail("ff_ref_url")
 	btn := tgbotapi.NewInlineKeyboardButtonURL(global.Translations[_lang]["coin_swap_coin_menu"], fixfloatedUrlStr)
-	row := tgbotapi.NewInlineKeyboardRow(btn)
+	btn2 := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
+	row := tgbotapi.NewInlineKeyboardRow(btn, btn2)
+
 	keyboard := tgbotapi.NewInlineKeyboardMarkup(row)
 
 	//msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["coin_swap_coin_tips"])

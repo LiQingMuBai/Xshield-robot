@@ -276,7 +276,7 @@
   "input_receive_address": "请输入您的收款地址：",
   "coin_laundering_order_desc": "订单创建成功\n订单号{orderNO}\n订单创建时间{RegTime}\n订单失效时间{ExpireTime}\n\n选择的交易对为 USDTTRC20 - {token}。您将发送<code> {amount1} USDTTRC20</code>；您将获得约 {amount2} {token}。\n您的接收的钱包地址为\n <code>{to_address}</code>\n\n请发送<code>{amount1} </code>USDTTRC20给地址：\n\n<code>{from_address}</code>",
 
-  "fixedfloat_rules": "<b>The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules.</b>"
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>"
 
 }
 

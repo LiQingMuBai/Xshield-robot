@@ -243,5 +243,5 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Vui lòng nhập địa chỉ nhận của bạn:",
   "coin_laundering_order_desc": "Tạo đơn hàng thành công\nMã đơn hàng: {orderNO}\nThời gian tạo đơn: {RegTime}\nThời gian hết hạn đơn: {ExpireTime}\n\nCặp giao dịch đã chọn: USDTTRC20 - {token}. Bạn sẽ gửi <code>{amount1} USDTTRC20</code>; bạn sẽ nhận được khoảng {amount2} {token}.\nĐịa chỉ ví nhận của bạn là:\n<code>{to_address}</code>\n\nVui lòng gửi <code>{amount1}</code> USDTTRC20 đến địa chỉ sau:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
 }

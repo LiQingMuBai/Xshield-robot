@@ -36,7 +36,10 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 
 	var extraButtons []tgbotapi.InlineKeyboardButton
 
-	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["other_blockchain_usdt_tips"], "click_callcenter"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["customize_usdt_amount_tips"], "click_callcenter"))
+	btn := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
+	//row := tgbotapi.NewInlineKeyboardRow(btn)
+
+	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["other_blockchain_usdt_tips"], "click_callcenter"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["customize_usdt_amount_tips"], "click_callcenter"), btn)
 	//
 	//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 	//	//tgbotapi.NewInlineKeyboardRow(

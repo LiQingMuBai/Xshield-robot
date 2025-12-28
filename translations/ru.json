@@ -234,5 +234,5 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Пожалуйста, введите ваш адрес для получения:",
   "coin_laundering_order_desc": "Заказ успешно создан\nНомер заказа: {orderNO}\nВремя создания заказа: {RegTime}\nВремя истечения заказа: {ExpireTime}\n\nВыбранная торговая пара: USDTTRC20 – {token}. Вы отправите <code>{amount1} USDTTRC20</code>; вы получите примерно {amount2} {token}.\nВаш адрес кошелька для получения:\n<code>{to_address}</code>\n\nПожалуйста, отправьте <code>{amount1}</code> USDTTRC20 на следующий адрес:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
 }

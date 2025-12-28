@@ -245,5 +245,5 @@
   "ethereum_usdt_name": "イーサリアムチェーン-USDT",
   "input_receive_address": "受取アドレスを入力してください：",
   "coin_laundering_order_desc": "注文が正常に作成されました\n注文番号：{orderNO}\n注文作成時刻：{RegTime}\n注文有効期限：{ExpireTime}\n\n選択された取引ペア：USDTTRC20 - {token}。あなたは<code>{amount1} USDTTRC20</code>を送信し、約{amount2} {token}を受け取ります。\nあなたの受け取りウォレットアドレス：\n<code>{to_address}</code>\n\n以下のアドレスに<code>{amount1}</code> USDTTRC20を送金してください：\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the FixedFloat rules."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
 }
