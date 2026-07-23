@@ -17,18 +17,18 @@ func NewTelegramStarsOrderRepository(db *gorm.DB) *TelegramStarsOrderRepository 
 	}
 }
 
-func (r *TelegramStarsOrderRepository) GetByOrderNo(ctx context.Context, orderNO string) (domain.TelegramStarsOrder, error) {
+func (r *TelegramStarsOrderRepository) GetByOrderNo(ctx context.Context, orderNo string) (domain.TelegramStarsOrder, error) {
 	var config domain.TelegramStarsOrder
 	err := r.db.WithContext(ctx).
-		Find(&config, "order_no = ?", orderNO).Error
+		Find(&config, "order_no = ?", orderNo).Error
 	return config, err
 }
 
 func (r *TelegramStarsOrderRepository) Create(ctx context.Context, order *domain.TelegramStarsOrder) error {
 	return r.db.WithContext(ctx).Create(order).Error
 }
-func (r *TelegramStarsOrderRepository) Update(ctx context.Context, orderNo string, _status int64) error {
+func (r *TelegramStarsOrderRepository) UpdateStatusByOrderNo(ctx context.Context, orderNo string, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.TelegramStarsOrder{}).
 		Where("order_no = ?", orderNo).
-		Update("status", _status).Error
+		Update("status", status).Error
 }

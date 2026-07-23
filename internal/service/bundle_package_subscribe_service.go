@@ -220,7 +220,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 	//orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 
 	energyRepo := repositories.NewUserEnergyOrdersRepo(db)
-	usedTimes, _ := energyRepo.Count(context.Background(), chatID)
+	usedTimes, _ := energyRepo.CountByChatID(context.Background(), chatID)
 
 	if err != nil {
 

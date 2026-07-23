@@ -116,7 +116,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 
-		total, _ := userRepo.Count(context.Background(), message.Chat.ID)
+		total, _ := userRepo.CountByChatID(context.Background(), message.Chat.ID)
 		if total >= 4 {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_max_tips"]+"</b>"+"\n")
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(

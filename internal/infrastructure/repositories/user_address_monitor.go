@@ -22,18 +22,18 @@ func (r *UserAddressMonitorRepo) Create(ctx context.Context, userAddress *domain
 	return r.db.WithContext(ctx).Create(userAddress).Error
 }
 
-func (r *UserAddressMonitorRepo) Remove(ctx context.Context, _chatID int64, _address string) error {
+func (r *UserAddressMonitorRepo) Remove(ctx context.Context, chatID int64, address string) error {
 	//return r.db.WithContext(ctx).del(userAddress).Error
 
-	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitor{}, "chat_id = ? AND address = ?", _chatID, _address).Error
+	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitor{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 
-func (r *UserAddressMonitorRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserAddressMonitor, error) {
+func (r *UserAddressMonitorRepo) ListByChatID(ctx context.Context, chatID int64) ([]domain.UserAddressMonitor, error) {
 	var subscriptions []domain.UserAddressMonitor
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserAddressMonitor{}).
 		Select("id", "address", "network").
-		Where("chat_id = ?", _chatID).
+		Where("chat_id = ?", chatID).
 		Scan(&subscriptions).Error
 	return subscriptions, err
 

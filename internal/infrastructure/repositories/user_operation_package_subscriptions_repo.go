@@ -55,7 +55,7 @@ func (r *UserPackageSubscriptionsRepository) UpdateStatus(ctx context.Context, i
 }
 
 // Update 更新套餐
-func (r *UserPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, id int64, times int64) error {
+func (r *UserPackageSubscriptionsRepository) UpdateRemainingTimes(ctx context.Context, id int64, times int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserPackageSubscriptions{}).
 		Where("id = ?", id).
 		Update("times", times).Error

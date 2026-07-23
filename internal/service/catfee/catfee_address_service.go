@@ -41,7 +41,7 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 	//要查下是否已经有绑定的地址
 
-	total, _ := userSmartTransactionAddressesRepo.Count(context.Background(), _chatID)
+	total, _ := userSmartTransactionAddressesRepo.CountByChatID(context.Background(), _chatID)
 
 	if total >= 8 {
 		msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["catfee_energy_address_limit_tips"]+"</b>"+"\n")

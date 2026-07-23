@@ -22,9 +22,9 @@ func NewUserRepository(db *gorm.DB) *UserRepository {
 func (r *UserRepository) Save(ctx context.Context, user *domain.User) error {
 	return r.db.WithContext(ctx).Save(user).Error
 }
-func (r *UserRepository) UpdateBackupChat(ctx context.Context, backup string, _associates int64) error {
+func (r *UserRepository) UpdateBackupChat(ctx context.Context, backup string, associates int64) error {
 	query := "UPDATE tg_users SET backup_chat_id = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, backup, _associates)
+	tx := r.db.Exec(query, backup, associates)
 	return tx.Error
 }
 
@@ -40,9 +40,9 @@ func (r *UserRepository) Create(user domain.User) error {
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateUserNameByChatID(_username string, _chatID int64) error {
+func (r *UserRepository) UpdateUsernameByChatID(username string, chatID int64) error {
 	query := "UPDATE tg_users SET username = ? WHERE associates = ?"
-	tx := r.db.Exec(query, _username, _chatID)
+	tx := r.db.Exec(query, username, chatID)
 	return tx.Error
 }
 
@@ -58,38 +58,38 @@ func (r *UserRepository) UpdateAddress(user domain.User) error {
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateTimes(_times uint64, _username string) error {
+func (r *UserRepository) UpdateTimes(times uint64, username string) error {
 	query := "UPDATE tg_users SET times = ?  WHERE username = ?"
-	tx := r.db.Exec(query, _times, _username)
+	tx := r.db.Exec(query, times, username)
 	return tx.Error
 }
-func (r *UserRepository) UpdateBundleTimes(_bundleTimes int64, _chatID int64) error {
+func (r *UserRepository) UpdateBundleTimes(bundleTimes int64, chatID int64) error {
 	query := "UPDATE tg_users SET bundle_times = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, _bundleTimes, _chatID)
+	tx := r.db.Exec(query, bundleTimes, chatID)
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateSmartTransactionTimes(_bundleTimes int64, _chatID int64) error {
+func (r *UserRepository) UpdateSmartTransactionTimes(bundleTimes int64, chatID int64) error {
 	query := "UPDATE tg_users SET st_times = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, _bundleTimes, _chatID)
+	tx := r.db.Exec(query, bundleTimes, chatID)
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateTRXBalance(_trxAmount string, _chatID int64) error {
+func (r *UserRepository) UpdateTRXBalance(trxAmount string, chatID int64) error {
 	query := "UPDATE tg_users SET tron_amount = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, _trxAmount, _chatID)
+	tx := r.db.Exec(query, trxAmount, chatID)
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateUSDTBalance(_amount string, _chatID int64) error {
+func (r *UserRepository) UpdateUSDTBalance(amount string, chatID int64) error {
 	query := "UPDATE tg_users SET amount = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, _amount, _chatID)
+	tx := r.db.Exec(query, amount, chatID)
 	return tx.Error
 }
 
-func (r *UserRepository) UpdateDispatchTimesByChatID(_times uint64, _chatID int64) error {
+func (r *UserRepository) UpdateDispatchTimesByChatID(times uint64, chatID int64) error {
 	query := "UPDATE tg_users SET times = ?  WHERE associates = ?"
-	tx := r.db.Exec(query, _times, _chatID)
+	tx := r.db.Exec(query, times, chatID)
 	return tx.Error
 }
 
@@ -100,31 +100,31 @@ func (r *UserRepository) UpdateDispatchTimesByChatID(_times uint64, _chatID int6
 //eth_address VARCHAR(50),
 //eth_amount VARCHAR(255),
 
-func (r *UserRepository) GetByUsername(_username string) (domain.User, error) {
+func (r *UserRepository) GetByUsername(username string) (domain.User, error) {
 
 	userRecord := domain.User{}
 
-	err := r.db.Where(" username=?", _username).First(&userRecord).Error
+	err := r.db.Where(" username=?", username).First(&userRecord).Error
 
 	return userRecord, err
 }
-func (r *UserRepository) GetByChatID(_chatID int64) (domain.User, error) {
+func (r *UserRepository) GetByChatID(chatID int64) (domain.User, error) {
 	userRecord := domain.User{}
 
-	err := r.db.Where(" associates=?", _chatID).First(&userRecord).Error
+	err := r.db.Where(" associates=?", chatID).First(&userRecord).Error
 
 	return userRecord, err
 }
-func (r *UserRepository) GetByChatIDString(_chatID string) (domain.User, error) {
+func (r *UserRepository) GetByChatIDString(chatID string) (domain.User, error) {
 	userRecord := domain.User{}
 
-	err := r.db.Where(" associates=?", _chatID).First(&userRecord).Error
+	err := r.db.Where(" associates=?", chatID).First(&userRecord).Error
 
 	return userRecord, err
 }
-func (r *UserRepository) UpdateLang(_lang string, _chatID int64) error {
+func (r *UserRepository) UpdateLang(lang string, chatID int64) error {
 	query := "UPDATE tg_users SET lang = ? WHERE associates = ?"
-	tx := r.db.Exec(query, _lang, _chatID)
+	tx := r.db.Exec(query, lang, chatID)
 	return tx.Error
 }
 
@@ -137,27 +137,27 @@ func (r *UserRepository) ListActiveAddresses() ([]domain.User, error) {
 	r.db.Select(&addresses, query)
 	return addresses, nil
 }
-func (r *UserRepository) DisableTronAddress(_address string) error {
+func (r *UserRepository) DisableTronAddress(address string) error {
 	query := "UPDATE sys_address SET disable = 1 WHERE address = ?"
-	tx := r.db.Exec(query, _address)
+	tx := r.db.Exec(query, address)
 	return tx.Error
 }
 
-func (r *UserRepository) BindChatID(_associates string, _username string) error {
+func (r *UserRepository) BindChatID(associates string, username string) error {
 	query := "UPDATE tg_users SET associates = ? WHERE username = ?"
-	tx := r.db.Exec(query, _associates, _username)
+	tx := r.db.Exec(query, associates, username)
 	return tx.Error
 }
 
-func (r *UserRepository) BindTRXAddress(_address string, _username string) error {
+func (r *UserRepository) BindTRXAddress(address string, username string) error {
 	query := "UPDATE tg_users SET tron_address = ? WHERE username = ?"
-	tx := r.db.Exec(query, _address, _username)
+	tx := r.db.Exec(query, address, username)
 	return tx.Error
 }
 
-func (r *UserRepository) BindETHAddress(_address string, _username string) error {
+func (r *UserRepository) BindETHAddress(address string, username string) error {
 	query := "UPDATE tg_users SET eth_address = ? WHERE username = ?"
-	tx := r.db.Exec(query, _address, _username)
+	tx := r.db.Exec(query, address, username)
 	return tx.Error
 }
 

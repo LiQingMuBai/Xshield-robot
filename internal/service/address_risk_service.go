@@ -18,7 +18,7 @@ func ExtractAddressRiskQuery(_lang string, db *gorm.DB, callbackQuery *tgbotapi.
 
 	info.Page = 1
 	info.PageSize = 5
-	trxlist, _, _ := userAddressDetectionRepo.GetAddressMonitorEventInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -67,7 +67,7 @@ func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 		info.Page = 1
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetAddressMonitorEventInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
@@ -105,7 +105,7 @@ func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetAddressMonitorEventInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -153,7 +153,7 @@ func ShowNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	var info request.UserAddressDetectionSearch
 	info.PageInfo.Page = state.CurrentPage
 	info.PageInfo.PageSize = 10
-	trxlist, total, _ := userAddressDetectionRepo.GetAddressMonitorEventInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	logger.Printf("currentpage : %d", state.CurrentPage)
 	logger.Printf("total: %v\n", total)

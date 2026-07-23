@@ -34,7 +34,7 @@ func PayPremiumOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.D
 
 	tgOrderDB := repositories.NewTelegramPremiumOrderRepository(db)
 	orderRecord, _ := tgOrderDB.GetByOrderNo(context.Background(), orderNO)
-	tgOrderDB.Update(context.Background(), orderNO, 1)
+	tgOrderDB.UpdateStatusByOrderNo(context.Background(), orderNO, 1)
 	if _, err := catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month); err != nil {
 		logger.Printf("pay premium order failed: %v", err)
 		return
@@ -83,7 +83,7 @@ func PayStarsOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.DB,
 
 	tgOrderDB := repositories.NewTelegramStarsOrderRepository(db)
 	orderRecord, _ := tgOrderDB.GetByOrderNo(context.Background(), orderNO)
-	tgOrderDB.Update(context.Background(), orderNO, 1)
+	tgOrderDB.UpdateStatusByOrderNo(context.Background(), orderNO, 1)
 
 	tips := strings.ReplaceAll(global.Translations[lang]["successfully_purchased_stars"], "{count}", orderRecord.Stars)
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["order_id"]+"：TOPUP-"+orderNO+" , "+tips)

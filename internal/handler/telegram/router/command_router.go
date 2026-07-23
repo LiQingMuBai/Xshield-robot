@@ -139,7 +139,7 @@ func handleStartBootstrap(message *tgbotapi.Message, ctx Context) {
 		ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), "zh", 24*time.Hour)
 	} else {
 		record.Username = message.From.UserName
-		userRepo.UpdateUserNameByChatID(message.From.UserName, message.Chat.ID)
+		userRepo.UpdateUsernameByChatID(message.From.UserName, message.Chat.ID)
 		if len(record.Lang) > 0 {
 			ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), record.Lang, 24*time.Hour)
 		} else {

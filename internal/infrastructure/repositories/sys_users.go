@@ -16,12 +16,12 @@ func NewSysUsersRepository(db *gorm.DB) *SysUsersRepository {
 	}
 }
 
-func (r *SysUsersRepository) GetAddressesByUsername(ctx context.Context, _username string) (address, depositAddress string, err error) {
+func (r *SysUsersRepository) GetAddressesByUsername(ctx context.Context, username string) (address, depositAddress string, err error) {
 	var sysUser domain.SysUser
 	result := r.db.WithContext(ctx).
 		Model(&domain.SysUser{}).
 		Select("address, deposit_address").
-		Where("username = ?", _username).
+		Where("username = ?", username).
 		First(&sysUser)
 	if result.Error != nil {
 		return "", "", result.Error

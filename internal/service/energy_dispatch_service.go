@@ -117,7 +117,7 @@ func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bu
 	if restTimes < 0 {
 		return nil, ErrDispatchInsufficientTimes
 	}
-	if err := subscriptionRepo.UpdateTimes(ctx, record.Id, restTimes); err != nil {
+	if err := subscriptionRepo.UpdateRemainingTimes(ctx, record.Id, restTimes); err != nil {
 		return nil, err
 	}
 

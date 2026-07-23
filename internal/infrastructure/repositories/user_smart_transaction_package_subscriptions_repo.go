@@ -89,7 +89,7 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateStatusByID(ct
 }
 
 // Update 更新套餐
-func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, id int64, times int64) error {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateRemainingTimes(ctx context.Context, id int64, times int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserSmartTransactionPackageSubscriptions{}).
 		Where("id = ?", id).
 		Update("times", times).Error
