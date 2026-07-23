@@ -26,14 +26,14 @@ func (r *UserPackageSubscriptionsRepository) ListAll(ctx context.Context) ([]dom
 	return pkgs, err
 
 }
-func (r *UserPackageSubscriptionsRepository) Query(ctx context.Context, ID string) (domain.UserPackageSubscriptions, error) {
-	var subscriptions []domain.UserPackageSubscriptions
+func (r *UserPackageSubscriptionsRepository) GetByID(ctx context.Context, ID string) (domain.UserPackageSubscriptions, error) {
+	var subscription domain.UserPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserPackageSubscriptions{}).
 		Select("id", "times", "bundle_name", "bundle_id", "amount", "address").
 		Where("id = ?", ID).
-		Scan(&subscriptions).Error
-	return subscriptions[0], err
+		Take(&subscription).Error
+	return subscription, err
 
 }
 

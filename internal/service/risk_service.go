@@ -9,7 +9,7 @@ import (
 	"ushield_bot/internal/global"
 )
 
-func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["enter_address_for_alert"])
 	msg.ParseMode = "HTML"
@@ -29,7 +29,7 @@ func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQ
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "usdt_risk_monitor", expiration)
 
 	//userRepo := repositories.NewUserRepository(db)
-	//user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	//user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	//if IsEmpty(user.Amount) {
 	//	user.Amount = "0"
 	//}
@@ -40,7 +40,7 @@ func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQ
 	//
 	//userAddressRepo := repositories.NewUserAddressMonitorRepo(db)
 	//
-	//addresses, _ := userAddressRepo.Query(context.Background(), callbackQuery.Message.Chat.ID)
+	//addresses, _ := userAddressRepo.ListByChatID(context.Background(), callbackQuery.Message.Chat.ID)
 	//
 	//nums := len(addresses)
 	//
@@ -83,7 +83,7 @@ func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQ
 	//	rest, _ := SubtractStringNumbers(user.TronAmount, server_trx_price, float64(nums))
 	//
 	//	user.TronAmount = rest
-	//	userRepo.Update2(context.Background(), &user)
+	//	userRepo.Save(context.Background(), &user)
 	//	fmt.Printf("rest: %s", rest)
 	//	COST_FROM_TRX = true
 	//	//扣usdt
@@ -91,7 +91,7 @@ func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQ
 	//	rest, _ := SubtractStringNumbers(user.Amount, server_usdt_price, float64(nums))
 	//	fmt.Printf("rest: %s", rest)
 	//	user.Amount = rest
-	//	userRepo.Update2(context.Background(), &user)
+	//	userRepo.Save(context.Background(), &user)
 	//	COST_FROM_USDT = true
 	//}
 	//
@@ -114,7 +114,7 @@ func START_FREEZE_RISK_1(_lang string, cache cache.Cache, db *gorm.DB, callbackQ
 	//	userAddressEventRepo.Create(context.Background(), &event)
 	//}
 	////后台跟踪起来
-	//user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	//user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
 	//	"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
 	//		"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+

@@ -52,7 +52,7 @@ func NewFreezeAlertService(db *gorm.DB) *FreezeAlertService {
 
 func (s *FreezeAlertService) Start(chatID int64) error {
 	userRepo := repositories.NewUserRepository(s.db)
-	user, err := userRepo.GetByUserID(chatID)
+	user, err := userRepo.GetByChatID(chatID)
 	if err != nil {
 		return err
 	}
@@ -94,7 +94,7 @@ func (s *FreezeAlertService) Confirm(ctx context.Context, chatID int64, address 
 	}
 
 	userRepo := repositories.NewUserRepository(s.db)
-	user, err := userRepo.GetByUserID(chatID)
+	user, err := userRepo.GetByChatID(chatID)
 	if err != nil {
 		return nil, err
 	}
@@ -129,7 +129,7 @@ func (s *FreezeAlertService) Confirm(ctx context.Context, chatID int64, address 
 			result.Amount = preview.USDTPrice + " USDT"
 		}
 
-		if err := txUserRepo.Update2(ctx, &user); err != nil {
+		if err := txUserRepo.Save(ctx, &user); err != nil {
 			return err
 		}
 
@@ -153,7 +153,7 @@ func (s *FreezeAlertService) Confirm(ctx context.Context, chatID int64, address 
 
 func (s *FreezeAlertService) ListActive(chatID int64) ([]FreezeAlertMonitorItem, error) {
 	eventRepo := repositories.NewUserAddressMonitorEventRepo(s.db)
-	events, err := eventRepo.Query(context.Background(), chatID)
+	events, err := eventRepo.ListByChatID(context.Background(), chatID)
 	if err != nil {
 		return nil, err
 	}
@@ -171,7 +171,7 @@ func (s *FreezeAlertService) ListActive(chatID int64) ([]FreezeAlertMonitorItem,
 
 func (s *FreezeAlertService) PreviewClose(chatID int64, eventID string) (*FreezeAlertClosePreview, error) {
 	eventRepo := repositories.NewUserAddressMonitorEventRepo(s.db)
-	event, err := eventRepo.Find(context.Background(), eventID)
+	event, err := eventRepo.GetByID(context.Background(), eventID)
 	if err != nil {
 		if errors.Is(err, gorm.ErrRecordNotFound) {
 			return nil, ErrFreezeAlertMonitorNotFound

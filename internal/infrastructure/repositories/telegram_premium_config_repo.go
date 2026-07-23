@@ -17,7 +17,7 @@ func NewTelegramPremiumConfigRepository(db *gorm.DB) *TelegramPremiumConfigRepos
 	}
 }
 
-func (r *TelegramPremiumConfigRepository) Query(ctx context.Context, enName string) (domain.TelegramPremiumConfig, error) {
+func (r *TelegramPremiumConfigRepository) GetByEnName(ctx context.Context, enName string) (domain.TelegramPremiumConfig, error) {
 	var config domain.TelegramPremiumConfig
 	err := r.db.WithContext(ctx).
 		Find(&config, "en_name = ?", enName).Error

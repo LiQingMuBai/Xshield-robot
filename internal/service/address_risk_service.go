@@ -52,7 +52,7 @@ func ExtractAddressRiskQuery(_lang string, db *gorm.DB, callbackQuery *tgbotapi.
 	return msg
 }
 
-func EXTRACT_PREV_ADDRESS_RISK_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -140,7 +140,7 @@ func EXTRACT_PREV_ADDRESS_RISK_PAGE(_lang string, callbackQuery *tgbotapi.Callba
 	return state, false
 }
 
-func ExtraNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState

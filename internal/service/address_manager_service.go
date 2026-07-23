@@ -14,7 +14,7 @@ import (
 	. "ushield_bot/internal/infrastructure/tools"
 )
 
-func ExtractAddressManager(_lang string, message *tgbotapi.Message, db *gorm.DB, bot *tgbotapi.BotAPI) {
+func AddManagedAddress(_lang string, message *tgbotapi.Message, db *gorm.DB, bot *tgbotapi.BotAPI) {
 	if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) {
 		userRepo := repositories.NewUserAddressMonitorRepo(db)
 		var record domain.UserAddressMonitor
@@ -27,8 +27,8 @@ func ExtractAddressManager(_lang string, message *tgbotapi.Message, db *gorm.DB,
 		if IsValidEthereumAddress(message.Text) {
 			record.Network = "ethereum"
 		}
-		errsg := userRepo.Create(context.Background(), &record)
-		if errsg != nil {
+		createErr := userRepo.Create(context.Background(), &record)
+		if createErr != nil {
 		}
 
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_added_success"]+"</b>"+"\n")
@@ -42,9 +42,9 @@ func ExtractAddressManager(_lang string, message *tgbotapi.Message, db *gorm.DB,
 	}
 }
 
-func ADDRESS_LIST_TRACE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
+func ShowAddressTraceList(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
 	userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(db)
-	addresses, _ := userAddressEventRepo.Query(context.Background(), callbackQuery.Message.Chat.ID)
+	addresses, _ := userAddressEventRepo.ListByChatID(context.Background(), callbackQuery.Message.Chat.ID)
 	// 初始化结果字符串
 	var result string
 
@@ -65,7 +65,7 @@ func ADDRESS_LIST_TRACE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	}
 	//查看余额
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -105,10 +105,10 @@ func ADDRESS_LIST_TRACE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "address_list_trace", expiration)
 }
 
-func ADDRESS_MANAGER(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
+func ShowAddressManager(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
 	userAddressRepo := repositories.NewUserAddressMonitorRepo(db)
 
-	addresses, _ := userAddressRepo.Query(context.Background(), chatID)
+	addresses, _ := userAddressRepo.ListByChatID(context.Background(), chatID)
 
 	result := ""
 	for _, item := range addresses {

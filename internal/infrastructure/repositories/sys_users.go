@@ -16,7 +16,7 @@ func NewSysUsersRepository(db *gorm.DB) *SysUsersRepository {
 	}
 }
 
-func (r *SysUsersRepository) Find(ctx context.Context, _username string) (address, depositAddress string, err error) {
+func (r *SysUsersRepository) GetAddressesByUsername(ctx context.Context, _username string) (address, depositAddress string, err error) {
 	var sysUser domain.SysUser
 	result := r.db.WithContext(ctx).
 		Model(&domain.SysUser{}).

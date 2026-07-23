@@ -17,7 +17,7 @@ func NewTelegramPremiumOrderRepository(db *gorm.DB) *TelegramPremiumOrderReposit
 	}
 }
 
-func (r *TelegramPremiumOrderRepository) Query(ctx context.Context, orderNO string) (domain.TelegramPremiumOrder, error) {
+func (r *TelegramPremiumOrderRepository) GetByOrderNo(ctx context.Context, orderNO string) (domain.TelegramPremiumOrder, error) {
 	var config domain.TelegramPremiumOrder
 	err := r.db.WithContext(ctx).
 		Find(&config, "order_no = ?", orderNO).Error

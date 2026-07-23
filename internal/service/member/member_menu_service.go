@@ -18,9 +18,9 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
-	monthRecord_3m, _ := premiumUserDB.Query(context.Background(), "3_month_premium_fee")
-	monthRecord_6m, _ := premiumUserDB.Query(context.Background(), "6_month_premium_fee")
-	monthRecord_12m, _ := premiumUserDB.Query(context.Background(), "12_month_premium_fee")
+	monthRecord_3m, _ := premiumUserDB.GetByEnName(context.Background(), "3_month_premium_fee")
+	monthRecord_6m, _ := premiumUserDB.GetByEnName(context.Background(), "6_month_premium_fee")
+	monthRecord_12m, _ := premiumUserDB.GetByEnName(context.Background(), "12_month_premium_fee")
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
@@ -104,7 +104,7 @@ func MenuNavigateForMonth(cache cache.Cache, _lang string, db *gorm.DB, _chatID 
 	tips = strings.ReplaceAll(tips, "{month}", _month)
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
-	monthRecord, _ := premiumUserDB.Query(context.Background(), _month+"_month_premium_fee")
+	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), _month+"_month_premium_fee")
 
 	tips = strings.ReplaceAll(tips, "{price}", monthRecord.Amount)
 

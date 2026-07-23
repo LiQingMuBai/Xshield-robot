@@ -20,16 +20,16 @@ func ExtractBackup(message *tgbotapi.Message, bot *tgbotapi.BotAPI, db *gorm.DB)
 
 	//用户电报ID
 	userRepo := repositories.NewUserRepository(db)
-	backupUser, esg := userRepo.GetByUserID(chat_ID)
-	if esg != nil {
+	backupUser, queryErr := userRepo.GetByChatID(chat_ID)
+	if queryErr != nil {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "👤用户电报ID未在机器人发现，请让对方用户电报登录机器人")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return true
 	}
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 	user.BackupChatID = backupUser.Associates
-	err2 := userRepo.Update2(context.Background(), &user)
+	err2 := userRepo.Save(context.Background(), &user)
 	if err2 == nil {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ 成功绑定第二紧急联系人: "+backupUser.Associates)
 		msg.ParseMode = "HTML"

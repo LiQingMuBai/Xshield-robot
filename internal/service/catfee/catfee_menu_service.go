@@ -74,7 +74,7 @@ func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(_chatID)
+	user, _ := userRepo.GetByChatID(_chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -89,7 +89,7 @@ func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID 
 
 	bot.Send(msg)
 }
-func MenuNavigateSTBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
@@ -155,7 +155,7 @@ func MenuNavigateSTBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(_chatID)
+	user, _ := userRepo.GetByChatID(_chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -224,7 +224,7 @@ func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	return msg
 }
 
-func EXTRACT_NEXT_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -285,7 +285,7 @@ func EXTRACT_NEXT_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.Call
 	return false
 }
 
-func EXTRACT_PREV_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {

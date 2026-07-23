@@ -18,11 +18,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
+func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
 	//deductionAmount := callbackQuery.Data[7:len(callbackQuery.Data)]
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "bundle_", "")
-	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
+	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
 
@@ -32,7 +32,7 @@ func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callba
 
 	//fmt.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -104,7 +104,7 @@ func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callba
 		user.Amount = balance
 	}
 
-	err = userRepo.Update2(context.Background(), &user)
+	err = userRepo.Save(context.Background(), &user)
 	if err != nil {
 
 	}
@@ -165,7 +165,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	//deductionAmount := callbackQuery.Data[7:len(callbackQuery.Data)]
 	userOperationBundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "ST_bundle_", "")
-	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
+	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
 
@@ -175,7 +175,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 	//fmt.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -208,10 +208,10 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	if lessBalance {
 		if bundlePackage.Token == "TRX" {
 			trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-			placeholder, esg := trxPlaceholderRepo.Query(context.Background())
+			placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
 			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
-			if esg != nil {
-				fmt.Printf("Failed to update user: " + esg.Error())
+			if queryErr != nil {
+				fmt.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 				inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -274,14 +274,14 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 			//_agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
-			_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+			_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 			trxDeposit.Address = depositAddress
 			trxDeposit.Amount = bundlePackage.Amount
 			trxDeposit.CreatedAt = time.Now()
 
-			errsg := trxDepositRepo.Create(context.Background(), &trxDeposit)
-			if errsg != nil {
-				log.Printf("Error creating trxDeposit: %v", errsg)
+			createErr := trxDepositRepo.Create(context.Background(), &trxDeposit)
+			if createErr != nil {
+				log.Printf("Error creating trxDeposit: %v", createErr)
 			}
 
 			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -289,7 +289,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//		global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[_lang]["copy_text_tips"]+"\n"+
 			//		global.Translations[_lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
 			//		global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
-			//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
+			//		global.Translations[_lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
 			//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
 
 			videoPath := "./static/Audi.png"
@@ -335,10 +335,10 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 		if bundlePackage.Token == "USDT" {
 			usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-			placeholder, esg := usdtPlaceholderRepo.Query(context.Background())
+			placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
 			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
-			if esg != nil {
-				fmt.Printf("Failed to update user: " + esg.Error())
+			if queryErr != nil {
+				fmt.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 				inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -401,14 +401,14 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 			//_agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
-			_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+			_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 			usdtDeposit.Address = depositAddress
 			usdtDeposit.Amount = bundlePackage.Amount
 			usdtDeposit.CreatedAt = time.Now()
 
-			errsg := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
-			if errsg != nil {
-				log.Printf("Error creating usdtDeposit: %v", errsg)
+			createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
+			if createErr != nil {
+				log.Printf("Error creating usdtDeposit: %v", createErr)
 			}
 
 			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -416,7 +416,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			//		global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[_lang]["copy_text_tips"]+"\n"+
 			//		global.Translations[_lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
 			//		global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
-			//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
+			//		global.Translations[_lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
 			//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
 
 			videoPath := "./static/Audi.png"
@@ -466,14 +466,14 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	if bundlePackage.Token == "USDT" {
 		n := 1
 		value, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, float64(n))
-		userRepo.UpdateUSDTAmount(value, callbackQuery.Message.Chat.ID)
+		userRepo.UpdateUSDTBalance(value, callbackQuery.Message.Chat.ID)
 	}
 	if bundlePackage.Token == "TRX" {
 		n := 1
 		value, _ := SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, float64(n))
-		userRepo.UpdateTrxAmount(value, callbackQuery.Message.Chat.ID)
+		userRepo.UpdateTRXBalance(value, callbackQuery.Message.Chat.ID)
 	}
-	err = userRepo.UpdateSTTimes(stTimes, callbackQuery.Message.Chat.ID)
+	err = userRepo.UpdateSmartTransactionTimes(stTimes, callbackQuery.Message.Chat.ID)
 	if err != nil {
 		log.Printf("Error updating stTimes: %v", err)
 	}
@@ -529,7 +529,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 	}
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	fee := status[7:len(status)]
 	fmt.Println("status : ", status)
@@ -561,7 +561,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 	} else {
 		bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
-		bundleRecord, _ := bundlesRepo.Find(context.Background(), fee)
+		bundleRecord, _ := bundlesRepo.GetByAmount(context.Background(), fee)
 		//10笔（12U）
 		bundleNum := bundleRecord.Name
 		count, _ := ExtractNumberBeforeBi(bundleNum)
@@ -575,7 +575,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 		//trxfeeHandler.RequestTimesOrder(context.Background(),"","",message.Text,)
 		rest, _ := SubtractStringNumbers(user.Amount, fee, 1)
 		user.Amount = rest
-		userRepo.Update2(context.Background(), &user)
+		userRepo.Save(context.Background(), &user)
 		fmt.Println("rest :", rest)
 
 		msg := tgbotapi.NewMessage(message.Chat.ID,

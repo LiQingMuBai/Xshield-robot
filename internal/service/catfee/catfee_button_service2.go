@@ -26,7 +26,7 @@ package catfee
 //// ➖➖➖➖➖➖➖➖➖➖
 //// TSwA...ZGCCTV  已用 - 6
 //// TXLE...3n2222  已用 - 8
-//func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS_ST(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+//func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 //
 //	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 //	addresses, _ := userSmartTransactionAddressesRepo.GetChatIDUserCountSum(context.Background(), strconv.FormatInt(chatID, 10))
@@ -62,7 +62,7 @@ package catfee
 //
 //	userRepo := repositories.NewUserRepository(db)
 //
-//	user, _ := userRepo.GetByUserID(chatID)
+//	user, _ := userRepo.GetByChatID(chatID)
 //
 //	totalTimes := user.StTimes
 //	usedTimes := user.UsedStTimes
@@ -124,7 +124,7 @@ package catfee
 //// 存储用户的选择状态（实际应用中应使用数据库或缓存）
 //var userSelections = make(map[int64]map[int]bool) // chatID -> 选项ID -> 是否选中
 //
-//func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
+//func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
 //
 //	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 //	result := strings.ReplaceAll(_data, "custody_address_check_", "")
@@ -145,7 +145,7 @@ package catfee
 //	if status == "3" {
 //		//判断下是否次数不足，不能开启
 //		userRepo := repositories.NewUserRepository(db)
-//		user, _ := userRepo.GetByUserID(chatID)
+//		user, _ := userRepo.GetByChatID(chatID)
 //
 //		if user.StTimes <= user.UsedStTimes {
 //			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
@@ -171,7 +171,7 @@ package catfee
 //
 //		//判断下是否次数不足，不能开启
 //		userRepo := repositories.NewUserRepository(db)
-//		user, _ := userRepo.GetByUserID(chatID)
+//		user, _ := userRepo.GetByChatID(chatID)
 //
 //		if user.StTimes <= user.UsedStTimes {
 //			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
@@ -227,7 +227,7 @@ package catfee
 //
 //	userRepo := repositories.NewUserRepository(db)
 //
-//	user, _ := userRepo.GetByUserID(chatID)
+//	user, _ := userRepo.GetByChatID(chatID)
 //
 //	totalTimes := user.StTimes
 //	usedTimes := user.UsedStTimes

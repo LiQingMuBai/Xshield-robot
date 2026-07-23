@@ -56,7 +56,7 @@ func ExtractAddressDetection(_lang string, cache cache.Cache, db *gorm.DB, callb
 	return msg
 }
 
-func EXTRACT_PREV_ADDRESS_DETECTION_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevAddressDetectionPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -145,7 +145,7 @@ func EXTRACT_PREV_ADDRESS_DETECTION_PAGE(_lang string, callbackQuery *tgbotapi.C
 	}
 	return state, false
 }
-func EXTRACT_NEXT_ADDRESS_DETECTION_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextAddressDetectionPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState

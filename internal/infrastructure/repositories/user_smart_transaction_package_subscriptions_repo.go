@@ -29,14 +29,14 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) ListAll(ctx context
 	return pkgs, err
 
 }
-func (r *UserSmartTransactionPackageSubscriptionsRepository) Query(ctx context.Context, ID string) (domain.UserSmartTransactionPackageSubscriptions, error) {
-	var subscriptions []domain.UserSmartTransactionPackageSubscriptions
+func (r *UserSmartTransactionPackageSubscriptionsRepository) GetByID(ctx context.Context, ID string) (domain.UserSmartTransactionPackageSubscriptions, error) {
+	var subscription domain.UserSmartTransactionPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionPackageSubscriptions{}).
 		Select("id", "times", "bundle_name", "bundle_id", "amount", "address").
 		Where("id = ?", ID).
-		Scan(&subscriptions).Error
-	return subscriptions[0], err
+		Take(&subscription).Error
+	return subscription, err
 
 }
 

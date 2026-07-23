@@ -11,7 +11,7 @@ import (
 	"ushield_bot/internal/global"
 )
 
-func GetNotSafeAddress(_coin string, _address, _cookie string) LableAddresList {
+func ListRiskAddresses(_coin string, _address, _cookie string) LabeledAddressList {
 	//_cookie = "_bl_uid=1wmz8eCq1445tmhU8hktzps2hC51; detect_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyYW5kb21fc3RyIjoiODY3NzM5In0.DaCjSesFMsjGWQkB7iHA1EI5Lp2s3-DTPmxB7nNIPKI; csrftoken=u5xzDP2pcMqbACyYHyVUlJNtmNlr4pIn5i6ullnZNtNunsFbIHvHZk9rteAcyq2l; sessionid=uqs748r6gmq6cjjrqig5461rw8nc3gq9"
 	//_coin = "ETH"
 	//
@@ -34,14 +34,14 @@ func GetNotSafeAddress(_coin string, _address, _cookie string) LableAddresList {
 
 	log.Println(string(body))
 
-	var lableAddresList LableAddresList
-	if err := json.Unmarshal(body, &lableAddresList); err != nil { // Parse []byte to go struct pointer
+	var labeledAddressList LabeledAddressList
+	if err := json.Unmarshal(body, &labeledAddressList); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
 	}
-	return lableAddresList
+	return labeledAddressList
 }
 
-type LableAddresList struct {
+type LabeledAddressList struct {
 	Success  bool   `json:"success"`
 	Msg      string `json:"msg"`
 	GraphDic struct {
@@ -121,7 +121,7 @@ func GetAddressInfo(_symbol string, _address, _cookie string) (SlowMistAddressIn
 	return addressInfo, nil
 }
 
-func GetText(_lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {
+func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {
 	_item0 := addressInfo.RiskDic.TriangleLevel[0]
 	_item1 := addressInfo.RiskDic.TriangleLevel[1]
 	_item2 := addressInfo.RiskDic.TriangleLevel[2]

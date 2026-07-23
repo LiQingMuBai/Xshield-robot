@@ -34,7 +34,7 @@ func (r *UserTRXDepositsRepo) ListAll(ctx context.Context, _chatID int64, _statu
 	return subscriptions, err
 
 }
-func (r *UserTRXDepositsRepo) GetUserTrxDepositsInfoList(ctx context.Context, info request.UserTrxDepositsSearch, _chatID int64) (list []domain.UserTRXDeposits, total int64, err error) {
+func (r *UserTRXDepositsRepo) ListTRXDepositsByPage(ctx context.Context, info request.UserTrxDepositsSearch, _chatID int64) (list []domain.UserTRXDeposits, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
@@ -64,7 +64,7 @@ func (r *UserTRXDepositsRepo) Find(ctx context.Context, orderNo string) (domain.
 	return depositRecords[0], err
 
 }
-func (r *UserTRXDepositsRepo) Query(ctx context.Context, orderNo string) (domain.UserTRXDeposits, error) {
+func (r *UserTRXDepositsRepo) GetByOrderNo(ctx context.Context, orderNo string) (domain.UserTRXDeposits, error) {
 	var depositRecord domain.UserTRXDeposits
 	err := r.db.WithContext(ctx).
 		Find(&depositRecord, "order_no = ?", orderNo).Error

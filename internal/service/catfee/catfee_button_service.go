@@ -7,8 +7,8 @@ import (
 	"strings"
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/global"
-	trxfee "ushield_bot/internal/infrastructure/3rd"
 	"ushield_bot/internal/infrastructure/repositories"
+	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/infrastructure/tools"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -25,7 +25,7 @@ import (
 // ➖➖➖➖➖➖➖➖➖➖
 // TSwA...ZGCCTV  已用 - 6
 // TXLE...3n2222  已用 - 8
-func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS_ST(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 	addresses, _ := userSmartTransactionAddressesRepo.List(context.Background(), strconv.FormatInt(chatID, 10))
 	var allButtons []tgbotapi.InlineKeyboardButton
@@ -59,7 +59,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS_ST(_lang string, cache cache.Cache, db *
 
 	userRepo := repositories.NewUserRepository(db)
 
-	user, _ := userRepo.GetByUserID(chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 
 	totalTimes := user.StTimes
 	usedTimes := user.UsedStTimes
@@ -121,7 +121,7 @@ func buildCheckboxKeyboard(selected map[int]bool) tgbotapi.InlineKeyboardMarkup 
 // 存储用户的选择状态（实际应用中应使用数据库或缓存）
 var userSelections = make(map[int64]map[int]bool) // chatID -> 选项ID -> 是否选中
 
-func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
+func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
 
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 	result := strings.ReplaceAll(_data, "custody_address_check_", "")
@@ -130,7 +130,7 @@ func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data s
 	status := strings.Split(result, "_")[1]
 
 	fmt.Printf("用户：%s，当前状态：%s\n", ID, status)
-	record, _ := userSmartTransactionAddressesRepo.Find(context.Background(), ID)
+	record, _ := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
 	if status == "1" {
 		fmt.Printf("用户ID %d，当前状态：%s，地址：%s 需要暂停为3", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
@@ -142,7 +142,7 @@ func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data s
 	if status == "3" {
 		//判断下是否次数不足，不能开启
 		userRepo := repositories.NewUserRepository(db)
-		user, _ := userRepo.GetByUserID(chatID)
+		user, _ := userRepo.GetByChatID(chatID)
 
 		if user.StTimes <= user.UsedStTimes {
 			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
@@ -168,7 +168,7 @@ func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data s
 
 		//判断下是否次数不足，不能开启
 		userRepo := repositories.NewUserRepository(db)
-		user, _ := userRepo.GetByUserID(chatID)
+		user, _ := userRepo.GetByChatID(chatID)
 
 		if user.StTimes <= user.UsedStTimes {
 			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
@@ -223,7 +223,7 @@ func CheckOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data s
 
 	userRepo := repositories.NewUserRepository(db)
 
-	user, _ := userRepo.GetByUserID(chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 
 	totalTimes := user.StTimes
 	usedTimes := user.UsedStTimes

@@ -33,12 +33,12 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
-	monthRecord, _ := premiumUserDB.Query(context.Background(), _month+"_month_premium_fee")
+	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), _month+"_month_premium_fee")
 
 	//生成订单
 	usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	placeholder, _ := usdtPlaceholderRepo.Query(context.Background())
+	placeholder, _ := usdtPlaceholderRepo.GetAvailable(context.Background())
 	orderNO := tools.Generate6DigitOrderNo()
 	var usdtDeposit domain.UserUSDTDeposits
 	usdtDeposit.OrderNO = orderNO
@@ -55,14 +55,14 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	//_agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 	usdtDeposit.Address = depositAddress
 	usdtDeposit.Amount = monthRecord.Amount
 	usdtDeposit.CreatedAt = time.Now()
 
-	errsg := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
-	if errsg != nil {
-		log.Printf("Error creating usdtDeposit: %v", errsg)
+	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
+	if createErr != nil {
+		log.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
@@ -90,7 +90,7 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	//_agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.Find(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 

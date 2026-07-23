@@ -7,8 +7,8 @@ import (
 	"strings"
 	"time"
 	"ushield_bot/internal/domain"
-	trxfee "ushield_bot/internal/infrastructure/3rd"
 	"ushield_bot/internal/infrastructure/repositories"
+	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	. "ushield_bot/internal/infrastructure/tools"
 
 	"gorm.io/gorm"
@@ -67,7 +67,7 @@ func (s *EnergyDispatchService) ToggleSmartDispatch(ctx context.Context, subscri
 	trxfeeClient.EnableTimesOrder(record.Address)
 
 	userRepo := repositories.NewUserRepository(s.db)
-	user, err := userRepo.GetByUserID(chatID)
+	user, err := userRepo.GetByChatID(chatID)
 	if err != nil {
 		return "", err
 	}
@@ -106,7 +106,7 @@ func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bu
 	}
 
 	subscriptionRepo := repositories.NewUserPackageSubscriptionsRepository(s.db)
-	record, err := subscriptionRepo.Query(ctx, bundleID)
+	record, err := subscriptionRepo.GetByID(ctx, bundleID)
 	if err != nil {
 		return nil, err
 	}
@@ -120,7 +120,7 @@ func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bu
 	}
 
 	userRepo := repositories.NewUserRepository(s.db)
-	user, err := userRepo.GetByUserID(chatID)
+	user, err := userRepo.GetByChatID(chatID)
 	if err != nil {
 		return nil, err
 	}
@@ -142,7 +142,7 @@ func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context,
 	}
 
 	userRepo := repositories.NewUserRepository(s.db)
-	user, err := userRepo.GetByUserID(chatID)
+	user, err := userRepo.GetByChatID(chatID)
 	if err != nil {
 		return nil, err
 	}

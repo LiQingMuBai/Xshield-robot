@@ -9,8 +9,8 @@ import (
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/domain"
 	"ushield_bot/internal/global"
-	_rd "ushield_bot/internal/infrastructure/3rd"
 	"ushield_bot/internal/infrastructure/repositories"
+	thirdparty "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/infrastructure/tools"
 	"ushield_bot/internal/request"
 
@@ -18,7 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CustodyAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
+func PromptCustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["catfee_custody_address_tips"]+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
@@ -27,7 +27,7 @@ func CustodyAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbot
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), callbackQuery.Data, expiration)
 }
 
-func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, trxfeeClient *_rd.TrxfeeClient) {
+func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, trxfeeClient *thirdparty.TrxfeeClient) {
 	_address := message.Text
 	_chatID := message.Chat.ID
 	if !tools.IsValidAddress(_address) {
@@ -57,7 +57,7 @@ func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 		return
 	}
-	record, _ := userSmartTransactionAddressesRepo.Query(context.Background(), _address)
+	record, _ := userSmartTransactionAddressesRepo.GetByAddress(context.Background(), _address)
 
 	if record.ID > 0 {
 		msg := tgbotapi.NewMessage(_chatID, "❌"+"<b>"+global.Translations[_lang]["catfee_add_address_already_exit_tips"]+"</b>"+"\n")
@@ -99,7 +99,7 @@ func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 	trxfeeClient.Activation(_address)
 }
 
-func CustodyRemoveAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
+func PromptCustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["energy_address_remove_tips"]+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
@@ -108,7 +108,7 @@ func CustodyRemoveAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot 
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), callbackQuery.Data, expiration)
 }
 
-func CustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, catfee *_rd.CatfeeService) {
+func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, catfee *thirdparty.CatfeeService) {
 
 	_address := message.Text
 	_chatID := message.Chat.ID
@@ -149,7 +149,7 @@ func CustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 }
 
-func CustodyAddressDisable(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *_rd.CatfeeService) {
+func DisableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
 
 	_address := callbackQuery.Message.Text
 	_chatID := callbackQuery.Message.Chat.ID
@@ -182,7 +182,7 @@ func CustodyAddressDisable(_lang string, cache cache.Cache, db *gorm.DB, bot *tg
 
 }
 
-func CustodyAddressEnable(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *_rd.CatfeeService) {
+func EnableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
 
 	_address := callbackQuery.Message.Text
 	_chatID := callbackQuery.Message.Chat.ID

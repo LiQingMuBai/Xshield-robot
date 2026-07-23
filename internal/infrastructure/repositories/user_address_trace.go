@@ -35,7 +35,7 @@ func (r *UserAddressTraceRepo) Remove(ctx context.Context, _chatID int64, _addre
 //
 //		return r.db.WithContext(ctx).Find(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", _chatID, _address).Error
 //	}
-func (r *UserAddressTraceRepo) Find(ctx context.Context, _chatID int64, _address string) (domain.UserAddressTrace, error) {
+func (r *UserAddressTraceRepo) GetByChatIDAndAddress(ctx context.Context, _chatID int64, _address string) (domain.UserAddressTrace, error) {
 	var item domain.UserAddressTrace
 	err := r.db.WithContext(ctx).
 		Find(&item, "chat_id = ? AND address = ?", _chatID, _address).Error
@@ -62,7 +62,7 @@ func (r *UserAddressTraceRepo) Count(ctx context.Context, _chatID int64) (count 
 	return count, nil
 }
 
-func (r *UserAddressTraceRepo) Query(ctx context.Context, _chatID int64) ([]domain.UserAddressTrace, error) {
+func (r *UserAddressTraceRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserAddressTrace, error) {
 	var subscriptions []domain.UserAddressTrace
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserAddressTrace{}).

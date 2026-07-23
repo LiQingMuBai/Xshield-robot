@@ -24,11 +24,11 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	fmt.Printf("transferAmount: %s\n", transferAmount)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	placeholder, esg := usdtPlaceholderRepo.Query(context.Background())
+	placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
-	if esg != nil {
-		fmt.Print("Failed to update user: " + esg.Error())
+	if queryErr != nil {
+		fmt.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -83,14 +83,14 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	//_agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 	usdtDeposit.Address = depositAddress
 	usdtDeposit.Amount = transferAmount
 	usdtDeposit.CreatedAt = time.Now()
 
-	errsg := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
-	if errsg != nil {
-		log.Printf("Error creating usdtDeposit: %v", errsg)
+	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
+	if createErr != nil {
+		log.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -98,7 +98,7 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	//		global.Translations[_lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[_lang]["copy_text_tips"]+"\n"+
 	//		global.Translations[_lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[_lang]["copy_text_tips"]+"\n"+
 	//		global.Translations[_lang]["tx_time_limit_tips"]+"\n"+
-	//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(usdtDeposit.CreatedAt)+"\n"+
+	//		global.Translations[_lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
 	//		global.Translations[_lang]["amount_suffix_tips"]+"\n")
 
 	videoPath := "./static/Audi.png"
@@ -110,13 +110,13 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 		global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " USDT " + global.Translations[_lang]["copy_text_tips"] + "\n" +
 		global.Translations[_lang]["receive_address"] + "<code>" + usdtDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
 		global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
-		global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(usdtDeposit.CreatedAt) + "\n" +
+		global.Translations[_lang]["deposit_time_label"] + FormatDateTimeValue(usdtDeposit.CreatedAt) + "\n" +
 		global.Translations[_lang]["amount_suffix_tips"] + "\n"
 	//msg.ReplyMarkup = inlineKeyboard
 
 	//originStr := global.Translations[_lang]["deposit_tips"]
 	//
-	//targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{order_no}", usdtDeposit.OrderNO), "{amount}", realTransferAmount), "{receiveAddress}", usdtDeposit.Address), "{createdAt}", Format4Chinesese(usdtDeposit.CreatedAt))
+	//targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{order_no}", usdtDeposit.OrderNO), "{amount}", realTransferAmount), "{receiveAddress}", usdtDeposit.Address), "{createdAt}", FormatDateTimeValue(usdtDeposit.CreatedAt))
 
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, targetStr)
 	//"⚠️注意："+"\n"+
@@ -175,7 +175,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 
 		_orderNO := strings.ReplaceAll(orderNO, "TRX_", "")
 		userTRXDepositsRepo := repositories.NewUserTRXDepositsRepository(db)
-		record, _ := userTRXDepositsRepo.Query(context.Background(), _orderNO)
+		record, _ := userTRXDepositsRepo.GetByOrderNo(context.Background(), _orderNO)
 
 		//update
 		userTRXDepositsRepo.Update(context.Background(), record.Id, 2)
@@ -190,9 +190,9 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	if strings.Contains(orderNO, "USDT_") {
 		_orderNO := strings.ReplaceAll(orderNO, "USDT_", "")
 		userUSDTDepositsRepo := repositories.NewUserUSDTDepositsRepository(db)
-		record, _ := userUSDTDepositsRepo.Query(context.Background(), _orderNO)
+		record, _ := userUSDTDepositsRepo.GetByOrderNo(context.Background(), _orderNO)
 		//update
-		userUSDTDepositsRepo.Update2(context.Background(), record.Id, 2)
+		userUSDTDepositsRepo.UpdateStatusByID(context.Background(), record.Id, 2)
 
 		fmt.Printf("record: %v\n", record)
 		userUSDTPlaceholdersRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
@@ -223,7 +223,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
@@ -236,7 +236,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	str := ""
 	if len(user.BackupChatID) > 0 {
 		//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
-		//backup_user, _ := userRepo.GetByUserID(id)
+		//backup_user, _ := userRepo.GetByChatID(id)
 		str = "🔗 " + global.Translations[_lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
 	} else {
 		str = global.Translations[_lang]["secondary_contact_none"]
@@ -258,11 +258,11 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	fmt.Printf("transferAmount: %s\n", transferAmount)
 
 	trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-	placeholder, esg := trxPlaceholderRepo.Query(context.Background())
+	placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
-	if esg != nil {
-		fmt.Print("Failed to update user: " + esg.Error())
+	if queryErr != nil {
+		fmt.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["tron_network_tips"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -316,21 +316,21 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	_agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 	trxDeposit.Address = depositAddress
 	trxDeposit.Amount = transferAmount
 	trxDeposit.CreatedAt = time.Now()
 
-	errsg := trxDepositRepo.Create(context.Background(), &trxDeposit)
-	if errsg != nil {
-		log.Printf("Error creating trxDeposit: %v", errsg)
+	createErr := trxDepositRepo.Create(context.Background(), &trxDeposit)
+	if createErr != nil {
+		log.Printf("Error creating trxDeposit: %v", createErr)
 	}
 
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
 	//	global.Translations[_lang]["order_id"]+"：TOPUP-"+trxDeposit.OrderNO+"\n"+
 	//		"转账金额："+"<code>"+realTransferAmount+"</code>"+" TRX （点击即可复制）"+"\n"+
 	//		"转账地址："+"<code>"+trxDeposit.Address+"</code>"+"（点击即可复制）"+"\n"+
-	//		global.Translations[_lang]["deposit_time_label"]+Format4Chinesese(trxDeposit.CreatedAt)+"\n"+
+	//		global.Translations[_lang]["deposit_time_label"]+FormatDateTimeValue(trxDeposit.CreatedAt)+"\n"+
 	//		"⚠️注意："+"\n"+
 	//		"▫️注意小数点 "+realTransferAmount+" TRX 转错金额不能到账"+"\n"+
 	//		"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+
@@ -345,7 +345,7 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 		global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " TRX " + global.Translations[_lang]["copy_text_tips"] + "\n" +
 		global.Translations[_lang]["receive_address"] + "<code>" + trxDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
 		global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
-		global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(trxDeposit.CreatedAt) + "\n" +
+		global.Translations[_lang]["deposit_time_label"] + FormatDateTimeValue(trxDeposit.CreatedAt) + "\n" +
 		global.Translations[_lang]["amount_suffix_tips"] + "\n"
 
 	//"⚠️注意："+"\n"+

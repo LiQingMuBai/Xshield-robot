@@ -37,7 +37,7 @@ func (r *UserOperationPackageAddressesRepo) Remove(ctx context.Context, _chatID 
 	return r.db.WithContext(ctx).Delete(&domain.UserOperationPackageAddresses{}, "chat_id = ? AND address = ?", _chatID, _address).Error
 }
 
-func (r *UserOperationPackageAddressesRepo) Query(ctx context.Context, _chatID int64) ([]domain.UserOperationPackageAddresses, error) {
+func (r *UserOperationPackageAddressesRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserOperationPackageAddresses, error) {
 	var subscriptions []domain.UserOperationPackageAddresses
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationPackageAddresses{}).

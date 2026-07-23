@@ -5,7 +5,7 @@ import (
 	"gorm.io/gorm"
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/config"
-	trxfee "ushield_bot/internal/infrastructure/3rd"
+	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/session"
 	"ushield_bot/internal/translate"
 )

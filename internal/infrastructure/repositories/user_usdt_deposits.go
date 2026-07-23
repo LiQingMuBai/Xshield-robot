@@ -34,7 +34,7 @@ func (r *UserUSDTDepositsRepo) ListAll(ctx context.Context, _chatID int64, _stat
 	return subscriptions, err
 
 }
-func (r *UserUSDTDepositsRepo) GetUserUsdtDepositsInfoList(ctx context.Context, info request.UserUsdtDepositsSearch, _chatID int64) (list []domain.UserUSDTDeposits, total int64, err error) {
+func (r *UserUSDTDepositsRepo) ListUSDTDepositsByPage(ctx context.Context, info request.UserUsdtDepositsSearch, _chatID int64) (list []domain.UserUSDTDeposits, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
@@ -64,7 +64,7 @@ func (r *UserUSDTDepositsRepo) Find(ctx context.Context, orderNo string) (domain
 	return depositRecords[0], err
 
 }
-func (r *UserUSDTDepositsRepo) Query(ctx context.Context, orderNo string) (domain.UserUSDTDeposits, error) {
+func (r *UserUSDTDepositsRepo) GetByOrderNo(ctx context.Context, orderNo string) (domain.UserUSDTDeposits, error) {
 	var depositRecord domain.UserUSDTDeposits
 	err := r.db.WithContext(ctx).
 		Find(&depositRecord, "order_no = ?", orderNo).Error
@@ -72,7 +72,7 @@ func (r *UserUSDTDepositsRepo) Query(ctx context.Context, orderNo string) (domai
 
 }
 
-func (r *UserUSDTDepositsRepo) Update2(ctx context.Context, _ID int64, _status int64) error {
+func (r *UserUSDTDepositsRepo) UpdateStatusByID(ctx context.Context, _ID int64, _status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUSDTDeposits{}).
 		Where("id = ?", _ID).
 		Update("status", _status).Error

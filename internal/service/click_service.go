@@ -13,9 +13,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func CLICK_DEPOSIT_USDT_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowUSDTDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -30,8 +30,8 @@ func CLICK_DEPOSIT_USDT_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbota
 	var info request.UserUsdtDepositsSearch
 	info.PageInfo.Page = 1
 	info.PageInfo.PageSize = 10
-	//trxlist, _, _ := trxDepositRepo.GetUserTrxDepositsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
-	usdtlist, _, _ := usdtDepositRepo.GetUserUsdtDepositsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	//trxlist, _, _ := trxDepositRepo.ListTRXDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+	usdtlist, _, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
@@ -72,7 +72,7 @@ func CLICK_DEPOSIT_USDT_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbota
 	bot.Send(msg)
 }
 
-func ClickBusinessCooperation(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowBusinessCooperation(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["promotion_link"]+"："+"https://t.me/ushield_bot?start="+strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"\n\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -85,7 +85,7 @@ func ClickBusinessCooperation(_lang string, callbackQuery *tgbotapi.CallbackQuer
 	bot.Send(msg)
 }
 
-func ClickOfficalChannel(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowOfficialChannel(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["join_vip_cooperation"]+"https://t.me/ushield1\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -98,7 +98,7 @@ func ClickOfficalChannel(_lang string, callbackQuery *tgbotapi.CallbackQuery, bo
 	bot.Send(msg)
 }
 
-func ClickCallCenter(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowCallCenter(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📞"+global.Translations[_lang]["support"]+"：@Ushield001\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -111,9 +111,9 @@ func ClickCallCenter(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *t
 	bot.Send(msg)
 }
 
-func CLICK_DEPOSIT_TRX_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowTRXDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -129,7 +129,7 @@ func CLICK_DEPOSIT_TRX_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbotap
 	var info request.UserTrxDepositsSearch
 	info.PageInfo.Page = 1
 	info.PageInfo.PageSize = 10
-	trxlist, _, _ := trxDepositRepo.GetUserTrxDepositsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, _, _ := trxDepositRepo.ListTRXDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
@@ -167,9 +167,9 @@ func CLICK_DEPOSIT_TRX_RECORDS(_lang string, db *gorm.DB, callbackQuery *tgbotap
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
-func CLICK_MY_RECEPIT(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowReceiptSummary(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}

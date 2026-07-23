@@ -21,7 +21,7 @@ func NewUserAddressMonitorEventRepo(db *gorm.DB) *UserAddressMonitorEventRepo {
 	}
 }
 
-func (r *UserAddressMonitorEventRepo) Find(ctx context.Context, _ID string) (domain.UserAddressMonitorEvent, error) {
+func (r *UserAddressMonitorEventRepo) GetByID(ctx context.Context, _ID string) (domain.UserAddressMonitorEvent, error) {
 	var event domain.UserAddressMonitorEvent
 	err := r.db.WithContext(ctx).
 		Find(&event, "id = ?", _ID).Error
@@ -41,7 +41,7 @@ func (r *UserAddressMonitorEventRepo) Close(ctx context.Context, _ID string) err
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitorEvent{}, "id = ? ", _ID).Error
 }
 
-func (r *UserAddressMonitorEventRepo) Query(ctx context.Context, _chatID int64) ([]domain.UserAddressMonitorEvent, error) {
+func (r *UserAddressMonitorEventRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserAddressMonitorEvent, error) {
 	var subscriptions []domain.UserAddressMonitorEvent
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserAddressMonitorEvent{}).

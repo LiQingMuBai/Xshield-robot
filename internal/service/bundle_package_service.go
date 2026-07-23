@@ -70,7 +70,7 @@ func ExtractBundlePackage(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 	return msg
 }
 
-func EXTRACT_NEXT_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -132,7 +132,7 @@ func EXTRACT_NEXT_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.Call
 	return false
 }
 
-func EXTRACT_PREV_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -221,10 +221,10 @@ func EXTRACT_PREV_BUNDLE_PACKAGE_PAGE(_lang string, callbackQuery *tgbotapi.Call
 	}
 	return state, false
 }
-func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGEMENT(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, _chatID int64, db *gorm.DB) {
+func ShowBundlePackageAddressManagement(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, _chatID int64, db *gorm.DB) {
 	userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 
-	addresses, _ := userOperationPackageAddressesRepo.Query(context.Background(), _chatID)
+	addresses, _ := userOperationPackageAddressesRepo.ListByChatID(context.Background(), _chatID)
 
 	result := ""
 	for _, item := range addresses {
@@ -267,10 +267,10 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGEMENT(_lang string, cache cache.Cache, bo
 	cache.Set(strconv.FormatInt(_chatID, 10), "null_bundle_package_address_manager", expiration)
 }
 
-func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_CONFIG(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, _chatID int64, db *gorm.DB) {
+func ShowBundlePackageAddressConfigOptions(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, _chatID int64, db *gorm.DB) {
 	userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 
-	addresses, _ := userOperationPackageAddressesRepo.Query(context.Background(), _chatID)
+	addresses, _ := userOperationPackageAddressesRepo.ListByChatID(context.Background(), _chatID)
 
 	msg := tgbotapi.NewMessage(_chatID, "👇请选择要设置的地址："+"\n")
 	//地址绑定
@@ -316,7 +316,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_CONFIG(_lang string, cache cache.Cache
 	//设置用户状态
 	cache.Set(strconv.FormatInt(_chatID, 10), "null_bundle_package_address_manager", expiration)
 }
-func CONFIG_BUNDLE_PACKAGE_ADDRESS(_lang string, address string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
+func ShowBundlePackageAddressActions(_lang string, address string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, "🔍正在设置地址："+address+"\n")
 	msg.ParseMode = "HTML"
@@ -339,7 +339,7 @@ func CONFIG_BUNDLE_PACKAGE_ADDRESS(_lang string, address string, cache cache.Cac
 	//设置用户状态
 	cache.Set(strconv.FormatInt(message.Chat.ID, 10), "config_bundle_package_address", expiration)
 }
-func APPLY_BUNDLE_PACKAGE_ADDRESS(_lang string, bundle_address string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
+func ApplyBundlePackageAddress(_lang string, bundle_address string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
 
 	fmt.Printf("address %s\n", bundle_address)
 
@@ -350,13 +350,13 @@ func APPLY_BUNDLE_PACKAGE_ADDRESS(_lang string, bundle_address string, cache cac
 	fmt.Printf("bundle_id %s\n", bundleID)
 
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
-	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
+	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	//扣錢
 	if bundlePackage.Token == "TRX" {
@@ -371,7 +371,7 @@ func APPLY_BUNDLE_PACKAGE_ADDRESS(_lang string, bundle_address string, cache cac
 		user.Amount = balance
 	}
 
-	err = userRepo.Update2(context.Background(), &user)
+	err = userRepo.Save(context.Background(), &user)
 	if err != nil {
 
 	}
@@ -418,7 +418,7 @@ func APPLY_BUNDLE_PACKAGE_ADDRESS(_lang string, bundle_address string, cache cac
 func DispatchOthers(_lang string, bundleID string, cache cache.Cache, bot *tgbotapi.BotAPI, _chatID int64, db *gorm.DB) {
 	//userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 
-	//addresses, _ := userOperationPackageAddressesRepo.Query(context.Background(), _chatID)
+	//addresses, _ := userOperationPackageAddressesRepo.ListByChatID(context.Background(), _chatID)
 
 	//msg := tgbotapi.NewMessage(_chatID, "我们设置了 "+"<b>「仅允许派送至已管理的地址」</b>"+" 的安全规则。这样可以更有效地保障您的资产安全，避免因误操作导致能量丢失。\n\n"+
 	//	"如果您尚未添加可用的接收地址，请前往<b>【首页】 ➝ 【添加地址】</b> 进行添加，完成后即可正常使用派送功能。\n\n📌 安全提示：建议定期检查并更新您的地址列表，确保所有地址均为您可控的合法地址。"+"\n\n"+
@@ -465,57 +465,4 @@ func DispatchOthers(_lang string, bundleID string, cache cache.Cache, bot *tgbot
 
 	//设置用户状态
 	cache.Set(strconv.FormatInt(_chatID, 10), "dispatch_others", expiration)
-}
-
-func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
-
-	fmt.Println("ExtractBundlePackageST")
-	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
-	var info request.UserAddressDetectionSearch
-
-	info.Page = 1
-	info.PageSize = 10000
-	trxlist, total, err := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
-	if err != nil {
-
-		fmt.Println("能量笔数套餐空", err)
-	}
-	var builder strings.Builder
-	if total > 0 {
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
-		for _, word := range trxlist {
-			builder.WriteString("[")
-			builder.WriteString(word.CreatedDate)
-			builder.WriteString("]")
-			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
-
-			//builder.WriteString(" TRX ")
-			//builder.WriteString(" （能量笔数套餐）")
-
-			builder.WriteString("\n") // 添加分隔符
-		}
-	} else {
-		builder.WriteString("\n") // 添加分隔符
-	}
-
-	// 去除最后一个空格
-	result := strings.TrimSpace(builder.String())
-
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
-		result+"\n")
-	msg.ParseMode = "HTML"
-	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_bundle_package_page"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_bundle_package_page"),
-		//),
-		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
-		),
-	)
-	msg.ReplyMarkup = inlineKeyboard
-	return msg
 }

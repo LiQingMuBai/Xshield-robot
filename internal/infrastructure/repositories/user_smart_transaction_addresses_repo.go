@@ -95,14 +95,14 @@ func (r *UserSmartTransactionAddressesRepository) Get(ctx context.Context, _chat
 
 }
 
-func (r *UserSmartTransactionAddressesRepository) Find(ctx context.Context, _id string) (domain.UserSmartTransactionAddresses, error) {
+func (r *UserSmartTransactionAddressesRepository) GetByID(ctx context.Context, _id string) (domain.UserSmartTransactionAddresses, error) {
 	var record domain.UserSmartTransactionAddresses
 	err := r.db.WithContext(ctx).
 		Find(&record, "id = ?", _id).Error
 	return record, err
 
 }
-func (r *UserSmartTransactionAddressesRepository) Query(ctx context.Context, _address string) (domain.UserSmartTransactionAddresses, error) {
+func (r *UserSmartTransactionAddressesRepository) GetByAddress(ctx context.Context, _address string) (domain.UserSmartTransactionAddresses, error) {
 	var record domain.UserSmartTransactionAddresses
 	err := r.db.WithContext(ctx).
 		Find(&record, "status != 4 and address = ?", _address).Error

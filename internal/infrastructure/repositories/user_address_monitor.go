@@ -28,7 +28,7 @@ func (r *UserAddressMonitorRepo) Remove(ctx context.Context, _chatID int64, _add
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitor{}, "chat_id = ? AND address = ?", _chatID, _address).Error
 }
 
-func (r *UserAddressMonitorRepo) Query(ctx context.Context, _chatID int64) ([]domain.UserAddressMonitor, error) {
+func (r *UserAddressMonitorRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserAddressMonitor, error) {
 	var subscriptions []domain.UserAddressMonitor
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserAddressMonitor{}).

@@ -10,8 +10,8 @@ import (
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/domain"
 	"ushield_bot/internal/global"
-	trxfee "ushield_bot/internal/infrastructure/3rd"
 	"ushield_bot/internal/infrastructure/repositories"
+	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	. "ushield_bot/internal/infrastructure/tools"
 	"ushield_bot/internal/request"
 
@@ -19,7 +19,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_REMOVE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
+func RemoveBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
 	if !IsValidAddress(message.Text) {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
@@ -34,21 +34,21 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_REMOVE(_lang string, cache cache.Cache
 	record.Address = message.Text
 	record.ChatID = message.Chat.ID
 
-	errsg := userOperationPackageAddressesRepo.Remove(context.Background(), message.Chat.ID, message.Text)
-	if errsg != nil {
-		log.Printf("errsg: %s", errsg)
+	createErr := userOperationPackageAddressesRepo.Remove(context.Background(), message.Chat.ID, message.Text)
+	if createErr != nil {
+		log.Printf("createErr: %s", createErr)
 		return true
 	}
 	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
-	//CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGEMENT(cache, bot, message.Chat.ID, db)
+	//ShowBundlePackageAddressManagement(cache, bot, message.Chat.ID, db)
 
-	msg2 := CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang, db, message.Chat.ID)
+	msg2 := BuildBundlePackageAddressSummaryMessage(_lang, db, message.Chat.ID)
 	bot.Send(msg2)
 	return false
 }
-func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_ADD(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
+func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
 	if !IsValidAddress(message.Text) {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
@@ -64,7 +64,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_ADD(_lang string, cache cache.Cache, b
 		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+global.Translations[_lang]["address_added_tips"]+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
-		CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGEMENT(_lang, cache, bot, message.Chat.ID, db)
+		ShowBundlePackageAddressManagement(_lang, cache, bot, message.Chat.ID, db)
 		return true
 	}
 
@@ -73,19 +73,19 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGER_ADD(_lang string, cache cache.Cache, b
 	record.Address = message.Text
 	record.ChatID = message.Chat.ID
 
-	errsg := userOperationPackageAddressesRepo.Create(context.Background(), &record)
-	if errsg != nil {
-		log.Printf("errsg: %s", errsg)
+	createErr := userOperationPackageAddressesRepo.Create(context.Background(), &record)
+	if createErr != nil {
+		log.Printf("createErr: %s", createErr)
 		return true
 	}
 	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_added_success"]+"</b>"+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
-	CLICK_BUNDLE_PACKAGE_ADDRESS_MANAGEMENT(_lang, cache, bot, message.Chat.ID, db)
+	ShowBundlePackageAddressManagement(_lang, cache, bot, message.Chat.ID, db)
 	return false
 }
 
-func APPLY_BUNDLE_PACKAGE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
+func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
 	if !IsValidAddress(message.Text) {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
@@ -95,13 +95,13 @@ func APPLY_BUNDLE_PACKAGE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 
 	bundleID := strings.ReplaceAll(status, "apply_bundle_package_", "")
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
-	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
+	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	lessBalance := false
 	if bundlePackage.Token == "USDT" {
@@ -159,7 +159,7 @@ func APPLY_BUNDLE_PACKAGE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 		user.Amount = balance
 	}
 
-	err = userRepo.Update2(context.Background(), &user)
+	err = userRepo.Save(context.Background(), &user)
 	if err != nil {
 
 	}
@@ -204,7 +204,7 @@ func APPLY_BUNDLE_PACKAGE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_apply_bundle_package_address", expiration)
 	return false
 }
-func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//fmt.Println("ExtractBundlePackage")
 	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
@@ -213,10 +213,10 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang string, db *gorm.DB, chatID int64
 	//info.Page = 1
 	//info.PageSize = 5
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 
 	userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
-	orderlist, err := userOperationPackageAddressesRepo.Query(context.Background(), chatID)
+	orderlist, err := userOperationPackageAddressesRepo.ListByChatID(context.Background(), chatID)
 	//orderlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, chatID)
 
 	energyRepo := repositories.NewUserEnergyOrdersRepo(db)
@@ -351,7 +351,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang string, db *gorm.DB, chatID int64
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
-func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//fmt.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
@@ -442,7 +442,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(_lang string, db *gorm.DB, chatID int64)
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
-func NEXT_BUNDLE_PACKAGE_ADDRESS_STATS(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -550,7 +550,7 @@ func NEXT_BUNDLE_PACKAGE_ADDRESS_STATS(_lang string, callbackQuery *tgbotapi.Cal
 	return false
 }
 
-func PREV_BUNDLE_PACKAGE_ADDRESS_STATS(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -737,13 +737,13 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 	bundleID := strings.ReplaceAll(status, "apply_ST_bundle_package_", "")
 	userOperationBundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
-	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
+	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
 		fmt.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	lessBalance := false
 	if bundlePackage.Token == "USDT" {
@@ -827,7 +827,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 		user.Amount = balance
 	}
 
-	err = userRepo.Update2(context.Background(), &user)
+	err = userRepo.Save(context.Background(), &user)
 	if err != nil {
 
 		return false
@@ -879,7 +879,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_apply_bundle_package_address_ST", expiration)
 	return false
 }
-func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS_ST(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//fmt.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)

@@ -36,24 +36,24 @@ func (r *UserSmartTransactionBundlesRepository) ListAll(ctx context.Context) ([]
 	return bundles, err
 
 }
-func (r *UserSmartTransactionBundlesRepository) Find(ctx context.Context, _amount string) (domain.UserSmartTransactionBundles, error) {
-	var placeholders []domain.UserSmartTransactionBundles
+func (r *UserSmartTransactionBundlesRepository) GetByAmount(ctx context.Context, _amount string) (domain.UserSmartTransactionBundles, error) {
+	var bundleRecord domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
 		Select("id", "name").
 		Where("amount = ?", _amount).
-		Scan(&placeholders).Error
-	return placeholders[0], err
+		Take(&bundleRecord).Error
+	return bundleRecord, err
 
 }
 
-func (r *UserSmartTransactionBundlesRepository) Query(ctx context.Context, ID string) (domain.UserSmartTransactionBundles, error) {
-	var subscriptions []domain.UserSmartTransactionBundles
+func (r *UserSmartTransactionBundlesRepository) GetByID(ctx context.Context, ID string) (domain.UserSmartTransactionBundles, error) {
+	var bundleRecord domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
 		//Select("id", "days", "address", "network").
 		Where("id = ?", ID).
-		Scan(&subscriptions).Error
-	return subscriptions[0], err
+		Take(&bundleRecord).Error
+	return bundleRecord, err
 
 }

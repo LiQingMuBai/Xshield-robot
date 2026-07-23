@@ -9,7 +9,7 @@ import (
 	. "ushield_bot/internal/infrastructure/tools"
 )
 
-func DEPOSIT_AMOUNT(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowDepositOptions(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	trxSubscriptionsRepo := repositories.NewUserTRXSubscriptionsRepository(db)
 
 	trxlist, _ := trxSubscriptionsRepo.ListAll(context.Background())
@@ -46,7 +46,7 @@ func DEPOSIT_AMOUNT(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQ
 
 	userRepo := repositories.NewUserRepository(db)
 
-	user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
+	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}

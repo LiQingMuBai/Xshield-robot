@@ -90,7 +90,7 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
@@ -102,7 +102,7 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 
 	_agent := os.Getenv("BOT_AGENT")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	receiveAddress, _, _ := sysUserRepo.Find(context.Background(), _agent)
+	receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
@@ -139,7 +139,7 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	//str := ""
 	//if len(user.BackupChatID) > 0 {
 	//	//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
-	//	//backup_user, _ := userRepo.GetByUserID(id)
+	//	//backup_user, _ := userRepo.GetByChatID(id)
 	//	str = "🔗 " + global.Translations[_lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
 	//} else {
 	//	str = global.Translations[_lang]["secondary_contact_none"]
@@ -169,7 +169,7 @@ func MenuNavigateSwapExchange(_lang string, db *gorm.DB, message *tgbotapi.Messa
 	)
 	//_agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.Find(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
@@ -203,7 +203,7 @@ func MenuNavigateAddressTrace(_lang string, cache cache.Cache, bot *tgbotapi.Bot
 
 	originStr := global.Translations[_lang]["address_trace_head_tips"]
 	userRepo := repositories.NewUserAddressTraceRepo(db)
-	orderlist, _ := userRepo.Query(context.Background(), chatID)
+	orderlist, _ := userRepo.ListByChatID(context.Background(), chatID)
 
 	var builder strings.Builder
 	if len(orderlist) > 0 {
@@ -300,7 +300,7 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 
 func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
@@ -360,7 +360,7 @@ func MenuNavigateEnergyExchange(_lang string, db *gorm.DB, message *tgbotapi.Mes
 	)
 	_agent := os.Getenv("BOT_AGENT")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	receiveAddress, _, _ := sysUserRepo.Find(context.Background(), _agent)
+	receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
@@ -447,7 +447,7 @@ func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tg
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(_chatID)
+	user, _ := userRepo.GetByChatID(_chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -513,7 +513,7 @@ func MenuNavigateHome(_lang string, cache cache.Cache, db *gorm.DB, message *tgb
 	)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
@@ -526,7 +526,7 @@ func MenuNavigateHome(_lang string, cache cache.Cache, db *gorm.DB, message *tgb
 	str := ""
 	if len(user.BackupChatID) > 0 {
 		//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
-		//backup_user, _ := userRepo.GetByUserID(id)
+		//backup_user, _ := userRepo.GetByChatID(id)
 		str = "🔗 " + global.Translations[_lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
 	} else {
 		str = global.Translations[_lang]["secondary_contact_none"]
@@ -569,7 +569,7 @@ func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.Bot
 	)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(message.Chat.ID)
+	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 ID："+user.Associates+"\n👤：@"+user.Username+"\n\n")
 	msg.ReplyMarkup = inlineKeyboard
@@ -577,85 +577,7 @@ func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.Bot
 	bot.Send(msg)
 }
 
-func MenuNavigateSmartTransactionPlans(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
-	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
-
-	trxlist, err := bundlesRepo.ListByToken(context.Background(), token)
-
-	if err != nil {
-
-	}
-
-	var allButtons []tgbotapi.InlineKeyboardButton
-	var extraButtons []tgbotapi.InlineKeyboardButton
-	var onlyButtons []tgbotapi.InlineKeyboardButton
-	var keyboard [][]tgbotapi.InlineKeyboardButton
-	for _, trx := range trxlist {
-		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData("🛒"+strings.ReplaceAll(trx.Name, "笔", global.Translations[_lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
-	}
-
-	if token == "TRX" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
-		)
-	}
-	if token == "USDT" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
-		)
-	}
-
-	extraButtons = append(extraButtons,
-		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
-		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_bundle_package_cost_records_ST"),
-	)
-
-	for i := 0; i < len(allButtons); i += 2 {
-		end := i + 2
-		if end > len(allButtons) {
-			end = len(allButtons)
-		}
-		row := allButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-	for i := 0; i < len(onlyButtons); i += 1 {
-		end := i + 1
-		if end > len(onlyButtons) {
-			end = len(onlyButtons)
-		}
-		row := onlyButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	for i := 0; i < len(extraButtons); i += 2 {
-		end := i + 2
-		if end > len(extraButtons) {
-			end = len(extraButtons)
-		}
-		row := extraButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	// 3. 创建键盘标记
-	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
-
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(_chatID)
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
-
-	msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[_lang]["smart_transaction_plans_tips"])
-	msg.ReplyMarkup = inlineKeyboard
-	msg.ParseMode = "HTML"
-
-	bot.Send(msg)
-}
-func MenuNavigateSTBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
@@ -721,7 +643,7 @@ func MenuNavigateSTBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByUserID(_chatID)
+	user, _ := userRepo.GetByChatID(_chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
