@@ -15,7 +15,7 @@ func NewUserOperationBundlesRepository(db *gorm.DB) *UserOperationBundlesReposit
 		db: db,
 	}
 }
-func (r *UserOperationBundlesRepository) ListByToken(ctx context.Context, token string) ([]domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) ListActiveByToken(ctx context.Context, token string) ([]domain.UserOperationBundles, error) {
 	var bundles []domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).
@@ -35,7 +35,7 @@ func (r *UserOperationBundlesRepository) ListActive(ctx context.Context) ([]doma
 	return bundles, err
 
 }
-func (r *UserOperationBundlesRepository) GetByAmount(ctx context.Context, amount string) (domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) GetByExactAmount(ctx context.Context, amount string) (domain.UserOperationBundles, error) {
 	var bundleRecord domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).

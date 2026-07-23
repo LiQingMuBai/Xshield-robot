@@ -57,7 +57,7 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 		return
 	}
-	record, _ := userSmartTransactionAddressesRepo.GetByAddress(context.Background(), _address)
+	record, _ := userSmartTransactionAddressesRepo.GetActiveByAddress(context.Background(), _address)
 
 	if record.ID > 0 {
 		msg := tgbotapi.NewMessage(_chatID, "❌"+"<b>"+global.Translations[_lang]["catfee_add_address_already_exit_tips"]+"</b>"+"\n")
@@ -124,7 +124,7 @@ func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.Remove(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.MarkDeletedByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
 		logger.Printf("删除地址失败%v\n", err)
@@ -158,7 +158,7 @@ func DisableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tg
 	logger.Printf("暂停用户id %d，地址 %s\v", _chatID, _address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.DisableByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
 		logger.Printf("暂停地址失败%v\n", err)
@@ -191,7 +191,7 @@ func EnableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 	logger.Printf("启用用户id %d，地址 %s\v", _chatID, _address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.Enable(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.EnableByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
 		logger.Printf("启用地址失败%v\n", err)

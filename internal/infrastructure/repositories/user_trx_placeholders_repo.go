@@ -26,13 +26,13 @@ func (r *UserTRXPlaceholdersRepository) ListAvailable(ctx context.Context) ([]do
 
 }
 
-func (r *UserTRXPlaceholdersRepository) Update(ctx context.Context, id int64, status int64) error {
+func (r *UserTRXPlaceholdersRepository) UpdateStatusByID(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserTRXPlaceholders{}).
 		Where("id = ?", id).
 		Update("status", status).Error
 }
 
-func (r *UserTRXPlaceholdersRepository) UpdateByPlaceholder(ctx context.Context, placeholder string, status int64) error {
+func (r *UserTRXPlaceholdersRepository) UpdateStatusByPlaceholder(ctx context.Context, placeholder string, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserTRXPlaceholders{}).
 		Where("placeholder = ?", placeholder).
 		Update("status", status).Error
@@ -49,7 +49,7 @@ func (r *UserTRXPlaceholdersRepository) GetFirstAvailable(ctx context.Context) (
 	return placeholder, err
 
 }
-func (r *UserTRXPlaceholdersRepository) GetAvailable(ctx context.Context) (domain.UserTRXPlaceholders, error) {
+func (r *UserTRXPlaceholdersRepository) GetRandomAvailable(ctx context.Context) (domain.UserTRXPlaceholders, error) {
 	var placeholders domain.UserTRXPlaceholders
 	err := r.db.WithContext(ctx).Order("RAND()").
 		Find(&placeholders, "status = ?", 0).Error

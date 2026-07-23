@@ -45,7 +45,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 	case strings.HasPrefix(status, "address_manager_remove"):
 		if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) {
 			userRepo := repositories.NewUserAddressMonitorRepo(ctx.DB)
-			_ = userRepo.Remove(context.Background(), message.Chat.ID, message.Text)
+			_ = userRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text)
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
@@ -158,7 +158,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
-		if err := userRepo.Remove(context.Background(), message.Chat.ID, message.Text); err != nil {
+		if err := userRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text); err != nil {
 			return
 		}
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")

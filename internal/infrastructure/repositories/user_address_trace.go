@@ -20,11 +20,11 @@ func NewUserAddressTraceRepo(db *gorm.DB) *UserAddressTraceRepo {
 	}
 }
 
-func (r *UserAddressTraceRepo) Create(ctx context.Context, userAddress *domain.UserAddressTrace) error {
-	return r.db.WithContext(ctx).Create(userAddress).Error
+func (r *UserAddressTraceRepo) Create(ctx context.Context, address *domain.UserAddressTrace) error {
+	return r.db.WithContext(ctx).Create(address).Error
 }
 
-func (r *UserAddressTraceRepo) Remove(ctx context.Context, chatID int64, address string) error {
+func (r *UserAddressTraceRepo) DeleteByChatIDAndAddress(ctx context.Context, chatID int64, address string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 

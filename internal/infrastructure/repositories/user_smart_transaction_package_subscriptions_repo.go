@@ -20,13 +20,13 @@ func NewUserSmartTransactionPackageSubscriptionsRepository(db *gorm.DB) *UserSma
 	}
 }
 func (r *UserSmartTransactionPackageSubscriptionsRepository) ListActive(ctx context.Context) ([]domain.UserSmartTransactionPackageSubscriptions, error) {
-	var pkgs []domain.UserSmartTransactionPackageSubscriptions
+	var subscriptions []domain.UserSmartTransactionPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionPackageSubscriptions{}).
 		Select("id", "name", "amount").
 		Where("status = ?", 0).
-		Scan(&pkgs).Error
-	return pkgs, err
+		Scan(&subscriptions).Error
+	return subscriptions, err
 
 }
 func (r *UserSmartTransactionPackageSubscriptionsRepository) GetByID(ctx context.Context, id string) (domain.UserSmartTransactionPackageSubscriptions, error) {
@@ -67,13 +67,13 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) GetFullByID(ctx con
 }
 
 // Create 创建新套餐
-func (r *UserSmartTransactionPackageSubscriptionsRepository) Create(ctx context.Context, pkg *domain.UserSmartTransactionPackageSubscriptions) error {
-	return r.db.WithContext(ctx).Create(pkg).Error
+func (r *UserSmartTransactionPackageSubscriptionsRepository) Create(ctx context.Context, subscription *domain.UserSmartTransactionPackageSubscriptions) error {
+	return r.db.WithContext(ctx).Create(subscription).Error
 }
 
-// Update 更新套餐
-func (r *UserSmartTransactionPackageSubscriptionsRepository) Update(ctx context.Context, pkg *domain.UserSmartTransactionPackageSubscriptions) error {
-	return r.db.WithContext(ctx).Save(pkg).Error
+// Save 更新套餐
+func (r *UserSmartTransactionPackageSubscriptionsRepository) Save(ctx context.Context, subscription *domain.UserSmartTransactionPackageSubscriptions) error {
+	return r.db.WithContext(ctx).Save(subscription).Error
 }
 
 // Update 更新套餐

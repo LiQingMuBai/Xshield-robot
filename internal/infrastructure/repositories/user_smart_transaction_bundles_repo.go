@@ -16,7 +16,7 @@ func NewUserSmartTransactionBundlesRepository(db *gorm.DB) *UserSmartTransaction
 		db: db,
 	}
 }
-func (r *UserSmartTransactionBundlesRepository) ListByToken(ctx context.Context, token string) ([]domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) ListActiveByToken(ctx context.Context, token string) ([]domain.UserSmartTransactionBundles, error) {
 	var bundles []domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
@@ -36,7 +36,7 @@ func (r *UserSmartTransactionBundlesRepository) ListActive(ctx context.Context) 
 	return bundles, err
 
 }
-func (r *UserSmartTransactionBundlesRepository) GetByAmount(ctx context.Context, amount string) (domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) GetByExactAmount(ctx context.Context, amount string) (domain.UserSmartTransactionBundles, error) {
 	var bundleRecord domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).

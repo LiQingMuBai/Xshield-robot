@@ -17,14 +17,14 @@ func NewUserSmartTransactionAddressesRepository(db *gorm.DB) *UserSmartTransacti
 	}
 }
 
-func (r *UserSmartTransactionAddressesRepository) Create(ctx context.Context, userAddress *domain.UserSmartTransactionAddresses) error {
-	return r.db.WithContext(ctx).Create(userAddress).Error
+func (r *UserSmartTransactionAddressesRepository) Create(ctx context.Context, address *domain.UserSmartTransactionAddresses) error {
+	return r.db.WithContext(ctx).Create(address).Error
 }
-func (r *UserSmartTransactionAddressesRepository) Delete(ctx context.Context, chatID string, address string) error {
+func (r *UserSmartTransactionAddressesRepository) DeleteByChatIDAndAddress(ctx context.Context, chatID string, address string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserSmartTransactionAddresses{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 
-func (r *UserSmartTransactionAddressesRepository) Remove(ctx context.Context, chatID string, address string) error {
+func (r *UserSmartTransactionAddressesRepository) MarkDeletedByChatIDAndAddress(ctx context.Context, chatID string, address string) error {
 	r.db.WithContext(ctx).Model(&domain.UserSmartTransactionAddresses{}).
 		Where("chat_id = ?", chatID).Where("address = ?", address).
 		Update("status", 4)
@@ -32,7 +32,7 @@ func (r *UserSmartTransactionAddressesRepository) Remove(ctx context.Context, ch
 
 }
 
-func (r *UserSmartTransactionAddressesRepository) Enable(ctx context.Context, chatID string, address string) error {
+func (r *UserSmartTransactionAddressesRepository) EnableByChatIDAndAddress(ctx context.Context, chatID string, address string) error {
 	r.db.WithContext(ctx).Model(&domain.UserSmartTransactionAddresses{}).
 		Where("chat_id = ?", chatID).Where("address = ?", address).Where("status = ?", 3).
 		Update("status", 1)
@@ -40,7 +40,7 @@ func (r *UserSmartTransactionAddressesRepository) Enable(ctx context.Context, ch
 
 }
 
-func (r *UserSmartTransactionAddressesRepository) EnablePending(ctx context.Context, chatID string, address string) error {
+func (r *UserSmartTransactionAddressesRepository) EnablePendingByChatIDAndAddress(ctx context.Context, chatID string, address string) error {
 	r.db.WithContext(ctx).Model(&domain.UserSmartTransactionAddresses{}).
 		Where("chat_id = ?", chatID).Where("address = ?", address).Where("status = ?", 0).
 		Update("status", 1)
@@ -48,7 +48,7 @@ func (r *UserSmartTransactionAddressesRepository) EnablePending(ctx context.Cont
 
 }
 
-func (r *UserSmartTransactionAddressesRepository) Disable(ctx context.Context, chatID string, address string) error {
+func (r *UserSmartTransactionAddressesRepository) DisableByChatIDAndAddress(ctx context.Context, chatID string, address string) error {
 	r.db.WithContext(ctx).Model(&domain.UserSmartTransactionAddresses{}).
 		Where("chat_id = ?", chatID).Where("address = ?", address).Where("status = ?", 1).
 		Update("status", 3)
@@ -65,7 +65,7 @@ func (r *UserSmartTransactionAddressesRepository) ListByToken(ctx context.Contex
 	return bundles, err
 
 }
-func (r *UserSmartTransactionAddressesRepository) List(ctx context.Context, chatID string) ([]domain.UserSmartTransactionAddresses, error) {
+func (r *UserSmartTransactionAddressesRepository) ListByChatID(ctx context.Context, chatID string) ([]domain.UserSmartTransactionAddresses, error) {
 	var bundles []domain.UserSmartTransactionAddresses
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionAddresses{}).
@@ -75,7 +75,7 @@ func (r *UserSmartTransactionAddressesRepository) List(ctx context.Context, chat
 
 }
 
-func (r *UserSmartTransactionAddressesRepository) GetChatIDUserCountSum(ctx context.Context, chatID string) ([]domain.UserCountResult, error) {
+func (r *UserSmartTransactionAddressesRepository) SummarizeUsedCountByChatID(ctx context.Context, chatID string) ([]domain.UserCountResult, error) {
 	var results []domain.UserCountResult
 
 	err := r.db.WithContext(ctx).Table("user_smart_transaction_addresses").
@@ -102,7 +102,7 @@ func (r *UserSmartTransactionAddressesRepository) GetByID(ctx context.Context, i
 	return record, err
 
 }
-func (r *UserSmartTransactionAddressesRepository) GetByAddress(ctx context.Context, address string) (domain.UserSmartTransactionAddresses, error) {
+func (r *UserSmartTransactionAddressesRepository) GetActiveByAddress(ctx context.Context, address string) (domain.UserSmartTransactionAddresses, error) {
 	var record domain.UserSmartTransactionAddresses
 	err := r.db.WithContext(ctx).
 		Find(&record, "status != 4 and address = ?", address).Error

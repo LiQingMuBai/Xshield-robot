@@ -81,7 +81,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		return true
 	case callbackQuery.Data == "stop_freeze_risk_1":
 		userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(ctx.DB)
-		userAddressEventRepo.RemoveAll(context.Background(), callbackQuery.Message.Chat.ID)
+		userAddressEventRepo.DeleteAllByChatID(context.Background(), callbackQuery.Message.Chat.ID)
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "已经暂停所有监控")
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)

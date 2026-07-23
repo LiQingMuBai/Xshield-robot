@@ -30,8 +30,7 @@ func ShowUSDTDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	var info request.UserUsdtDepositsSearch
 	info.PageInfo.Page = 1
 	info.PageInfo.PageSize = 10
-	//trxlist, _, _ := trxDepositRepo.ListTRXDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
-	usdtlist, _, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+	usdtlist, _, _ := usdtDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
@@ -122,14 +121,11 @@ func ShowTRXDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 		user.TronAmount = "0"
 	}
 
-	//usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
-	//usdtlist, _ := usdtDepositRepo.ListByUserIDAndStatus(context.Background(), callbackQuery.Message.Chat.ID, 1)
-
 	trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
 	var info request.UserTrxDepositsSearch
 	info.PageInfo.Page = 1
 	info.PageInfo.PageSize = 10
-	trxlist, _, _ := trxDepositRepo.ListTRXDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, _, _ := trxDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符

@@ -201,7 +201,7 @@ func (s *FreezeAlertService) Close(ctx context.Context, chatID int64, eventID st
 	}
 
 	eventRepo := repositories.NewUserAddressMonitorEventRepo(s.db)
-	return eventRepo.Close(ctx, formatFreezeAlertID(preview.ID))
+	return eventRepo.DeleteByID(ctx, formatFreezeAlertID(preview.ID))
 }
 
 func (s *FreezeAlertService) loadPrices() (string, string, error) {

@@ -7,6 +7,7 @@ import (
 	"strings"
 	"time"
 	"ushield_bot/internal/cache"
+	"ushield_bot/internal/domain"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
@@ -16,58 +17,177 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuNavigateCoin2CoinSwap2(_lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+type bundleMenuOption struct {
+	id   int64
+	name string
+}
 
-	// 弹出mini app的URL
-	//miniAppURL := "https://tron-grid.com/"
-	//url := "https://ff.io/?ref=rj4nsrta" // 点击后打开的网页
+func buildKeyboardRows(buttons []tgbotapi.InlineKeyboardButton, rowSize int) [][]tgbotapi.InlineKeyboardButton {
+	if rowSize <= 0 {
+		return nil
+	}
 
+	var keyboard [][]tgbotapi.InlineKeyboardButton
+	for i := 0; i < len(buttons); i += rowSize {
+		end := i + rowSize
+		if end > len(buttons) {
+			end = len(buttons)
+		}
+		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(buttons[i:end]...))
+	}
+
+	return keyboard
+}
+
+func loadMenuUser(db *gorm.DB, chatID int64) domain.User {
+	userRepo := repositories.NewUserRepository(db)
+	user, _ := userRepo.GetByChatID(chatID)
+	if IsEmpty(user.Amount) {
+		user.Amount = "0"
+	}
+	if IsEmpty(user.TronAmount) {
+		user.TronAmount = "0"
+	}
+	return user
+}
+
+func getBotReceiveAddress(db *gorm.DB) string {
+	agent := os.Getenv("BOT_AGENT")
+	sysUserRepo := repositories.NewSysUsersRepository(db)
+	receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
+	return receiveAddress
+}
+
+func sendFixedFloatMenu(lang string, chatID int64, db *gorm.DB, bot *tgbotapi.BotAPI) {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
-	fixfloatedUrlStr, _ := dictRepo.GetDictionaryDetail("ff_ref_url")
-	btn := tgbotapi.NewInlineKeyboardButtonURL(global.Translations[_lang]["coin_swap_coin_menu"], fixfloatedUrlStr)
-	btn2 := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
-	row := tgbotapi.NewInlineKeyboardRow(btn, btn2)
+	fixedFloatURL, _ := dictRepo.GetDictionaryDetail("ff_ref_url")
 
-	keyboard := tgbotapi.NewInlineKeyboardMarkup(row)
+	keyboard := tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonURL(global.Translations[lang]["coin_swap_coin_menu"], fixedFloatURL),
+			tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service"),
+		),
+	)
 
-	//msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["coin_swap_coin_tips"])
-
-	videoPath := "./static/fixedfloat.jpg"
-
-	// 创建视频消息（从本地文件）
-	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
-	msg.Caption = global.Translations[_lang]["fixedfloat_rules"] + "\n\n" + global.Translations[_lang]["coin_swap_coin_tips"]
-
+	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath("./static/fixedfloat.jpg"))
+	msg.Caption = global.Translations[lang]["fixedfloat_rules"] + "\n\n" + global.Translations[lang]["coin_swap_coin_tips"]
 	msg.ReplyMarkup = keyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 }
 
-func MenuNavigateCoin2CoinSwap(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI, fixfloatedUrl string) {
+func buildBundleMenuKeyboard(bundleButtons []tgbotapi.InlineKeyboardButton, switchButtons []tgbotapi.InlineKeyboardButton, extraButtons []tgbotapi.InlineKeyboardButton) tgbotapi.InlineKeyboardMarkup {
+	var keyboard [][]tgbotapi.InlineKeyboardButton
+	keyboard = append(keyboard, buildKeyboardRows(bundleButtons, 2)...)
+	keyboard = append(keyboard, buildKeyboardRows(switchButtons, 1)...)
+	keyboard = append(keyboard, buildKeyboardRows(extraButtons, 2)...)
+	return tgbotapi.NewInlineKeyboardMarkup(keyboard...)
+}
 
-	// 弹出mini app的URL
-	//miniAppURL := "https://tron-grid.com/"
-	//url := "https://ff.io/?ref=rj4nsrta" // 点击后打开的网页
+func renderMenuTemplate(template string, replacements map[string]string) string {
+	replacerArgs := make([]string, 0, len(replacements)*2)
+	for placeholder, value := range replacements {
+		replacerArgs = append(replacerArgs, placeholder, value)
+	}
+	if len(replacerArgs) == 0 {
+		return template
+	}
+	return strings.NewReplacer(replacerArgs...).Replace(template)
+}
 
+func buildEnergySwapText(lang string, db *gorm.DB) string {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
-	fixfloatedUrlStr, _ := dictRepo.GetDictionaryDetail("ff_ref_url")
-	btn := tgbotapi.NewInlineKeyboardButtonURL(global.Translations[_lang]["coin_swap_coin_menu"], fixfloatedUrlStr)
-	btn2 := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
-	row := tgbotapi.NewInlineKeyboardRow(btn, btn2)
+	energyCost, _ := dictRepo.GetDictionaryDetail("energy_cost")
 
-	keyboard := tgbotapi.NewInlineKeyboardMarkup(row)
+	logger.Printf("energy_cost: %s\n", energyCost)
 
-	//msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["coin_swap_coin_tips"])
+	energyCost2x, _ := StringMultiply(energyCost, 2)
+	energyCost10x, _ := StringMultiply(energyCost, 10)
 
-	videoPath := "./static/fixedfloat.jpg"
+	logger.Printf("energy_cost_2x: %s\n", energyCost2x)
+	logger.Printf("energy_cost_10x: %s\n", energyCost10x)
 
-	// 创建视频消息（从本地文件）
-	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
-	msg.Caption = global.Translations[_lang]["fixedfloat_rules"] + "\n\n" + global.Translations[_lang]["coin_swap_coin_tips"]
+	return renderMenuTemplate(global.Translations[lang]["energy_swap_tips"], map[string]string{
+		"{energy_cost}":     energyCost,
+		"{energy_cost_2x}":  energyCost2x,
+		"{energy_cost_10x}": energyCost10x,
+		"{receiveAddress}":  getBotReceiveAddress(db),
+	})
+}
 
-	msg.ReplyMarkup = keyboard
-	msg.ParseMode = "HTML"
-	bot.Send(msg)
+func buildSwapExchangeText(lang string, db *gorm.DB) string {
+	dictRepo := repositories.NewSysDictionariesRepo(db)
+
+	return renderMenuTemplate(global.Translations[lang]["usdt_trx_swap_head"], map[string]string{
+		"{trx_amount}":   getDictionaryDetail(dictRepo, "usdt_swap_trx_amount_real"),
+		"{min_amount}":   getDictionaryDetail(dictRepo, "usdt_swap_trx_min_amount"),
+		"{max_amount}":   getDictionaryDetail(dictRepo, "usdt_swap_trx_max_amount"),
+		"{swap_address}": getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address"),
+	})
+}
+
+func getDictionaryDetail(repo *repositories.SysDictionariesRepo, key string) string {
+	value, _ := repo.GetDictionaryDetail(key)
+	return value
+}
+
+func buildBundleOptionButtons(lang string, options []bundleMenuOption, callbackPrefix string) []tgbotapi.InlineKeyboardButton {
+	buttons := make([]tgbotapi.InlineKeyboardButton, 0, len(options))
+	for _, option := range options {
+		buttons = append(buttons, tgbotapi.NewInlineKeyboardButtonData(
+			strings.ReplaceAll(option.name, "笔", global.Translations[lang]["笔"]),
+			CombineInt64AndString(callbackPrefix, option.id),
+		))
+	}
+	return buttons
+}
+
+func buildBundleSwitchButtons(lang string, token string, usdtCallback string, trxCallback string) []tgbotapi.InlineKeyboardButton {
+	switch token {
+	case "TRX":
+		return []tgbotapi.InlineKeyboardButton{
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_usdt_payment"], usdtCallback),
+		}
+	case "USDT":
+		return []tgbotapi.InlineKeyboardButton{
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_trx_payment"], trxCallback),
+		}
+	default:
+		return nil
+	}
+}
+
+func buildBundleExtraButtons(lang string, addressTextKey string, addressCallback string, billingCallback string) []tgbotapi.InlineKeyboardButton {
+	return []tgbotapi.InlineKeyboardButton{
+		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang][addressTextKey], addressCallback),
+		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], billingCallback),
+	}
+}
+
+func buildSecondaryContactText(lang string, backupChatID string) string {
+	if len(backupChatID) == 0 {
+		return global.Translations[lang]["secondary_contact_none"]
+	}
+	return "🔗 " + global.Translations[lang]["secondary_contact"] + "：  @" + backupChatID
+}
+
+func buildHomeSummaryText(lang string, user domain.User, chatID int64) string {
+	return "🆔 " + global.Translations[lang]["user_id"] + "：<code>" + user.Associates + "</code>\n\n👤 " + global.Translations[lang]["username"] + "：@" + user.Username + "\n\n" +
+		buildSecondaryContactText(lang, user.BackupChatID) + "\n\n💰" +
+		global.Translations[lang]["balance"] + "：\n" +
+		"- TRX：" + user.TronAmount + "\n" +
+		"- USDT：" + user.Amount + "\n" +
+		"- " + global.Translations[lang]["promotion_income"] + "：" + user.PromotionIncome + " USDT" + "\n\n" +
+		global.Translations[lang]["promotion_link"] + ":" + "<code>" + "https://t.me/ushield_bot?start=" + strconv.FormatInt(chatID, 10) + "</code>"
+}
+
+func MenuNavigateCoin2CoinSwap2(_lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+	sendFixedFloatMenu(_lang, chatID, db, bot)
+}
+
+func MenuNavigateCoin2CoinSwap(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI, fixfloatedUrl string) {
+	_ = fixfloatedUrl
+	sendFixedFloatMenu(_lang, message.Chat.ID, db, bot)
 }
 
 func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
@@ -89,46 +209,12 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 		),
 	)
 
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(message.Chat.ID)
-
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
-
-	_agent := os.Getenv("BOT_AGENT")
-	sysUserRepo := repositories.NewSysUsersRepository(db)
-	receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
-
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
-
-	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
-
-	energy_cost, _ := dictDetailRepo.GetDictionaryDetail("energy_cost")
-
-	logger.Printf("energy_cost: %s\n", energy_cost)
-
-	energy_cost_2x, _ := StringMultiply(energy_cost, 2)
-	energy_cost_10x, _ := StringMultiply(energy_cost, 10)
-
-	logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
-	logger.Printf("energy_cost_10x: %s\n", energy_cost_10x)
-
-	originStr := global.Translations[_lang]["energy_swap_tips"]
-
-	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{energy_cost}", energy_cost), "{energy_cost_2x}", energy_cost_2x), "{receiveAddress}", receiveAddress), "{energy_cost_10x}", energy_cost_10x)
-
 	videoPath := "./static/Dior.png"
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
 
-	msg.Caption = targetStr
+	msg.Caption = buildEnergySwapText(_lang, db)
 	msg.ReplyMarkup = inlineKeyboard
 	//msg.SupportsStreaming = true // 启用流式播放（推荐）
 
@@ -174,23 +260,12 @@ func MenuNavigateSwapExchange(_lang string, db *gorm.DB, message *tgbotapi.Messa
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
 
-	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
-
-	usdt_swap_trx_amount, _ := dictDetailRepo.GetDictionaryDetail("usdt_swap_trx_amount_real")
-	usdt_swap_trx_min_amount, _ := dictDetailRepo.GetDictionaryDetail("usdt_swap_trx_min_amount")
-	usdt_swap_trx_max_amount, _ := dictDetailRepo.GetDictionaryDetail("usdt_swap_trx_max_amount")
-	usdt_swap_trx_swap_address, _ := dictDetailRepo.GetDictionaryDetail("usdt_swap_trx_swap_address")
-
-	originStr := global.Translations[_lang]["usdt_trx_swap_head"]
-
-	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{trx_amount}", usdt_swap_trx_amount), "{swap_address}", usdt_swap_trx_swap_address), "{min_amount}", usdt_swap_trx_min_amount), "{max_amount}", usdt_swap_trx_max_amount)
-
 	videoPath := "./static/Prada.png"
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
 
-	msg.Caption = targetStr
+	msg.Caption = buildSwapExchangeText(_lang, db)
 
 	//msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
 	msg.ReplyMarkup = inlineKeyboard
@@ -269,7 +344,10 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 
 	originStr := global.Translations[_lang]["usdt_freeze_alert_tips"]
 
-	targetStr := strings.ReplaceAll(strings.ReplaceAll(originStr, "{server_usdt_price}", server_usdt_price), "{server_trx_price}", server_trx_price)
+	targetStr := renderMenuTemplate(originStr, map[string]string{
+		"{server_usdt_price}": server_usdt_price,
+		"{server_trx_price}":  server_trx_price,
+	})
 
 	msg := tgbotapi.NewMessage(chatID, targetStr)
 	msg.ParseMode = "HTML"
@@ -299,16 +377,7 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 }
 
 func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(chatID)
-
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
+	user := loadMenuUser(db, chatID)
 
 	dictRepo := repositories.NewSysDictionariesRepo(db)
 
@@ -317,7 +386,12 @@ func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi
 
 	originStr := global.Translations[_lang]["address_check_tips"]
 
-	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{address_detection_cost}", address_detection_cost), "{address_detection_cost_usdt}", address_detection_cost_usdt), "{tron_amount}", user.TronAmount), "{amount}", user.Amount)
+	targetStr := renderMenuTemplate(originStr, map[string]string{
+		"{address_detection_cost}":      address_detection_cost,
+		"{address_detection_cost_usdt}": address_detection_cost_usdt,
+		"{tron_amount}":                 user.TronAmount,
+		"{amount}":                      user.Amount,
+	})
 
 	msg := tgbotapi.NewMessage(chatID, targetStr)
 	//msg := tgbotapi.NewMessage(chatID, " 欢迎使用 U盾地址风险检测\n"+
@@ -358,25 +432,7 @@ func MenuNavigateEnergyExchange(_lang string, db *gorm.DB, message *tgbotapi.Mes
 			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[_lang]["transaction_plans"], "back_bundle_package"),
 		),
 	)
-	_agent := os.Getenv("BOT_AGENT")
-	sysUserRepo := repositories.NewSysUsersRepository(db)
-	receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
-
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
-
-	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
-
-	energy_cost, _ := dictDetailRepo.GetDictionaryDetail("energy_cost")
-
-	energy_cost_2x, _ := StringMultiply(energy_cost, 2)
-	energy_cost_10x, _ := StringMultiply(energy_cost, 10)
-
-	originStr := global.Translations[_lang]["energy_swap_tips"]
-
-	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{energy_cost}", energy_cost), "{energy_cost_2x}", energy_cost_2x), "{receiveAddress}", receiveAddress), "{energy_cost_10x}", energy_cost_10x)
-
-	msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
+	msg := tgbotapi.NewMessage(message.Chat.ID, buildEnergySwapText(_lang, db))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
@@ -385,76 +441,22 @@ func MenuNavigateEnergyExchange(_lang string, db *gorm.DB, message *tgbotapi.Mes
 func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
 	bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
-	trxlist, err := bundlesRepo.ListByToken(context.Background(), token)
+	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
 
 	if err != nil {
 
 	}
 
-	var allButtons []tgbotapi.InlineKeyboardButton
-	var extraButtons []tgbotapi.InlineKeyboardButton
-	var onlyButtons []tgbotapi.InlineKeyboardButton
-	var keyboard [][]tgbotapi.InlineKeyboardButton
+	options := make([]bundleMenuOption, 0, len(trxlist))
 	for _, trx := range trxlist {
-
-		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(strings.ReplaceAll(trx.Name, "笔", global.Translations[_lang]["笔"]), CombineInt64AndString("bundle_", trx.Id)))
+		options = append(options, bundleMenuOption{id: trx.Id, name: trx.Name})
 	}
 
-	if token == "TRX" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_usdt_payment"], "click_switch_usdt"),
-		)
-	}
-	if token == "USDT" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_trx_payment"], "click_switch_trx"),
-		)
-	}
-
-	extraButtons = append(extraButtons,
-		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["address_list"], "click_bundle_package_address_stats"),
-		//tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["add_address"], "click_bundle_package_address_management"),
-		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_bundle_package_cost_records"),
+	inlineKeyboard := buildBundleMenuKeyboard(
+		buildBundleOptionButtons(_lang, options, "bundle_"),
+		buildBundleSwitchButtons(_lang, token, "click_switch_usdt", "click_switch_trx"),
+		buildBundleExtraButtons(_lang, "address_list", "click_bundle_package_address_stats", "click_bundle_package_cost_records"),
 	)
-
-	for i := 0; i < len(allButtons); i += 2 {
-		end := i + 2
-		if end > len(allButtons) {
-			end = len(allButtons)
-		}
-		row := allButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-	for i := 0; i < len(onlyButtons); i += 1 {
-		end := i + 1
-		if end > len(onlyButtons) {
-			end = len(onlyButtons)
-		}
-		row := onlyButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	for i := 0; i < len(extraButtons); i += 2 {
-		end := i + 2
-		if end > len(extraButtons) {
-			end = len(extraButtons)
-		}
-		row := extraButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	// 3. 创建键盘标记
-	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
-
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(_chatID)
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
 	//
 	//msg := tgbotapi.NewMessage(_chatID,
 	//	"欢迎使用 U盾能量笔数套餐\n"+
@@ -512,34 +514,9 @@ func MenuNavigateHome(_lang string, cache cache.Cache, db *gorm.DB, message *tgb
 		//tgbotapi.NewInlineKeyboardRow(),
 	)
 
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(message.Chat.ID)
+	user := loadMenuUser(db, message.Chat.ID)
 
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
-
-	str := ""
-	if len(user.BackupChatID) > 0 {
-		//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
-		//backup_user, _ := userRepo.GetByChatID(id)
-		str = "🔗 " + global.Translations[_lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
-	} else {
-		str = global.Translations[_lang]["secondary_contact_none"]
-	}
-
-	msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 "+global.Translations[_lang]["user_id"]+"：<code>"+user.Associates+"</code>\n\n👤 "+global.Translations[_lang]["username"]+"：@"+user.Username+"\n\n"+
-		str+"\n\n💰"+
-		global.Translations[_lang]["balance"]+"：\n"+
-		"- TRX："+user.TronAmount+"\n"+
-		"- USDT："+user.Amount+"\n"+
-		"- "+global.Translations[_lang]["promotion_income"]+"："+user.PromotionIncome+" USDT"+"\n\n"+
-		global.Translations[_lang]["promotion_link"]+":"+"<code>"+"https://t.me/ushield_bot?start="+strconv.FormatInt(message.Chat.ID, 10)+"</code>",
-	)
+	msg := tgbotapi.NewMessage(message.Chat.ID, buildHomeSummaryText(_lang, user, message.Chat.ID))
 
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
@@ -568,8 +545,7 @@ func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.Bot
 		),
 	)
 
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(message.Chat.ID)
+	user := loadMenuUser(db, message.Chat.ID)
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 ID："+user.Associates+"\n👤：@"+user.Username+"\n\n")
 	msg.ReplyMarkup = inlineKeyboard
@@ -581,76 +557,22 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
-	trxlist, err := bundlesRepo.ListByToken(context.Background(), token)
+	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
 
 	if err != nil {
 
 	}
 
-	var allButtons []tgbotapi.InlineKeyboardButton
-	var extraButtons []tgbotapi.InlineKeyboardButton
-	var onlyButtons []tgbotapi.InlineKeyboardButton
-	var keyboard [][]tgbotapi.InlineKeyboardButton
+	options := make([]bundleMenuOption, 0, len(trxlist))
 	for _, trx := range trxlist {
-
-		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(strings.ReplaceAll(trx.Name, "笔", global.Translations[_lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
+		options = append(options, bundleMenuOption{id: trx.Id, name: trx.Name})
 	}
 
-	if token == "TRX" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
-		)
-	}
-	if token == "USDT" {
-		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
-		)
-	}
-
-	extraButtons = append(extraButtons,
-		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
-		//tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["add_address"], "click_bundle_package_address_management"),
-		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_bundle_package_cost_records_ST"),
+	inlineKeyboard := buildBundleMenuKeyboard(
+		buildBundleOptionButtons(_lang, options, "ST_bundle_"),
+		buildBundleSwitchButtons(_lang, token, "click_switch_usdt_ST", "click_switch_trx_ST"),
+		buildBundleExtraButtons(_lang, "smart_transaction_address_list", "click_bundle_package_address_stats_ST", "click_bundle_package_cost_records_ST"),
 	)
-
-	for i := 0; i < len(allButtons); i += 2 {
-		end := i + 2
-		if end > len(allButtons) {
-			end = len(allButtons)
-		}
-		row := allButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-	for i := 0; i < len(onlyButtons); i += 1 {
-		end := i + 1
-		if end > len(onlyButtons) {
-			end = len(onlyButtons)
-		}
-		row := onlyButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	for i := 0; i < len(extraButtons); i += 2 {
-		end := i + 2
-		if end > len(extraButtons) {
-			end = len(extraButtons)
-		}
-		row := extraButtons[i:end]
-		keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-	}
-
-	// 3. 创建键盘标记
-	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
-
-	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(_chatID)
-	if IsEmpty(user.Amount) {
-		user.Amount = "0"
-	}
-
-	if IsEmpty(user.TronAmount) {
-		user.TronAmount = "0"
-	}
 
 	msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[_lang]["smart_transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard

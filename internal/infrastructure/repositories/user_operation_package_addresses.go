@@ -18,10 +18,10 @@ func NewUserOperationPackageAddressesRepo(db *gorm.DB) *UserOperationPackageAddr
 	}
 }
 
-func (r *UserOperationPackageAddressesRepo) Create(ctx context.Context, userAddress *domain.UserOperationPackageAddresses) error {
-	return r.db.WithContext(ctx).Create(userAddress).Error
+func (r *UserOperationPackageAddressesRepo) Create(ctx context.Context, address *domain.UserOperationPackageAddresses) error {
+	return r.db.WithContext(ctx).Create(address).Error
 }
-func (r *UserOperationPackageAddressesRepo) Update(ctx context.Context, chatID int64, address string) error {
+func (r *UserOperationPackageAddressesRepo) SetDefaultByChatIDAndAddress(ctx context.Context, chatID int64, address string) error {
 	r.db.WithContext(ctx).Model(&domain.UserOperationPackageAddresses{}).
 		Where("chat_id = ?", chatID).Where("address = ?", address).
 		Update("status", 1)
@@ -33,7 +33,7 @@ func (r *UserOperationPackageAddressesRepo) Update(ctx context.Context, chatID i
 	return nil
 
 }
-func (r *UserOperationPackageAddressesRepo) Remove(ctx context.Context, chatID int64, address string) error {
+func (r *UserOperationPackageAddressesRepo) DeleteByChatIDAndAddress(ctx context.Context, chatID int64, address string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserOperationPackageAddresses{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 

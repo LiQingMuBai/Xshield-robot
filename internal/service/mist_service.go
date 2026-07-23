@@ -102,7 +102,7 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 	}
 	result.Text = text
 
-	if err := userRepo.UpdateDispatchTimesByChatID(1, chatID); err != nil {
+	if err := userRepo.UpdateDetectionTimesByChatID(1, chatID); err != nil {
 		logger.Printf("update address detection times err: %v", err)
 	}
 

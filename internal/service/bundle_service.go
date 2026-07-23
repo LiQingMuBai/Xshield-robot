@@ -72,10 +72,10 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		if bundlePackage.Token == "TRX" {
 
 			trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-			placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
+			placeholder, queryErr := trxPlaceholderRepo.GetRandomAvailable(context.Background())
 			if queryErr != nil {
 			}
-			err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			err := trxPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 			if err != nil {
 				logger.Printf("Error updating trx placeholder: %v", err)
 			}
@@ -145,10 +145,10 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		if bundlePackage.Token == "USDT" {
 
 			usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-			placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
+			placeholder, queryErr := usdtPlaceholderRepo.GetRandomAvailable(context.Background())
 			if queryErr != nil {
 			}
-			err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 			if err != nil {
 				logger.Printf("Error updating usdt placeholder: %v", err)
 			}
@@ -257,7 +257,7 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	bundleTimes := ExtractLeadingInt64(bundlePackage.Name)
 
 	_bundleTimes := bundleTimes + user.BundleTimes
-	err = userRepo.UpdateBundleTimes(_bundleTimes, callbackQuery.Message.Chat.ID)
+	err = userRepo.UpdateBundleTimesByChatID(_bundleTimes, callbackQuery.Message.Chat.ID)
 	if err != nil {
 		return
 	}
@@ -345,7 +345,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 	} else {
 		bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
-		bundleRecord, _ := bundlesRepo.GetByAmount(context.Background(), fee)
+		bundleRecord, _ := bundlesRepo.GetByExactAmount(context.Background(), fee)
 		//10笔（12U）
 		bundleNum := bundleRecord.Name
 		count, _ := ExtractNumberBeforeBi(bundleNum)

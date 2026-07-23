@@ -34,7 +34,7 @@ func RemoveBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.B
 	record.Address = message.Text
 	record.ChatID = message.Chat.ID
 
-	createErr := userOperationPackageAddressesRepo.Remove(context.Background(), message.Chat.ID, message.Text)
+	createErr := userOperationPackageAddressesRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text)
 	if createErr != nil {
 		logger.Printf("createErr: %s", createErr)
 		return true

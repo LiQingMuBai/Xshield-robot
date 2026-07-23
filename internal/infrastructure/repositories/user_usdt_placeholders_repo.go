@@ -26,13 +26,13 @@ func (r *UserUsdtPlaceholdersRepository) ListAvailable(ctx context.Context) ([]d
 
 }
 
-func (r *UserUsdtPlaceholdersRepository) UpdateByPlaceholder(ctx context.Context, placeholder string, status int64) error {
+func (r *UserUsdtPlaceholdersRepository) UpdateStatusByPlaceholder(ctx context.Context, placeholder string, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUsdtPlaceholders{}).
 		Where("placeholder = ?", placeholder).
 		Update("status", status).Error
 }
 
-func (r *UserUsdtPlaceholdersRepository) Update(ctx context.Context, id int64, status int64) error {
+func (r *UserUsdtPlaceholdersRepository) UpdateStatusByID(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUsdtPlaceholders{}).
 		Where("id = ?", id).
 		Update("status", status).Error
@@ -48,7 +48,7 @@ func (r *UserUsdtPlaceholdersRepository) GetFirstAvailable(ctx context.Context) 
 	return placeholder, err
 
 }
-func (r *UserUsdtPlaceholdersRepository) GetAvailable(ctx context.Context) (domain.UserUsdtPlaceholders, error) {
+func (r *UserUsdtPlaceholdersRepository) GetRandomAvailable(ctx context.Context) (domain.UserUsdtPlaceholders, error) {
 	var placeholders domain.UserUsdtPlaceholders
 	err := r.db.WithContext(ctx).Order("RAND()").
 		Find(&placeholders, "status = ?", 0).Error

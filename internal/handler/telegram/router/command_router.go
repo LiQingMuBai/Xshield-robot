@@ -114,11 +114,16 @@ func handleStartBootstrap(message *tgbotapi.Message, ctx Context) {
 	if index > 0 {
 		parentUIDStr := message.Text
 		parentUID = parentUIDStr[index+1:]
-		record, err := userRepo.GetByChatIDString(parentUID)
-		if err != nil {
+		parentChatID, convErr := strconv.ParseInt(parentUID, 10, 64)
+		if convErr != nil {
 			parentUID = ""
 		} else {
-			parentUID = record.Associates
+			record, err := userRepo.GetByChatID(parentChatID)
+			if err != nil {
+				parentUID = ""
+			} else {
+				parentUID = record.Associates
+			}
 		}
 	}
 
@@ -133,7 +138,7 @@ func handleStartBootstrap(message *tgbotapi.Message, ctx Context) {
 		if len(parentUID) > 0 {
 			user.ParentUserID = parentUID
 		}
-		if createErr := userRepo.CreateWithContext(context.Background(), &user); createErr != nil {
+		if createErr := userRepo.Create(context.Background(), &user); createErr != nil {
 			return
 		}
 		ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), "zh", 24*time.Hour)

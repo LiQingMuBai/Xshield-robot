@@ -17,13 +17,13 @@ func NewUserPackageSubscriptionsRepository(db *gorm.DB) *UserPackageSubscription
 	}
 }
 func (r *UserPackageSubscriptionsRepository) ListActive(ctx context.Context) ([]domain.UserPackageSubscriptions, error) {
-	var pkgs []domain.UserPackageSubscriptions
+	var subscriptions []domain.UserPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserPackageSubscriptions{}).
 		Select("id", "name", "amount").
 		Where("status = ?", 0).
-		Scan(&pkgs).Error
-	return pkgs, err
+		Scan(&subscriptions).Error
+	return subscriptions, err
 
 }
 func (r *UserPackageSubscriptionsRepository) GetByID(ctx context.Context, id string) (domain.UserPackageSubscriptions, error) {
@@ -38,13 +38,13 @@ func (r *UserPackageSubscriptionsRepository) GetByID(ctx context.Context, id str
 }
 
 // Create 创建新套餐
-func (r *UserPackageSubscriptionsRepository) Create(ctx context.Context, pkg *domain.UserPackageSubscriptions) error {
-	return r.db.WithContext(ctx).Create(pkg).Error
+func (r *UserPackageSubscriptionsRepository) Create(ctx context.Context, subscription *domain.UserPackageSubscriptions) error {
+	return r.db.WithContext(ctx).Create(subscription).Error
 }
 
-// Update 更新套餐
-func (r *UserPackageSubscriptionsRepository) Update(ctx context.Context, pkg *domain.UserPackageSubscriptions) error {
-	return r.db.WithContext(ctx).Save(pkg).Error
+// Save 更新套餐
+func (r *UserPackageSubscriptionsRepository) Save(ctx context.Context, subscription *domain.UserPackageSubscriptions) error {
+	return r.db.WithContext(ctx).Save(subscription).Error
 }
 
 // Update 更新套餐

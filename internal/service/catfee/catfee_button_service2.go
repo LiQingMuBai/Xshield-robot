@@ -29,7 +29,7 @@ package catfee
 //func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 //
 //	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
-//	addresses, _ := userSmartTransactionAddressesRepo.GetChatIDUserCountSum(context.Background(), strconv.FormatInt(chatID, 10))
+// addresses, _ := userSmartTransactionAddressesRepo.SummarizeUsedCountByChatID(context.Background(), strconv.FormatInt(chatID, 10))
 //	var allButtons []tgbotapi.InlineKeyboardButton
 //	var builder strings.Builder
 //	for _, st_address := range addresses {
@@ -136,7 +136,7 @@ package catfee
 //        record, _ := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
 //	if status == "1" {
 //		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要暂停为3", chatID, status, record.Address)
-//		userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
+//                userSmartTransactionAddressesRepo.DisableByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 //		//暂停
 //
 //		catfeeClient.MateOpenBasicDisable(record.Address)
@@ -162,7 +162,7 @@ package catfee
 //		}
 //
 //		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
-//		userSmartTransactionAddressesRepo.Enable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
+//                userSmartTransactionAddressesRepo.EnableByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 //		//启动
 //		catfeeClient.MateOpenBasicEnable(record.Address)
 //	}
@@ -194,7 +194,7 @@ package catfee
 //		catfeeClient.MateOpenBasicAdd(record.Address, strconv.FormatInt(chatID, 10))
 //	}
 //
-//	addresses, _ := userSmartTransactionAddressesRepo.GetChatIDUserCountSum(context.Background(), strconv.FormatInt(chatID, 10))
+//        addresses, _ := userSmartTransactionAddressesRepo.SummarizeUsedCountByChatID(context.Background(), strconv.FormatInt(chatID, 10))
 //	var allButtons []tgbotapi.InlineKeyboardButton
 //	var builder strings.Builder
 //	for _, st_address := range addresses {

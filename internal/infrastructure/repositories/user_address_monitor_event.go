@@ -32,10 +32,10 @@ func (r *UserAddressMonitorEventRepo) GetByID(ctx context.Context, id string) (d
 func (r *UserAddressMonitorEventRepo) Create(ctx context.Context, event *domain.UserAddressMonitorEvent) error {
 	return r.db.WithContext(ctx).Create(event).Error
 }
-func (r *UserAddressMonitorEventRepo) Remove(ctx context.Context, chatID int64, address string) error {
+func (r *UserAddressMonitorEventRepo) DeleteByChatIDAndAddress(ctx context.Context, chatID int64, address string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitorEvent{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
-func (r *UserAddressMonitorEventRepo) Close(ctx context.Context, id string) error {
+func (r *UserAddressMonitorEventRepo) DeleteByID(ctx context.Context, id string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitorEvent{}, "id = ? ", id).Error
 }
 
@@ -49,9 +49,7 @@ func (r *UserAddressMonitorEventRepo) ListByChatID(ctx context.Context, chatID i
 	return subscriptions, err
 
 }
-func (r *UserAddressMonitorEventRepo) RemoveAll(ctx context.Context, chatID int64) error {
-	//return r.db.WithContext(ctx).del(userAddress).Error
-
+func (r *UserAddressMonitorEventRepo) DeleteAllByChatID(ctx context.Context, chatID int64) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitorEvent{}, "chat_id = ?", chatID).Error
 }
 

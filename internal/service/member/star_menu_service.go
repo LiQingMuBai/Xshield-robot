@@ -121,7 +121,7 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	//生成订单
 	usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	placeholder, _ := usdtPlaceholderRepo.GetAvailable(context.Background())
+	placeholder, _ := usdtPlaceholderRepo.GetRandomAvailable(context.Background())
 	orderNO := tools.Generate6DigitOrderNo()
 	var usdtDeposit domain.UserUSDTDeposits
 	usdtDeposit.OrderNO = orderNO
@@ -155,7 +155,7 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 		logger.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
-	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+	err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
 		logger.Printf("Error updating usdt placeholder: %v", err)
 	}

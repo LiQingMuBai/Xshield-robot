@@ -17,7 +17,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 	case strings.HasPrefix(callbackQuery.Data, "set_bundle_package_default_"):
 		target := strings.TrimPrefix(callbackQuery.Data, "set_bundle_package_default_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
-		if err := userOperationPackageAddressesRepo.Update(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
+		if err := userOperationPackageAddressesRepo.SetDefaultByChatIDAndAddress(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
 			logger.Printf("set default bundle address err: %v", err)
 			return true
 		}
@@ -29,7 +29,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 	case strings.HasPrefix(callbackQuery.Data, "remove_bundle_package_"):
 		target := strings.TrimPrefix(callbackQuery.Data, "remove_bundle_package_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
-		if err := userOperationPackageAddressesRepo.Remove(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
+		if err := userOperationPackageAddressesRepo.DeleteByChatIDAndAddress(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
 			logger.Printf("remove bundle address err: %v", err)
 			return true
 		}

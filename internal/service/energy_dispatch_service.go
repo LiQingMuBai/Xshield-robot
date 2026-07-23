@@ -154,7 +154,7 @@ func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context,
 		return nil, ErrDispatchInsufficientTimes
 	}
 
-	if err := userRepo.UpdateBundleTimes(remainingTimes, chatID); err != nil {
+	if err := userRepo.UpdateBundleTimesByChatID(remainingTimes, chatID); err != nil {
 		return nil, err
 	}
 

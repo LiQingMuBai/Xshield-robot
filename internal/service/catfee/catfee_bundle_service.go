@@ -114,7 +114,7 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	bundleTimes := ExtractLeadingInt64(bundlePackage.Name)
 
 	_bundleTimes := bundleTimes + user.BundleTimes
-	err = userRepo.UpdateBundleTimes(_bundleTimes, callbackQuery.Message.Chat.ID)
+	err = userRepo.UpdateBundleTimesByChatID(_bundleTimes, callbackQuery.Message.Chat.ID)
 	if err != nil {
 		return
 	}
@@ -208,8 +208,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	if lessBalance {
 		if bundlePackage.Token == "TRX" {
 			trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-			placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
-			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			placeholder, queryErr := trxPlaceholderRepo.GetRandomAvailable(context.Background())
 			if queryErr != nil {
 				logger.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
@@ -241,7 +240,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 				return
 			}
 
-			err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			err := trxPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 			if err != nil {
 				logger.Printf("Error updating usdt placeholder: %v", err)
 			}
@@ -335,8 +334,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 		if bundlePackage.Token == "USDT" {
 			usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-			placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
-			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			placeholder, queryErr := usdtPlaceholderRepo.GetRandomAvailable(context.Background())
 			if queryErr != nil {
 				logger.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
@@ -368,7 +366,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 				return
 			}
 
-			err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 			if err != nil {
 				logger.Printf("Error updating usdt placeholder: %v", err)
 			}
@@ -466,14 +464,14 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	if bundlePackage.Token == "USDT" {
 		n := 1
 		value, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, float64(n))
-		userRepo.UpdateUSDTBalance(value, callbackQuery.Message.Chat.ID)
+		userRepo.UpdateUSDTBalanceByChatID(value, callbackQuery.Message.Chat.ID)
 	}
 	if bundlePackage.Token == "TRX" {
 		n := 1
 		value, _ := SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, float64(n))
-		userRepo.UpdateTRXBalance(value, callbackQuery.Message.Chat.ID)
+		userRepo.UpdateTRXBalanceByChatID(value, callbackQuery.Message.Chat.ID)
 	}
-	err = userRepo.UpdateSmartTransactionTimes(stTimes, callbackQuery.Message.Chat.ID)
+	err = userRepo.UpdateSmartTransactionTimesByChatID(stTimes, callbackQuery.Message.Chat.ID)
 	if err != nil {
 		logger.Printf("Error updating stTimes: %v", err)
 	}
@@ -561,7 +559,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 	} else {
 		bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
-		bundleRecord, _ := bundlesRepo.GetByAmount(context.Background(), fee)
+		bundleRecord, _ := bundlesRepo.GetByExactAmount(context.Background(), fee)
 		//10笔（12U）
 		bundleNum := bundleRecord.Name
 		count, _ := ExtractNumberBeforeBi(bundleNum)

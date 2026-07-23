@@ -19,24 +19,26 @@ func NewUserAddressDetectionRepository(db *gorm.DB) *UserAddressDetectionRepo {
 	}
 }
 
-func (r *UserAddressDetectionRepo) Create(ctx context.Context, trxDeposit *domain.UserAddressDetection) error {
-	return r.db.WithContext(ctx).Create(trxDeposit).Error
+func (r *UserAddressDetectionRepo) Create(ctx context.Context, detection *domain.UserAddressDetection) error {
+	return r.db.WithContext(ctx).Create(detection).Error
 }
-func (r *UserAddressDetectionRepo) ListByUserIDAndStatus(ctx context.Context, userID int64, status int64) ([]domain.UserAddressDetection, error) {
-	var subscriptions []domain.UserAddressDetection
 
-	err := r.db.Select("id,amount,order_no, DATE_FORMAT(created_at, '%m-%d') as created_date").
-		Where("user_id = ?", userID).
+func (r *UserAddressDetectionRepo) ListHistoryByChatIDAndStatus(ctx context.Context, chatID int64, status int64) ([]domain.UserAddressDetection, error) {
+	var detections []domain.UserAddressDetection
+
+	err := r.db.WithContext(ctx).
+		Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").
+		Where("chat_id = ?", chatID).
 		Where("status = ?", status).
-		Find(&subscriptions).Error
-	return subscriptions, err
+		Find(&detections).Error
+	return detections, err
 
 }
 func (r *UserAddressDetectionRepo) ListByChatIDPage(ctx context.Context, info request.UserAddressDetectionSearch, chatID int64) (list []domain.UserAddressDetection, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.Model(&domain.UserAddressDetection{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ?", chatID)
+	db := r.db.WithContext(ctx).Model(&domain.UserAddressDetection{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ?", chatID)
 	var detections []domain.UserAddressDetection
 	// 如果有条件搜索 下方会自动创建搜索语句
 

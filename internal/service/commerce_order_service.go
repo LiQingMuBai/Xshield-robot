@@ -46,8 +46,8 @@ func PayPremiumOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.D
 	bot.Send(msg)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-	usdtDepositRepo.Update(context.Background(), orderNO, 2)
+	usdtPlaceholderRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
+	usdtDepositRepo.UpdateStatusByOrderNo(context.Background(), orderNO, 2)
 }
 
 func CancelPremiumOrder(bot *tgbotapi.BotAPI, cacheStore cache.Cache, chatID int64, lang string, db *gorm.DB, orderNO string) {
@@ -55,8 +55,8 @@ func CancelPremiumOrder(bot *tgbotapi.BotAPI, cacheStore cache.Cache, chatID int
 	record, _ := usdtDepositRepo.GetByOrderNo(context.Background(), orderNO)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-	usdtDepositRepo.Update(context.Background(), orderNO, 2)
+	usdtPlaceholderRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
+	usdtDepositRepo.UpdateStatusByOrderNo(context.Background(), orderNO, 2)
 
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["order_id"]+"：TOPUP-"+orderNO+" , "+global.Translations[lang]["cancel_order_tips"])
 	msg.ParseMode = "HTML"
@@ -91,8 +91,8 @@ func PayStarsOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.DB,
 	bot.Send(msg)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-	usdtDepositRepo.Update(context.Background(), orderNO, 2)
+	usdtPlaceholderRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
+	usdtDepositRepo.UpdateStatusByOrderNo(context.Background(), orderNO, 2)
 }
 
 func CancelStarsOrder(bot *tgbotapi.BotAPI, cacheStore cache.Cache, chatID int64, lang string, db *gorm.DB, orderNO string) {
@@ -100,8 +100,8 @@ func CancelStarsOrder(bot *tgbotapi.BotAPI, cacheStore cache.Cache, chatID int64
 	record, _ := usdtDepositRepo.GetByOrderNo(context.Background(), orderNO)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	usdtPlaceholderRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-	usdtDepositRepo.Update(context.Background(), orderNO, 2)
+	usdtPlaceholderRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
+	usdtDepositRepo.UpdateStatusByOrderNo(context.Background(), orderNO, 2)
 
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["order_id"]+"：TOPUP-"+orderNO+" , "+global.Translations[lang]["cancel_order_tips"])
 	msg.ParseMode = "HTML"

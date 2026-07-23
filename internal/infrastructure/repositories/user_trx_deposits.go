@@ -21,24 +21,26 @@ func NewUserTRXDepositsRepository(db *gorm.DB) *UserTRXDepositsRepo {
 	}
 }
 
-func (r *UserTRXDepositsRepo) Create(ctx context.Context, trxDeposit *domain.UserTRXDeposits) error {
-	return r.db.WithContext(ctx).Create(trxDeposit).Error
+func (r *UserTRXDepositsRepo) Create(ctx context.Context, deposit *domain.UserTRXDeposits) error {
+	return r.db.WithContext(ctx).Create(deposit).Error
 }
-func (r *UserTRXDepositsRepo) ListByUserIDAndStatus(ctx context.Context, userID int64, status int64) ([]domain.UserTRXDeposits, error) {
-	var subscriptions []domain.UserTRXDeposits
 
-	err := r.db.Select("id,amount,order_no, DATE_FORMAT(created_at, '%m-%d') as created_date").
+func (r *UserTRXDepositsRepo) ListHistoryByUserIDAndStatus(ctx context.Context, userID int64, status int64) ([]domain.UserTRXDeposits, error) {
+	var deposits []domain.UserTRXDeposits
+
+	err := r.db.WithContext(ctx).
+		Select("id,amount,order_no, DATE_FORMAT(created_at, '%m-%d') as created_date").
 		Where("user_id = ?", userID).
 		Where("status = ?", status).
-		Find(&subscriptions).Error
-	return subscriptions, err
+		Find(&deposits).Error
+	return deposits, err
 
 }
-func (r *UserTRXDepositsRepo) ListTRXDepositsByPage(ctx context.Context, info request.UserTrxDepositsSearch, chatID int64) (list []domain.UserTRXDeposits, total int64, err error) {
+func (r *UserTRXDepositsRepo) ListByPage(ctx context.Context, info request.UserTrxDepositsSearch, chatID int64) (list []domain.UserTRXDeposits, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.Model(&domain.UserTRXDeposits{}).Select("id,amount,order_no, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("user_id = ?", chatID).Where("status = ?", 1)
+	db := r.db.WithContext(ctx).Model(&domain.UserTRXDeposits{}).Select("id,amount,order_no, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("user_id = ?", chatID).Where("status = ?", 1)
 	var deposits []domain.UserTRXDeposits
 	// 如果有条件搜索 下方会自动创建搜索语句
 
@@ -63,7 +65,7 @@ func (r *UserTRXDepositsRepo) GetByOrderNo(ctx context.Context, orderNo string) 
 
 }
 
-func (r *UserTRXDepositsRepo) Update(ctx context.Context, id int64, status int64) error {
+func (r *UserTRXDepositsRepo) UpdateStatusByID(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserTRXDeposits{}).
 		Where("id = ?", id).
 		Update("status", status).Error

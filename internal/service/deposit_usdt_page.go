@@ -25,7 +25,7 @@ func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 		var info request.UserUsdtDepositsSearch
 		info.PageInfo.Page = 1
 		info.PageInfo.PageSize = 10
-		trxlist, _, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := usdtDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -66,7 +66,7 @@ func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 		var info request.UserUsdtDepositsSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageInfo.PageSize = 10
-		trxlist, _, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := usdtDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -118,7 +118,7 @@ func ShowNextUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	var info request.UserUsdtDepositsSearch
 	info.PageInfo.Page = state.CurrentPage
 	info.PageInfo.PageSize = 10
-	trxlist, total, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, total, _ := usdtDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	logger.Printf("currentpage : %d", state.CurrentPage)
 	logger.Printf("total: %v\n", total)

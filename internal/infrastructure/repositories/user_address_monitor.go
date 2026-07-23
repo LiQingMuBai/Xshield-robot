@@ -18,13 +18,11 @@ func NewUserAddressMonitorRepo(db *gorm.DB) *UserAddressMonitorRepo {
 	}
 }
 
-func (r *UserAddressMonitorRepo) Create(ctx context.Context, userAddress *domain.UserAddressMonitor) error {
-	return r.db.WithContext(ctx).Create(userAddress).Error
+func (r *UserAddressMonitorRepo) Create(ctx context.Context, address *domain.UserAddressMonitor) error {
+	return r.db.WithContext(ctx).Create(address).Error
 }
 
-func (r *UserAddressMonitorRepo) Remove(ctx context.Context, chatID int64, address string) error {
-	//return r.db.WithContext(ctx).del(userAddress).Error
-
+func (r *UserAddressMonitorRepo) DeleteByChatIDAndAddress(ctx context.Context, chatID int64, address string) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitor{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 

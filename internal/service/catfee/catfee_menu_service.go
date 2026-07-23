@@ -17,7 +17,7 @@ import (
 func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
 
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
-	trxlist, err := bundlesRepo.ListByToken(context.Background(), token)
+	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
 	if err != nil {
 	}
 	var allButtons []tgbotapi.InlineKeyboardButton
@@ -93,7 +93,7 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
-	trxlist, err := bundlesRepo.ListByToken(context.Background(), token)
+	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
 
 	if err != nil {
 

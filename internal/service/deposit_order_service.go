@@ -23,9 +23,8 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	logger.Printf("transferAmount: %s\n", transferAmount)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-	placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
+	placeholder, queryErr := usdtPlaceholderRepo.GetRandomAvailable(context.Background())
 
-	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if queryErr != nil {
 		logger.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
@@ -59,7 +58,7 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 		return
 	}
 
-	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+	err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
 		logger.Printf("Error updating usdt placeholder: %v", err)
 	}
@@ -176,13 +175,13 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		userTRXDepositsRepo := repositories.NewUserTRXDepositsRepository(db)
 		record, _ := userTRXDepositsRepo.GetByOrderNo(context.Background(), _orderNO)
 
-		//update
-		userTRXDepositsRepo.Update(context.Background(), record.Id, 2)
+		// update deposit and release placeholder
+		userTRXDepositsRepo.UpdateStatusByID(context.Background(), record.Id, 2)
 
 		logger.Printf("record: %v\n", record)
 
 		userTRXPlaceholdersRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-		userTRXPlaceholdersRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		userTRXPlaceholdersRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
 		logger.Printf("placeholder重置 %s\n", record.Placeholder)
 	}
 
@@ -190,12 +189,12 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		_orderNO := strings.ReplaceAll(orderNO, "USDT_", "")
 		userUSDTDepositsRepo := repositories.NewUserUSDTDepositsRepository(db)
 		record, _ := userUSDTDepositsRepo.GetByOrderNo(context.Background(), _orderNO)
-		//update
+		// update deposit and release placeholder
 		userUSDTDepositsRepo.UpdateStatusByID(context.Background(), record.Id, 2)
 
 		logger.Printf("record: %v\n", record)
 		userUSDTPlaceholdersRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
-		userUSDTPlaceholdersRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
+		userUSDTPlaceholdersRepo.UpdateStatusByPlaceholder(context.Background(), record.Placeholder, 0)
 		logger.Printf("placeholder重置 %s\n", record.Placeholder)
 	}
 
@@ -257,9 +256,8 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	logger.Printf("transferAmount: %s\n", transferAmount)
 
 	trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
-	placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
+	placeholder, queryErr := trxPlaceholderRepo.GetRandomAvailable(context.Background())
 
-	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if queryErr != nil {
 		logger.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["tron_network_tips"])
@@ -293,7 +291,7 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 		return
 	}
 
-	err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+	err := trxPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
 		logger.Printf("Error updating trx placeholder: %v", err)
 	}
