@@ -31,13 +31,9 @@ func Fatalf(format string, args ...any) {
 }
 
 func Panic(args ...any) {
-	msg := strings.TrimRight(fmt.Sprintln(args...), "\n")
-	zap.S().Error(msg)
-	panic(msg)
+	zap.S().Error(strings.TrimRight(fmt.Sprintln(args...), "\n"))
 }
 
 func Panicf(format string, args ...any) {
-	msg := fmt.Sprintf(format, args...)
-	zap.S().Error(msg)
-	panic(msg)
+	zap.S().Errorf(format, args...)
 }

@@ -51,14 +51,22 @@ type AccountDataResp struct {
 func (c *TrxfeeClient) Account() (resp *AccountDataResp, err error) {
 	url := c.URL + "/v1/account"
 
-	req, _ := http.NewRequest("GET", url, nil)
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return nil, fmt.Errorf("create trxfee account request failed: %w", err)
+	}
 
 	req.Header.Add("API-KEY", c.APIKey)
 
-	res, _ := http.DefaultClient.Do(req)
-
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return nil, fmt.Errorf("send trxfee account request failed: %w", err)
+	}
 	defer res.Body.Close()
-	body, _ := ioutil.ReadAll(res.Body)
+	body, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return nil, fmt.Errorf("read trxfee account response failed: %w", err)
+	}
 
 	logger.Println(res)
 	logger.Println(string(body))
@@ -71,7 +79,8 @@ func (c *TrxfeeClient) Account() (resp *AccountDataResp, err error) {
 	return &accountResp, nil
 
 }
-func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount int) {
+
+func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount int) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
@@ -96,7 +105,7 @@ func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount 
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err := json.Marshal(ordered_data)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("marshal trxfee order payload failed: %w", err)
 	}
 	json_data := string(b)
 
@@ -106,7 +115,7 @@ func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount 
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", c.URL+"/v1/api", bytes.NewBuffer([]byte(json_data)))
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("create trxfee order request failed: %w", err)
 	}
 
 	req.Header.Set("API-KEY", c.APIKey)
@@ -116,16 +125,16 @@ func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount 
 
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("send trxfee order request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("read trxfee order response failed: %w", err)
 	}
 	logger.Println(string(respBody))
-
+	return nil
 }
 
 type TimeOrderData struct {
@@ -135,7 +144,7 @@ type TimeOrderData struct {
 	ResourceReplenish string `json:"resourceReplenish"`
 }
 
-func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) {
+func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
@@ -156,7 +165,7 @@ func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err := json.Marshal(ordered_data)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("marshal trxfee times order payload failed: %w", err)
 	}
 	json_data := string(b)
 
@@ -166,7 +175,7 @@ func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) {
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", c.URL+"/v1/timesOrder", bytes.NewBuffer([]byte(json_data)))
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("create trxfee times order request failed: %w", err)
 	}
 
 	req.Header.Set("API-KEY", c.APIKey)
@@ -176,19 +185,19 @@ func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("send trxfee times order request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("read trxfee times order response failed: %w", err)
 	}
 	logger.Println(string(respBody))
-
+	return nil
 }
 
-func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) {
+func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	ordered_data := map[string]interface{}{
@@ -198,7 +207,7 @@ func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err := json.Marshal(ordered_data)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("marshal trxfee enable times order payload failed: %w", err)
 	}
 	json_data := string(b)
 
@@ -208,7 +217,7 @@ func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) {
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", c.URL+"/v1/enableTimesOrder", bytes.NewBuffer([]byte(json_data)))
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("create trxfee enable times order request failed: %w", err)
 	}
 
 	req.Header.Set("API-KEY", c.APIKey)
@@ -218,15 +227,16 @@ func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("send trxfee enable times order request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("read trxfee enable times order response failed: %w", err)
 	}
 	logger.Println("trxfee response : ", string(respBody))
+	return nil
 }
 
 func createHmac(message string, secret string) string {
@@ -235,7 +245,7 @@ func createHmac(message string, secret string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func (c *TrxfeeClient) Activation(_receiveAddress string) {
+func (c *TrxfeeClient) Activation(_receiveAddress string) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	ordered_data := map[string]interface{}{
@@ -245,7 +255,7 @@ func (c *TrxfeeClient) Activation(_receiveAddress string) {
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
 	b, err := json.Marshal(ordered_data)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("marshal trxfee activation payload failed: %w", err)
 	}
 	json_data := string(b)
 
@@ -255,7 +265,7 @@ func (c *TrxfeeClient) Activation(_receiveAddress string) {
 	client := &http.Client{}
 	req, err := http.NewRequest("POST", c.URL+"/v1/activation", bytes.NewBuffer([]byte(json_data)))
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("create trxfee activation request failed: %w", err)
 	}
 
 	req.Header.Set("API-KEY", c.APIKey)
@@ -265,13 +275,14 @@ func (c *TrxfeeClient) Activation(_receiveAddress string) {
 
 	resp, err := client.Do(req)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("send trxfee activation request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
 	respBody, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		panic(err)
+		return fmt.Errorf("read trxfee activation response failed: %w", err)
 	}
 	logger.Println("trxfee response : ", string(respBody))
+	return nil
 }

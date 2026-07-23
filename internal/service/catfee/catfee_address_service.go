@@ -96,7 +96,9 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 	bot.Send(msg)
 
 	//添加激活地址
-	trxfeeClient.Activation(_address)
+	if err := trxfeeClient.Activation(_address); err != nil {
+		logger.Printf("activate custody address failed: %v", err)
+	}
 }
 
 func PromptCustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {

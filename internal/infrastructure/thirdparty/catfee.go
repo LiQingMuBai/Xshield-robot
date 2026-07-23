@@ -57,12 +57,15 @@ func (s CatfeeService) Order(_address string) {
 
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		logger.Printf("catfee order request failed: %v", err)
+		return
 	}
+	defer resp.Body.Close()
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		logger.Printf("catfee order response read failed: %v", err)
+		return
 	}
 
 	logger.Println("Response Status:", resp.Status)
@@ -72,6 +75,7 @@ func (s CatfeeService) Order(_address string) {
 // 购买电报会员
 func (s CatfeeService) Premium(username string, months string) (PremiumDataResp, error) {
 	method := "POST" // 可以修改为 "GET", "PUT", "DELETE"
+	var dataResp PremiumDataResp
 
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
 	//Host: api.catfee.io
@@ -93,16 +97,16 @@ func (s CatfeeService) Premium(username string, months string) (PremiumDataResp,
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return dataResp, fmt.Errorf("catfee premium request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return dataResp, fmt.Errorf("catfee premium response read failed: %w", err)
 	}
 
 	// 解析JSON响应
-	var dataResp PremiumDataResp
 	err = json.Unmarshal(body, &dataResp)
 	if err != nil {
 		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
@@ -115,6 +119,7 @@ func (s CatfeeService) Premium(username string, months string) (PremiumDataResp,
 // 增加
 func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, error) {
 	method := "GET" // 可以修改为 "GET", "PUT", "DELETE"
+	var baseAddressResp BasicAddressResp
 
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
 	//Host: api.catfee.io
@@ -136,17 +141,17 @@ func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, erro
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return baseAddressResp, fmt.Errorf("catfee mate open basic get request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return baseAddressResp, fmt.Errorf("catfee mate open basic get response read failed: %w", err)
 	}
 
 	logger.Println(string(body))
 	// 解析JSON响应
-	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
 		logger.Printf("查询基础版地址，解析JSON失败: %v\n", err)
@@ -180,12 +185,13 @@ func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return "", fmt.Errorf("catfee mate open basic add request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return "", fmt.Errorf("catfee mate open basic add response read failed: %w", err)
 	}
 
 	// 解析JSON响应
@@ -224,12 +230,13 @@ func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return "", fmt.Errorf("catfee mate open basic disable request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return "", fmt.Errorf("catfee mate open basic disable response read failed: %w", err)
 	}
 	logger.Println(string(body))
 	// 解析JSON响应
@@ -268,12 +275,13 @@ func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return "", fmt.Errorf("catfee mate open basic enable request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return "", fmt.Errorf("catfee mate open basic enable response read failed: %w", err)
 	}
 
 	logger.Println(string(body))
@@ -311,12 +319,13 @@ func (s CatfeeService) MateOpenBasicDelete(_address string) (int, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Fatal("Error making request:", err)
+		return 0, fmt.Errorf("catfee mate open basic delete request failed: %w", err)
 	}
+	defer resp.Body.Close()
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		logger.Fatal("Error reading response:", err)
+		return 0, fmt.Errorf("catfee mate open basic delete response read failed: %w", err)
 	}
 
 	logger.Println(string(body))

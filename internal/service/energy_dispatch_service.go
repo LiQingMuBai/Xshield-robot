@@ -64,7 +64,9 @@ func (s *EnergyDispatchService) ToggleSmartDispatch(ctx context.Context, subscri
 	}
 
 	trxfeeClient := trxfee.NewTrxfeeClient(s.trxfeeURL, s.trxfeeAPIKey, s.trxfeeSecret)
-	trxfeeClient.EnableTimesOrder(record.Address)
+	if err := trxfeeClient.EnableTimesOrder(record.Address); err != nil {
+		return "", err
+	}
 
 	userRepo := repositories.NewUserRepository(s.db)
 	user, err := userRepo.GetByChatID(chatID)
@@ -193,7 +195,9 @@ func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, ch
 
 	if flag {
 		trxfeeClient := trxfee.NewTrxfeeClient(s.trxfeeURL, s.trxfeeAPIKey, s.trxfeeSecret)
-		trxfeeClient.Order(orderNo, address, 65_000)
+		if err := trxfeeClient.Order(orderNo, address, 65_000); err != nil {
+			return err
+		}
 		return nil
 	}
 

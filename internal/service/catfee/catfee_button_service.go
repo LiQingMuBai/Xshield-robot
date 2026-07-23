@@ -137,7 +137,9 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 		//暂停
 
-		catfeeClient.MateOpenBasicDisable(record.Address)
+		if _, err := catfeeClient.MateOpenBasicDisable(record.Address); err != nil {
+			logger.Printf("disable custody address failed: %v", err)
+		}
 
 	}
 	if status == "3" {
@@ -162,7 +164,9 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Enable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 		//启动
-		catfeeClient.MateOpenBasicEnable(record.Address)
+		if _, err := catfeeClient.MateOpenBasicEnable(record.Address); err != nil {
+			logger.Printf("enable custody address failed: %v", err)
+		}
 	}
 
 	if status == "0" {
@@ -189,7 +193,9 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Enable2(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 
-		catfeeClient.MateOpenBasicAdd(record.Address, strconv.FormatInt(chatID, 10))
+		if _, err := catfeeClient.MateOpenBasicAdd(record.Address, strconv.FormatInt(chatID, 10)); err != nil {
+			logger.Printf("add custody address failed: %v", err)
+		}
 	}
 
 	addresses, _ := userSmartTransactionAddressesRepo.List(context.Background(), strconv.FormatInt(chatID, 10))

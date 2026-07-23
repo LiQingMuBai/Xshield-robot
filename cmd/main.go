@@ -1,6 +1,8 @@
 package main
 
 import (
+	"fmt"
+	"os"
 	"ushield_bot/internal/app"
 	"ushield_bot/internal/bootstrap"
 	telegramrouter "ushield_bot/internal/handler/telegram/router"
@@ -11,16 +13,19 @@ import (
 
 func main() {
 	if err := logger.Setup("."); err != nil {
-		logger.Fatalf("setup logger err: %v", err)
+		fmt.Fprintf(os.Stderr, "setup logger err: %v\n", err)
+		os.Exit(1)
 	}
 
 	application, err := bootstrap.BuildApp()
 	if err != nil {
-		logger.Fatalf("build app err: %v", err)
+		logger.Printf("build app err: %v", err)
+		os.Exit(1)
 	}
 
 	if err := application.Run(processUpdate); err != nil {
-		logger.Fatalf("run app err: %v", err)
+		logger.Printf("run app err: %v", err)
+		os.Exit(1)
 	}
 }
 

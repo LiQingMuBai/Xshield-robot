@@ -854,7 +854,9 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	logger.Printf("address %s\n", record.Address)
 	logger.Printf("times %d\n", record.Times)
 
-	trxfeeClient.TimesOrder(record.Address, int(record.Times))
+	if err := trxfeeClient.TimesOrder(record.Address, int(record.Times)); err != nil {
+		logger.Printf("create trxfee times order failed: %v", err)
+	}
 
 	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+global.Translations[_lang]["smart_transaction_package_order_purchased_successfully"]+"\n"+
 		global.Translations[_lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[_lang]["笔"])+"\n"+

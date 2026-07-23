@@ -10,6 +10,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -34,7 +35,10 @@ func PayPremiumOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.D
 	tgOrderDB := repositories.NewTelegramPremiumOrderRepository(db)
 	orderRecord, _ := tgOrderDB.GetByOrderNo(context.Background(), orderNO)
 	tgOrderDB.Update(context.Background(), orderNO, 1)
-	catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month)
+	if _, err := catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month); err != nil {
+		logger.Printf("pay premium order failed: %v", err)
+		return
+	}
 
 	tips := strings.ReplaceAll(global.Translations[lang]["successfully_purchased_telegram"], "{month_package}", global.Translations[lang][orderRecord.Month+"_month_premium"])
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["order_id"]+"：TOPUP-"+orderNO+" , "+tips)
