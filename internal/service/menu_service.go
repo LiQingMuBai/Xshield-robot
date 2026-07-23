@@ -2,7 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
 	"os"
 	"strconv"
 	"strings"
@@ -11,6 +10,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -111,13 +111,13 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 
 	energy_cost, _ := dictDetailRepo.GetDictionaryDetail("energy_cost")
 
-	fmt.Printf("energy_cost: %s\n", energy_cost)
+	logger.Printf("energy_cost: %s\n", energy_cost)
 
 	energy_cost_2x, _ := StringMultiply(energy_cost, 2)
 	energy_cost_10x, _ := StringMultiply(energy_cost, 10)
 
-	fmt.Printf("energy_cost_2x: %s\n", energy_cost_2x)
-	fmt.Printf("energy_cost_10x: %s\n", energy_cost_10x)
+	logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
+	logger.Printf("energy_cost_10x: %s\n", energy_cost_10x)
 
 	originStr := global.Translations[_lang]["energy_swap_tips"]
 

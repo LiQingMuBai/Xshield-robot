@@ -2,8 +2,8 @@ package fixedfloat
 
 import (
 	"fmt"
-	"log"
 	"testing"
+	logger "ushield_bot/internal/logger"
 )
 
 func TestGenerateQRCodeWithTimestamp(t *testing.T) {
@@ -12,9 +12,9 @@ func TestGenerateQRCodeWithTimestamp(t *testing.T) {
 
 	filename, err := GenerateQRCodeWithTimestamp(content, size)
 	if err != nil {
-		log.Fatal("生成二维码失败:", err)
+		logger.Fatal("生成二维码失败:", err)
 	}
 
-	fmt.Printf("✅ 二维码已生成，文件名：%s\n", filename)
+	logger.Printf("✅ 二维码已生成，文件名：%s\n", filename)
 
 }

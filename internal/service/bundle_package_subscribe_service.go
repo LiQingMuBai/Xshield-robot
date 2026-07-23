@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -13,6 +12,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -36,7 +36,7 @@ func RemoveBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.B
 
 	createErr := userOperationPackageAddressesRepo.Remove(context.Background(), message.Chat.ID, message.Text)
 	if createErr != nil {
-		log.Printf("createErr: %s", createErr)
+		logger.Printf("createErr: %s", createErr)
 		return true
 	}
 	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
@@ -75,7 +75,7 @@ func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	createErr := userOperationPackageAddressesRepo.Create(context.Background(), &record)
 	if createErr != nil {
-		log.Printf("createErr: %s", createErr)
+		logger.Printf("createErr: %s", createErr)
 		return true
 	}
 	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_added_success"]+"</b>"+"\n")
@@ -98,7 +98,7 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
-		fmt.Println(err)
+		logger.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(message.Chat.ID)
@@ -109,14 +109,14 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 		if flag, _ := CompareNumberStrings(user.Amount, bundlePackage.Amount); flag < 0 {
 			lessBalance = true
 		}
-		fmt.Printf("bundle %v is USDT\n", bundlePackage)
+		logger.Printf("bundle %v is USDT\n", bundlePackage)
 	} else if bundlePackage.Token == "TRX" {
 		//扣trx
 		if flag, _ := CompareNumberStrings(user.TronAmount, bundlePackage.Amount); flag < 0 {
 			lessBalance = true
 		}
 
-		fmt.Printf("bundle %v is trx\n", bundlePackage)
+		logger.Printf("bundle %v is trx\n", bundlePackage)
 	}
 
 	if lessBalance {
@@ -150,11 +150,11 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 	//扣錢
 	if bundlePackage.Token == "TRX" {
 		balance, _ := SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, 1)
-		fmt.Printf("TRX balance %s", balance)
+		logger.Printf("TRX balance %s", balance)
 		user.TronAmount = balance
 	} else if bundlePackage.Token == "USDT" {
 		balance, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, 1)
-		fmt.Printf("USDT balance %s", balance)
+		logger.Printf("USDT balance %s", balance)
 
 		user.Amount = balance
 	}
@@ -206,7 +206,7 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 }
 func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//fmt.Println("ExtractBundlePackage")
+	//logger.Println("ExtractBundlePackage")
 	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	//var info request.UserAddressDetectionSearch
 	//
@@ -224,7 +224,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 
 	if err != nil {
 
-		fmt.Println("能量笔数套餐空", err)
+		logger.Println("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if len(orderlist) > 0 {
@@ -353,7 +353,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 }
 func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//fmt.Println("ExtractBundlePackage")
+	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
 
@@ -362,7 +362,7 @@ func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatI
 	orderlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, chatID)
 	if err != nil {
 
-		fmt.Println("能量笔数套餐空", err)
+		logger.Println("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
@@ -457,11 +457,11 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	info.PageInfo.PageSize = 10
 	orderlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	fmt.Printf("currentpage : %d", state.CurrentPage)
-	fmt.Printf("total: %v\n", total)
+	logger.Printf("currentpage : %d", state.CurrentPage)
+	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
 
-	fmt.Printf("totalPages : %d", totalPages)
+	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -544,7 +544,7 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	fmt.Printf("state: %v\n", state)
+	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
@@ -740,7 +740,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
-		fmt.Println(err)
+		logger.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(message.Chat.ID)
@@ -751,14 +751,14 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 		if flag, _ := CompareNumberStrings(user.Amount, bundlePackage.Amount); flag < 0 {
 			lessBalance = true
 		}
-		fmt.Printf("bundle %v is USDT\n", bundlePackage)
+		logger.Printf("bundle %v is USDT\n", bundlePackage)
 	} else if bundlePackage.Token == "TRX" {
 		//扣trx
 		if flag, _ := CompareNumberStrings(user.TronAmount, bundlePackage.Amount); flag < 0 {
 			lessBalance = true
 		}
 
-		fmt.Printf("bundle %v is trx\n", bundlePackage)
+		logger.Printf("bundle %v is trx\n", bundlePackage)
 	}
 
 	if lessBalance {
@@ -818,11 +818,11 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	//扣錢
 	if bundlePackage.Token == "TRX" {
 		balance, _ := SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, 1)
-		fmt.Printf("TRX balance %s\n", balance)
+		logger.Printf("TRX balance %s\n", balance)
 		user.TronAmount = balance
 	} else if bundlePackage.Token == "USDT" {
 		balance, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, 1)
-		fmt.Printf("USDT balance %s\n", balance)
+		logger.Printf("USDT balance %s\n", balance)
 
 		user.Amount = balance
 	}
@@ -851,8 +851,8 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 	//
 
-	fmt.Printf("address %s\n", record.Address)
-	fmt.Printf("times %d\n", record.Times)
+	logger.Printf("address %s\n", record.Address)
+	logger.Printf("times %d\n", record.Times)
 
 	trxfeeClient.TimesOrder(record.Address, int(record.Times))
 
@@ -881,7 +881,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 }
 func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//fmt.Println("ExtractBundlePackage")
+	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
 
@@ -890,7 +890,7 @@ func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID 
 	orderlist, total, err := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, chatID)
 	if err != nil {
 
-		fmt.Println("能量笔数套餐空", err)
+		logger.Println("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {

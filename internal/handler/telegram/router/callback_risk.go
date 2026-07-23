@@ -2,12 +2,12 @@ package router
 
 import (
 	"context"
-	"log"
 	"strconv"
 	"strings"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -27,7 +27,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 			return true
 		}
 		if err != nil {
-			log.Printf("freeze alert confirm err: %v", err)
+			logger.Printf("freeze alert confirm err: %v", err)
 			return true
 		}
 		sendFreezeAlertEnableSuccess(ctx.Bot, callbackQuery.Message.Chat.ID, lang, result)
@@ -37,7 +37,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		preview, err := freezeAlertService.PreviewClose(callbackQuery.Message.Chat.ID, target)
 		if err != nil {
-			log.Printf("freeze alert close preview err: %v", err)
+			logger.Printf("freeze alert close preview err: %v", err)
 			return true
 		}
 		sendFreezeAlertClosePreview(ctx.Bot, callbackQuery.Message.Chat.ID, lang, preview)
@@ -46,7 +46,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		target := strings.TrimPrefix(callbackQuery.Data, "close_risk_")
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		if err := freezeAlertService.Close(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			log.Printf("freeze alert close err: %v", err)
+			logger.Printf("freeze alert close err: %v", err)
 			return true
 		}
 		sendFreezeAlertCloseSuccess(ctx.Bot, callbackQuery.Message.Chat.ID, lang)
@@ -94,7 +94,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		items, err := freezeAlertService.ListActive(callbackQuery.Message.Chat.ID)
 		if err != nil {
-			log.Printf("freeze alert list err: %v", err)
+			logger.Printf("freeze alert list err: %v", err)
 			return true
 		}
 		sendFreezeAlertStopList(ctx.Bot, callbackQuery.Message.Chat.ID, lang, items)
@@ -105,7 +105,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 			sendFreezeAlertInsufficientBalance(ctx.Bot, callbackQuery.Message.Chat.ID, lang)
 			return true
 		} else if err != nil {
-			log.Printf("freeze alert start err: %v", err)
+			logger.Printf("freeze alert start err: %v", err)
 			return true
 		}
 		sendFreezeAlertPromptAddress(ctx.Bot, callbackQuery.Message.Chat.ID, lang)

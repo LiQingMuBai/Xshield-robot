@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"testing"
+	logger "ushield_bot/internal/logger"
 )
 
 func TestIsValidBitcoinAddress(t *testing.T) {
@@ -11,5 +12,5 @@ func TestIsValidBitcoinAddress(t *testing.T) {
 	//0xF510e53EF8DA4e45FFA59EB554511a7410E5eFD3
 	valid := IsValidBitcoinAddress("1A1zP1eP5QGefi2DMPTfTL5SLmv7DivfNa")
 
-	fmt.Printf("valid: %v\n", valid)
+	logger.Printf("valid: %v\n", valid)
 }

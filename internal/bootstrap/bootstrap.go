@@ -5,7 +5,6 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"log"
 	"time"
 	"ushield_bot/internal/app"
 	"ushield_bot/internal/cache"
@@ -36,7 +35,6 @@ func BuildApp() (*app.App, error) {
 		return nil, fmt.Errorf("init telegram bot: %w", err)
 	}
 	bot.Debug = cfg.Telegram.Debug
-	log.Printf("authorized on account %s", bot.Self.UserName)
 
 	catfeeClient, err := trxfee.NewCatfeeService(
 		cfg.Catfee.APIKey,

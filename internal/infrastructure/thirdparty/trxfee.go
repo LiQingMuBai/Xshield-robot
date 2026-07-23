@@ -11,6 +11,7 @@ import (
 	"net/http"
 	"strconv"
 	"time"
+	logger "ushield_bot/internal/logger"
 
 	jsoniter "github.com/json-iterator/go"
 )
@@ -59,8 +60,8 @@ func (c *TrxfeeClient) Account() (resp *AccountDataResp, err error) {
 	defer res.Body.Close()
 	body, _ := ioutil.ReadAll(res.Body)
 
-	fmt.Println(res)
-	fmt.Println(string(body))
+	logger.Println(res)
+	logger.Println(string(body))
 
 	var accountResp AccountDataResp
 
@@ -123,7 +124,7 @@ func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount 
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(respBody))
+	logger.Println(string(respBody))
 
 }
 
@@ -183,7 +184,7 @@ func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(string(respBody))
+	logger.Println(string(respBody))
 
 }
 
@@ -225,7 +226,7 @@ func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("trxfee response : ", string(respBody))
+	logger.Println("trxfee response : ", string(respBody))
 }
 
 func createHmac(message string, secret string) string {
@@ -272,5 +273,5 @@ func (c *TrxfeeClient) Activation(_receiveAddress string) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("trxfee response : ", string(respBody))
+	logger.Println("trxfee response : ", string(respBody))
 }

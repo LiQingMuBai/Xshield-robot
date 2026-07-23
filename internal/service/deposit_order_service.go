@@ -2,8 +2,6 @@ package service
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -13,6 +11,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -21,14 +20,14 @@ import (
 func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
 	transferAmount := callbackQuery.Data[13:len(callbackQuery.Data)]
 
-	fmt.Printf("transferAmount: %s\n", transferAmount)
+	logger.Printf("transferAmount: %s\n", transferAmount)
 
 	usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
 	placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if queryErr != nil {
-		fmt.Print("Failed to update user: " + queryErr.Error())
+		logger.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -62,11 +61,11 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 
 	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		log.Printf("Error updating usdt placeholder: %v", err)
+		logger.Printf("Error updating usdt placeholder: %v", err)
 	}
 	realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, transferAmount)
 
-	fmt.Printf("realTransferAmount: %s\n", realTransferAmount)
+	logger.Printf("realTransferAmount: %s\n", realTransferAmount)
 
 	//生成订单
 	usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
@@ -90,7 +89,7 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		log.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -163,7 +162,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 
 	prevMessageID, err := strconv.Atoi(prevMessageIDStr)
 	if err != nil {
-		fmt.Println("转换失败:", err)
+		logger.Println("转换失败:", err)
 		//return
 	}
 
@@ -180,11 +179,11 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		//update
 		userTRXDepositsRepo.Update(context.Background(), record.Id, 2)
 
-		fmt.Printf("record: %v\n", record)
+		logger.Printf("record: %v\n", record)
 
 		userTRXPlaceholdersRepo := repositories.NewUserTRXPlaceholdersRepository(db)
 		userTRXPlaceholdersRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		logger.Printf("placeholder重置 %s\n", record.Placeholder)
 	}
 
 	if strings.Contains(orderNO, "USDT_") {
@@ -194,10 +193,10 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		//update
 		userUSDTDepositsRepo.UpdateStatusByID(context.Background(), record.Id, 2)
 
-		fmt.Printf("record: %v\n", record)
+		logger.Printf("record: %v\n", record)
 		userUSDTPlaceholdersRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
 		userUSDTPlaceholdersRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
-		fmt.Printf("placeholder重置 %s\n", record.Placeholder)
+		logger.Printf("placeholder重置 %s\n", record.Placeholder)
 	}
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -255,14 +254,14 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
 	transferAmount := callbackQuery.Data[12:len(callbackQuery.Data)]
 
-	fmt.Printf("transferAmount: %s\n", transferAmount)
+	logger.Printf("transferAmount: %s\n", transferAmount)
 
 	trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
 	placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if queryErr != nil {
-		fmt.Print("Failed to update user: " + queryErr.Error())
+		logger.Print("Failed to update user: " + queryErr.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["tron_network_tips"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -296,11 +295,11 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 
 	err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		log.Printf("Error updating trx placeholder: %v", err)
+		logger.Printf("Error updating trx placeholder: %v", err)
 	}
 	realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, transferAmount)
 
-	fmt.Printf("realTransferAmount: %s\n", realTransferAmount)
+	logger.Printf("realTransferAmount: %s\n", realTransferAmount)
 
 	//生成订单
 	trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
@@ -323,7 +322,7 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 
 	createErr := trxDepositRepo.Create(context.Background(), &trxDeposit)
 	if createErr != nil {
-		log.Printf("Error creating trxDeposit: %v", createErr)
+		logger.Printf("Error creating trxDeposit: %v", createErr)
 	}
 
 	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,

@@ -3,7 +3,6 @@ package service
 import (
 	"context"
 	"errors"
-	"log"
 	"strings"
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/domain"
@@ -11,6 +10,7 @@ import (
 	"ushield_bot/internal/handler"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -56,7 +56,7 @@ func ExtractSlowMistRiskQuery(lang string, cacheStore cache.Cache, message *tgbo
 		return
 	}
 	if err != nil {
-		log.Printf("address detection err: %v", err)
+		logger.Printf("address detection err: %v", err)
 		return
 	}
 
@@ -103,7 +103,7 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 	result.Text = text
 
 	if err := userRepo.UpdateDispatchTimesByChatID(1, chatID); err != nil {
-		log.Printf("update address detection times err: %v", err)
+		logger.Printf("update address detection times err: %v", err)
 	}
 
 	if user.Times >= 0 && !temporaryFailure {

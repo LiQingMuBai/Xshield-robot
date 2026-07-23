@@ -2,13 +2,12 @@ package handler
 
 import (
 	"encoding/json"
-	"fmt"
 	"io"
-	"log"
 	"net/http"
 	"strconv"
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/global"
+	logger "ushield_bot/internal/logger"
 )
 
 func ListRiskAddresses(_coin string, _address, _cookie string) LabeledAddressList {
@@ -32,11 +31,11 @@ func ListRiskAddresses(_coin string, _address, _cookie string) LabeledAddressLis
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	log.Println(string(body))
+	logger.Println(string(body))
 
 	var labeledAddressList LabeledAddressList
 	if err := json.Unmarshal(body, &labeledAddressList); err != nil { // Parse []byte to go struct pointer
-		fmt.Println("Can not unmarshal JSON")
+		logger.Println("Can not unmarshal JSON")
 	}
 	return labeledAddressList
 }
@@ -112,10 +111,10 @@ func GetAddressInfo(_symbol string, _address, _cookie string) (SlowMistAddressIn
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	log.Println(string(body))
+	logger.Println(string(body))
 	var addressInfo SlowMistAddressInfo
 	if err := json.Unmarshal(body, &addressInfo); err != nil { // Parse []byte to go struct pointer
-		fmt.Println("Can not unmarshal JSON")
+		logger.Println("Can not unmarshal JSON")
 		return addressInfo, err
 	}
 	return addressInfo, nil
@@ -145,22 +144,22 @@ func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistA
 	_text3 := ""
 	_text4 := ""
 	if _item0 > 1 {
-		//log.Println("⚠️有与疑似恶意地址交互")
+		//logger.Println("⚠️有与疑似恶意地址交互")
 		_text1 = "⚠️" + global.Translations[_lang]["suspected_malicious_address_contact"] + "\n"
 	}
 	if _item1 > 1 {
-		//log.Println("⚠️️有与恶意地址交互")
+		//logger.Println("⚠️️有与恶意地址交互")
 		_text2 = "⚠️️" + global.Translations[_lang]["confirmed_malicious_address_contact"] + "\n"
 	}
 	if _item2 > 1 {
-		//log.Println("⚠️️️有与高风险标签地址交互")
+		//logger.Println("⚠️️️有与高风险标签地址交互")
 		_text3 = "⚠️" + global.Translations[_lang]["high_risk_address_contact"] + "\n"
 	}
 
 	_banned_item := addressInfo.RiskDic.HackingEvent
 
 	if _banned_item != "" {
-		//log.Println("⚠️️受制裁实体")
+		//logger.Println("⚠️️受制裁实体")
 		_text4 = "⚠️️" + global.Translations[_lang]["sanctioned_entity_association"] + "\n"
 	}
 	//msg = domain.MessageToSend{
@@ -172,7 +171,7 @@ func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistA
 	//		"⚠️️受制裁实体\n" +
 	//		"📢📢📢更詳細報告請聯繫客服@ushield001\n",
 	//}
-	//log.Println(events)
+	//logger.Println(events)
 
 	_text6 := "📊 " + global.Translations[_lang]["address_overview"] + "\n"
 
@@ -211,11 +210,11 @@ func GetAddressProfile(_coin string, _address, _cookie string) AddressProfile {
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	log.Println(string(body))
+	logger.Println(string(body))
 
 	var addressProfile AddressProfile
 	if err := json.Unmarshal(body, &addressProfile); err != nil { // Parse []byte to go struct pointer
-		fmt.Println("Can not unmarshal JSON")
+		logger.Println("Can not unmarshal JSON")
 	}
 	return addressProfile
 }

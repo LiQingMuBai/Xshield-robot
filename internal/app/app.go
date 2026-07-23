@@ -3,7 +3,7 @@ package app
 import (
 	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"log"
+	logger "ushield_bot/internal/logger"
 )
 
 type UpdateProcessor func(update tgbotapi.Update, c *Container)
@@ -21,15 +21,16 @@ func (a *App) Run(processor UpdateProcessor) error {
 		return fmt.Errorf("update processor is nil")
 	}
 
-	log.Print(a.container.Translator.T("zh", "start"))
-	log.Print(a.container.Translator.T("en", "start"))
+	printStartupBanner(a.container)
+	logger.Print(a.container.Translator.T("zh", "start"))
+	logger.Print(a.container.Translator.T("en", "start"))
 
 	_, err := a.container.Bot.Request(tgbotapi.NewSetMyCommands(
 		tgbotapi.BotCommand{Command: "start", Description: "start"},
 		tgbotapi.BotCommand{Command: "hide", Description: "hide"},
 	))
 	if err != nil {
-		log.Printf("error setting commands: %v", err)
+		logger.Printf("error setting commands: %v", err)
 	}
 
 	u := tgbotapi.NewUpdate(0)

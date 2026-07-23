@@ -2,13 +2,13 @@ package member
 
 import (
 	"context"
-	"log"
 	"strconv"
 	"strings"
 	"time"
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -57,7 +57,7 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		log.Printf("发送视频失败: %v", err)
+		logger.Printf("发送视频失败: %v", err)
 		//// 可选：给用户发错误提示
 		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
 		//bot.Send(errorMsg)
@@ -67,14 +67,14 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 	//
 	//energy_cost, _ := dictDetailRepo.GetDictionaryDetail("energy_cost")
 	//
-	//fmt.Printf("energy_cost: %s\n", energy_cost)
+	//logger.Printf("energy_cost: %s\n", energy_cost)
 	//
 	//energy_cost_2x, _ := tools.StringMultiply(energy_cost, 2)
 	//energy_cost_3x, _ := tools.StringMultiply(energy_cost, 3)
 	//energy_cost_4x, _ := tools.StringMultiply(energy_cost, 4)
 	//energy_cost_5x, _ := tools.StringMultiply(energy_cost, 5)
 	//
-	//fmt.Printf("energy_cost_2x: %s\n", energy_cost_2x)
+	//logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
 	//
 	//originStr := global.Translations[_lang]["member_telegram_desc"]
 	//
@@ -115,7 +115,7 @@ func MenuNavigateForMonth(cache cache.Cache, _lang string, db *gorm.DB, _chatID 
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		log.Printf("发送视频失败: %v", err)
+		logger.Printf("发送视频失败: %v", err)
 	}
 
 	expiration := 1 * time.Minute // 短时间缓存空值

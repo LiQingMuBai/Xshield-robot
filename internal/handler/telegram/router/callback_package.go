@@ -2,10 +2,10 @@ package router
 
 import (
 	"context"
-	"log"
 	"strings"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 	"ushield_bot/internal/service/catfee"
 
@@ -18,7 +18,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		target := strings.TrimPrefix(callbackQuery.Data, "set_bundle_package_default_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
 		if err := userOperationPackageAddressesRepo.Update(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			log.Printf("set default bundle address err: %v", err)
+			logger.Printf("set default bundle address err: %v", err)
 			return true
 		}
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>设置默认地址成功 </b>\n")
@@ -30,7 +30,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		target := strings.TrimPrefix(callbackQuery.Data, "remove_bundle_package_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
 		if err := userOperationPackageAddressesRepo.Remove(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			log.Printf("remove bundle address err: %v", err)
+			logger.Printf("remove bundle address err: %v", err)
 			return true
 		}
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>"+global.Translations[lang]["address_deleted_success"]+"</b>\n")

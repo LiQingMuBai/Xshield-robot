@@ -2,7 +2,6 @@ package router
 
 import (
 	"context"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -10,6 +9,7 @@ import (
 	"ushield_bot/internal/domain"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -28,7 +28,7 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		lang, err := dispatchService.ToggleSmartDispatch(context.Background(), subscribeBundleID, update.Message.Chat.ID, true)
 		if err != nil {
 			if err == service.ErrSmartDispatchForbidden {
-				log.Println("不是自己的权利")
+				logger.Println("不是自己的权利")
 			}
 			return
 		}
@@ -47,7 +47,7 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		lang, err := dispatchService.ToggleSmartDispatch(context.Background(), subscribeBundleID, update.Message.Chat.ID, false)
 		if err != nil {
 			if err == service.ErrSmartDispatchForbidden {
-				log.Println("不是自己的权利")
+				logger.Println("不是自己的权利")
 			}
 			return
 		}
@@ -75,7 +75,7 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		if err != nil {
 			switch err {
 			case service.ErrDispatchForbidden:
-				log.Println("不是自己的权利")
+				logger.Println("不是自己的权利")
 			case service.ErrDispatchInsufficientTimes:
 				userRepo := repositories.NewUserRepository(ctx.DB)
 				user, userErr := userRepo.GetByChatID(update.Message.Chat.ID)

@@ -54,16 +54,7 @@ func (r *UserTRXDepositsRepo) ListTRXDepositsByPage(ctx context.Context, info re
 	err = db.Find(&userTrxDepositss).Error
 	return userTrxDepositss, total, err
 }
-func (r *UserTRXDepositsRepo) Find(ctx context.Context, orderNo string) (domain.UserTRXDeposits, error) {
-	var depositRecords []domain.UserTRXDeposits
-	err := r.db.WithContext(ctx).
-		Model(&domain.UserTRXDeposits{}).
-		Select("id", "placeholder").
-		Where("order_no = ?", orderNo).
-		Scan(&depositRecords).Error
-	return depositRecords[0], err
 
-}
 func (r *UserTRXDepositsRepo) GetByOrderNo(ctx context.Context, orderNo string) (domain.UserTRXDeposits, error) {
 	var depositRecord domain.UserTRXDeposits
 	err := r.db.WithContext(ctx).

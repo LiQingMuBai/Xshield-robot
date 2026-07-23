@@ -2,8 +2,6 @@ package member
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -14,6 +12,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	"ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -62,12 +61,12 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		log.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		log.Printf("Error updating usdt placeholder: %v", err)
+		logger.Printf("Error updating usdt placeholder: %v", err)
 	}
 
 	//新增会员订单
@@ -83,9 +82,9 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	tgOrderDB.Create(context.Background(), &tgOrder)
 
-	fmt.Printf("无小数点：%s\n", monthRecord.Amount)
-	fmt.Printf("有小数点：%s\n", tools.AddStringsAsFloats(monthRecord.Amount, usdtDeposit.Placeholder))
-	fmt.Printf("小数点：%s\n", usdtDeposit.Placeholder)
+	logger.Printf("无小数点：%s\n", monthRecord.Amount)
+	logger.Printf("有小数点：%s\n", tools.AddStringsAsFloats(monthRecord.Amount, usdtDeposit.Placeholder))
+	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(monthRecord.Amount, usdtDeposit.Placeholder))
 
 	//_agent := os.Getenv("Agent")

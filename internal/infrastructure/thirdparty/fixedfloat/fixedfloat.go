@@ -9,6 +9,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	logger "ushield_bot/internal/logger"
 )
 
 const (
@@ -85,7 +86,7 @@ func (api *FixedFloatAPI) req(method string, payload interface{}) (map[string]in
 		return nil, fmt.Errorf("api error [%d]: %s", int(code), msg)
 	}
 
-	fmt.Printf("result: %v\n", result)
+	logger.Printf("result: %v\n", result)
 
 	//response, err := MapToResponse(result)
 	data, ok := result["data"].(map[string]interface{})
@@ -178,7 +179,7 @@ func (api *FixedFloatAPI) req2(method string, payload interface{}) (map[string]i
 		return nil, fmt.Errorf("api error [%d]: %s", int(code), msg)
 	}
 
-	fmt.Printf("result: %v\n", result)
+	logger.Printf("result: %v\n", result)
 
 	//response, err := MapToResponse(result)
 	////data, ok := result["data"].(map[string]interface{})

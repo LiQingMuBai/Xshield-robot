@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"testing"
+	logger "ushield_bot/internal/logger"
 )
 
 func TestCompareNumberStrings(t *testing.T) {
@@ -15,7 +16,7 @@ func TestCompareNumberStrings(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	fmt.Println(value)
+	logger.Println(value)
 }
 
 func TestSubtractStringNumbers(t *testing.T) {
@@ -29,7 +30,7 @@ func TestSubtractStringNumbers(t *testing.T) {
 		t.Error(err.Error())
 	}
 
-	fmt.Println(value)
+	logger.Println(value)
 }
 
 func TestMultiplyStringNumbers(t *testing.T) {
@@ -39,12 +40,12 @@ func TestMultiplyStringNumbers(t *testing.T) {
 	if err1 != nil {
 		t.Error(err1.Error())
 	}
-	fmt.Println(energy_cost_2x)
+	logger.Println(energy_cost_2x)
 	energy_cost_10x, err2 := StringMultiply("1", 10)
 
 	if err2 != nil {
 		t.Error(err2.Error())
 	}
-	fmt.Println(energy_cost_10x)
+	logger.Println(energy_cost_10x)
 
 }

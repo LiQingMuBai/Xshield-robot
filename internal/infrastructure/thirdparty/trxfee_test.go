@@ -17,9 +17,9 @@ import (
 //	username := "@12"
 //
 //	if len(username) < 4 || !strings.Contains(username, "@") {
-//		fmt.Println("没包括")
+//		logger.Println("没包括")
 //	} else {
-//		fmt.Println(username)
+//		logger.Println(username)
 //	}
 //
 //}

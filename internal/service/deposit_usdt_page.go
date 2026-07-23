@@ -2,12 +2,12 @@ package service
 
 import (
 	"context"
-	"fmt"
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
 	"strings"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 )
 
@@ -120,11 +120,11 @@ func ShowNextUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	info.PageInfo.PageSize = 10
 	trxlist, total, _ := usdtDepositRepo.ListUSDTDepositsByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	fmt.Printf("currentpage : %d", state.CurrentPage)
-	fmt.Printf("total: %v\n", total)
+	logger.Printf("currentpage : %d", state.CurrentPage)
+	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
 
-	fmt.Printf("totalPages : %d", totalPages)
+	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -164,7 +164,7 @@ func ShowNextUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	fmt.Printf("state: %v\n", state)
+	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false

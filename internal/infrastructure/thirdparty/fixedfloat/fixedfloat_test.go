@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"testing"
 	"time"
+	logger "ushield_bot/internal/logger"
 )
 
 func TestCcies(t *testing.T) {
@@ -15,7 +16,7 @@ func TestCcies(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Supported coins:", ccies)
+	logger.Println("Supported coins:", ccies)
 
 	//// 示例：创建订单
 	//params := map[string]interface{}{
@@ -29,7 +30,7 @@ func TestCcies(t *testing.T) {
 	//if err != nil {
 	//	panic(err)
 	//}
-	//fmt.Println("Order created:", order)
+	//logger.Println("Order created:", order)
 
 }
 
@@ -48,7 +49,7 @@ func TestPrice(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println("Order price:", order)
+	logger.Println("Order price:", order)
 }
 func TestOrder(t *testing.T) {
 
@@ -59,7 +60,7 @@ func TestOrder(t *testing.T) {
 	//if err != nil {
 	//	panic(err)
 	//}
-	//fmt.Println("Supported coins:", ccies)
+	//logger.Println("Supported coins:", ccies)
 
 	// 示例：创建订单
 	params := map[string]interface{}{
@@ -75,41 +76,41 @@ func TestOrder(t *testing.T) {
 	if err != nil {
 		panic(err)
 	}
-	fmt.Printf("order %v\n", rawMap)
+	logger.Printf("order %v\n", rawMap)
 
 	from, to, ok := ExtractFromAndTo(rawMap)
 	if !ok {
-		fmt.Println("Failed to extract from/to")
+		logger.Println("Failed to extract from/to")
 		return
 	}
 
-	fmt.Println("From Address:", from.Address)
-	fmt.Println("From Amount:", *from.Amount)
-	fmt.Println("To Address:", to.Address)
-	fmt.Println("To Amount:", *to.Amount)
+	logger.Println("From Address:", from.Address)
+	logger.Println("From Amount:", *from.Amount)
+	logger.Println("To Address:", to.Address)
+	logger.Println("To Amount:", *to.Amount)
 
 	timeInfo, ok := ExtractTime(rawMap)
 	if !ok {
-		fmt.Println("Failed to extract time")
+		logger.Println("Failed to extract time")
 		return
 	}
 
-	fmt.Printf("Reg (Unix): %.0f\n", timeInfo.Reg)
-	fmt.Printf("Expiration (Unix): %.0f\n", timeInfo.Expiration)
-	fmt.Printf("Left: %.0f seconds\n", timeInfo.Left)
+	logger.Printf("Reg (Unix): %.0f\n", timeInfo.Reg)
+	logger.Printf("Expiration (Unix): %.0f\n", timeInfo.Expiration)
+	logger.Printf("Left: %.0f seconds\n", timeInfo.Left)
 
 	// 转为 time.Time（可读时间）
 	regTime := time.Unix(int64(timeInfo.Reg), 0)
 	expTime := time.Unix(int64(timeInfo.Expiration), 0)
-	fmt.Println("Reg Time:", regTime.UTC().Format("2006-01-02 15:04:05 UTC"))
-	fmt.Println("Expire Time:", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+	logger.Println("Reg Time:", regTime.UTC().Format("2006-01-02 15:04:05 UTC"))
+	logger.Println("Expire Time:", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
 
 	id, status, ok := ExtractIDAndStatus(rawMap)
 	if !ok {
-		fmt.Println("Failed to extract id or status")
+		logger.Println("Failed to extract id or status")
 		return
 	}
 
-	fmt.Printf("ID: %s\n", id)
-	fmt.Printf("Status: %s\n", status)
+	logger.Printf("ID: %s\n", id)
+	logger.Printf("Status: %s\n", status)
 }

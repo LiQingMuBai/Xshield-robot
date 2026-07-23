@@ -2,8 +2,6 @@ package member
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -14,6 +12,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	"ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -23,7 +22,7 @@ func MenuStarNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.Bo
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
 	star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
-	fmt.Printf("star_unit: %s\n", star_unit)
+	logger.Printf("star_unit: %s\n", star_unit)
 	unitPrice, _ := strconv.ParseFloat(star_unit, 64)
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -64,7 +63,7 @@ func MenuStarNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.Bo
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		log.Printf("发送视频失败: %v", err)
+		logger.Printf("发送视频失败: %v", err)
 		//// 可选：给用户发错误提示
 		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
 		//bot.Send(errorMsg)
@@ -86,7 +85,7 @@ func MenuNavigateForStar(cache cache.Cache, _lang string, db *gorm.DB, _chatID i
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
 	star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
-	fmt.Printf("star_unit: %s\n", star_unit)
+	logger.Printf("star_unit: %s\n", star_unit)
 
 	unitPrice, _ := strconv.ParseFloat(star_unit, 64)
 
@@ -101,7 +100,7 @@ func MenuNavigateForStar(cache cache.Cache, _lang string, db *gorm.DB, _chatID i
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		log.Printf("发送视频失败: %v", err)
+		logger.Printf("发送视频失败: %v", err)
 	}
 
 	expiration := 1 * time.Minute // 短时间缓存空值
@@ -148,7 +147,7 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
 	star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
-	fmt.Printf("star_unit: %s\n", star_unit)
+	logger.Printf("star_unit: %s\n", star_unit)
 	unitPrice, _ := strconv.ParseFloat(star_unit, 64)
 	price, _ := tools.StringMultiply(count, unitPrice)
 	usdtDeposit.Amount = price
@@ -156,12 +155,12 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		log.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Printf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		log.Printf("Error updating usdt placeholder: %v", err)
+		logger.Printf("Error updating usdt placeholder: %v", err)
 	}
 
 	//新增会员订单
@@ -177,9 +176,9 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 
 	tgOrderDB.Create(context.Background(), &tgOrder)
 
-	fmt.Printf("无小数点：%s\n", price)
-	fmt.Printf("有小数点：%s\n", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
-	fmt.Printf("小数点：%s\n", usdtDeposit.Placeholder)
+	logger.Printf("无小数点：%s\n", price)
+	logger.Printf("有小数点：%s\n", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
+	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
 
 	//_agent := os.Getenv("Agent")

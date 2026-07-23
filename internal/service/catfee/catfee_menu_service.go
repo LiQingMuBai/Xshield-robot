@@ -2,8 +2,8 @@ package catfee
 
 import (
 	"context"
-	"fmt"
 	"strings"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 
 	"ushield_bot/internal/global"
@@ -173,7 +173,7 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 
 func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
 
-	fmt.Println("ExtractBundlePackageST")
+	logger.Println("ExtractBundlePackageST")
 	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
@@ -183,7 +183,7 @@ func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	trxlist, total, err := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
 	if err != nil {
 
-		fmt.Println("能量笔数套餐空", err)
+		logger.Println("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
@@ -239,11 +239,11 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	info.PageInfo.PageSize = 5
 	trxlist, total, _ := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	fmt.Printf("currentpage : %d", state.CurrentPage)
-	fmt.Printf("total: %v\n", total)
+	logger.Printf("currentpage : %d", state.CurrentPage)
+	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
 
-	fmt.Printf("totalPages : %d", totalPages)
+	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -279,7 +279,7 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	fmt.Printf("state: %v\n", state)
+	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false

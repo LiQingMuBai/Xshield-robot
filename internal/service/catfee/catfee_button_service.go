@@ -10,6 +10,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -31,7 +32,7 @@ func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var builder strings.Builder
 	for _, st_address := range addresses {
-		fmt.Println(st_address)
+		logger.Println(st_address)
 
 		builder.WriteString("<code>" + st_address.Address + "</code>")
 		builder.WriteString(global.Translations[_lang]["used"])
@@ -51,7 +52,7 @@ func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.
 
 	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"))
 
-	fmt.Printf("按钮数量 %d\n", len(allButtons))
+	logger.Printf("按钮数量 %d\n", len(allButtons))
 	// 调用函数，按每行 2 个排列
 	keyboard := LayoutButtonsInRowsOfTwo(allButtons)
 
@@ -129,10 +130,10 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 	ID := strings.Split(result, "_")[0]
 	status := strings.Split(result, "_")[1]
 
-	fmt.Printf("用户：%s，当前状态：%s\n", ID, status)
+	logger.Printf("用户：%s，当前状态：%s\n", ID, status)
 	record, _ := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
 	if status == "1" {
-		fmt.Printf("用户ID %d，当前状态：%s，地址：%s 需要暂停为3", chatID, status, record.Address)
+		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要暂停为3", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 		//暂停
 
@@ -145,7 +146,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		user, _ := userRepo.GetByChatID(chatID)
 
 		if user.StTimes <= user.UsedStTimes {
-			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
+			logger.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
 			msg := tgbotapi.NewMessage(chatID, global.Translations[_lang]["catfee_energy_address_buy_error"])
 			msg.ParseMode = "HTML"
 			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -158,7 +159,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 			return
 		}
 
-		fmt.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
+		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Enable(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 		//启动
 		catfeeClient.MateOpenBasicEnable(record.Address)
@@ -171,7 +172,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		user, _ := userRepo.GetByChatID(chatID)
 
 		if user.StTimes <= user.UsedStTimes {
-			fmt.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
+			logger.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
 			msg := tgbotapi.NewMessage(chatID, global.Translations[_lang]["catfee_energy_address_buy_error"])
 			msg.ParseMode = "HTML"
 			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -185,7 +186,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 		}
 
 		//增加
-		fmt.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
+		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.Enable2(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 
 		catfeeClient.MateOpenBasicAdd(record.Address, strconv.FormatInt(chatID, 10))
@@ -195,7 +196,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var builder strings.Builder
 	for _, st_address := range addresses {
-		fmt.Println(st_address)
+		logger.Println(st_address)
 
 		builder.WriteString("<code>" + st_address.Address + "</code>")
 		builder.WriteString(global.Translations[_lang]["used"])
@@ -215,7 +216,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 
 	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"))
 
-	fmt.Printf("按钮数量 %d\n", len(allButtons))
+	logger.Printf("按钮数量 %d\n", len(allButtons))
 	// 调用函数，按每行 2 个排列
 	keyboard := LayoutButtonsInRowsOfTwo(allButtons)
 

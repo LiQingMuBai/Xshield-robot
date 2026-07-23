@@ -84,12 +84,12 @@ func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callback
 	//
 	//	user.TronAmount = rest
 	//	userRepo.Save(context.Background(), &user)
-	//	fmt.Printf("rest: %s", rest)
+	//	logger.Printf("rest: %s", rest)
 	//	COST_FROM_TRX = true
 	//	//扣usdt
 	//} else if CompareStringsWithFloat(user.Amount, server_usdt_price, float64(nums)) {
 	//	rest, _ := SubtractStringNumbers(user.Amount, server_usdt_price, float64(nums))
-	//	fmt.Printf("rest: %s", rest)
+	//	logger.Printf("rest: %s", rest)
 	//	user.Amount = rest
 	//	userRepo.Save(context.Background(), &user)
 	//	COST_FROM_USDT = true

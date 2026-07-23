@@ -2,8 +2,6 @@ package router
 
 import (
 	"context"
-	"fmt"
-	"log"
 	"strconv"
 	"strings"
 	"time"
@@ -13,6 +11,7 @@ import (
 	trxfee "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/infrastructure/thirdparty/fixedfloat"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 	"ushield_bot/internal/service/additional"
 	"ushield_bot/internal/service/catfee"
@@ -45,7 +44,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 		ctx.Bot.Send(msg)
 
 	case "🥂" + global.Translations[lang]["coin_laundering_menu"]:
-		fmt.Printf("洗U步骤开始\n")
+		logger.Printf("洗U步骤开始\n")
 		launder.MenuLaunderNavigate(lang, ctx.DB, message.Chat.ID, ctx.Bot)
 	case global.Translations[lang]["member_telegram_menu"]:
 		member.MenuNavigate(lang, ctx.DB, message.Chat.ID, ctx.Bot)
@@ -79,7 +78,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 		service.MenuNavigateHome2(ctx.DB, message, ctx.Bot)
 	default:
 		status, _ := ctx.Cache.Get(strconv.FormatInt(message.Chat.ID, 10))
-		log.Printf("用户状态status %s", status)
+		logger.Printf("用户状态status %s", status)
 
 		switch {
 		case strings.HasPrefix(status, "user_backup_notify"):
@@ -96,7 +95,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 				return
 			}
 			if previewErr != nil {
-				log.Printf("freeze alert preview err: %v", previewErr)
+				logger.Printf("freeze alert preview err: %v", previewErr)
 				return
 			}
 
@@ -152,7 +151,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 			service.AddManagedAddress(lang, message, ctx.DB, ctx.Bot)
 			service.ShowAddressManager(lang, ctx.Cache, ctx.Bot, message.Chat.ID, ctx.DB)
 		case strings.HasPrefix(status, "bundle_"):
-			fmt.Printf(">>>>>>>>>>>>>>>>>>>>bundle: %s", status)
+			logger.Printf(">>>>>>>>>>>>>>>>>>>>bundle: %s", status)
 			if service.ExtractBundleService(lang, message, ctx.Bot, ctx.DB, status) {
 				return
 			}
@@ -261,7 +260,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 				return
 			}
 		case strings.HasPrefix(status, "click_backup_account"):
-			log.Printf("进入click_backup_account状态：%s\n", message.Text)
+			logger.Printf("进入click_backup_account状态：%s\n", message.Text)
 			if strings.Contains(message.Text, "@") {
 				msg := tgbotapi.NewMessage(message.Chat.ID, "❌ "+global.Translations[lang]["backup_account_tips"])
 				msg.ParseMode = "HTML"
@@ -269,11 +268,11 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 				return
 			}
 			userName := strings.ReplaceAll(message.Text, "@", "")
-			log.Printf("备份用户：%s\n", userName)
+			logger.Printf("备份用户：%s\n", userName)
 			userRepo := repositories.NewUserRepository(ctx.DB)
 			user, err := userRepo.GetByUsername(userName)
 			if err != nil || user.Id == 0 {
-				log.Printf("访问失败 %v\n", err)
+				logger.Printf("访问失败 %v\n", err)
 				msg := tgbotapi.NewMessage(message.Chat.ID, "❌"+global.Translations[lang]["backup_account_tips2"])
 				msg.ParseMode = "HTML"
 				ctx.Bot.Send(msg)
@@ -305,7 +304,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 				return
 			}
 			month := strings.ReplaceAll(status, "premium_user_rent_month", "")
-			fmt.Printf("message text: %s\n", message.Text)
+			logger.Printf("message text: %s\n", message.Text)
 			member.Rent(lang, ctx.Cache, ctx.DB, ctx.Bot, username, message.Chat.ID, month)
 
 		case strings.HasPrefix(status, "purchase_telegram_stars"):
@@ -314,16 +313,16 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 				return
 			}
 			count := strings.ReplaceAll(status, "purchase_telegram_stars", "")
-			fmt.Printf("message text: %s\n", message.Text)
+			logger.Printf("message text: %s\n", message.Text)
 			member.Purchase(lang, ctx.Cache, ctx.DB, ctx.Bot, message.Text, message.Chat.ID, count)
 
 		case strings.HasPrefix(status, "click_laundering_"):
 			content := strings.ReplaceAll(status, "click_laundering_", "")
-			fmt.Printf("内容: %s\n", content)
-			fmt.Printf("输入内容: %s\n", message.Text)
+			logger.Printf("内容: %s\n", content)
+			logger.Printf("输入内容: %s\n", message.Text)
 			token := strings.Split(content, "_")[0]
 			amount := strings.Split(content, "_")[1]
-			fmt.Printf("状态 代币: %s - 金额: %s\n", token, amount)
+			logger.Printf("状态 代币: %s - 金额: %s\n", token, amount)
 
 			if strings.ToUpper(token) != "BTC" && !IsValidEthereumAddress(message.Text) {
 				msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
@@ -357,13 +356,13 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 
 			from, to, ok := fixedfloat.ExtractFromAndTo(rawMap)
 			if !ok {
-				fmt.Println("Failed to extract from/to")
+				logger.Println("Failed to extract from/to")
 				return
 			}
 
 			timeInfo, ok := fixedfloat.ExtractTime(rawMap)
 			if !ok {
-				fmt.Println("Failed to extract time")
+				logger.Println("Failed to extract time")
 				return
 			}
 
@@ -371,7 +370,7 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 			expTime := time.Unix(int64(timeInfo.Expiration), 0)
 			id, _, ok := fixedfloat.ExtractIDAndStatus(rawMap)
 			if !ok {
-				fmt.Println("Failed to extract id or status")
+				logger.Println("Failed to extract id or status")
 				return
 			}
 

@@ -12,6 +12,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 	"ushield_bot/internal/infrastructure/tools"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -20,7 +21,7 @@ import (
 
 func ExtractBundlePackage(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
 
-	fmt.Println("ExtractBundlePackage")
+	logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
 
@@ -29,7 +30,7 @@ func ExtractBundlePackage(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 	trxlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
 	if err != nil {
 
-		fmt.Println("能量笔数套餐空", err)
+		logger.Println("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
@@ -85,11 +86,11 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	info.PageInfo.PageSize = 10
 	trxlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	fmt.Printf("currentpage : %d", state.CurrentPage)
-	fmt.Printf("total: %v\n", total)
+	logger.Printf("currentpage : %d", state.CurrentPage)
+	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
 
-	fmt.Printf("totalPages : %d", totalPages)
+	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -126,7 +127,7 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	fmt.Printf("state: %v\n", state)
+	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
@@ -341,19 +342,19 @@ func ShowBundlePackageAddressActions(_lang string, address string, cache cache.C
 }
 func ApplyBundlePackageAddress(_lang string, bundle_address string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
 
-	fmt.Printf("address %s\n", bundle_address)
+	logger.Printf("address %s\n", bundle_address)
 
 	bundleID := strings.Split(bundle_address, "_")[0]
 	address := strings.Split(bundle_address, "_")[1]
 
-	fmt.Printf("address %s\n", address)
-	fmt.Printf("bundle_id %s\n", bundleID)
+	logger.Printf("address %s\n", address)
+	logger.Printf("bundle_id %s\n", bundleID)
 
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
 
 	if err != nil {
-		fmt.Println(err)
+		logger.Println(err)
 	}
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(message.Chat.ID)
@@ -362,11 +363,11 @@ func ApplyBundlePackageAddress(_lang string, bundle_address string, cache cache.
 	if bundlePackage.Token == "TRX" {
 
 		balance, _ := tools.SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, 1)
-		fmt.Printf("TRX balance %s", balance)
+		logger.Printf("TRX balance %s", balance)
 		user.TronAmount = balance
 	} else if bundlePackage.Token == "USDT" {
 		balance, _ := tools.SubtractStringNumbers(user.Amount, bundlePackage.Amount, 1)
-		fmt.Printf("USDT balance %s", balance)
+		logger.Printf("USDT balance %s", balance)
 
 		user.Amount = balance
 	}

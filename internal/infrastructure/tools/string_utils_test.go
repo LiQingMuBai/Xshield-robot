@@ -3,6 +3,7 @@ package tools
 import (
 	"fmt"
 	"testing"
+	logger "ushield_bot/internal/logger"
 )
 
 func TestExtractNumberBeforeBi(t *testing.T) {
@@ -11,5 +12,5 @@ func TestExtractNumberBeforeBi(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	fmt.Println(nums)
+	logger.Println(nums)
 }

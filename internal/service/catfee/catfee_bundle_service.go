@@ -3,7 +3,6 @@ package catfee
 import (
 	"context"
 	"fmt"
-	"log"
 	"os"
 	"strconv"
 	"strings"
@@ -13,6 +12,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -30,7 +30,7 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 
 	deductionAmount := bundlePackage.Amount
 
-	//fmt.Printf("deductionAmount: %v\n", deductionAmount)
+	//logger.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -41,10 +41,10 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		user.TronAmount = "0"
 	}
 
-	fmt.Printf("user usdt balance : %s\n", user.Amount)
-	fmt.Printf("user  trx balance : %s\n", user.TronAmount)
-	fmt.Printf("deductionAmount : %s\n", deductionAmount)
-	fmt.Printf("Token : %s\n", bundlePackage.Token)
+	logger.Printf("user usdt balance : %s\n", user.Amount)
+	logger.Printf("user  trx balance : %s\n", user.TronAmount)
+	logger.Printf("deductionAmount : %s\n", deductionAmount)
+	logger.Printf("Token : %s\n", bundlePackage.Token)
 
 	lessBalance := false
 	if bundlePackage.Token == "USDT" {
@@ -52,14 +52,14 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		if flag, _ := CompareNumberStrings(user.Amount, deductionAmount); flag < 0 {
 			lessBalance = true
 		}
-		fmt.Printf("bundle %v is USDT\n", bundlePackage)
+		logger.Printf("bundle %v is USDT\n", bundlePackage)
 	} else if bundlePackage.Token == "TRX" {
 		//扣trx
 		if flag, _ := CompareNumberStrings(user.TronAmount, deductionAmount); flag < 0 {
 			lessBalance = true
 		}
 
-		fmt.Printf("bundle %v is trx\n", bundlePackage)
+		logger.Printf("bundle %v is trx\n", bundlePackage)
 	}
 
 	if lessBalance {
@@ -95,11 +95,11 @@ func CheckBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 	//扣錢
 	if bundlePackage.Token == "TRX" {
 		balance, _ := SubtractStringNumbers(user.TronAmount, bundlePackage.Amount, 1)
-		fmt.Printf("TRX balance %s", balance)
+		logger.Printf("TRX balance %s", balance)
 		user.TronAmount = balance
 	} else if bundlePackage.Token == "USDT" {
 		balance, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, 1)
-		fmt.Printf("USDT balance %s", balance)
+		logger.Printf("USDT balance %s", balance)
 
 		user.Amount = balance
 	}
@@ -173,7 +173,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 	deductionAmount := bundlePackage.Amount
 
-	//fmt.Printf("deductionAmount: %v\n", deductionAmount)
+	//logger.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -184,10 +184,10 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 		user.TronAmount = "0"
 	}
 
-	fmt.Printf("user usdt balance : %s\n", user.Amount)
-	fmt.Printf("user  trx balance : %s\n", user.TronAmount)
-	fmt.Printf("deductionAmount : %s\n", deductionAmount)
-	fmt.Printf("Token : %s\n", bundlePackage.Token)
+	logger.Printf("user usdt balance : %s\n", user.Amount)
+	logger.Printf("user  trx balance : %s\n", user.TronAmount)
+	logger.Printf("deductionAmount : %s\n", deductionAmount)
+	logger.Printf("Token : %s\n", bundlePackage.Token)
 
 	lessBalance := false
 	if bundlePackage.Token == "USDT" {
@@ -195,14 +195,14 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 		if flag, _ := CompareNumberStrings(user.Amount, deductionAmount); flag < 0 {
 			lessBalance = true
 		}
-		fmt.Printf("bundle %v is USDT\n", bundlePackage)
+		logger.Printf("bundle %v is USDT\n", bundlePackage)
 	} else if bundlePackage.Token == "TRX" {
 		//扣trx
 		if flag, _ := CompareNumberStrings(user.TronAmount, deductionAmount); flag < 0 {
 			lessBalance = true
 		}
 
-		fmt.Printf("bundle %v is trx\n", bundlePackage)
+		logger.Printf("bundle %v is trx\n", bundlePackage)
 	}
 
 	if lessBalance {
@@ -211,7 +211,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			placeholder, queryErr := trxPlaceholderRepo.GetAvailable(context.Background())
 			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 			if queryErr != nil {
-				fmt.Printf("Failed to update user: " + queryErr.Error())
+				logger.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 				inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -243,11 +243,11 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 			err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 			if err != nil {
-				log.Printf("Error updating usdt placeholder: %v", err)
+				logger.Printf("Error updating usdt placeholder: %v", err)
 			}
 			realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, bundlePackage.Amount)
 
-			fmt.Printf("realTransferAmount: %s\n", realTransferAmount)
+			logger.Printf("realTransferAmount: %s\n", realTransferAmount)
 
 			//生成订单
 			trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
@@ -263,7 +263,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			trxDeposit.Source = 1
 			value, err := strconv.ParseInt(bundleID, 10, 64)
 			if err != nil {
-				fmt.Printf("套餐ID转换失败: %v\n", err)
+				logger.Printf("套餐ID转换失败: %v\n", err)
 				return
 			}
 
@@ -281,7 +281,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 			createErr := trxDepositRepo.Create(context.Background(), &trxDeposit)
 			if createErr != nil {
-				log.Printf("Error creating trxDeposit: %v", createErr)
+				logger.Printf("Error creating trxDeposit: %v", createErr)
 			}
 
 			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -338,7 +338,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			placeholder, queryErr := usdtPlaceholderRepo.GetAvailable(context.Background())
 			//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 			if queryErr != nil {
-				fmt.Printf("Failed to update user: " + queryErr.Error())
+				logger.Printf("Failed to update user: " + queryErr.Error())
 				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 				inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -370,11 +370,11 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 			err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 			if err != nil {
-				log.Printf("Error updating usdt placeholder: %v", err)
+				logger.Printf("Error updating usdt placeholder: %v", err)
 			}
 			realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, bundlePackage.Amount)
 
-			fmt.Printf("realTransferAmount: %s\n", realTransferAmount)
+			logger.Printf("realTransferAmount: %s\n", realTransferAmount)
 
 			//生成订单
 			usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
@@ -390,7 +390,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			usdtDeposit.Source = 1
 			value, err := strconv.ParseInt(bundleID, 10, 64)
 			if err != nil {
-				fmt.Printf("套餐ID转换失败: %v\n", err)
+				logger.Printf("套餐ID转换失败: %v\n", err)
 				return
 			}
 
@@ -408,7 +408,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 			createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 			if createErr != nil {
-				log.Printf("Error creating usdtDeposit: %v", createErr)
+				logger.Printf("Error creating usdtDeposit: %v", createErr)
 			}
 
 			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
@@ -462,7 +462,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	nums, _ := ExtractNumberBeforeBi(bundlePackage.Name)
 	stTimes := user.StTimes + int64(nums)
 
-	fmt.Printf("\n更新用户%d，金额：%s\n", callbackQuery.Message.Chat.ID, bundlePackage.Name)
+	logger.Printf("\n更新用户%d，金额：%s\n", callbackQuery.Message.Chat.ID, bundlePackage.Name)
 	if bundlePackage.Token == "USDT" {
 		n := 1
 		value, _ := SubtractStringNumbers(user.Amount, bundlePackage.Amount, float64(n))
@@ -475,9 +475,9 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	}
 	err = userRepo.UpdateSmartTransactionTimes(stTimes, callbackQuery.Message.Chat.ID)
 	if err != nil {
-		log.Printf("Error updating stTimes: %v", err)
+		logger.Printf("Error updating stTimes: %v", err)
 	}
-	fmt.Printf("\n更新用户%d，最新笔数：%d\n", callbackQuery.Message.Chat.ID, stTimes)
+	logger.Printf("\n更新用户%d，最新笔数：%d\n", callbackQuery.Message.Chat.ID, stTimes)
 	//新增用户订阅表
 
 	//加入訂閲記錄
@@ -532,9 +532,9 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 	user, _ := userRepo.GetByChatID(message.Chat.ID)
 
 	fee := status[7:len(status)]
-	fmt.Println("status : ", status)
-	fmt.Println("fee : ", fee)
-	fmt.Println("amount :", user.Amount)
+	logger.Println("status : ", status)
+	logger.Println("fee : ", fee)
+	logger.Println("amount :", user.Amount)
 
 	if CompareStringsWithFloat(fee, user.Amount, 1) {
 		//余额不足，需充值
@@ -566,7 +566,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 		bundleNum := bundleRecord.Name
 		count, _ := ExtractNumberBeforeBi(bundleNum)
 
-		fmt.Printf("笔数count : %d", count)
+		logger.Printf("笔数count : %d", count)
 		//扣款
 		//调用trxfee接口
 
@@ -576,7 +576,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 		rest, _ := SubtractStringNumbers(user.Amount, fee, 1)
 		user.Amount = rest
 		userRepo.Save(context.Background(), &user)
-		fmt.Println("rest :", rest)
+		logger.Println("rest :", rest)
 
 		msg := tgbotapi.NewMessage(message.Chat.ID,
 			"<b>"+"✅笔数套餐订阅成功"+"</b>"+"\n"+

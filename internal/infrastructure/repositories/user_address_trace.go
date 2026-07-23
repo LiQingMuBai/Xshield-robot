@@ -30,11 +30,11 @@ func (r *UserAddressTraceRepo) Remove(ctx context.Context, _chatID int64, _addre
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", _chatID, _address).Error
 }
 
-//	func (r *UserAddressTraceRepo) Find(ctx context.Context, _chatID int64, _address string) error {
-//		//return r.db.WithContext(ctx).del(userAddress).Error
+//	     func (r *UserAddressTraceRepo) GetByChatIDAndAddress(ctx context.Context, _chatID int64, _address string) error {
+//			//return r.db.WithContext(ctx).del(userAddress).Error
 //
-//		return r.db.WithContext(ctx).Find(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", _chatID, _address).Error
-//	}
+//			return r.db.WithContext(ctx).Find(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", _chatID, _address).Error
+//		}
 func (r *UserAddressTraceRepo) GetByChatIDAndAddress(ctx context.Context, _chatID int64, _address string) (domain.UserAddressTrace, error) {
 	var item domain.UserAddressTrace
 	err := r.db.WithContext(ctx).

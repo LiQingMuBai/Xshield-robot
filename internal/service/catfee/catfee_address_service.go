@@ -2,7 +2,6 @@ package catfee
 
 import (
 	"context"
-	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -12,6 +11,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 	thirdparty "ushield_bot/internal/infrastructure/thirdparty"
 	"ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -112,7 +112,7 @@ func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 	_address := message.Text
 	_chatID := message.Chat.ID
-	fmt.Printf("删除用户id %d，地址 %s\v", _chatID, _address)
+	logger.Printf("删除用户id %d，地址 %s\v", _chatID, _address)
 	if !tools.IsValidAddress(_address) {
 		msg := tgbotapi.NewMessage(_chatID, "💬"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
@@ -125,15 +125,15 @@ func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 	err := userSmartTransactionAddressesRepo.Remove(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
-		fmt.Printf("删除地址失败%v\n", err)
+		logger.Printf("删除地址失败%v\n", err)
 	}
 
 	code, err := catfee.MateOpenBasicDelete(_address)
 
 	if err != nil {
-		fmt.Printf("catfee.MateOpenBasicDelete: %v\n", err)
+		logger.Printf("catfee.MateOpenBasicDelete: %v\n", err)
 	}
-	fmt.Printf("catfee删除状态 %d\n", code)
+	logger.Printf("catfee删除状态 %d\n", code)
 
 	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -153,20 +153,20 @@ func DisableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tg
 
 	_address := callbackQuery.Message.Text
 	_chatID := callbackQuery.Message.Chat.ID
-	fmt.Printf("暂停用户id %d，地址 %s\v", _chatID, _address)
+	logger.Printf("暂停用户id %d，地址 %s\v", _chatID, _address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
 	err := userSmartTransactionAddressesRepo.Disable(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
-		fmt.Printf("暂停地址失败%v\n", err)
+		logger.Printf("暂停地址失败%v\n", err)
 	}
 	code, err := catfee.MateOpenBasicDisable(_address)
 
 	if err != nil {
 
 	}
-	fmt.Printf("catfee暂停地址失败 %d\n", code)
+	logger.Printf("catfee暂停地址失败 %d\n", code)
 
 	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -186,20 +186,20 @@ func EnableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 	_address := callbackQuery.Message.Text
 	_chatID := callbackQuery.Message.Chat.ID
-	fmt.Printf("启用用户id %d，地址 %s\v", _chatID, _address)
+	logger.Printf("启用用户id %d，地址 %s\v", _chatID, _address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
 	err := userSmartTransactionAddressesRepo.Enable(context.Background(), strconv.FormatInt(_chatID, 10), _address)
 
 	if err != nil {
-		fmt.Printf("启用地址失败%v\n", err)
+		logger.Printf("启用地址失败%v\n", err)
 	}
 	code, err := catfee.MateOpenBasicDisable(_address)
 
 	if err != nil {
 
 	}
-	fmt.Printf("catfee启用地址失败 %d\n", code)
+	logger.Printf("catfee启用地址失败 %d\n", code)
 
 	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(

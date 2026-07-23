@@ -7,9 +7,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
-	"log"
 	"net/http"
 	"time"
+	logger "ushield_bot/internal/logger"
 )
 
 type CatfeeService struct {
@@ -57,16 +57,16 @@ func (s CatfeeService) Order(_address string) {
 
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
-	fmt.Println("Response Status:", resp.Status)
-	fmt.Println("Response Body:", string(body))
+	logger.Println("Response Status:", resp.Status)
+	logger.Println("Response Body:", string(body))
 }
 
 // 购买电报会员
@@ -93,19 +93,19 @@ func (s CatfeeService) Premium(username string, months string) (PremiumDataResp,
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
 	// 解析JSON响应
 	var dataResp PremiumDataResp
 	err = json.Unmarshal(body, &dataResp)
 	if err != nil {
-		fmt.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return dataResp, nil
@@ -136,20 +136,20 @@ func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, erro
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
-	fmt.Println(string(body))
+	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		fmt.Printf("查询基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("查询基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return baseAddressResp, nil
@@ -180,19 +180,19 @@ func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		fmt.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -224,19 +224,19 @@ func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
-	fmt.Println(string(body))
+	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		fmt.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -268,20 +268,20 @@ func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
-	fmt.Println(string(body))
+	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		fmt.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -311,20 +311,20 @@ func (s CatfeeService) MateOpenBasicDelete(_address string) (int, error) {
 	// 发送请求
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		log.Fatal("Error making request:", err)
+		logger.Fatal("Error making request:", err)
 	}
 	// 读取并输出响应
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {
-		log.Fatal("Error reading response:", err)
+		logger.Fatal("Error reading response:", err)
 	}
 
-	fmt.Println(string(body))
+	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressDeleteResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		fmt.Printf("删除基础版地址，解析JSON失败: %v\n", err)
+		logger.Printf("删除基础版地址，解析JSON失败: %v\n", err)
 	}
 
 	return baseAddressResp.Code, nil
