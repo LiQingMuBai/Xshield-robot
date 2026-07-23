@@ -24,7 +24,7 @@ func ExtractAddressManager(_lang string, message *tgbotapi.Message, db *gorm.DB,
 		if IsValidAddress(message.Text) {
 			record.Network = "tron"
 		}
-		if IsValidAddress(message.Text) {
+		if IsValidEthereumAddress(message.Text) {
 			record.Network = "ethereum"
 		}
 		errsg := userRepo.Create(context.Background(), &record)

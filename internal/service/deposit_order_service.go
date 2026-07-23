@@ -28,7 +28,7 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if esg != nil {
-		fmt.Printf("Failed to update user: " + esg.Error())
+		fmt.Print("Failed to update user: " + esg.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["placeholder_array_size_warning"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -262,7 +262,7 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 
 	//err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
 	if esg != nil {
-		fmt.Printf("Failed to update user: " + esg.Error())
+		fmt.Print("Failed to update user: " + esg.Error())
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["tron_network_tips"])
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(

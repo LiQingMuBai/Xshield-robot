@@ -33,13 +33,9 @@ func Load() (*Config, error) {
 			RefURL: os.Getenv("FIXEDFLOAT_REF_URL"),
 		},
 		Bot: BotConfig{
-			Name: os.Getenv("BOT_NAME"),
-			Cookies: []string{
-				os.Getenv("BOT_COOKIE_1"),
-				os.Getenv("BOT_COOKIE_2"),
-				os.Getenv("BOT_COOKIE_3"),
-			},
-			Agent: os.Getenv("BOT_AGENT"),
+			Name:       os.Getenv("BOT_NAME"),
+			MistCookie: os.Getenv("MIST_COOKIE"),
+			Agent:      os.Getenv("BOT_AGENT"),
 		},
 		Translation: TranslationConfig{
 			Dir:            "translations",

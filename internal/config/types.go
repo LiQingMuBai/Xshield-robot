@@ -37,9 +37,9 @@ type FixedFloatConfig struct {
 }
 
 type BotConfig struct {
-	Name    string
-	Cookies []string
-	Agent   string
+	Name       string
+	MistCookie string
+	Agent      string
 }
 
 type TranslationConfig struct {

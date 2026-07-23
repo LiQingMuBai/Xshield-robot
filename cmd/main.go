@@ -181,37 +181,20 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 				return
 			}
 		case strings.HasPrefix(status, "start_freeze_risk"):
-
-			if !IsValidAddress(message.Text) && !IsValidEthereumAddress(message.Text) {
+			freezeAlertService := service.NewFreezeAlertService(db)
+			preview, previewErr := freezeAlertService.Preview(message.Text)
+			if previewErr == service.ErrFreezeAlertInvalidAddress {
 				msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
 				msg.ParseMode = "HTML"
 				bot.Send(msg)
 				return
 			}
+			if previewErr != nil {
+				log.Printf("freeze alert preview err: %v", previewErr)
+				return
+			}
 
-			dictRepo := repositories.NewSysDictionariesRepo(db)
-
-			server_trx_price, _ := dictRepo.GetDictionaryDetail("server_trx_price")
-
-			server_usdt_price, _ := dictRepo.GetDictionaryDetail("server_usdt_price")
-
-			originStr := global.Translations[_lang]["enable_freeze_alerts_tips"]
-
-			targetStr := strings.ReplaceAll(strings.ReplaceAll(originStr, "{server_usdt_price}", server_usdt_price), "{server_trx_price}", server_trx_price)
-
-			msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["enable_freeze_alerts_tips_suffix"]+"\n"+global.Translations[_lang]["address"]+"："+message.Text+"\n\n"+targetStr)
-			msg.ParseMode = "HTML"
-			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("✅"+global.Translations[_lang]["confirm_freeze_alerts"], "confirm_freeze_risk_"+message.Text),
-					tgbotapi.NewInlineKeyboardButtonData("❌"+global.Translations[_lang]["cancel_freeze_alerts"], "back_risk_home"),
-				),
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
-				),
-			)
-			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
+			sendFreezeAlertPreview(bot, message.Chat.ID, _lang, preview)
 			expiration := 1 * time.Minute // 短时间缓存空值
 			//设置用户状态
 			cache.Set(strconv.FormatInt(message.Chat.ID, 10), "start_freeze_risk_status", expiration)
@@ -746,88 +729,17 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 	case strings.HasPrefix(callbackQuery.Data, "confirm_freeze_risk_"):
 		address := strings.ReplaceAll(callbackQuery.Data, "confirm_freeze_risk_", "")
-
-		fmt.Printf("address : %s\n", address)
-		sysDictionariesRepo := repositories.NewSysDictionariesRepo(db)
-		server_trx_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_trx_price")
-		server_usdt_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_usdt_price")
-		userRepo := repositories.NewUserRepository(db)
-		user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
-		if !CompareStringsWithFloat(user.TronAmount, server_trx_price, 1) && !CompareStringsWithFloat(user.Amount, server_usdt_price, 1) {
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "⚠️ "+global.Translations[_lang]["freeze_alert_service_insufficient_balance"]+"\n\n")
-			msg.ParseMode = "HTML"
-			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
-				),
-			)
-
-			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
+		freezeAlertService := service.NewFreezeAlertService(db)
+		result, confirmErr := freezeAlertService.Confirm(context.Background(), callbackQuery.Message.Chat.ID, address)
+		if confirmErr == service.ErrFreezeAlertInsufficientBalance {
+			sendFreezeAlertInsufficientBalance(bot, callbackQuery.Message.Chat.ID, _lang)
 			return
 		}
-		fmt.Println("余额充足")
-		var COST_FROM_TRX bool
-		var COST_FROM_USDT bool
-		if CompareStringsWithFloat(user.TronAmount, server_trx_price, 1) || CompareStringsWithFloat(user.Amount, server_usdt_price, 1) {
-
-			if CompareStringsWithFloat(user.TronAmount, server_trx_price, float64(1)) {
-				rest, _ := SubtractStringNumbers(user.TronAmount, server_trx_price, float64(1))
-
-				user.TronAmount = rest
-				userRepo.Update2(context.Background(), &user)
-				fmt.Printf("rest: %s", rest)
-				COST_FROM_TRX = true
-				//扣usdt
-			} else if CompareStringsWithFloat(user.Amount, server_usdt_price, float64(1)) {
-				rest, _ := SubtractStringNumbers(user.Amount, server_usdt_price, float64(1))
-				fmt.Printf("rest: %s", rest)
-				user.Amount = rest
-				userRepo.Update2(context.Background(), &user)
-				COST_FROM_USDT = true
-			}
-
-			//添加记录
-			userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(db)
-
-			var event domain.UserAddressMonitorEvent
-			event.ChatID = callbackQuery.Message.Chat.ID
-			event.Status = 1
-			event.Address = address
-
-			if len(address) == 42 {
-				event.Network = "Ethereum"
-			}
-			if len(address) == 34 {
-				event.Network = "Tron"
-			}
-
-			event.Days = 1
-			if COST_FROM_TRX {
-				event.Amount = server_trx_price + " TRX"
-			}
-			if COST_FROM_USDT {
-				event.Amount = server_usdt_price + " USDT"
-			}
-			userAddressEventRepo.Create(context.Background(), &event)
-
-			//后台跟踪起来
-			//user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-				"✅"+global.Translations[_lang]["enable_freeze_alerts_success"]+"\n"+
-					global.Translations[_lang]["address"]+"："+address+"\n"+
-					global.Translations[_lang]["network"]+event.Network)
-			msg.ParseMode = "HTML"
-			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
-				),
-			)
-			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
-
+		if confirmErr != nil {
+			log.Printf("freeze alert confirm err: %v", confirmErr)
+			return
 		}
+		sendFreezeAlertEnableSuccess(bot, callbackQuery.Message.Chat.ID, _lang, result)
 
 	case strings.HasPrefix(callbackQuery.Data, "set_bundle_package_default_"):
 		target := strings.ReplaceAll(callbackQuery.Data, "set_bundle_package_default_", "")
@@ -865,50 +777,22 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		bot.Send(msg2)
 	case strings.HasPrefix(callbackQuery.Data, "close_freeze_risk_"):
 		target := strings.ReplaceAll(callbackQuery.Data, "close_freeze_risk_", "")
-
-		log.Println("target:", target)
-		userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(db)
-		event, _ := userAddressEventRepo.Find(context.Background(), target)
-
-		restDays := fmt.Sprintf("%d", 30-event.Days)
-
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["confirm_stop_monitoring_address"]+"\n"+
-			global.Translations[_lang]["address"]+"："+event.Address+"\n"+
-			strings.ReplaceAll(global.Translations[_lang]["confirm_stop_monitoring_address_tips"], "{days}", restDays))
-		msg.ParseMode = "HTML"
-		// 当点击"按钮 1"时显示内联键盘
-		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("✅"+global.Translations[_lang]["confirm_stop_monitoring_address_yes"], "close_risk_"+target),
-				tgbotapi.NewInlineKeyboardButtonData("❌"+global.Translations[_lang]["cancel_freeze_alerts"], "back_risk_home"),
-			),
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
-			),
-		)
-		msg.ReplyMarkup = inlineKeyboard
-
-		bot.Send(msg)
+		freezeAlertService := service.NewFreezeAlertService(db)
+		preview, previewErr := freezeAlertService.PreviewClose(callbackQuery.Message.Chat.ID, target)
+		if previewErr != nil {
+			log.Printf("freeze alert close preview err: %v", previewErr)
+			return
+		}
+		sendFreezeAlertClosePreview(bot, callbackQuery.Message.Chat.ID, _lang, preview)
 
 	case strings.HasPrefix(callbackQuery.Data, "close_risk_"):
 		target := strings.ReplaceAll(callbackQuery.Data, "close_risk_", "")
-		log.Println("target:", target)
-		userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(db)
-		err := userAddressEventRepo.Close(context.Background(), target)
-		if err == nil {
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["confirm_stop_monitoring_address_success_tips"])
-			msg.ParseMode = "HTML"
-			// 当点击"按钮 1"时显示内联键盘
-			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
-				),
-			)
-			msg.ReplyMarkup = inlineKeyboard
-
-			bot.Send(msg)
+		freezeAlertService := service.NewFreezeAlertService(db)
+		if err := freezeAlertService.Close(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
+			log.Printf("freeze alert close err: %v", err)
+			return
 		}
+		sendFreezeAlertCloseSuccess(bot, callbackQuery.Message.Chat.ID, _lang)
 	case strings.HasPrefix(callbackQuery.Data, "apply_bundle_package_"):
 
 		target := strings.ReplaceAll(callbackQuery.Data, "apply_bundle_package_", "")
@@ -1179,194 +1063,34 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "reset", expiration)
 
 	case callbackQuery.Data == "start_freeze_risk_0":
-
-		sysDictionariesRepo := repositories.NewSysDictionariesRepo(db)
-
-		server_trx_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_trx_price")
-
-		server_usdt_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_usdt_price")
-
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "欢迎使用U盾 USDT冻结预警服务\n"+
-			"🛡️ U盾，做您链上资产的护盾！\n"+
-			"地址一旦被链上风控冻，资产将难以追回，损失巨大！\n"+
-			"每天都有数百个 USDT 钱包地址被冻结锁定，风险就在身边！\n"+
-			"✅ 适用于经常收付款 / 被制裁地址感染/与诈骗地址交互\n"+
-			"✅ 支持TRON/ETH网络的USDT 钱包地址\n"+
-			"📌 服务价格（每地址）：\n • "+server_trx_price+" TRX / 30天\n • "+
-			" 或 "+server_usdt_price+" USDT / 30天\n"+
-			"🎯 服务开启后U盾将24 小时不间断保护您的资产安全。\n"+
-			"⏰ 系统将在冻结前启动预警机制，持续 10 分钟每分钟推送提醒，通知您及时转移资产。\n"+
-			"📩 所有预警信息将通过 Telegram 实时推送")
-		msg.ParseMode = "HTML"
-
-		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
-				//tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
-			),
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-				tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
-			),
-			//tgbotapi.NewInlineKeyboardRow(
-			//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
-			//	//tgbotapi.NewInlineKeyboardButtonData("第二紧急通知", ""),
-			//),
-		)
-		msg.ReplyMarkup = inlineKeyboard
-
-		bot.Send(msg)
-
-		expiration := 1 * time.Minute // 短时间缓存空值
-
-		//设置用户状态
-		cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "usdt_risk_monitor", expiration)
+		service.MenuNavigateAddressFreeze(_lang, cache, bot, callbackQuery.Message.Chat.ID, db)
 	case callbackQuery.Data == "stop_freeze_risk":
-
-		log.Println("========================================stop_freeze_risk==================================================")
-
-		userAddressEventRepo := repositories.NewUserAddressMonitorEventRepo(db)
-		addresses, _ := userAddressEventRepo.Query(context.Background(), callbackQuery.Message.Chat.ID)
-
-		//msg.ParseMode = "HTML"
-
-		var allButtons []tgbotapi.InlineKeyboardButton
-		var extraButtons []tgbotapi.InlineKeyboardButton
-		var keyboard [][]tgbotapi.InlineKeyboardButton
-		for _, item := range addresses {
-			allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(TruncateString(item.Address), "close_freeze_risk_"+fmt.Sprintf("%d", item.Id)))
+		freezeAlertService := service.NewFreezeAlertService(db)
+		items, listErr := freezeAlertService.ListActive(callbackQuery.Message.Chat.ID)
+		if listErr != nil {
+			log.Printf("freeze alert list err: %v", listErr)
+			return
 		}
-
-		extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"))
-
-		for i := 0; i < len(allButtons); i += 1 {
-			end := i + 1
-			if end > len(allButtons) {
-				end = len(allButtons)
-			}
-			row := allButtons[i:end]
-			keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-		}
-
-		for i := 0; i < len(extraButtons); i += 1 {
-			end := i + 1
-			if end > len(extraButtons) {
-				end = len(extraButtons)
-			}
-			row := extraButtons[i:end]
-			keyboard = append(keyboard, tgbotapi.NewInlineKeyboardRow(row...))
-		}
-
-		// 3. 创建键盘标记
-		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
-
-		//msg.ReplyMarkup = inlineKeyboard
-		//
-		//bot.Send(msg)
-		//
-		//expiration := 1 * time.Minute // 短时间缓存空值
-		//
-		////设置用户状态
-		//cache.Set(strconv.FormatInt(_chatID, 10), "start_freeze_risk", expiration)
-		//
-		//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📡 是否确认停止该服务？")
-		//msg.ParseMode = "HTML"
-		//
-		//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//	tgbotapi.NewInlineKeyboardRow(
-		//		tgbotapi.NewInlineKeyboardButtonData("✅ 确认停止", "stop_freeze_risk_1"),
-		//		tgbotapi.NewInlineKeyboardButtonData("❌ 取消操作", "start_freeze_risk_0"),
-		//	),
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("地址", ""),
-		//),
-		//)
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["monitoring_address_list"]+"\n\n")
-		//地址绑定
-
-		msg.ParseMode = "HTML"
-
-		msg.ReplyMarkup = inlineKeyboard
-
-		bot.Send(msg)
-
-		//expiration := 1 * time.Minute // 短时间缓存空值
-
-		//设置用户状态
-		//cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "stop_freeze_risk", expiration)
+		sendFreezeAlertStopList(bot, callbackQuery.Message.Chat.ID, _lang, items)
 
 	case callbackQuery.Data == "start_freeze_risk":
-
-		sysDictionariesRepo := repositories.NewSysDictionariesRepo(db)
-		server_trx_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_trx_price")
-		server_usdt_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_usdt_price")
-		userRepo := repositories.NewUserRepository(db)
-		user, _ := userRepo.GetByUserID(callbackQuery.Message.Chat.ID)
-		if !CompareStringsWithFloat(user.TronAmount, server_trx_price, 1) && !CompareStringsWithFloat(user.Amount, server_usdt_price, 1) {
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "⚠️ "+global.Translations[_lang]["freeze_alert_service_insufficient_balance"]+"\n\n")
-			msg.ParseMode = "HTML"
-			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
-				),
-			)
-
-			msg.ReplyMarkup = inlineKeyboard
-			bot.Send(msg)
+		freezeAlertService := service.NewFreezeAlertService(db)
+		if err := freezeAlertService.Start(callbackQuery.Message.Chat.ID); err == service.ErrFreezeAlertInsufficientBalance {
+			sendFreezeAlertInsufficientBalance(bot, callbackQuery.Message.Chat.ID, _lang)
+			return
+		} else if err != nil {
+			log.Printf("freeze alert start err: %v", err)
 			return
 		}
 
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["enter_address_for_alert"])
-		msg.ParseMode = "HTML"
-		bot.Send(msg)
+		sendFreezeAlertPromptAddress(bot, callbackQuery.Message.Chat.ID, _lang)
 		expiration := 1 * time.Minute // 短时间缓存空值
 
 		//设置用户状态
 		cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "start_freeze_risk", expiration)
 
 	case callbackQuery.Data == "address_manager_return":
-
-		sysDictionariesRepo := repositories.NewSysDictionariesRepo(db)
-
-		server_trx_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_trx_price")
-
-		server_usdt_price, _ := sysDictionariesRepo.GetDictionaryDetail("server_usdt_price")
-
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "欢迎使用U盾 USDT冻结预警服务\n"+
-			"🛡️ U盾，做您链上资产的护盾！\n"+
-			"地址一旦被链上风控冻，资产将难以追回，损失巨大！\n"+
-			"每天都有数百个 USDT 钱包地址被冻结锁定，风险就在身边！\n"+
-			"✅ 适用于经常收付款 / 被制裁地址感染/与诈骗地址交互\n"+
-			"✅ 支持TRON/ETH网络的USDT 钱包地址\n"+
-			"📌 服务价格（每地址）：\n • "+server_trx_price+" TRX / 30天\n • "+
-			" 或 "+server_usdt_price+" USDT / 30天\n"+
-			"🎯 服务开启后U盾将24 小时不间断保护您的资产安全。\n"+
-			"⏰ 系统将在冻结前启动预警机制，持续 10 分钟每分钟推送提醒，通知您及时转移资产。\n"+
-			"📩 所有预警信息将通过 Telegram 实时推送")
-		msg.ParseMode = "HTML"
-
-		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
-				//	tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
-			),
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-				tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
-			),
-			//tgbotapi.NewInlineKeyboardRow(
-			//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
-			//	//tgbotapi.NewInlineKeyboardButtonData("第二紧急通知", ""),
-			//),
-		)
-		msg.ReplyMarkup = inlineKeyboard
-
-		bot.Send(msg)
-
-		expiration := 1 * time.Minute // 短时间缓存空值
-
-		//设置用户状态
-		cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "usdt_risk_monitor", expiration)
+		service.MenuNavigateAddressFreeze(_lang, cache, bot, callbackQuery.Message.Chat.ID, db)
 
 	case callbackQuery.Data == "address_manager_add":
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "💬"+"<b>"+"请输入需添加的地址: "+"</b>"+"\n")

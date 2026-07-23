@@ -11,7 +11,6 @@ import (
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/config"
 	trxfee "ushield_bot/internal/infrastructure/3rd"
-	. "ushield_bot/internal/infrastructure/tools"
 	"ushield_bot/internal/session"
 	"ushield_bot/internal/translate"
 )
@@ -59,7 +58,7 @@ func BuildApp() (*app.App, error) {
 		Session:      sessionStore,
 		Translator:   translator,
 		Catfee:       catfeeClient,
-		RandomCookie: RandomCookiesString(cfg.Bot.Cookies),
+		RandomCookie: cfg.Bot.MistCookie,
 	}
 
 	return app.New(container), nil
