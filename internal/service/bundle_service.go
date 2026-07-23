@@ -3,6 +3,8 @@ package service
 import (
 	"context"
 	"fmt"
+	"log"
+	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -21,7 +23,7 @@ func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callba
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "bundle_", "")
 	bundlePackage, err := userOperationBundlesRepo.Query(context.Background(), bundleID)
-
+	fmt.Printf("套餐ID: %s\n", bundleID)
 	if err != nil {
 
 	}
@@ -61,30 +63,173 @@ func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callba
 	}
 
 	if lessBalance {
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			//"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-			//	"💵"+"<b>"+"余额不足 "+"</b>"+"\n"+
-			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
-				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
-				"- TRX：   "+user.TronAmount+"\n"+
-				"-  USDT："+user.Amount)
+		videoPath := "./static/Audi.png"
 
-		msg.ParseMode = "HTML"
+		// 创建视频消息（从本地文件）
+		msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
 
-		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
-			),
-		)
+		if bundlePackage.Token == "TRX" {
 
-		msg.ReplyMarkup = inlineKeyboard
-		bot.Send(msg)
+			trxPlaceholderRepo := repositories.NewUserTRXPlaceholdersRepository(db)
+			placeholder, esg := trxPlaceholderRepo.Query(context.Background())
+			if esg != nil {
+			}
+			err := trxPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			if err != nil {
+				log.Printf("Error updating trx placeholder: %v", err)
+			}
+			realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, bundlePackage.Amount)
 
+			fmt.Printf("TRX realTransferAmount: %s\n", realTransferAmount)
+
+			//生成订单
+			trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
+
+			orderNO := Generate6DigitOrderNo()
+			var trxDeposit domain.UserTRXDeposits
+			trxDeposit.OrderNO = orderNO
+			trxDeposit.UserID = callbackQuery.Message.Chat.ID
+			trxDeposit.Status = 0
+			bundle, _ := strconv.ParseInt(bundleID, 10, 64)
+			trxDeposit.BundleId = bundle
+			trxDeposit.Source = 6
+
+			trxDeposit.Placeholder = placeholder.Placeholder
+
+			_agent := os.Getenv("BOT_AGENT")
+			sysUserRepo := repositories.NewSysUsersRepository(db)
+			_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+			trxDeposit.Address = depositAddress
+			trxDeposit.Amount = bundlePackage.Amount
+			trxDeposit.CreatedAt = time.Now()
+
+			errsg := trxDepositRepo.Create(context.Background(), &trxDeposit)
+			if errsg != nil {
+				log.Printf("Error creating trxDeposit: %v", errsg)
+			}
+
+			msg.Caption = global.Translations[_lang]["order_id"] + "：TOPUP-" + trxDeposit.OrderNO + "\n" +
+				global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " TRX " + global.Translations[_lang]["copy_text_tips"] + "\n" +
+				global.Translations[_lang]["receive_address"] + "<code>" + trxDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
+				global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
+				global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(trxDeposit.CreatedAt) + "\n" +
+				global.Translations[_lang]["amount_suffix_tips"] + "\n"
+
+			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("⏳"+global.Translations[_lang]["catfee_smart_transaction_pay_button"]+realTransferAmount+" TRX ", "noop"),
+				),
+
+				tgbotapi.NewInlineKeyboardRow(
+
+					tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+					tgbotapi.NewInlineKeyboardButtonData("❌"+global.Translations[_lang]["cancel_order"], "cancel_order"),
+				))
+			msg.ReplyMarkup = inlineKeyboard
+			msg.ParseMode = "HTML"
+			//msg.DisableWebPagePreview = true
+			sent, _ := bot.Send(msg)
+
+			expiration := 1 * time.Minute // 短时间缓存空值
+			//设置用户状态
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expiration)
+
+			//expiration := 1 * time.Minute // 短时间缓存空值
+
+			//设置用户状态
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "TRX_"+trxDeposit.OrderNO, expiration)
+			return
+		}
+
+		if bundlePackage.Token == "USDT" {
+
+			usdtPlaceholderRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
+			placeholder, esg := usdtPlaceholderRepo.Query(context.Background())
+			if esg != nil {
+			}
+			err := usdtPlaceholderRepo.Update(context.Background(), placeholder.Id, 1)
+			if err != nil {
+				log.Printf("Error updating usdt placeholder: %v", err)
+			}
+			realTransferAmount := AddStringsAsFloats(placeholder.Placeholder, bundlePackage.Amount)
+
+			fmt.Printf("realTransferAmount: %s\n", realTransferAmount)
+
+			//生成订单
+			usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
+
+			orderNO := Generate6DigitOrderNo()
+			var usdtDeposit domain.UserUSDTDeposits
+			usdtDeposit.OrderNO = orderNO
+			usdtDeposit.UserID = callbackQuery.Message.Chat.ID
+			usdtDeposit.Status = 0
+			bundle, _ := strconv.ParseInt(bundleID, 10, 64)
+			usdtDeposit.BundleId = bundle
+			usdtDeposit.Source = 6
+
+			usdtDeposit.Placeholder = placeholder.Placeholder
+
+			_agent := os.Getenv("BOT_AGENT")
+			sysUserRepo := repositories.NewSysUsersRepository(db)
+			_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)
+			usdtDeposit.Address = depositAddress
+			usdtDeposit.Amount = bundlePackage.Amount
+			usdtDeposit.CreatedAt = time.Now()
+
+			errsg := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
+			if errsg != nil {
+				log.Printf("Error creating usdtDeposit: %v", errsg)
+			}
+
+			msg.Caption = global.Translations[_lang]["order_id"] + "：TOPUP-" + usdtDeposit.OrderNO + "\n" +
+				global.Translations[_lang]["payment_amount"] + "：" + "<code>" + realTransferAmount + "</code>" + " USDT " + global.Translations[_lang]["copy_text_tips"] + "\n" +
+				global.Translations[_lang]["receive_address"] + "<code>" + usdtDeposit.Address + "</code>" + global.Translations[_lang]["copy_text_tips"] + "\n" +
+				global.Translations[_lang]["tx_time_limit_tips"] + "\n" +
+				global.Translations[_lang]["deposit_time_label"] + Format4Chinesese(usdtDeposit.CreatedAt) + "\n" +
+				global.Translations[_lang]["amount_suffix_tips"] + "\n"
+
+			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("⏳"+global.Translations[_lang]["catfee_smart_transaction_pay_button"]+realTransferAmount+" USDT ", "noop"),
+				),
+
+				tgbotapi.NewInlineKeyboardRow(
+
+					tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+					tgbotapi.NewInlineKeyboardButtonData("❌"+global.Translations[_lang]["cancel_order"], "cancel_order"),
+				))
+			msg.ReplyMarkup = inlineKeyboard
+			msg.ParseMode = "HTML"
+			//msg.DisableWebPagePreview = true
+			sent, _ := bot.Send(msg)
+
+			expiration := 1 * time.Minute // 短时间缓存空值
+			//设置用户状态
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expiration)
+			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "USDT_"+usdtDeposit.OrderNO, expiration)
+			//扫码支付
+
+			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
+			//	"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			//		"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
+			//		"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+			//		"- TRX：   "+user.TronAmount+"\n"+
+			//		"-  USDT："+user.Amount)
+			//
+			//msg.ParseMode = "HTML"
+			//
+			//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+			//	tgbotapi.NewInlineKeyboardRow(
+			//		tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+			//	),
+			//)
+			//
+			//msg.ReplyMarkup = inlineKeyboard
+			//bot.Send(msg)
+
+			return
+		}
 		return
 	}
 
@@ -205,7 +350,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 
 	if lessBalance {
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -300,7 +445,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
 			//	"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -340,7 +485,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 				//"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
 				//"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 				//"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
-				"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+				"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+

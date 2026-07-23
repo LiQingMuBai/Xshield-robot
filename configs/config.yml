@@ -1,8 +1,0 @@
-db:
-  host: ""
-  port: ""
-  username: ""
-  password: ""
-  dbname: ""
-  sslmode: "disable"
-

@@ -188,7 +188,7 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	usdtDeposit.BundleId = _count
 	//
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("Agent")
+	_agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	//_agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)

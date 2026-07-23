@@ -56,7 +56,7 @@ func DEPOSIT_AMOUNT(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQ
 	}
 
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-		"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+		"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 			"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 			"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 			"- TRX：   "+user.TronAmount+"\n"+

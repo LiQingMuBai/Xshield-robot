@@ -79,7 +79,7 @@ func DepositPrevUSDTOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 	usdtDeposit.Placeholder = placeholder.Placeholder
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("Agent")
+	_agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	//_agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
@@ -178,6 +178,8 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		record, _ := userTRXDepositsRepo.Query(context.Background(), _orderNO)
 
 		//update
+		userTRXDepositsRepo.Update(context.Background(), record.Id, 2)
+
 		fmt.Printf("record: %v\n", record)
 
 		userTRXPlaceholdersRepo := repositories.NewUserTRXPlaceholdersRepository(db)
@@ -190,6 +192,8 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		userUSDTDepositsRepo := repositories.NewUserUSDTDepositsRepository(db)
 		record, _ := userUSDTDepositsRepo.Query(context.Background(), _orderNO)
 		//update
+		userUSDTDepositsRepo.Update2(context.Background(), record.Id, 2)
+
 		fmt.Printf("record: %v\n", record)
 		userUSDTPlaceholdersRepo := repositories.NewUserUsdtPlaceholdersRepository(db)
 		userUSDTPlaceholdersRepo.UpdateByPlaceholder(context.Background(), record.Placeholder, 0)
@@ -204,7 +208,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("💳"+global.Translations[_lang]["deposit"], "deposit_amount"),
 			//tgbotapi.NewInlineKeyboardButtonData("🔗第二通知人", "click_backup_account"),
-			tgbotapi.NewInlineKeyboardButtonData("📄"+global.Translations[_lang]["billing"], "click_my_recepit"),
+			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_my_recepit"),
 			tgbotapi.NewInlineKeyboardButtonData("🛎️"+global.Translations[_lang]["support"], "click_callcenter"),
 			//tgbotapi.NewInlineKeyboardButtonData("🛠️我的服务", "click_my_service"),
 		),
@@ -238,7 +242,7 @@ func DepositCancelOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, c
 		str = global.Translations[_lang]["secondary_contact_none"]
 	}
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🆔 "+global.Translations[_lang]["user_id"]+"："+user.Associates+"\n\n👤 "+global.Translations[_lang]["username"]+"：@"+user.Username+"\n\n"+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🆔 "+global.Translations[_lang]["user_id"]+"：<code>"+user.Associates+"</code>\n\n👤 "+global.Translations[_lang]["username"]+"：@"+user.Username+"\n\n"+
 		str+"\n\n💰"+
 		global.Translations[_lang]["balance"]+"：\n\n"+
 		"- TRX："+user.TronAmount+"\n"+
@@ -309,7 +313,7 @@ func DepositPrevOrder(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, cal
 	trxDeposit.Placeholder = placeholder.Placeholder
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("Agent")
+	_agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	sysUserRepo := repositories.NewSysUsersRepository(db)
 	_, depositAddress, _ := sysUserRepo.Find(context.Background(), _agent)

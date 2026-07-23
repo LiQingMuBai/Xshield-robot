@@ -36,7 +36,7 @@ func ExtractAddressRiskQuery(_lang string, db *gorm.DB, callbackQuery *tgbotapi.
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -85,7 +85,7 @@ func EXTRACT_PREV_ADDRESS_RISK_PAGE(_lang string, callbackQuery *tgbotapi.Callba
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -122,7 +122,7 @@ func EXTRACT_PREV_ADDRESS_RISK_PAGE(_lang string, callbackQuery *tgbotapi.Callba
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -180,7 +180,7 @@ func ExtraNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuer
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(

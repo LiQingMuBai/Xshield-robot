@@ -27,7 +27,7 @@ func CustodyAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbot
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), callbackQuery.Data, expiration)
 }
 
-func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
+func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, trxfeeClient *_rd.TrxfeeClient) {
 	_address := message.Text
 	_chatID := message.Chat.ID
 	if !tools.IsValidAddress(_address) {
@@ -94,6 +94,9 @@ func CustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
+
+	//添加激活地址
+	trxfeeClient.Activation(_address)
 }
 
 func CustodyRemoveAddressCond(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {

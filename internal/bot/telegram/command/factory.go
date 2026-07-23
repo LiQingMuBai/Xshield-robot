@@ -23,7 +23,7 @@ func NewFactory() *Factory {
 }
 
 func (f *Factory) isAdmin(chatId int64) bool {
-	adminsString := os.Getenv("ADMIN4")
+	adminsString := os.Getenv("TELEGRAM_ADMIN_IDS")
 	adminId := strings.Split(adminsString, ",")
 	for _, item := range adminId {
 		id, err := strconv.ParseInt(item, 10, 64)

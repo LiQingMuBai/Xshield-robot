@@ -72,6 +72,12 @@ func (r *UserUSDTDepositsRepo) Query(ctx context.Context, orderNo string) (domai
 
 }
 
+func (r *UserUSDTDepositsRepo) Update2(ctx context.Context, _ID int64, _status int64) error {
+	return r.db.WithContext(ctx).Model(&domain.UserUSDTDeposits{}).
+		Where("id = ?", _ID).
+		Update("status", _status).Error
+}
+
 func (r *UserUSDTDepositsRepo) Update(ctx context.Context, orderNo string, _status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUSDTDeposits{}).
 		Where("order_no = ?", orderNo).

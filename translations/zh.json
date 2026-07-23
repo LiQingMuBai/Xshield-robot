@@ -8,7 +8,6 @@
   "transaction_plans": "笔数套餐",
 
   "address_check": "地址检测",
-  "usdt_freeze_alert": "USDT冻结预警",
   "my_account": "个人中心",
   "language": "切换语言/Language",
   "address_wrong_tips": "地址有误，请重新输入地址: ",
@@ -41,6 +40,7 @@
   "energy_swap_tips":"欢迎使用U盾能量闪兑\n\uD83D\uDD38转账  {energy_cost} Trx=  1 笔能量\n\uD83D\uDD38转账  {energy_cost_2x} Trx=  2 笔能量\n\uD83D\uDD38收款地址:<code>{receiveAddress}</code>\n➖➖➖➖点击复制➖➖➖➖\n重要提示：\n1.单笔 {energy_cost}Trx，以此类推，一次最大 10笔（{energy_cost_10x}TRX，超出不予入账）\n2.向无U地址转账，需要购买两笔能量\n3.向闪兑地址转账成功后能量将即时按充值地址原路完成闪兑\n4.禁止使用交易所钱包提币使用\n5.能量有效性一小时",
   "welcome_tips1": "\uD83D\uDEE1\uFE0FU盾，做您链上资产的护盾！\n我们不仅关注低价能量，更专注于交易安全！\n让每一笔转账都更安心，让每一次链上交互都值得信任！\n\uD83E\uDD16 三大实用功能，助您安全、高效地管理链上资产\n\uD83D\uDD0B 波场能量闪兑, 节省超过80%!\n\uD83D\uDD75\uFE0F 地址风险检测, 让每一笔转账都更安心!\n\uD83D\uDEA8 USDT冻结预警,秒级响应，让您的U永不冻结！\n\uD83C\uDF89新用户福利：每日一次免费地址风险查询",
   "welcome_tips": "\uD83D\uDEE1\uFE0FU盾，做您链上资产的护盾！\n我们不仅关注低价能量，更专注于交易安全！\n让每一笔转账都更安心，让每一次链上交互都值得信任！\n\uD83E\uDD16 三大实用功能，助您安全、高效地管理链上资产\n\uD83D\uDD0B 波场能量闪兑, 节省超过80%!\n\uD83D\uDD75\uFE0F 地址风险检测, 让每一笔转账都更安心!\n\uD83D\uDEA8 USDT冻结预警,秒级响应，让您的U永不冻结！",
+  "welcome_tips2": "尊敬的用户，您好！\n\n为给您提供更稳定、更优质的服务体验，我们正在对系统进行必要的升级与优化。在此期间，部分功能可能暂时无法使用，敬请谅解。\n\n由此带来的不便，我们深表歉意，感谢您的理解与耐心等待。升级完成后，我们将以更高效、更流畅的服务与您相见！\n\n如有任何疑问，欢迎随时联系客服，我们将竭诚为您服务。\n\n—— 感谢一路有您！",
   "address_check_tips1": "欢迎使用U盾地址风险检测\n✅ 支持 TRON 或 ETH 网络任意地址查询\n✅ 系统将基于链上行为、风险标签、关联实体进行评分与分析\n\uD83D\uDCCA 风险等级说明：\n\uD83D\uDFE2低风险(0–30):无异常交易，未关联已知风险实体\n\uD83D\uDFE1中风险(31–70):存在少量高风险交互，对手方不明\n\uD83D\uDFE0高风险(71–90):频繁异常转账，或与恶意地址有关\n\uD83D\uDD34极高风险(91–100):涉及诈骗、制裁、黑客、洗钱等高风险行为\n\n\uD83D\uDCCC 每位用户每天可免费检测 1 次\n\uD83D\uDCCC 超出后每次扣 {address_detection_cost} TRX 或{address_detection_cost_usdt} USDT（系统将优先扣除 TRX）\n\uD83D\uDCB0当前余额：\n- TRX：{tron_amount}\n- USDT：{amount}\n请输入要检测的地址 \uD83D\uDC47",
   "address_check_tips": "欢迎使用U盾地址风险检测\n✅ 支持 TRON 或 ETH 网络任意地址查询\n✅ 系统将基于链上行为、风险标签、关联实体进行评分与分析\n\uD83D\uDCCA 风险等级说明：\n\uD83D\uDFE2低风险(0–30):无异常交易，未关联已知风险实体\n\uD83D\uDFE1中风险(31–70):存在少量高风险交互，对手方不明\n\uD83D\uDFE0高风险(71–90):频繁异常转账，或与恶意地址有关\n\uD83D\uDD34极高风险(91–100):涉及诈骗、制裁、黑客、洗钱等高风险行为\n\uD83D\uDCCC 每次扣 {address_detection_cost} TRX 或{address_detection_cost_usdt} USDT（系统将优先扣除 TRX）\n\uD83D\uDCB0当前余额：\n- TRX：{tron_amount}\n- USDT：{amount}\n请输入要检测的地址 \uD83D\uDC47",
 
@@ -72,7 +72,7 @@
   "freeze_alert_service_monitoring_tips": "\uD83D\uDCCC请保持余额充足，到期将自动续费，如需中止服务，可随时",
   "currently_monitoring_addresses": "当前正在监控的地址：",
   "stop_monitoring": "停止监控",
-  "NAACUAMS": "当前没有地址在进行预警监控服务",
+  "NAACUAMS": "当前没有地址在进行预预警监控服务",
   "monitoring_address_list": "预警地址列表如下：",
 
   "transaction_plans_tips": "欢迎使用U盾能量笔数套餐\n一次购买/多地址使用/一键发能\n⚙\uFE0F 功能介绍\n➕添加地址：可添加4个常用地址\n\uD83D\uDD22地址列表：可向4个常用地址或向其他地址快速发能\n⏳ 能量有效期 1 小时，过期将自动回收",
@@ -152,7 +152,7 @@
   "address_trace_delete": "删除地址",
   "address_trace_delete_tips": "请输入需删除的地址: ",
   "address_trace_menu": "地址跟踪",
-  "address_trace_head_tips": "欢迎使用U盾地址监控TRX和USDT动账信息\n⚠️可添加4个常用地址\n",
+  "address_trace_head_tips": "欢迎使用U盾地址监控TRX和USDT动账信息\n",
 
 
   "backup_account_tips": "用户名格式有误，去掉@符号，请重新输入",
@@ -174,7 +174,7 @@
 
   "close_auto_dispatch_energy": "暂停",
   "open_auto_dispatch_energy": "开启",
-  "tron_energy_menu": "波场能量",
+  "tron_energy_menu": "能量闪兑",
   "smart_transaction_disable": "托管:\uD83D\uDFE2 已开启 ",
   "smart_transaction_enable": "托管:\uD83D\uDFE1 已暂停 ",
   "smart_transaction_address_list": "托管列表",
@@ -233,7 +233,7 @@
 
   "command_energy_desc": "\uD83D\uDD79指令快捷租赁\n\n1.命令：1    数量：65000(1笔)    \t价格：{1_times_cost_trx}(TRX) \n2.命令：2    数量：131000(2笔)    价格：{2_times_cost_trx}(TRX)  \n3.命令：3    数量：195000(3笔)    价格：{3_times_cost_trx}(TRX)  \n4.命令：4    数量：260000(4笔)    价格：{4_times_cost_trx}(TRX) \n5.命令：5    数量：325000(5笔)    价格：{5_times_cost_trx}(TRX) \n\n⚠\uFE0F对方地址无 U 需要两笔能量！\n\n⏰指令模式能量一小时有效！\n⚠\uFE0F此模式无需确认，收到命令能量秒到！小心使用哦！\n♻\uFE0F如绑定 2 个以上地址，发送命令弹出地址，选择即可秒租能量！",
 
-  "member_telegram_menu": "\uD83D\uDC8E电报会员和星星",
+  "member_telegram_menu": "\uD83D\uDC8E会员星星",
   "member_telegram_desc": "\uD83C\uDF1F星星价格： 0.03 U/个\n(支持单次购买50-10000个星星)\n\n\n\uD83D\uDC8E会员价格：\n3个月会员：17 U\n6个月会员：27 U\n1年会员：    47 U\n\n\n\n不要用汇旺充值，只能钱包u充值！",
   "member_telegram_second_menu": "\uD83D\uDC8E购买会员",
   "star_telegram_second_menu": "⭐\uFE0F购买星星",
@@ -248,7 +248,7 @@
   "12_month_premium": "12个月会员",
 
   "premium_activation_username": "开通高级会员用户名（需要携带@符号）",
-  "premium_activation_tips": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机会员：{premium_package}Telegram Premium会员\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n",
+  "premium_activation_tips": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机会员：{premium_package}Telegram Premium会员\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n订单有效期：10 分钟\n",
   "balance_pay_order": "余额支付",
   "activate_current_user": "🎁给当前用户开通",
   "activate_current_user_tips1": "请发送您需要开通Telegram会员账号\n▫例如：\n▫@{username}\n▫<code>https://t.me/{username}</code>\n\n您选择了 {month}个月 Telegram Premium会员\n▫售价: {price}U",
@@ -259,7 +259,7 @@
   "purchase_stars_current_user": "🎁给当前用户购买",
   "purchase_telegram_stars_tips": "请选择购买星星(Telegram Stars)的数量:",
   "purchase_telegram_products_tips": "请选择开通、购买 Telegram 产品:",
-  "purchase_telegram_stars": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机星星：{stars}星星\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n",
+  "purchase_telegram_stars": "⚠\uFE0F↓↓请按金额支付，否则无法到账↓↓\n---------------------------------\n\uD83D\uDD38飞机星星：{stars}星星\n\uD83D\uDD38用户账号：@{username}\n\uD83D\uDD38用户昵称：{nickname}\n\uD83D\uDD38支付金额：<code>{amount}</code> USDT\n\uD83D\uDD38收款地址：<code>{address}</code>\n（点击地址复制）\n---------------------------------\n\n‼\uFE0F请务必核对金额尾数，金额带小数\n订单有效期：10 分钟\n",
   "successfully_purchased_stars": "✅成功购买{count}星星，请耐心等待，有任何问题，请联系客服",
   "anonymous_mobile": "✈匿名号码\n➖➖➖➖➖➖➖➖➖➖\n官方NFT888号码永久不注销\n\n防止销号 增值快 可回收 稳定高\n\n一个号码传三代，人走了号还在\n\n匿名号码【+888】\nTelegram 在 TON 区块链上发布了有限的虚拟电话号码作为NFT收藏品。 Telegram 用户可以使用这些号码进行注册，无需 SIM 卡，并直接在 Fragment 上接收注册、或登录验证码。\n\n匿名账号【用户名】\n匿名账号【用户名】与匿名号码【+888】一样，也是在TON 区块链上发行的NFT收藏品。Telegram 用户可以使用用户名绑定到飞机号（个人号、群组、频道、机器人等）上使用，区别在于匿名号码可注册，而用户名不可注册。\n\n匿名号码与匿名账号，需要TON链的钱包地址方可接收。",
   "customer_service": "💁联系客服",
@@ -276,7 +276,10 @@
   "input_receive_address": "请输入您的收款地址：",
   "coin_laundering_order_desc": "订单创建成功\n订单号{orderNO}\n订单创建时间{RegTime}\n订单失效时间{ExpireTime}\n\n选择的交易对为 USDTTRC20 - {token}。您将发送<code> {amount1} USDTTRC20</code>；您将获得约 {amount2} {token}。\n您的接收的钱包地址为\n <code>{to_address}</code>\n\n请发送<code>{amount1} </code>USDTTRC20给地址：\n\n<code>{from_address}</code>",
 
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>"
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>",
+
+
+  "usdt_freeze_alert": "链上安全"
 
 }
 

@@ -70,7 +70,7 @@ func BUNDLE_CHECK2(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callba
 			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -270,7 +270,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			trxDeposit.BundleId = value
 
 			//dictRepo := repositories.NewSysDictionariesRepo(db)
-			_agent := os.Getenv("Agent")
+			_agent := os.Getenv("BOT_AGENT")
 			//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 			//_agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
@@ -397,7 +397,7 @@ func ST_BUNDLE_CHECK(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			usdtDeposit.BundleId = value
 
 			//dictRepo := repositories.NewSysDictionariesRepo(db)
-			_agent := os.Getenv("Agent")
+			_agent := os.Getenv("BOT_AGENT")
 			//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 			//_agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
@@ -544,7 +544,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
 			//	"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -584,7 +584,7 @@ func ExtractBundleService(_lang string, message *tgbotapi.Message, bot *tgbotapi
 				//"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
 				//"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 				//"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
-				"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+				"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+

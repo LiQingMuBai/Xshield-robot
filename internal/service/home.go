@@ -51,7 +51,7 @@ func BackHOME(db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 		str = "第二通知人：（无）"
 	}
 
-	msg := tgbotapi.NewMessage(chatID, "📇 我的账户\n\n🆔 用户ID："+user.Associates+"\n\n👤 用户名：@"+user.Username+"\n\n"+
+	msg := tgbotapi.NewMessage(chatID, "📇 我的账户\n\n🆔 用户ID：<code>"+user.Associates+"</code>\n\n👤 用户名：@"+user.Username+"\n\n"+
 		str+"\n\n💰 "+
 		"当前余额：\n\n"+
 		"- TRX："+user.TronAmount+"\n"+

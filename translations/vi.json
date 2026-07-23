@@ -138,7 +138,7 @@
   "address_trace_delete": "Xóa địa chỉ",
   "address_trace_delete_tips": "Vui lòng nhập địa chỉ cần xóa: ",
   "address_trace_menu": "Theo dõi địa chỉ",
-  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT\n⚠️Bạn có thể thêm 4 địa chỉ thường dùng\n",
+  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT\n",
 
   "backup_account_tips": "Định dạng tên người dùng không chính xác. Xóa ký hiệu @ và nhập lại.",
   "backup_account_tips2": "Định dạng tên người dùng không chính xác, vui lòng nhập lại",

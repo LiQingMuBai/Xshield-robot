@@ -2,11 +2,13 @@ package repositories
 
 import (
 	"context"
-	_ "github.com/go-sql-driver/mysql"
 	"ushield_bot/internal/request"
 
-	"gorm.io/gorm"
+	_ "github.com/go-sql-driver/mysql"
+
 	"ushield_bot/internal/domain"
+
+	"gorm.io/gorm"
 )
 
 type UserAddressMonitorEventRepo struct {
@@ -44,7 +46,7 @@ func (r *UserAddressMonitorEventRepo) Query(ctx context.Context, _chatID int64) 
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserAddressMonitorEvent{}).
 		Select("id", "days", "address", "network").
-		Where("chat_id = ?", _chatID).
+		Where("chat_id = ? and status = 1", _chatID).
 		Scan(&subscriptions).Error
 	return subscriptions, err
 
@@ -59,7 +61,7 @@ func (r *UserAddressMonitorEventRepo) GetAddressMonitorEventInfoList(ctx context
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.Model(&domain.UserAddressMonitorEvent{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ?", _chatID)
+	db := r.db.Model(&domain.UserAddressMonitorEvent{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? ", _chatID)
 	var UserAddressMonitorEvent []domain.UserAddressMonitorEvent
 	// 如果有条件搜索 下方会自动创建搜索语句
 

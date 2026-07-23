@@ -138,7 +138,7 @@
   "address_trace_delete": "Eliminar dirección",
   "address_trace_delete_tips": "Por favor, introduce la dirección que deseas eliminar: ",
   "address_trace_menu": "Seguimiento de dirección",
-  "address_trace_head_tips": "Bienvenido al Servicio de Monitoreo de Direcciones de U-Shield para información de transacciones de TRX y USDT\n⚠️Puedes añadir 4 direcciones usadas frecuentemente\n",
+  "address_trace_head_tips": "Bienvenido al Servicio de Monitoreo de Direcciones de U-Shield para información de transacciones de TRX y USDT\n",
 
   "backup_account_tips": "Formato de nombre de usuario incorrecto. Elimina el símbolo @ y vuelve a introducirlo.",
   "backup_account_tips2": "Formato de nombre de usuario incorrecto, por favor, vuelve a introducirlo",

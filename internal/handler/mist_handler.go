@@ -97,7 +97,7 @@ type AddressProfile struct {
 	BalanceUsd       string `json:"balance_usd"`
 }
 
-func GetAddressInfo(_symbol string, _address, _cookie string) SlowMistAddressInfo {
+func GetAddressInfo(_symbol string, _address, _cookie string) (SlowMistAddressInfo, error) {
 	url := "https://dashboard.misttrack.io/api/v1/address_risk_analysis?coin=" + _symbol + "&address=" + _address
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -116,8 +116,9 @@ func GetAddressInfo(_symbol string, _address, _cookie string) SlowMistAddressInf
 	var addressInfo SlowMistAddressInfo
 	if err := json.Unmarshal(body, &addressInfo); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
+		return addressInfo, err
 	}
-	return addressInfo
+	return addressInfo, nil
 }
 
 func GetText(_lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {

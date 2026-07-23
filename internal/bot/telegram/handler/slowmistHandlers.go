@@ -3,7 +3,6 @@ package handler
 import (
 	"encoding/json"
 	"fmt"
-	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"io"
 	"log"
 	"net/http"
@@ -11,6 +10,8 @@ import (
 	"strings"
 	"ushield_bot/internal/bot"
 	"ushield_bot/internal/domain"
+
+	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 type MisttrackHandler struct{}
@@ -47,105 +48,115 @@ func (h *MisttrackHandler) Handle(b bot.IBot, message *tgbotapi.Message) error {
 		_text := "系統錯誤，請重新輸入地址，📞聯繫客服 @Ushield001\n"
 		if strings.HasPrefix(_message, "0x") && len(_message) == 42 {
 			_symbol := "USDT-ERC20"
-			_addressInfo := getAddressInfo(_symbol, _message, b.GetCookie())
-			_text = getText(_addressInfo)
+			_addressInfo, err := getAddressInfo(_symbol, _message, b.GetCookie())
 
-			//_coin := "ETH"
-			addressProfile := getAddressProfile(_symbol, _message, b.GetCookie())
-			_text7 := "余額：" + addressProfile.BalanceUsd + "\n"
-			//log.Println("余额：", addressProfile.BalanceUsd)
-			//log.Println("累计收入：", addressProfile.TotalReceivedUsd)
-			//log.Println("累计支出：", addressProfile.TotalSpentUsd)
-			//log.Println("首次活跃时间：", addressProfile.FirstTxTime)
-			//log.Println("最后活跃时间：", addressProfile.LastTxTime)
-			//log.Println("交易次数：", addressProfile.TxCount+"笔")
-			_text8 := "累計收入：" + addressProfile.TotalReceivedUsd + "\n"
-			_text9 := "累计支出：" + addressProfile.TotalSpentUsd + "\n"
-			_text10 := "首次活躍時間：" + addressProfile.FirstTxTime + "\n"
-			_text11 := "最後活躍時間：" + addressProfile.LastTxTime + "\n"
-			_text12 := "交易次數：" + addressProfile.TxCount + "筆" + "\n"
+			if err != nil || !_addressInfo.Success {
+				_text = "目前我们的AI大数据态势感知系统正在对区块链地址风险进行高强度的实时分析，导致“地址风险监测”功能出现短暂的“思考卡顿”（临时失效）。"
+			} else {
+				_text = getText(_addressInfo)
 
-			//_text13 := "📄 详细分析报告 ➜ 50 TRX" + "\n"
+				//_coin := "ETH"
+				addressProfile := getAddressProfile(_symbol, _message, b.GetCookie())
+				_text7 := "余額：" + addressProfile.BalanceUsd + "\n"
+				//log.Println("余额：", addressProfile.BalanceUsd)
+				//log.Println("累计收入：", addressProfile.TotalReceivedUsd)
+				//log.Println("累计支出：", addressProfile.TotalSpentUsd)
+				//log.Println("首次活跃时间：", addressProfile.FirstTxTime)
+				//log.Println("最后活跃时间：", addressProfile.LastTxTime)
+				//log.Println("交易次数：", addressProfile.TxCount+"笔")
+				_text8 := "累計收入：" + addressProfile.TotalReceivedUsd + "\n"
+				_text9 := "累计支出：" + addressProfile.TotalSpentUsd + "\n"
+				_text10 := "首次活躍時間：" + addressProfile.FirstTxTime + "\n"
+				_text11 := "最後活躍時間：" + addressProfile.LastTxTime + "\n"
+				_text12 := "交易次數：" + addressProfile.TxCount + "筆" + "\n"
 
-			_text99 := "主要交易对手分析：" + "\n"
+				//_text13 := "📄 详细分析报告 ➜ 50 TRX" + "\n"
 
-			_text100 := ""
-			lableAddresList := getNotSafeAddress(_symbol, _message, b.GetCookie())
-			if len(lableAddresList.GraphDic.NodeList) > 0 {
-				for _, data := range lableAddresList.GraphDic.NodeList {
-					if strings.Contains(data.Label, "huione") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 汇旺" + "\n"
-					}
-					if strings.Contains(data.Label, "Theft") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 盗窃" + "\n"
-					}
-					if strings.Contains(data.Label, "Drainer") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 诈骗" + "\n"
-					}
-					if strings.Contains(data.Label, "Banned") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 制裁" + "\n"
+				_text99 := "主要交易对手分析：" + "\n"
+
+				_text100 := ""
+				lableAddresList := getNotSafeAddress(_symbol, _message, b.GetCookie())
+				if len(lableAddresList.GraphDic.NodeList) > 0 {
+					for _, data := range lableAddresList.GraphDic.NodeList {
+						if strings.Contains(data.Label, "huione") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 汇旺" + "\n"
+						}
+						if strings.Contains(data.Label, "Theft") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 盗窃" + "\n"
+						}
+						if strings.Contains(data.Label, "Drainer") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 诈骗" + "\n"
+						}
+						if strings.Contains(data.Label, "Banned") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 制裁" + "\n"
+						}
 					}
 				}
+
+				//_text14 := "每日免费查询剩余：0 次" + "\n"
+				_text5 := "📢更多查询請聯繫客服 @Ushield001\n"
+				//_text15 := "超额查询 ➜ 10 TRX / 次" + "\n"
+				_text16 := "🛡️ U盾在手，链上无忧！" + "\n"
+
+				_text = _text + _text7 + _text8 + _text9 + _text10 + _text11 + _text12 + _text99 + _text100 + _text5 + _text16
+
 			}
-
-			//_text14 := "每日免费查询剩余：0 次" + "\n"
-			_text5 := "📢更多查询請聯繫客服 @Ushield001\n"
-			//_text15 := "超额查询 ➜ 10 TRX / 次" + "\n"
-			_text16 := "🛡️ U盾在手，链上无忧！" + "\n"
-
-			_text = _text + _text7 + _text8 + _text9 + _text10 + _text11 + _text12 + _text99 + _text100 + _text5 + _text16
-
 		}
 		if strings.HasPrefix(_message, "T") && len(_message) == 34 {
 			_symbol := "USDT-TRC20"
-			_addressInfo := getAddressInfo(_symbol, _message, b.GetCookie())
-			_text = getText(_addressInfo)
+			_addressInfo, err := getAddressInfo(_symbol, _message, b.GetCookie())
 
-			addressProfile := getAddressProfile(_symbol, _message, b.GetCookie())
-			_text7 := "余額：" + addressProfile.BalanceUsd + "\n"
-			//log.Println("余额：", addressProfile.BalanceUsd)
-			//log.Println("累计收入：", addressProfile.TotalReceivedUsd)
-			//log.Println("累计支出：", addressProfile.TotalSpentUsd)
-			//log.Println("首次活跃时间：", addressProfile.FirstTxTime)
-			//log.Println("最后活跃时间：", addressProfile.LastTxTime)
-			//log.Println("交易次数：", addressProfile.TxCount+"笔")
-			_text8 := "累計收入：" + addressProfile.TotalReceivedUsd + "\n"
-			_text9 := "累计支出：" + addressProfile.TotalSpentUsd + "\n"
-			_text10 := "首次活躍時間：" + addressProfile.FirstTxTime + "\n"
-			_text11 := "最後活躍時間：" + addressProfile.LastTxTime + "\n"
-			_text12 := "交易次數：" + addressProfile.TxCount + "筆" + "\n"
+			if err != nil || !_addressInfo.Success {
+				_text = "目前我们的AI大数据态势感知系统正在对区块链地址风险进行高强度的实时分析，导致“地址风险监测”功能出现短暂的“思考卡顿”（临时失效）。"
+			} else {
+				_text = getText(_addressInfo)
 
-			//_text13 := "📄 详细分析报告 ➜ 50 TRX" + "\n"
+				addressProfile := getAddressProfile(_symbol, _message, b.GetCookie())
+				_text7 := "余額：" + addressProfile.BalanceUsd + "\n"
+				//log.Println("余额：", addressProfile.BalanceUsd)
+				//log.Println("累计收入：", addressProfile.TotalReceivedUsd)
+				//log.Println("累计支出：", addressProfile.TotalSpentUsd)
+				//log.Println("首次活跃时间：", addressProfile.FirstTxTime)
+				//log.Println("最后活跃时间：", addressProfile.LastTxTime)
+				//log.Println("交易次数：", addressProfile.TxCount+"笔")
+				_text8 := "累計收入：" + addressProfile.TotalReceivedUsd + "\n"
+				_text9 := "累计支出：" + addressProfile.TotalSpentUsd + "\n"
+				_text10 := "首次活躍時間：" + addressProfile.FirstTxTime + "\n"
+				_text11 := "最後活躍時間：" + addressProfile.LastTxTime + "\n"
+				_text12 := "交易次數：" + addressProfile.TxCount + "筆" + "\n"
 
-			_text99 := "危险交易对手分析：" + "\n"
+				//_text13 := "📄 详细分析报告 ➜ 50 TRX" + "\n"
 
-			lableAddresList := getNotSafeAddress(_symbol, _message, b.GetCookie())
+				_text99 := "危险交易对手分析：" + "\n"
 
-			_text100 := ""
-			if len(lableAddresList.GraphDic.NodeList) > 0 {
-				for _, data := range lableAddresList.GraphDic.NodeList {
-					if strings.Contains(data.Label, "huione") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 汇旺" + "\n"
-					}
-					if strings.Contains(data.Label, "Theft") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 盗窃" + "\n"
-					}
-					if strings.Contains(data.Label, "Drainer") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 诈骗" + "\n"
-					}
-					if strings.Contains(data.Label, "Banned") {
-						_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 制裁" + "\n"
+				lableAddresList := getNotSafeAddress(_symbol, _message, b.GetCookie())
+
+				_text100 := ""
+				if len(lableAddresList.GraphDic.NodeList) > 0 {
+					for _, data := range lableAddresList.GraphDic.NodeList {
+						if strings.Contains(data.Label, "huione") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 汇旺" + "\n"
+						}
+						if strings.Contains(data.Label, "Theft") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 盗窃" + "\n"
+						}
+						if strings.Contains(data.Label, "Drainer") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 诈骗" + "\n"
+						}
+						if strings.Contains(data.Label, "Banned") {
+							_text100 = _text100 + data.Title[0:5] + "..." + data.Title[29:34] + " 制裁" + "\n"
+						}
 					}
 				}
+
+				//_text14 := "每日免费查询剩余：0 次" + "\n"
+				_text5 := "📢更多查询請聯繫客服 @Ushield001\n"
+				//_text15 := "超额查询 ➜ 10 TRX / 次" + "\n"
+				_text16 := "🛡️ U盾在手，链上无忧！" + "\n"
+
+				_text = _text + _text7 + _text8 + _text9 + _text10 + _text11 + _text12 + _text99 + _text100 + _text5 + _text16
+
 			}
-
-			//_text14 := "每日免费查询剩余：0 次" + "\n"
-			_text5 := "📢更多查询請聯繫客服 @Ushield001\n"
-			//_text15 := "超额查询 ➜ 10 TRX / 次" + "\n"
-			_text16 := "🛡️ U盾在手，链上无忧！" + "\n"
-
-			_text = _text + _text7 + _text8 + _text9 + _text10 + _text11 + _text12 + _text99 + _text100 + _text5 + _text16
-
 		}
 		msg = domain.MessageToSend{
 			ChatId: message.Chat.ID,
@@ -248,7 +259,7 @@ type AddressProfile struct {
 	BalanceUsd       string `json:"balance_usd"`
 }
 
-func getAddressInfo(_symbol string, _address, _cookie string) SlowMistAddressInfo {
+func getAddressInfo(_symbol string, _address, _cookie string) (SlowMistAddressInfo, error) {
 	url := "https://dashboard.misttrack.io/api/v1/address_risk_analysis?coin=" + _symbol + "&address=" + _address
 	req, _ := http.NewRequest("GET", url, nil)
 
@@ -267,8 +278,10 @@ func getAddressInfo(_symbol string, _address, _cookie string) SlowMistAddressInf
 	var addressInfo SlowMistAddressInfo
 	if err := json.Unmarshal(body, &addressInfo); err != nil { // Parse []byte to go struct pointer
 		fmt.Println("Can not unmarshal JSON")
+		//return nil
+		return addressInfo, err
 	}
-	return addressInfo
+	return addressInfo, nil
 }
 
 func getText(addressInfo SlowMistAddressInfo) string {

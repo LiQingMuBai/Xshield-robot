@@ -138,7 +138,7 @@
   "address_trace_delete": "アドレス削除",
   "address_trace_delete_tips": "削除するアドレスを入力してください: ",
   "address_trace_menu": "アドレス追跡",
-  "address_trace_head_tips": "TRXおよびUSDTトランザクション情報に関するU-Shieldアドレス監視サービスへようこそ\n⚠️よく使うアドレスは4つまで追加できます\n",
+  "address_trace_head_tips": "TRXおよびUSDTトランザクション情報に関するU-Shieldアドレス監視サービスへようこそ\n",
 
   "backup_account_tips": "ユーザー名の形式が正しくありません。@記号を削除して再入力してください",
   "backup_account_tips2": "ユーザー名の形式が正しくありません。再入力してください",

@@ -127,7 +127,7 @@ func APPLY_BUNDLE_PACKAGE(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI,
 			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -294,7 +294,7 @@ func CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(_lang string, db *gorm.DB, chatID int64
 				//builder.WriteString("\n") // 添加分隔符
 			}
 			if user.BundleTimes > 1 {
-				builder.WriteString("\n") // 添加分隔符
+				//builder.WriteString("\n") // 添加分隔符
 				builder.WriteString(global.Translations[_lang]["dispatch_now_2"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("_2")
@@ -763,7 +763,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 	if lessBalance {
 		msg := tgbotapi.NewMessage(message.Chat.ID,
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -795,7 +795,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 	if item.Id > 0 {
 		msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["smart_transaction_plans_repeat_order"]+
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 			"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 			"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 			"- TRX：   "+user.TronAmount+"\n"+

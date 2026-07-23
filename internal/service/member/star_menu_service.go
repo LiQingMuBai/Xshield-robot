@@ -133,13 +133,13 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	usdtDeposit.Status = 0
 	usdtDeposit.Placeholder = placeholder.Placeholder
 
-	//来自于波场伴侣  //source  0代表充值、1代表智能托管、2代表检测、3代表预警、4代表VIP会员、5代表星星支付
+	//来自于波场伴侣  //source  0代表充值、1代表智能托管、2代表检测、3代表预警、4代表VIP会员、5代表星星支付 6代笔笔数套餐
 	usdtDeposit.Source = 5
 	_count, _ := strconv.ParseInt(count, 10, 64)
 	usdtDeposit.BundleId = _count
 	//
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("Agent")
+	_agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
 	//_agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)

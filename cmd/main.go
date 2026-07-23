@@ -2,13 +2,11 @@ package main
 
 import (
 	"context"
-	"encoding/json"
 	"fmt"
 	"log"
-	"os"
-	"path/filepath"
 	"strconv"
 	"strings"
+	"ushield_bot/internal/bootstrap"
 	"ushield_bot/internal/infrastructure/3rd/fixedfloat"
 	"ushield_bot/internal/service/additional"
 	"ushield_bot/internal/service/catfee"
@@ -18,10 +16,6 @@ import (
 	"ushield_bot/internal/service/yhb"
 
 	"github.com/go-telegram-bot-api/telegram-bot-api/v5"
-	"github.com/joho/godotenv"
-	"github.com/sirupsen/logrus"
-	"github.com/spf13/viper"
-	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
 	"time"
@@ -35,466 +29,14 @@ import (
 	. "ushield_bot/internal/infrastructure/tools"
 )
 
-func initConfig() error {
-	viper.AddConfigPath("configs")
-	viper.SetConfigName("config")
-	return viper.ReadInConfig()
-}
-
-// 加载翻译文件
-func loadTranslations() {
-	global.Mutex.Lock()
-	defer global.Mutex.Unlock()
-
-	for _, lang := range global.SupportedLangs {
-		filePath := filepath.Join(global.TranslationsDir, lang+".json")
-		data, err := os.ReadFile(filePath)
-		if err != nil {
-			log.Printf("Warning: Could not load translation file for %s: %v", lang, err)
-			continue
-		}
-
-		var langTranslations map[string]string
-		if err := json.Unmarshal(data, &langTranslations); err != nil {
-			log.Printf("Error parsing translation file for %s: %v", lang, err)
-			continue
-		}
-
-		global.Translations[lang] = langTranslations
-	}
-
-	// 确保默认语言存在
-	if _, exists := global.Translations[global.DefaultLang]; !exists {
-		log.Fatalf("Default language %s not found in translations", global.DefaultLang)
-	}
-}
-
-// 翻译函数（基础版本）
-func T(lang, key string) string {
-	global.Mutex.RLock()
-	defer global.Mutex.RUnlock()
-
-	if langTranslations, exists := global.Translations[lang]; exists {
-		if value, exists := langTranslations[key]; exists {
-			return value
-		}
-	}
-
-	// 回退到默认语言
-	if lang != global.DefaultLang {
-		if value, exists := global.Translations[global.DefaultLang][key]; exists {
-			return value
-		}
-	}
-
-	// 如果键不存在，返回键本身
-	return key
-}
-
-// 带参数的翻译函数（处理占位符）
-func TParam(lang, key string, params map[string]string) string {
-	text := T(lang, key)
-
-	// 替换占位符
-	for key, value := range params {
-		placeholder := "{" + key + "}"
-		text = strings.ReplaceAll(text, placeholder, value)
-	}
-
-	return text
-}
 func main() {
-
-	logrus.SetFormatter(&logrus.JSONFormatter{})
-
-	if err := initConfig(); err != nil {
-		logrus.Fatalf("init configs err: %s", err.Error())
-	}
-
-	loadTranslations()
-
-	if err := godotenv.Load(); err != nil {
-		logrus.Fatalf("load .env file err: %s", err.Error())
-	}
-
-	log.Printf(T("zh", "start"))
-	log.Printf(T("en", "start"))
-
-	// Database connection string
-	host := viper.GetString("db.host")
-	port := viper.GetString("db.port")
-	username := viper.GetString("db.username")
-	password := viper.GetString("db.password")
-	dbname := viper.GetString("db.dbname")
-
-	dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?charset=utf8mb4&parseTime=True&loc=Local", username, password, host, port, dbname)
-	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
-
+	application, err := bootstrap.BuildApp()
 	if err != nil {
-		panic("Failed to connect to the database: " + err.Error())
-	}
-	TG_BOT_API := os.Getenv("TG_BOT_API")
-	bot, err := tgbotapi.NewBotAPI(TG_BOT_API)
-	if err != nil {
-		log.Panic(err)
+		log.Fatalf("build app err: %v", err)
 	}
 
-	bot.Debug = true
-	log.Printf("Authorized on account %s", bot.Self.UserName)
-
-	_cookie1 := os.Getenv("COOKIE1")
-	_cookie2 := os.Getenv("COOKIE2")
-	_cookie3 := os.Getenv("COOKIE3")
-
-	trxfeeUrl := os.Getenv("TRXFEE_BASE_URL")
-	trxfeeApiKey := os.Getenv("TRXFEE_APIKEY")
-	trxfeeSecret := os.Getenv("TRXFEE_APISECRET")
-
-	fixfloatedUrl := os.Getenv("FIXFLOATED_REF_URL")
-
-	botName := os.Getenv("BOT_NAME")
-
-	log.Printf("Trxfee URL: %s", trxfeeUrl)
-	log.Printf("trxfeeApiKeyL: %s", trxfeeApiKey)
-	log.Printf("\ttrxfeeSecret: %s", trxfeeSecret)
-
-	CATFEE_BASE_URL := os.Getenv("CATFEE_BASE_URL")
-	CATFEE_APIKEY := os.Getenv("CATFEE_APIKEY")
-	CATFEE_APISECRET := os.Getenv("CATFEE_APISECRET")
-
-	log.Printf("CATFEE_BASE_URL: %s\n", CATFEE_BASE_URL)
-	log.Printf("CATFEE_APIKEY: %s\n", CATFEE_APIKEY)
-	log.Printf("CATFEE_APISECRET: %s\n", CATFEE_APISECRET)
-
-	catfee, _ := trxfee.NewCatfeeService(CATFEE_APIKEY, CATFEE_APISECRET, CATFEE_BASE_URL)
-	// 1. 创建字符串数组
-	cookies := []string{_cookie1, _cookie2, _cookie3}
-
-	fmt.Printf("cookies: %s\n", cookies)
-
-	_cookie := RandomCookiesString(cookies)
-
-	cache := cache.NewMemoryCache()
-
-	// 设置命令
-	_, err = bot.Request(tgbotapi.NewSetMyCommands(
-		tgbotapi.BotCommand{Command: "start", Description: "start"},
-		tgbotapi.BotCommand{Command: "hide", Description: "hide"},
-	))
-	if err != nil {
-		log.Printf("Error setting commands: %v", err)
-	}
-
-	u := tgbotapi.NewUpdate(0)
-	u.Timeout = 60
-	updates := bot.GetUpdatesChan(u)
-
-	for update := range updates {
-		if update.Message != nil {
-			if update.Message.IsCommand() {
-				switch {
-				case strings.HasPrefix(update.Message.Command(), "startDispatch"):
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢 功能开发中！想第一时间知道它上线吗？记得关注我们的官方频道：@ushield1 🔔\n\n")
-					msg.ParseMode = "HTML"
-					bot.Send(msg)
-
-				case strings.HasPrefix(update.Message.Command(), "open_ST"):
-					subscribeBundleID := strings.ReplaceAll(update.Message.Command(), "open_ST", "")
-					log.Println("subscribeBundleID : " + subscribeBundleID)
-					log.Println(subscribeBundleID + "   open_ST command")
-
-					//手动发能
-
-					//trxfee
-					userSmartTransactionPackageSubscriptionsRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
-
-					record, _ := userSmartTransactionPackageSubscriptionsRepo.GetRecordByID(subscribeBundleID)
-					if record.ChatID != update.Message.Chat.ID {
-						log.Println("不是自己的权利")
-						//return
-					} else {
-
-						userRepo := repositories.NewUserRepository(db)
-						user, _ := userRepo.GetByUserID(update.Message.Chat.ID)
-
-						log.Printf("address is %s\n", record.Address)
-
-						//发送请求给trxfee，开启启动智能托管
-						record.Status = 2
-						err := userSmartTransactionPackageSubscriptionsRepo.UpdateStatusByID(context.Background(), subscribeBundleID, record.Status)
-
-						if err != nil {
-
-							return
-
-						}
-						trxfeeClient := trxfee.NewTrxfeeClient(trxfeeUrl, trxfeeApiKey, trxfeeSecret)
-						trxfeeClient.EnableTimesOrder(record.Address)
-
-						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "✅"+global.Translations[user.Lang]["smart_transaction_auto_dispatch_open_successfully"]+"\n")
-						msg.ParseMode = "HTML"
-						inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-							//tgbotapi.NewInlineKeyboardRow(
-							//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-							//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
-							//),
-							tgbotapi.NewInlineKeyboardRow(
-								//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-								tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[user.Lang]["back_homepage"], "back_bundle_package_ST"),
-							),
-						)
-						msg.ReplyMarkup = inlineKeyboard
-						bot.Send(msg)
-
-					}
-
-				case strings.HasPrefix(update.Message.Command(), "close_ST"):
-					subscribeBundleID := strings.ReplaceAll(update.Message.Command(), "close_ST", "")
-					log.Println("subscribeBundleID : " + subscribeBundleID)
-					log.Println(subscribeBundleID + "   closeST command")
-
-					//手动发能
-
-					//trxfee
-					userSmartTransactionPackageSubscriptionsRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
-
-					record, _ := userSmartTransactionPackageSubscriptionsRepo.GetRecordByID(subscribeBundleID)
-					if record.ChatID != update.Message.Chat.ID {
-						log.Println("不是自己的权利")
-						//return
-					} else {
-
-						userRepo := repositories.NewUserRepository(db)
-						user, _ := userRepo.GetByUserID(update.Message.Chat.ID)
-
-						log.Printf("address is %s\n", record.Address)
-
-						//发送请求给trxfee，禁止启动智能托管
-						record.Status = 1
-						err := userSmartTransactionPackageSubscriptionsRepo.UpdateStatusByID(context.Background(), subscribeBundleID, record.Status)
-
-						if err != nil {
-							return
-						}
-						trxfeeClient := trxfee.NewTrxfeeClient(trxfeeUrl, trxfeeApiKey, trxfeeSecret)
-						trxfeeClient.EnableTimesOrder(record.Address)
-
-						msg := tgbotapi.NewMessage(update.Message.Chat.ID, "✅"+global.Translations[user.Lang]["smart_transaction_auto_dispatch_close_successfully"]+"\n")
-						msg.ParseMode = "HTML"
-						inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-							//tgbotapi.NewInlineKeyboardRow(
-							//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-							//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
-							//),
-							tgbotapi.NewInlineKeyboardRow(
-								//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-								tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[user.Lang]["back_homepage"], "back_bundle_package_ST"),
-							),
-						)
-						msg.ReplyMarkup = inlineKeyboard
-						bot.Send(msg)
-
-					}
-
-				case strings.HasPrefix(update.Message.Command(), "dispatchNow"):
-					command := update.Message.Command()
-					if !strings.Contains(command, "_") {
-						command = command + "_1"
-					}
-					subscribeBundleIDStr := strings.Split(command, "_")[0]
-					timesStr := strings.Split(command, "_")[1]
-
-					log.Printf("times : %s\n", timesStr)
-					times, _ := strconv.Atoi(timesStr)
-
-					subscribeBundleID := strings.ReplaceAll(subscribeBundleIDStr, "dispatchNow", "")
-					log.Println("subscribeBundleID : " + subscribeBundleID)
-					log.Println(subscribeBundleID + "   dispatchNow command")
-
-					//手动发能
-
-					//trxfee
-					userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
-
-					record, _ := userOperationPackageAddressesRepo.Get(context.Background(), subscribeBundleID)
-					if record.ChatID != update.Message.Chat.ID {
-
-						log.Println("不是自己的权利")
-						//return
-					} else {
-
-						for i := 0; i < times; i++ {
-							log.Printf("address is %s\n", record.Address)
-
-							userRepo := repositories.NewUserRepository(db)
-							user, _ := userRepo.GetByUserID(update.Message.Chat.ID)
-
-							_bundleTimes := user.BundleTimes - 1
-							//time.Sleep(100 * time.Millisecond)
-							if user.BundleTimes > 0 {
-								userRepo.UpdateBundleTimes(_bundleTimes, update.Message.Chat.ID)
-
-								//
-								//msg2 := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(db, update.Message.Chat.ID)
-								//bot.Send(msg2)
-
-								//调用trxfee接口
-
-								var sysOrder domain.UserEnergyOrders
-								orderNo, _ := GenerateOrderID(record.Address, 4)
-								//fmt.Printf("  OrderNo: %s\n", orderNo)
-								sysOrder.OrderNo = orderNo
-								sysOrder.TxId = ""
-								sysOrder.FromAddress = record.Address
-								//sysOrder.ToAddress = item.Address
-								sysOrder.Amount = 65000
-								sysOrder.ChatId = strconv.FormatInt(update.Message.Chat.ID, 10)
-								//
-								////添加一条记录
-								ueoRepo := repositories.NewUserEnergyOrdersRepo(db)
-								errsg := ueoRepo.Create(context.Background(), &sysOrder)
-
-								if errsg == nil {
-									trxfeeClient := trxfee.NewTrxfeeClient(trxfeeUrl, trxfeeApiKey, trxfeeSecret)
-
-									fmt.Sprintf("发送（%d）笔能量给（%s），订单号 %s\n", 1, record.Address, orderNo)
-									trxfeeClient.Order(orderNo, record.Address, 65_000*1)
-
-									msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢【✅"+global.Translations[user.Lang]["UShield_sent_transaction_energy"]+"】\n\n"+
-										global.Translations[user.Lang]["to_address"]+record.Address+"\n\n"+
-										global.Translations[user.Lang]["remaining_transactions"]+strconv.FormatInt(_bundleTimes, 10)+"\n\n")
-
-									inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-										tgbotapi.NewInlineKeyboardRow(
-											tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[user.Lang]["dispatch_again"], "click_bundle_package_address_stats"),
-										),
-									)
-									msg.ReplyMarkup = inlineKeyboard
-									msg.ParseMode = "HTML"
-									bot.Send(msg)
-								}
-							} else {
-								msg := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS2(user.Lang, db, update.Message.Chat.ID)
-								bot.Send(msg)
-							}
-						}
-					}
-					//msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢【✅"+global.Translations[_lang]["UShield_sent_transaction_energy"]+"】\n\n"+
-					//	global.Translations[_lang]["to_address"]+record.Address+"\n\n"+
-					//	global.Translations[_lang]["remaining_transactions"]+strconv.FormatInt(restTimes, 10)+"\n\n")
-					//msg.ParseMode = "HTML"
-					//bot.Send(msg)
-
-				case strings.HasPrefix(update.Message.Command(), "stopDispatch"):
-
-					msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢 功能开发中！想第一时间知道它上线吗？记得关注我们的官方频道：@ushield1 🔔\n\n")
-					msg.ParseMode = "HTML"
-					bot.Send(msg)
-
-					//return
-
-					//subscribeBundleID := strings.ReplaceAll(update.Message.Command(), "stopDispatch", "")
-					//log.Println("subscribeBundleID :" + subscribeBundleID)
-					//log.Println(subscribeBundleID + "stopDispatch command")
-					//userPackageSubscriptionsRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-					//
-					//subscribeBundlePackageID, _ := strconv.ParseInt(subscribeBundleID, 10, 64)
-					//
-					//userPackageSubscriptionsRepo.UpdateStatus(context.Background(), subscribeBundlePackageID, 2)
-					//msg := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(db, update.Message.Chat.ID)
-					//bot.Send(msg)
-
-				case strings.HasPrefix(update.Message.Command(), "dispatchOthers"):
-					subscribeBundleID := strings.ReplaceAll(update.Message.Command(), "dispatchOthers", "")
-					log.Println("subscribeBundleID :" + subscribeBundleID)
-					log.Println(subscribeBundleID + "dispatchOthers command")
-					//userPackageSubscriptionsRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-
-					//subscribeBundlePackageID, _ := strconv.ParseInt(subscribeBundleID, 10, 64)
-					//userPackageSubscriptionsRepo.UpdateStatus(context.Background(), subscribeBundlePackageID, 2)
-					//msg := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(db, update.Message.Chat.ID)
-					//bot.Send(msg)
-					//
-					userRepo := repositories.NewUserRepository(db)
-					record, _ := userRepo.GetByUserID(update.Message.Chat.ID)
-					service.DispatchOthers(record.Lang, subscribeBundleID, cache, bot, update.Message.Chat.ID, db)
-
-				case update.Message.Command() == "start":
-					log.Printf("1")
-					log.Println("text: " + update.Message.Text)
-					userRepo := repositories.NewUserRepository(db)
-					index := strings.LastIndex(update.Message.Text, " ")
-					parentUID := ""
-					if index > 0 {
-
-						parentUIDStr := update.Message.Text
-						parentUID = parentUIDStr[index+1:]
-						fmt.Printf("parentUIDStr: %s\n", parentUID)
-
-						record, err := userRepo.GetByUserIDStr(parentUID)
-						if err != nil {
-							parentUID = ""
-						} else {
-							parentUID = record.Associates
-						}
-
-					}
-					//存用户
-					//userRepo := repositories.NewUserRepository(db)
-					record, err := userRepo.GetByUserID(update.Message.Chat.ID)
-					if err != nil {
-						//增加用户
-						var user domain.User
-						user.Associates = strconv.FormatInt(update.Message.Chat.ID, 10)
-						user.Username = update.Message.Chat.UserName
-						user.Lang = "zh"
-						user.CreatedAt = time.Now()
-
-						user.BotName = botName
-						if len(parentUID) > 0 {
-							user.ParentUserID = parentUID
-						}
-						err := userRepo.Create2(context.Background(), &user)
-
-						expiration := 24 * time.Hour // 短时间缓存空值
-						cache.Set("LANG_"+strconv.FormatInt(update.Message.Chat.ID, 10), "zh", expiration)
-						if err != nil {
-							return
-						}
-					}
-
-					if err == nil {
-
-						record.Username = update.Message.From.UserName
-
-						userRepo.UpdateUserNameByChatID(update.Message.From.UserName, update.Message.Chat.ID)
-
-						log.Printf("UserName: %s", record.Username)
-						log.Printf("Associates %s", record.Associates)
-						expiration := 24 * time.Hour // 短时间缓存空值
-						if len(record.Lang) > 0 {
-
-							cache.Set("LANG_"+strconv.FormatInt(update.Message.Chat.ID, 10), record.Lang, expiration)
-						} else {
-							cache.Set("LANG_"+strconv.FormatInt(update.Message.Chat.ID, 10), "zh", expiration)
-						}
-					}
-
-					handleStartCommand(cache, bot, update.Message)
-				case update.Message.Command() == "hide":
-					log.Printf("2")
-					handleHideCommand(cache, bot, update.Message)
-				}
-			} else {
-
-				log.Printf("3")
-				log.Printf("来自于自发的信息[%s] %s", update.Message.From.UserName, update.Message.Text)
-				handleRegularMessage(cache, bot, update.Message, db, _cookie, trxfeeUrl, trxfeeApiKey, trxfeeSecret, fixfloatedUrl, catfee)
-			}
-		} else if update.CallbackQuery != nil {
-			log.Printf("4")
-			handleCallbackQuery(cache, bot, update.CallbackQuery, db, trxfeeUrl, trxfeeApiKey, trxfeeSecret, catfee)
-		}
+	if err := application.Run(processUpdate); err != nil {
+		log.Fatalf("run app err: %v", err)
 	}
 }
 
@@ -526,24 +68,28 @@ func handleStartCommand(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbota
 		tgbotapi.NewKeyboardButtonRow(
 			//tgbotapi.NewKeyboardButton(global.Translations[_lang]["command_energy_menu"]),
 			tgbotapi.NewKeyboardButton("✅"+global.Translations[_lang]["usdt_trx_swap"]),
-			tgbotapi.NewKeyboardButton(global.Translations[_lang]["member_telegram_menu"]),
+			tgbotapi.NewKeyboardButton("🔍"+global.Translations[_lang]["address_check"]),
+			tgbotapi.NewKeyboardButton("🚨"+global.Translations[_lang]["usdt_freeze_alert"]),
+			//tgbotapi.NewKeyboardButton("🚨"+global.Translations[_lang]["usdt_freeze_alert"]),
 
-			tgbotapi.NewKeyboardButton("🔃"+global.Translations[_lang]["coin_swap_coin_menu"]),
 			//tgbotapi.NewKeyboardButton("🧧"+global.Translations[_lang]["yhb_menu"]),
 			//tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
 
 		),
 		tgbotapi.NewKeyboardButtonRow(
-
-			tgbotapi.NewKeyboardButton("🕸"+global.Translations[_lang]["address_trace_menu"]),
-			tgbotapi.NewKeyboardButton("🔍"+global.Translations[_lang]["address_check"]),
-			tgbotapi.NewKeyboardButton("🚨"+global.Translations[_lang]["usdt_freeze_alert"]),
-		),
-		tgbotapi.NewKeyboardButtonRow(
-			tgbotapi.NewKeyboardButton("🥂"+global.Translations[_lang]["coin_laundering_menu"]),
+			tgbotapi.NewKeyboardButton(global.Translations[_lang]["member_telegram_menu"]),
 			tgbotapi.NewKeyboardButton("🛒"+global.Translations[_lang]["ushield_additional_services_menu"]),
 			tgbotapi.NewKeyboardButton("👤"+global.Translations[_lang]["my_account"]),
 		),
+
+		//tgbotapi.NewKeyboardButtonRow(
+		//	tgbotapi.NewKeyboardButton("🥂"+global.Translations[_lang]["coin_laundering_menu"]),
+		//	tgbotapi.NewKeyboardButton("🕸"+global.Translations[_lang]["address_trace_menu"]),
+		//	tgbotapi.NewKeyboardButton("🔃"+global.Translations[_lang]["coin_swap_coin_menu"]),
+		//),
+		//tgbotapi.NewKeyboardButtonRow(
+		//	tgbotapi.NewKeyboardButton("⚽️世界杯竞猜🏆"),
+		//),
 	)
 
 	// 关键设置：确保键盘一直存在
@@ -578,6 +124,18 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 	}
 
 	switch message.Text {
+	case "⚽️世界杯竞猜🏆":
+		msg := tgbotapi.NewMessage(message.Chat.ID, "点击跳转机器人 => 🤖@ushield_octopus_bot\n")
+		msg.ParseMode = "HTML"
+		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+			tgbotapi.NewInlineKeyboardRow(
+				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			),
+		)
+		msg.ReplyMarkup = inlineKeyboard
+		bot.Send(msg)
+
 	case "🥂" + global.Translations[_lang]["coin_laundering_menu"]:
 
 		fmt.Printf("洗U步骤开始\n")
@@ -679,66 +237,12 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 			}
 		case strings.HasPrefix(status, "dispatch_others"):
 			if IsValidAddress(message.Text) {
-				//time.Sleep(100 * time.Millisecond)
-				//subscribeBundleID := strings.ReplaceAll(status, "DISPATCHOTHERS_", "")
-				//trxfee
-				//userPackageSubscriptionsRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-				//record, _ := userPackageSubscriptionsRepo.Query(context.Background(), subscribeBundleID)
-				userRepo := repositories.NewUserRepository(db)
-				user, _ := userRepo.GetByUserID(message.Chat.ID)
-
-				_bundleTimes := user.BundleTimes - 1
-				//time.Sleep(100 * time.Millisecond)
-				if user.BundleTimes > 0 && _bundleTimes >= 0 {
-					userRepo.UpdateBundleTimes(_bundleTimes, message.Chat.ID)
-
-					//if restTimes >= 0 {
-					//	userPackageSubscriptionsRepo.UpdateTimes(context.Background(), record.Id, restTimes)
-
-					//
-					//msg2 := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(db, message.Chat.ID)
-					//bot.Send(msg2)
-
-					//调用trxfee接口
-
-					var sysOrder domain.UserEnergyOrders
-					orderNo, _ := GenerateOrderID(message.Text, 4)
-					//fmt.Printf("  OrderNo: %s\n", orderNo)
-					sysOrder.OrderNo = orderNo
-					sysOrder.TxId = ""
-					sysOrder.FromAddress = message.Text
-					//sysOrder.ToAddress = item.Address
-					sysOrder.Amount = 65000
-					sysOrder.ChatId = strconv.FormatInt(message.Chat.ID, 10)
-					//
-					////添加一条记录
-					ueoRepo := repositories.NewUserEnergyOrdersRepo(db)
-					errsg := ueoRepo.Create(context.Background(), &sysOrder)
-
-					if errsg == nil {
-						trxfeeClient := trxfee.NewTrxfeeClient(_trxfeeUrl, _trxfeeApiKey, _trxfeeSecret)
-
-						fmt.Sprintf("发送（%d）笔能量给（%s），订单号 %s\n", 1, message.Text, orderNo)
-						trxfeeClient.Order(orderNo, message.Text, 65_000*1)
-
-						msg := tgbotapi.NewMessage(message.Chat.ID, "📢【✅"+global.Translations[_lang]["UShield_sent_transaction_energy"]+"】\n\n"+
-							global.Translations[_lang]["to_address"]+message.Text+"\n\n"+
-							global.Translations[_lang]["remaining_transactions"]+strconv.FormatInt(_bundleTimes, 10)+"\n\n")
-
-						inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-							tgbotapi.NewInlineKeyboardRow(
-								tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[_lang]["dispatch_again"], "click_bundle_package_address_stats"),
-							),
-						)
-						msg.ReplyMarkup = inlineKeyboard
-						msg.ParseMode = "HTML"
-						bot.Send(msg)
-						expiration := 1 * time.Minute // 短时间缓存空值
-
-						//设置用户状态
-						cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_dispatch_others_", expiration)
-					}
-				} else {
+				dispatchService := service.NewEnergyDispatchService(db, _trxfeeUrl, _trxfeeApiKey, _trxfeeSecret, catfeeClient)
+				result, dispatchErr := dispatchService.DispatchToManualAddress(context.Background(), message.Chat.ID, message.Text)
+				if dispatchErr == nil {
+					sendDispatchSuccess(bot, message.Chat.ID, result)
+					resetDispatchState(cache, message.Chat.ID)
+				} else if dispatchErr == service.ErrDispatchInsufficientTimes {
 					service.MenuNavigateBundlePackage(_lang, db, message.Chat.ID, bot, "TRX")
 				}
 
@@ -749,60 +253,14 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 			}
 		case strings.HasPrefix(status, "DISPATCHOTHERS_"):
 			if IsValidAddress(message.Text) {
-				//time.Sleep(100 * time.Millisecond)
 				subscribeBundleID := strings.ReplaceAll(status, "DISPATCHOTHERS_", "")
-				//trxfee
-				userPackageSubscriptionsRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-				record, _ := userPackageSubscriptionsRepo.Query(context.Background(), subscribeBundleID)
-
-				restTimes := record.Times - 1
-
-				if restTimes >= 0 {
-					userPackageSubscriptionsRepo.UpdateTimes(context.Background(), record.Id, restTimes)
-
-					//
+				dispatchService := service.NewEnergyDispatchService(db, _trxfeeUrl, _trxfeeApiKey, _trxfeeSecret, catfeeClient)
+				result, dispatchErr := dispatchService.DispatchFromSubscription(context.Background(), subscribeBundleID, message.Text, message.Chat.ID)
+				if dispatchErr == nil {
 					msg2 := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(_lang, db, message.Chat.ID)
 					bot.Send(msg2)
-
-					//调用trxfee接口
-
-					var sysOrder domain.UserEnergyOrders
-					orderNo, _ := GenerateOrderID(message.Text, 4)
-					//fmt.Printf("  OrderNo: %s\n", orderNo)
-					sysOrder.OrderNo = orderNo
-					sysOrder.TxId = ""
-					sysOrder.FromAddress = message.Text
-					//sysOrder.ToAddress = item.Address
-					sysOrder.Amount = 65000
-					sysOrder.ChatId = strconv.FormatInt(message.Chat.ID, 10)
-					//
-					////添加一条记录
-					ueoRepo := repositories.NewUserEnergyOrdersRepo(db)
-					errsg := ueoRepo.Create(context.Background(), &sysOrder)
-
-					if errsg == nil && restTimes >= 0 {
-						trxfeeClient := trxfee.NewTrxfeeClient(_trxfeeUrl, _trxfeeApiKey, _trxfeeSecret)
-
-						fmt.Sprintf("发送（%d）笔能量给（%s），订单号 %s\n", 1, message.Text, orderNo)
-						trxfeeClient.Order(orderNo, message.Text, 65_000*1)
-
-						msg := tgbotapi.NewMessage(message.Chat.ID, "📢【✅"+global.Translations[_lang]["UShield_sent_transaction_energy"]+"】\n\n"+
-							global.Translations[_lang]["to_address"]+message.Text+"\n\n"+
-							global.Translations[_lang]["remaining_transactions"]+strconv.FormatInt(restTimes, 10)+"\n\n")
-
-						inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-							tgbotapi.NewInlineKeyboardRow(
-								tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[_lang]["dispatch_again"], "click_bundle_package_address_stats"),
-							),
-						)
-						msg.ReplyMarkup = inlineKeyboard
-						msg.ParseMode = "HTML"
-						bot.Send(msg)
-						expiration := 1 * time.Minute // 短时间缓存空值
-
-						//设置用户状态
-						cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_dispatch_others_", expiration)
-					}
+					sendDispatchSuccess(bot, message.Chat.ID, result)
+					resetDispatchState(cache, message.Chat.ID)
 				}
 
 			} else {
@@ -1006,7 +464,8 @@ func handleRegularMessage(cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbo
 			service.ExtractSlowMistRiskQuery(_lang, cache, message, db, _cookie, bot)
 
 		case strings.HasPrefix(status, "catfee_add_address"):
-			catfee.CustodyAddressAdd(_lang, cache, db, bot, message)
+			trxfeeClient := trxfee.NewTrxfeeClient(_trxfeeUrl, _trxfeeApiKey, _trxfeeSecret)
+			catfee.CustodyAddressAdd(_lang, cache, db, bot, message, trxfeeClient)
 
 		case strings.HasPrefix(status, "catfee_remove_address"):
 			catfee.CustodyAddressRemove(_lang, cache, db, bot, message, catfeeClient)
@@ -1270,60 +729,13 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		fmt.Printf("bundleID %s\n", bundleID)
 		fmt.Printf("address %s\n", address)
 
-		//trxfee
-		userPackageSubscriptionsRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-		record, _ := userPackageSubscriptionsRepo.Query(context.Background(), bundleID)
-
-		restTimes := record.Times - 1
-
-		//time.Sleep(100 * time.Millisecond)
-		if restTimes >= 0 {
-			userPackageSubscriptionsRepo.UpdateTimes(context.Background(), record.Id, restTimes)
-
-			//
+		dispatchService := service.NewEnergyDispatchService(db, _trxfeeUrl, _trxfeeApiKey, _trxfeeSecret, catfeeClient)
+		result, dispatchErr := dispatchService.DispatchFromSubscription(context.Background(), bundleID, address, callbackQuery.Message.Chat.ID)
+		if dispatchErr == nil {
 			msg2 := service.CLICK_BUNDLE_PACKAGE_ADDRESS_STATS(_lang, db, callbackQuery.Message.Chat.ID)
 			bot.Send(msg2)
-
-			//手动发能
-
-			var sysOrder domain.UserEnergyOrders
-			orderNo, _ := GenerateOrderID(address, 4)
-			//fmt.Printf("  OrderNo: %s\n", orderNo)
-			sysOrder.OrderNo = orderNo
-			sysOrder.TxId = ""
-			sysOrder.FromAddress = address
-			//sysOrder.ToAddress = item.Address
-			sysOrder.Amount = 65000
-			sysOrder.ChatId = strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)
-			//
-			////添加一条记录
-			ueoRepo := repositories.NewUserEnergyOrdersRepo(db)
-			errsg := ueoRepo.Create(context.Background(), &sysOrder)
-
-			if errsg == nil {
-				trxfeeClient := trxfee.NewTrxfeeClient(_trxfeeUrl, _trxfeeApiKey, _trxfeeSecret)
-
-				fmt.Sprintf("发送（%d）笔能量给（%s），订单号 %s\n", 1, address, orderNo)
-				trxfeeClient.Order(orderNo, address, 65_000*1)
-
-				msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📢【✅"+global.Translations[_lang]["UShield_sent_transaction_energy"]+"】\n\n"+
-					global.Translations[_lang]["to_address"]+address+"\n\n"+
-					global.Translations[_lang]["remaining_transactions"]+strconv.FormatInt(restTimes, 10)+"\n\n")
-
-				inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-					tgbotapi.NewInlineKeyboardRow(
-						tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[_lang]["dispatch_again"], "click_bundle_package_address_stats"),
-					),
-				)
-				msg.ReplyMarkup = inlineKeyboard
-				msg.ParseMode = "HTML"
-				bot.Send(msg)
-
-				expiration := 1 * time.Minute // 短时间缓存空值
-
-				//设置用户状态
-				cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "null_dispatch_others_", expiration)
-			}
+			sendDispatchSuccess(bot, callbackQuery.Message.Chat.ID, result)
+			resetDispatchState(cache, callbackQuery.Message.Chat.ID)
 		}
 
 		//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📢【✅"+global.Translations[_lang]["UShield_sent_transaction_energy"]+"】\n\n"+
@@ -1408,7 +820,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 			msg.ParseMode = "HTML"
 			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
+					tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
 					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
 				),
 			)
@@ -1489,7 +901,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 			// 当点击"按钮 1"时显示内联键盘
 			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
+					tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
 					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
 				),
 			)
@@ -1736,7 +1148,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
+				tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
 				//	tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
 			),
 		)
@@ -1789,12 +1201,12 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
+				tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
 				//tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
+				tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
+				tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
 			),
 			//tgbotapi.NewInlineKeyboardRow(
 			//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
@@ -1935,12 +1347,12 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
+				tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
 				//	tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
+				tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
+				tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
 			),
 			//tgbotapi.NewInlineKeyboardRow(
 			//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
@@ -2001,6 +1413,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 
 	case strings.HasPrefix(callbackQuery.Data, "ST_bundle_"):
 		//service.ST_BUNDLE_CHECK(_lang, cache, bot, callbackQuery, db)
+
 		catfee.ST_BUNDLE_CHECK(_lang, cache, bot, callbackQuery, db)
 
 	case strings.HasPrefix(callbackQuery.Data, "bundle_"):
@@ -2091,7 +1504,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		}
 
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
@@ -2178,7 +1591,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		if flag, _ := CompareNumberStrings(user.Amount, record.Amount); flag < 0 {
 			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
 				"<b>"+"🔍"+global.Translations[_lang]["insufficient_balance_tips"]+"</b>"+"\n"+
-					"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+					"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 					"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 					"💰"+global.Translations[_lang]["balance"]+"\n"+
 					"- TRX：   "+user.TronAmount+"\n"+
@@ -2297,7 +1710,7 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		if flag, _ := CompareNumberStrings(user.Amount, record.Amount); flag < 0 {
 			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
 				"<b>"+"🔍"+global.Translations[_lang]["insufficient_balance_tips"]+"</b>"+"\n"+
-					"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
+					"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 					"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
 					"💰"+global.Translations[_lang]["balance"]+"\n"+
 					"- TRX：   "+user.TronAmount+"\n"+
@@ -2409,19 +1822,28 @@ func handleCallbackQuery(cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery 
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 
-		//launder.MenuNavigateForLaunder(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, amount)
+	//launder.MenuNavigateForLaunder(cache, _lang, db, callbackQuery.Message.Chat.ID, callbackQuery.From.UserName, bot, amount)
 
-		//api := fixedfloat.New("AtHmGIAucigijgkqaTiOvuGTArkBrm4pparh7V5E", "jDDzTJKmB8jfzhlxfZuXtdNnNQLrSjaGiKg2e4kf")
+	//api := fixedfloat.New("AtHmGIAucigijgkqaTiOvuGTArkBrm4pparh7V5E", "jDDzTJKmB8jfzhlxfZuXtdNnNQLrSjaGiKg2e4kf")
 
-		//params := map[string]interface{}{
-		//	"fromCcy":   "USDTTRC",
-		//	"toCcy":     "USDT",
-		//	"type":      fixedfloat.TypeFloat,
-		//	"amount":    1000,
-		//	"direction": "from",
-		//	"toAddress": "0xF510e53EF8DA4e45FFA59EB554511a7410E5eFD3",
-		//}
-		//order, err := api.Create(params)
+	//params := map[string]interface{}{
+	//	"fromCcy":   "USDTTRC",
+	//	"toCcy":     "USDT",
+	//	"type":      fixedfloat.TypeFloat,
+	//	"amount":    1000,
+	//	"direction": "from",
+	//	"toAddress": "0xF510e53EF8DA4e45FFA59EB554511a7410E5eFD3",
+	//}
+	//order, err := api.Create(params)
+
+	case callbackQuery.Data == "coin_swap_coin":
+		service.MenuNavigateCoin2CoinSwap2(_lang, db, callbackQuery.Message.Chat.ID, bot)
+
+	case callbackQuery.Data == "function_address_trace":
+		service.MenuNavigateAddressTrace(_lang, cache, bot, callbackQuery.Message.Chat.ID, db)
+
+	case callbackQuery.Data == "function_remove_label":
+		launder.MenuLaunderNavigate(_lang, db, callbackQuery.Message.Chat.ID, bot)
 
 	}
 
