@@ -19,7 +19,7 @@ func NewUserSmartTransactionPackageSubscriptionsRepository(db *gorm.DB) *UserSma
 		db: db,
 	}
 }
-func (r *UserSmartTransactionPackageSubscriptionsRepository) ListAll(ctx context.Context) ([]domain.UserSmartTransactionPackageSubscriptions, error) {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) ListActive(ctx context.Context) ([]domain.UserSmartTransactionPackageSubscriptions, error) {
 	var pkgs []domain.UserSmartTransactionPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionPackageSubscriptions{}).
@@ -29,21 +29,21 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) ListAll(ctx context
 	return pkgs, err
 
 }
-func (r *UserSmartTransactionPackageSubscriptionsRepository) GetByID(ctx context.Context, ID string) (domain.UserSmartTransactionPackageSubscriptions, error) {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) GetByID(ctx context.Context, id string) (domain.UserSmartTransactionPackageSubscriptions, error) {
 	var subscription domain.UserSmartTransactionPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionPackageSubscriptions{}).
 		Select("id", "times", "bundle_name", "bundle_id", "amount", "address").
-		Where("id = ?", ID).
+		Where("id = ?", id).
 		Take(&subscription).Error
 	return subscription, err
 
 }
 
-func (r *UserSmartTransactionPackageSubscriptionsRepository) Get(_address string) (domain.UserSmartTransactionPackageSubscriptions, error) {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) GetActiveByAddress(ctx context.Context, address string) (domain.UserSmartTransactionPackageSubscriptions, error) {
 	record := domain.UserSmartTransactionPackageSubscriptions{}
 
-	err := r.db.Where(" address =? and status = 2", _address).First(&record).Error
+	err := r.db.WithContext(ctx).Where("address = ? and status = 2", address).First(&record).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		// 记录未找到，不是错误，只是表示不存在
@@ -53,10 +53,10 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) Get(_address string
 	return record, err
 }
 
-func (r *UserSmartTransactionPackageSubscriptionsRepository) GetRecordByID(id string) (domain.UserSmartTransactionPackageSubscriptions, error) {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) GetFullByID(ctx context.Context, id string) (domain.UserSmartTransactionPackageSubscriptions, error) {
 	record := domain.UserSmartTransactionPackageSubscriptions{}
 
-	err := r.db.Where(" id =? ", id).First(&record).Error
+	err := r.db.WithContext(ctx).Where("id = ?", id).First(&record).Error
 
 	if errors.Is(err, gorm.ErrRecordNotFound) {
 		// 记录未找到，不是错误，只是表示不存在
@@ -77,29 +77,29 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) Update(ctx context.
 }
 
 // Update 更新套餐
-func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateStatus(ctx context.Context, ID int64, _status int64) error {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateStatus(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserSmartTransactionPackageSubscriptions{}).
-		Where("id = ?", ID).
-		Update("status", _status).Error
+		Where("id = ?", id).
+		Update("status", status).Error
 }
-func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateStatusByID(ctx context.Context, ID string, _status int64) error {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateStatusByID(ctx context.Context, id string, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserSmartTransactionPackageSubscriptions{}).
-		Where("id = ?", ID).
-		Update("status", _status).Error
+		Where("id = ?", id).
+		Update("status", status).Error
 }
 
 // Update 更新套餐
-func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, ID int64, _times int64) error {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, id int64, times int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserSmartTransactionPackageSubscriptions{}).
-		Where("id = ?", ID).
-		Update("times", _times).Error
+		Where("id = ?", id).
+		Update("times", times).Error
 }
 
 // Delete 删除套餐
 func (r *UserSmartTransactionPackageSubscriptionsRepository) Delete(ctx context.Context, id uint) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserSmartTransactionPackageSubscriptions{}, id).Error
 }
-func (r *UserSmartTransactionPackageSubscriptionsRepository) GetUserSmartTransactionPackageSubscriptionsInfoList(ctx context.Context, info request.UserAddressDetectionSearch, _chatID int64) (list []domain.UserSmartTransactionPackageSubscriptions, total int64, err error) {
+func (r *UserSmartTransactionPackageSubscriptionsRepository) ListByChatIDPage(ctx context.Context, info request.UserAddressDetectionSearch, chatID int64) (list []domain.UserSmartTransactionPackageSubscriptions, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 
@@ -107,8 +107,8 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) GetUserSmartTransac
 
 	logger.Printf("page: %d\n", info.Page)
 	// 创建db
-	db := r.db.Model(&domain.UserSmartTransactionPackageSubscriptions{}).Select("id,status,amount,times,bundle_name,bundle_id,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? and times > 0 and status > 0", _chatID)
-	var UserSmartTransactionPackageSubscriptions []domain.UserSmartTransactionPackageSubscriptions
+	db := r.db.Model(&domain.UserSmartTransactionPackageSubscriptions{}).Select("id,status,amount,times,bundle_name,bundle_id,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? and times > 0 and status > 0", chatID)
+	var subscriptions []domain.UserSmartTransactionPackageSubscriptions
 	// 如果有条件搜索 下方会自动创建搜索语句
 
 	err = db.Count(&total).Error
@@ -120,6 +120,6 @@ func (r *UserSmartTransactionPackageSubscriptionsRepository) GetUserSmartTransac
 		db = db.Limit(int(limit)).Offset(int(offset)).Order("id DESC")
 	}
 
-	err = db.Find(&UserSmartTransactionPackageSubscriptions).Error
-	return UserSmartTransactionPackageSubscriptions, total, err
+	err = db.Find(&subscriptions).Error
+	return subscriptions, total, err
 }

@@ -123,7 +123,7 @@ func ShowTRXDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 	}
 
 	//usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
-	//usdtlist, _ := usdtDepositRepo.ListAll(context.Background(), callbackQuery.Message.Chat.ID, 1)
+	//usdtlist, _ := usdtDepositRepo.ListByUserIDAndStatus(context.Background(), callbackQuery.Message.Chat.ID, 1)
 
 	trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
 	var info request.UserTrxDepositsSearch

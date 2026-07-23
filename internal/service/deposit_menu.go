@@ -12,7 +12,7 @@ import (
 func ShowDepositOptions(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	trxSubscriptionsRepo := repositories.NewUserTRXSubscriptionsRepository(db)
 
-	trxlist, _ := trxSubscriptionsRepo.ListAll(context.Background())
+	trxlist, _ := trxSubscriptionsRepo.ListActive(context.Background())
 
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var extraButtons []tgbotapi.InlineKeyboardButton

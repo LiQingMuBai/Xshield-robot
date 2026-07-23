@@ -58,7 +58,7 @@ func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 
-	exitRecord, _ := userOperationPackageAddressesRepo.GetUserOperationPackageAddress(context.Background(), message.Text, message.Chat.ID)
+	exitRecord, _ := userOperationPackageAddressesRepo.GetByAddressAndChatID(context.Background(), message.Text, message.Chat.ID)
 
 	if exitRecord.Id > 0 {
 		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+global.Translations[_lang]["address_added_tips"]+"\n")
@@ -217,7 +217,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 
 	userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 	orderlist, err := userOperationPackageAddressesRepo.ListByChatID(context.Background(), chatID)
-	//orderlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, chatID)
+	//orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 
 	energyRepo := repositories.NewUserEnergyOrdersRepo(db)
 	usedTimes, _ := energyRepo.Count(context.Background(), chatID)
@@ -359,7 +359,7 @@ func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatI
 
 	info.Page = 1
 	info.PageSize = 5
-	orderlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, chatID)
+	orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 	if err != nil {
 
 		logger.Println("能量笔数套餐空", err)
@@ -455,7 +455,7 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	var info request.UserAddressDetectionSearch
 	info.PageInfo.Page = state.CurrentPage
 	info.PageInfo.PageSize = 10
-	orderlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	orderlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	logger.Printf("currentpage : %d", state.CurrentPage)
 	logger.Printf("total: %v\n", total)
@@ -564,7 +564,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = 1
 		info.PageInfo.PageSize = 10
-		orderlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		orderlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		if total > 0 {
 			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -647,7 +647,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageInfo.PageSize = 10
-		orderlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		orderlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		if total > 0 {
 			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -787,7 +787,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	userPackageSubscriptionsRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
 
 	//判断是否已经购买的地址，在进行中的
-	item, err := userPackageSubscriptionsRepo.Get(message.Text)
+	item, err := userPackageSubscriptionsRepo.GetActiveByAddress(context.Background(), message.Text)
 
 	if err != nil {
 		return false
@@ -889,7 +889,7 @@ func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID 
 
 	info.Page = 1
 	info.PageSize = 100000
-	orderlist, total, err := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, chatID)
+	orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 	if err != nil {
 
 		logger.Println("能量笔数套餐空", err)

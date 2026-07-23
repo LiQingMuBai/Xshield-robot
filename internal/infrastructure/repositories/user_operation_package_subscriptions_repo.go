@@ -16,7 +16,7 @@ func NewUserPackageSubscriptionsRepository(db *gorm.DB) *UserPackageSubscription
 		db: db,
 	}
 }
-func (r *UserPackageSubscriptionsRepository) ListAll(ctx context.Context) ([]domain.UserPackageSubscriptions, error) {
+func (r *UserPackageSubscriptionsRepository) ListActive(ctx context.Context) ([]domain.UserPackageSubscriptions, error) {
 	var pkgs []domain.UserPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserPackageSubscriptions{}).
@@ -26,12 +26,12 @@ func (r *UserPackageSubscriptionsRepository) ListAll(ctx context.Context) ([]dom
 	return pkgs, err
 
 }
-func (r *UserPackageSubscriptionsRepository) GetByID(ctx context.Context, ID string) (domain.UserPackageSubscriptions, error) {
+func (r *UserPackageSubscriptionsRepository) GetByID(ctx context.Context, id string) (domain.UserPackageSubscriptions, error) {
 	var subscription domain.UserPackageSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserPackageSubscriptions{}).
 		Select("id", "times", "bundle_name", "bundle_id", "amount", "address").
-		Where("id = ?", ID).
+		Where("id = ?", id).
 		Take(&subscription).Error
 	return subscription, err
 
@@ -48,29 +48,29 @@ func (r *UserPackageSubscriptionsRepository) Update(ctx context.Context, pkg *do
 }
 
 // Update 更新套餐
-func (r *UserPackageSubscriptionsRepository) UpdateStatus(ctx context.Context, ID int64, _status int64) error {
+func (r *UserPackageSubscriptionsRepository) UpdateStatus(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserPackageSubscriptions{}).
-		Where("id = ?", ID).
-		Update("status", _status).Error
+		Where("id = ?", id).
+		Update("status", status).Error
 }
 
 // Update 更新套餐
-func (r *UserPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, ID int64, _times int64) error {
+func (r *UserPackageSubscriptionsRepository) UpdateTimes(ctx context.Context, id int64, times int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserPackageSubscriptions{}).
-		Where("id = ?", ID).
-		Update("times", _times).Error
+		Where("id = ?", id).
+		Update("times", times).Error
 }
 
 // Delete 删除套餐
 func (r *UserPackageSubscriptionsRepository) Delete(ctx context.Context, id uint) error {
 	return r.db.WithContext(ctx).Delete(&domain.UserPackageSubscriptions{}, id).Error
 }
-func (r *UserPackageSubscriptionsRepository) GetUserPackageSubscriptionsInfoList(ctx context.Context, info request.UserAddressDetectionSearch, _chatID int64) (list []domain.UserPackageSubscriptions, total int64, err error) {
+func (r *UserPackageSubscriptionsRepository) ListByChatIDPage(ctx context.Context, info request.UserAddressDetectionSearch, chatID int64) (list []domain.UserPackageSubscriptions, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.Model(&domain.UserPackageSubscriptions{}).Select("id,status,amount,times,bundle_name,bundle_id,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? and times > 0", _chatID)
-	var UserPackageSubscriptions []domain.UserPackageSubscriptions
+	db := r.db.Model(&domain.UserPackageSubscriptions{}).Select("id,status,amount,times,bundle_name,bundle_id,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? and times > 0", chatID)
+	var subscriptions []domain.UserPackageSubscriptions
 	// 如果有条件搜索 下方会自动创建搜索语句
 
 	err = db.Count(&total).Error
@@ -82,6 +82,6 @@ func (r *UserPackageSubscriptionsRepository) GetUserPackageSubscriptionsInfoList
 		db = db.Limit(int(limit)).Offset(int(offset)).Order("id DESC")
 	}
 
-	err = db.Find(&UserPackageSubscriptions).Error
-	return UserPackageSubscriptions, total, err
+	err = db.Find(&subscriptions).Error
+	return subscriptions, total, err
 }

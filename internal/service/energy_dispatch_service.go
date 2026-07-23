@@ -47,7 +47,7 @@ func NewEnergyDispatchService(db *gorm.DB, trxfeeURL, trxfeeAPIKey, trxfeeSecret
 
 func (s *EnergyDispatchService) ToggleSmartDispatch(ctx context.Context, subscriptionID string, chatID int64, enabled bool) (string, error) {
 	subscriptionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(s.db)
-	record, err := subscriptionRepo.GetRecordByID(subscriptionID)
+	record, err := subscriptionRepo.GetFullByID(ctx, subscriptionID)
 	if err != nil {
 		return "", err
 	}
@@ -79,7 +79,7 @@ func (s *EnergyDispatchService) ToggleSmartDispatch(ctx context.Context, subscri
 
 func (s *EnergyDispatchService) DispatchFromPackageAddress(ctx context.Context, packageAddressID string, chatID int64, times int) (*DispatchResult, error) {
 	addressRepo := repositories.NewUserOperationPackageAddressesRepo(s.db)
-	record, err := addressRepo.Get(ctx, packageAddressID)
+	record, err := addressRepo.GetByID(ctx, packageAddressID)
 	if err != nil {
 		return nil, err
 	}

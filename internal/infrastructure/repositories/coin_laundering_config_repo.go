@@ -17,7 +17,7 @@ func NewCoinLaunderingConfigRepository(db *gorm.DB) *CoinLaunderingConfigReposit
 	}
 }
 
-func (r *CoinLaunderingConfigRepository) QueryAll(ctx context.Context) ([]domain.CoinLaunderingConfig, error) {
+func (r *CoinLaunderingConfigRepository) ListActive(ctx context.Context) ([]domain.CoinLaunderingConfig, error) {
 	var configs []domain.CoinLaunderingConfig
 	err := r.db.WithContext(ctx).
 		Model(&domain.CoinLaunderingConfig{}).

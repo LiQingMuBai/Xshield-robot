@@ -20,7 +20,7 @@ func ExtractAddressDetection(_lang string, cache cache.Cache, db *gorm.DB, callb
 
 	info.Page = 1
 	info.PageSize = 5
-	trxlist, _, _ := userAddressDetectionRepo.GetUserAddressDetectionInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
 	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -70,7 +70,7 @@ func ShowPrevAddressDetectionPage(_lang string, callbackQuery *tgbotapi.Callback
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = 1
 		info.PageInfo.PageSize = 10
-		trxlist, _, _ := usdtDepositRepo.GetUserAddressDetectionInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -109,7 +109,7 @@ func ShowPrevAddressDetectionPage(_lang string, callbackQuery *tgbotapi.Callback
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageInfo.PageSize = 10
-		trxlist, _, _ := usdtDepositRepo.GetUserAddressDetectionInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
@@ -158,7 +158,7 @@ func ShowNextAddressDetectionPage(_lang string, callbackQuery *tgbotapi.Callback
 	var info request.UserAddressDetectionSearch
 	info.PageInfo.Page = state.CurrentPage
 	info.PageInfo.PageSize = 10
-	trxlist, total, _ := usdtDepositRepo.GetUserAddressDetectionInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, total, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	logger.Printf("currentpage : %d", state.CurrentPage)
 	logger.Printf("total: %v\n", total)

@@ -15,17 +15,17 @@ func NewUserOperationBundlesRepository(db *gorm.DB) *UserOperationBundlesReposit
 		db: db,
 	}
 }
-func (r *UserOperationBundlesRepository) ListByToken(ctx context.Context, _token string) ([]domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) ListByToken(ctx context.Context, token string) ([]domain.UserOperationBundles, error) {
 	var bundles []domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).
 		Select("id", "name", "amount").
-		Where("status = ?", 0).Where("token = ?", _token).
+		Where("status = ?", 0).Where("token = ?", token).
 		Scan(&bundles).Error
 	return bundles, err
 
 }
-func (r *UserOperationBundlesRepository) ListAll(ctx context.Context) ([]domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) ListActive(ctx context.Context) ([]domain.UserOperationBundles, error) {
 	var bundles []domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).
@@ -35,23 +35,23 @@ func (r *UserOperationBundlesRepository) ListAll(ctx context.Context) ([]domain.
 	return bundles, err
 
 }
-func (r *UserOperationBundlesRepository) GetByAmount(ctx context.Context, _amount string) (domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) GetByAmount(ctx context.Context, amount string) (domain.UserOperationBundles, error) {
 	var bundleRecord domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).
 		Select("id", "name").
-		Where("amount = ?", _amount).
+		Where("amount = ?", amount).
 		Take(&bundleRecord).Error
 	return bundleRecord, err
 
 }
 
-func (r *UserOperationBundlesRepository) GetByID(ctx context.Context, ID string) (domain.UserOperationBundles, error) {
+func (r *UserOperationBundlesRepository) GetByID(ctx context.Context, id string) (domain.UserOperationBundles, error) {
 	var bundleRecord domain.UserOperationBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationBundles{}).
 		//Select("id", "days", "address", "network").
-		Where("id = ?", ID).
+		Where("id = ?", id).
 		Take(&bundleRecord).Error
 	return bundleRecord, err
 

@@ -191,7 +191,7 @@ func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, message
 
 		//增加
 		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要启动为1", chatID, status, record.Address)
-		userSmartTransactionAddressesRepo.Enable2(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
+		userSmartTransactionAddressesRepo.EnablePending(context.Background(), strconv.FormatInt(chatID, 10), record.Address)
 
 		if _, err := catfeeClient.MateOpenBasicAdd(record.Address, strconv.FormatInt(chatID, 10)); err != nil {
 			logger.Printf("add custody address failed: %v", err)

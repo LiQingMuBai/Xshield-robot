@@ -15,7 +15,7 @@ func NewUserUsdtPlaceholdersRepository(db *gorm.DB) *UserUsdtPlaceholdersReposit
 		db: db,
 	}
 }
-func (r *UserUsdtPlaceholdersRepository) ListAll(ctx context.Context) ([]domain.UserUsdtPlaceholders, error) {
+func (r *UserUsdtPlaceholdersRepository) ListAvailable(ctx context.Context) ([]domain.UserUsdtPlaceholders, error) {
 	var placeholders []domain.UserUsdtPlaceholders
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserUsdtPlaceholders{}).
@@ -26,25 +26,26 @@ func (r *UserUsdtPlaceholdersRepository) ListAll(ctx context.Context) ([]domain.
 
 }
 
-func (r *UserUsdtPlaceholdersRepository) UpdateByPlaceholder(ctx context.Context, _placeholder string, _status int64) error {
+func (r *UserUsdtPlaceholdersRepository) UpdateByPlaceholder(ctx context.Context, placeholder string, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUsdtPlaceholders{}).
-		Where("placeholder = ?", _placeholder).
-		Update("status", _status).Error
+		Where("placeholder = ?", placeholder).
+		Update("status", status).Error
 }
 
-func (r *UserUsdtPlaceholdersRepository) Update(ctx context.Context, ID int64, _status int64) error {
+func (r *UserUsdtPlaceholdersRepository) Update(ctx context.Context, id int64, status int64) error {
 	return r.db.WithContext(ctx).Model(&domain.UserUsdtPlaceholders{}).
-		Where("id = ?", ID).
-		Update("status", _status).Error
+		Where("id = ?", id).
+		Update("status", status).Error
 }
 func (r *UserUsdtPlaceholdersRepository) GetFirstAvailable(ctx context.Context) (domain.UserUsdtPlaceholders, error) {
-	var placeholders []domain.UserUsdtPlaceholders
+	var placeholder domain.UserUsdtPlaceholders
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserUsdtPlaceholders{}).
 		Select("id", "placeholder").
+		Order("id ASC").
 		Where("status = ?", 0).
-		Scan(&placeholders).Error
-	return placeholders[0], err
+		Take(&placeholder).Error
+	return placeholder, err
 
 }
 func (r *UserUsdtPlaceholdersRepository) GetAvailable(ctx context.Context) (domain.UserUsdtPlaceholders, error) {

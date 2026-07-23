@@ -22,7 +22,7 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 
 	coinLaunderingConfigRepo := repositories.NewCoinLaunderingConfigRepository(db)
 
-	configs, _ := coinLaunderingConfigRepo.QueryAll(context.Background())
+	configs, _ := coinLaunderingConfigRepo.ListActive(context.Background())
 	//star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
 	//logger.Printf("star_unit: %s\n", star_unit)
 	//unitPrice, _ := strconv.ParseFloat(star_unit, 64)

@@ -15,7 +15,7 @@ func NewUserTRXSubscriptionsRepository(db *gorm.DB) *UserTRXSubscriptionsReposit
 		db: db,
 	}
 }
-func (r *UserTRXSubscriptionsRepository) ListAll(ctx context.Context) ([]domain.UserTRXSubscriptions, error) {
+func (r *UserTRXSubscriptionsRepository) ListActive(ctx context.Context) ([]domain.UserTRXSubscriptions, error) {
 	var subscriptions []domain.UserTRXSubscriptions
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserTRXSubscriptions{}).

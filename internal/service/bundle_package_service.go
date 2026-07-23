@@ -27,7 +27,7 @@ func ExtractBundlePackage(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 
 	info.Page = 1
 	info.PageSize = 5
-	trxlist, total, err := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 	if err != nil {
 
 		logger.Println("能量笔数套餐空", err)
@@ -84,7 +84,7 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	var info request.UserAddressDetectionSearch
 	info.PageInfo.Page = state.CurrentPage
 	info.PageInfo.PageSize = 10
-	trxlist, total, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+	trxlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	logger.Printf("currentpage : %d", state.CurrentPage)
 	logger.Printf("total: %v\n", total)
@@ -148,7 +148,7 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 
 		info.Page = 1
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
@@ -187,7 +187,7 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）

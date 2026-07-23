@@ -33,31 +33,31 @@ func (r *UserOperationPackageAddressesRepo) Update(ctx context.Context, chatID i
 	return nil
 
 }
-func (r *UserOperationPackageAddressesRepo) Remove(ctx context.Context, _chatID int64, _address string) error {
-	return r.db.WithContext(ctx).Delete(&domain.UserOperationPackageAddresses{}, "chat_id = ? AND address = ?", _chatID, _address).Error
+func (r *UserOperationPackageAddressesRepo) Remove(ctx context.Context, chatID int64, address string) error {
+	return r.db.WithContext(ctx).Delete(&domain.UserOperationPackageAddresses{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 
-func (r *UserOperationPackageAddressesRepo) ListByChatID(ctx context.Context, _chatID int64) ([]domain.UserOperationPackageAddresses, error) {
+func (r *UserOperationPackageAddressesRepo) ListByChatID(ctx context.Context, chatID int64) ([]domain.UserOperationPackageAddresses, error) {
 	var subscriptions []domain.UserOperationPackageAddresses
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserOperationPackageAddresses{}).
 		Select("id", "address", "status", "remark").
-		Where("chat_id = ?", _chatID).
+		Where("chat_id = ?", chatID).
 		Scan(&subscriptions).Error
 	return subscriptions, err
 
 }
-func (r *UserOperationPackageAddressesRepo) Get(ctx context.Context, _ID string) (domain.UserOperationPackageAddresses, error) {
+func (r *UserOperationPackageAddressesRepo) GetByID(ctx context.Context, id string) (domain.UserOperationPackageAddresses, error) {
 	var address domain.UserOperationPackageAddresses
 	err := r.db.WithContext(ctx).
-		Find(&address, "id = ?", _ID).Error
+		Find(&address, "id = ?", id).Error
 	return address, err
 
 }
-func (r *UserOperationPackageAddressesRepo) GetUserOperationPackageAddress(ctx context.Context, _address string, _chatID int64) (domain.UserOperationPackageAddresses, error) {
-	var address domain.UserOperationPackageAddresses
+func (r *UserOperationPackageAddressesRepo) GetByAddressAndChatID(ctx context.Context, address string, chatID int64) (domain.UserOperationPackageAddresses, error) {
+	var record domain.UserOperationPackageAddresses
 	err := r.db.WithContext(ctx).
-		Find(&address, "address = ? and chat_id = ?", _address, _chatID).Error
-	return address, err
+		Find(&record, "address = ? and chat_id = ?", address, chatID).Error
+	return record, err
 
 }

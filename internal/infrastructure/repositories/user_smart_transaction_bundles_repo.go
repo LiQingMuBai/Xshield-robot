@@ -16,17 +16,17 @@ func NewUserSmartTransactionBundlesRepository(db *gorm.DB) *UserSmartTransaction
 		db: db,
 	}
 }
-func (r *UserSmartTransactionBundlesRepository) ListByToken(ctx context.Context, _token string) ([]domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) ListByToken(ctx context.Context, token string) ([]domain.UserSmartTransactionBundles, error) {
 	var bundles []domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
 		Select("id", "name", "amount").
-		Where("status = ?", 0).Where("token = ?", _token).
+		Where("status = ?", 0).Where("token = ?", token).
 		Scan(&bundles).Error
 	return bundles, err
 
 }
-func (r *UserSmartTransactionBundlesRepository) ListAll(ctx context.Context) ([]domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) ListActive(ctx context.Context) ([]domain.UserSmartTransactionBundles, error) {
 	var bundles []domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
@@ -36,23 +36,23 @@ func (r *UserSmartTransactionBundlesRepository) ListAll(ctx context.Context) ([]
 	return bundles, err
 
 }
-func (r *UserSmartTransactionBundlesRepository) GetByAmount(ctx context.Context, _amount string) (domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) GetByAmount(ctx context.Context, amount string) (domain.UserSmartTransactionBundles, error) {
 	var bundleRecord domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
 		Select("id", "name").
-		Where("amount = ?", _amount).
+		Where("amount = ?", amount).
 		Take(&bundleRecord).Error
 	return bundleRecord, err
 
 }
 
-func (r *UserSmartTransactionBundlesRepository) GetByID(ctx context.Context, ID string) (domain.UserSmartTransactionBundles, error) {
+func (r *UserSmartTransactionBundlesRepository) GetByID(ctx context.Context, id string) (domain.UserSmartTransactionBundles, error) {
 	var bundleRecord domain.UserSmartTransactionBundles
 	err := r.db.WithContext(ctx).
 		Model(&domain.UserSmartTransactionBundles{}).
 		//Select("id", "days", "address", "network").
-		Where("id = ?", ID).
+		Where("id = ?", id).
 		Take(&bundleRecord).Error
 	return bundleRecord, err
 

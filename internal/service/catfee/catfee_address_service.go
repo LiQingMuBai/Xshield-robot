@@ -232,7 +232,7 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 
 		info.Page = 1
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetUserSmartTransactionPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
@@ -271,7 +271,7 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 		var info request.UserAddressDetectionSearch
 		info.PageInfo.Page = state.CurrentPage
 		info.PageSize = 5
-		trxlist, _, _ := userAddressDetectionRepo.GetUserPackageSubscriptionsInfoList(context.Background(), info, callbackQuery.Message.Chat.ID)
+		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）

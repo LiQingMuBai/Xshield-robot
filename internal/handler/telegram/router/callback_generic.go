@@ -113,7 +113,7 @@ func sendMyServiceOverview(bot *tgbotapi.BotAPI, cacheStore cache.Cache, chatID 
 
 func sendForwardDepositUSDT(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.DB) {
 	usdtSubscriptionsRepo := repositories.NewUserUsdtSubscriptionsRepository(db)
-	usdtList, _ := usdtSubscriptionsRepo.ListAll(context.Background())
+	usdtList, _ := usdtSubscriptionsRepo.ListActive(context.Background())
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var extraButtons []tgbotapi.InlineKeyboardButton
 	var keyboard [][]tgbotapi.InlineKeyboardButton
