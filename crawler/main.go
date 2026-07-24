@@ -54,17 +54,3 @@ func GetTelegramUserInfo(username string) (string, string, error) {
 
 	return firstName, lastName, nil
 }
-
-//func main() {
-//	username := "vip664" // 替换为目标用户名
-//
-//	firstName, lastName, err := getTelegramUserInfo(username)
-//	if err != nil {
-//		fmt.Printf("错误: %v\n", err)
-//		return
-//	}
-//
-//	fmt.Printf("First Name: %s\n", firstName)
-//	fmt.Printf("Last Name: %s\n", lastName)
-//	fmt.Printf("Username: @%s\n", username)
-//}

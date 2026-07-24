@@ -497,25 +497,5 @@ func (c *TronClient) GetLatestBlock() int64 {
 	return block.BlockHeader.RawData.Number
 }
 func (c *TronClient) GenerateAddress() (string, string, error) {
-
-	//// Example mnemonic (replace with your own 12 or 24 word mnemonic)
-	//mnemonic := "abandon ability able about above absent absorb abstract absurd abuse access accident"
-	//
-	//// Generate TRON wallet from mnemonic
-	//wallet, err := tron.NewWalletFromMnemonic(mnemonic)
-	//if err != nil {
-	//	fmt.Printf("Error generating wallet from mnemonic: %v\n", err)
-	//	return
-	//}
-	//
-	//// Get TRON address
-	//address := wallet.Address
-	//
-	//// Get private key
-	//privateKey := wallet.PrivateKey
-	//
-	//fmt.Printf("TRON Address: %s\n", address)
-	//fmt.Printf("Private Key: %s\n", privateKey)
-
 	return "", "", nil
 }
