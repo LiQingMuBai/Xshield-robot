@@ -2,6 +2,7 @@ package router
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"time"
 	"ushield_bot/internal/domain"
@@ -63,7 +64,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 				sendDispatchSuccess(ctx.Bot, message.Chat.ID, result)
 				setShortState(ctx.Cache, message.Chat.ID, "null_dispatch_others_")
 			} else if dispatchErr == service.ErrDispatchInsufficientTimes {
-				service.MenuNavigateBundlePackage(lang, ctx.DB, message.Chat.ID, ctx.Bot, "TRX")
+				service.MenuNavigateBundlePackage(lang, ctx.DB, message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
 			}
 		} else {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["invalid_address_tips"]+"</b>"+"\n")
@@ -116,8 +117,9 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		}
 
 		total, _ := userRepo.CountByChatID(context.Background(), message.Chat.ID)
-		if total >= 4 {
-			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_max_tips"]+"</b>"+"\n")
+		if total >= int64(ctx.AddressTraceLimit) {
+			limitTips := strings.ReplaceAll(global.Translations[lang]["address_trace_add_max_tips"], "{address_trace_limit}", strconv.Itoa(ctx.AddressTraceLimit))
+			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+limitTips+"</b>"+"\n")
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
 					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_user_address_trace"),

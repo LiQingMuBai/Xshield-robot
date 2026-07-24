@@ -24,6 +24,7 @@ The system sends real-time Telegram notifications for user deposits and energy e
     QRCODE_OUTPUT_DIR="static/qrcode"
     VIDEO_CACHE_FILE_PATH="video_file_ids.json"
     TRANSLATIONS_DIR="translations"
+    ADDRESS_TRACE_LIMIT="4"
     ```
 
 # Make script executable

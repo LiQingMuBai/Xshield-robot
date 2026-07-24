@@ -19,6 +19,7 @@ type Context struct {
 	FixedfloatURL       string
 	FixedFloatAPIKey    string
 	FixedFloatAPISecret string
+	AddressTraceLimit   int
 	BotName             string
 	CatfeeClient        *trxfee.CatfeeService
 	RandomCookie        string
@@ -35,6 +36,7 @@ func NewContext(container *app.Container) Context {
 		FixedfloatURL:       container.Config.FixedFloat.RefURL,
 		FixedFloatAPIKey:    container.Config.FixedFloat.APIKey,
 		FixedFloatAPISecret: container.Config.FixedFloat.APISecret,
+		AddressTraceLimit:   container.Config.Limits.AddressTraceLimit,
 		BotName:             container.Config.Bot.Name,
 		CatfeeClient:        container.Catfee,
 		RandomCookie:        container.RandomCookie,

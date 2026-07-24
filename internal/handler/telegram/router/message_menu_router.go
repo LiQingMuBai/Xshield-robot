@@ -59,7 +59,7 @@ func handleMenuMessage(message *tgbotapi.Message, ctx Context, lang string) bool
 		service.MenuNavigateAddressFreeze(lang, ctx.Cache, ctx.Bot, message.Chat.ID, ctx.DB)
 		return true
 	case "🖊️" + global.Translations[lang]["transaction_plans"]:
-		service.MenuNavigateBundlePackage(lang, ctx.DB, message.Chat.ID, ctx.Bot, "TRX")
+		service.MenuNavigateBundlePackage(lang, ctx.DB, message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
 		return true
 	case "🤖" + global.Translations[lang]["catfee_smart_transaction_menu"]:
 		catfee.MenuNavigateCatfeeSmartTransactionPlans(lang, ctx.DB, message.Chat.ID, ctx.Bot, "TRX")

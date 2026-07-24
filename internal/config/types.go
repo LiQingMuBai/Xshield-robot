@@ -7,6 +7,7 @@ type Config struct {
 	Catfee      CatfeeConfig
 	FixedFloat  FixedFloatConfig
 	Tron        TronConfig
+	Limits      LimitsConfig
 	Bot         BotConfig
 	Translation TranslationConfig
 }
@@ -41,6 +42,10 @@ type FixedFloatConfig struct {
 
 type TronConfig struct {
 	Mnemonic string
+}
+
+type LimitsConfig struct {
+	AddressTraceLimit int
 }
 
 type BotConfig struct {

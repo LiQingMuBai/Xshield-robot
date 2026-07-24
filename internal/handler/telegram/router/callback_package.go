@@ -2,6 +2,7 @@ package router
 
 import (
 	"context"
+	"strconv"
 	"strings"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
@@ -48,10 +49,10 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		service.ShowBundlePackageAddressActions(lang, target, ctx.Cache, ctx.Bot, callbackQuery.Message, ctx.DB)
 		return true
 	case callbackQuery.Data == "click_switch_trx":
-		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
+		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
 		return true
 	case callbackQuery.Data == "click_switch_usdt":
-		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "USDT")
+		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "USDT", ctx.AddressTraceLimit)
 		return true
 	case callbackQuery.Data == "click_switch_trx_ST":
 		service.ShowSmartTransactionBundlePackageMenu(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
@@ -63,7 +64,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		service.ShowSmartTransactionBundlePackageMenu(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
 		return true
 	case callbackQuery.Data == "back_bundle_package":
-		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
+		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
 		return true
 	case callbackQuery.Data == "click_bundle_package_address_manager_config":
 		service.ShowBundlePackageAddressConfigOptions(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB)
@@ -77,13 +78,15 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 	case callbackQuery.Data == "click_bundle_package_address_manager_add":
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
 		list, _ := userOperationPackageAddressesRepo.ListByChatID(context.Background(), callbackQuery.Message.Chat.ID)
-		if len(list) >= 4 {
-			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "<b>"+global.Translations[lang]["energy_address_limit_tips"]+"</b>\n")
+		if len(list) >= ctx.AddressTraceLimit {
+			limitTips := strings.ReplaceAll(global.Translations[lang]["energy_address_limit_tips"], "{address_trace_limit}", strconv.Itoa(ctx.AddressTraceLimit))
+			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "<b>"+limitTips+"</b>\n")
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
 			return true
 		}
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "<b>"+global.Translations[lang]["energy_address_limit"]+"</b>\n")
+		limitPrompt := strings.ReplaceAll(global.Translations[lang]["energy_address_limit"], "{address_trace_limit}", strconv.Itoa(ctx.AddressTraceLimit))
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "<b>"+limitPrompt+"</b>\n")
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
 		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, callbackQuery.Data)

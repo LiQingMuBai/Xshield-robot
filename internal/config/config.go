@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/joho/godotenv"
 	"os"
+	"strconv"
 	"ushield_bot/internal/infrastructure/tools"
 )
 
@@ -38,6 +39,9 @@ func Load() (*Config, error) {
 		Tron: TronConfig{
 			Mnemonic: os.Getenv("TRON_MNEMONIC"),
 		},
+		Limits: LimitsConfig{
+			AddressTraceLimit: parsePositiveIntEnv("ADDRESS_TRACE_LIMIT", 4),
+		},
 		Bot: BotConfig{
 			Name:       os.Getenv("BOT_NAME"),
 			MistCookie: os.Getenv("MIST_COOKIE"),
@@ -51,4 +55,18 @@ func Load() (*Config, error) {
 	}
 
 	return cfg, nil
+}
+
+func parsePositiveIntEnv(key string, fallback int) int {
+	value := os.Getenv(key)
+	if value == "" {
+		return fallback
+	}
+
+	parsed, err := strconv.Atoi(value)
+	if err != nil || parsed <= 0 {
+		return fallback
+	}
+
+	return parsed
 }

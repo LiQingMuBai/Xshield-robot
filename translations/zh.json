@@ -75,7 +75,7 @@
   "NAACUAMS": "当前没有地址在进行预预警监控服务",
   "monitoring_address_list": "预警地址列表如下：",
 
-  "transaction_plans_tips": "欢迎使用U盾能量笔数套餐\n一次购买/多地址使用/一键发能\n⚙\uFE0F 功能介绍\n➕添加地址：可添加4个常用地址\n\uD83D\uDD22地址列表：可向4个常用地址或向其他地址快速发能\n⏳ 能量有效期 1 小时，过期将自动回收",
+  "transaction_plans_tips": "欢迎使用U盾能量笔数套餐\n一次购买/多地址使用/一键发能\n⚙\uFE0F 功能介绍\n➕添加地址：可添加{address_trace_limit}个常用地址\n\uD83D\uDD22地址列表：可向{address_trace_limit}个常用地址或向其他地址快速发能\n⏳ 能量有效期 1 小时，过期将自动回收",
   "address_list": "地址列表",
   "transaction_plans_usdt_payment": "USDT支付",
   "transaction_plans_trx_payment": "TRX支付",
@@ -94,8 +94,8 @@
   "package_name": "套餐",
   "address": "地址",
   "enter_address": "请输入能量接收地址\uD83D\uDC47",
-  "energy_address_limit": "为方便用户管理地址，系统默认最多添加4个地址，请输入新地址\uD83D\uDC47:",
-  "energy_address_limit_tips": "⚠\uFE0F 您已添加 4 个地址，如需新增，请先删除旧地址。\uD83D\uDEAB",
+  "energy_address_limit": "为方便用户管理地址，系统默认最多添加{address_trace_limit}个地址，请输入新地址\uD83D\uDC47:",
+  "energy_address_limit_tips": "⚠\uFE0F 您已添加 {address_trace_limit} 个地址，如需新增，请先删除旧地址。\uD83D\uDEAB",
   "energy_address_remove_tips": "请输入需要删除的地址: \uD83D\uDDD1\uFE0F",
   "deduction_records": "扣款记录",
   "UShield_sent_transaction_energy": "U盾成功发送一笔能量",
@@ -148,7 +148,7 @@
   "address_trace_add": "添加地址",
   "address_trace_add_tips": "请输入需添加的地址: ",
   "address_trace_add_repeat_tips": "您输入的地址已存在，请重新输入",
-  "address_trace_add_max_tips": "最多添加4个常用地址",
+  "address_trace_add_max_tips": "最多添加{address_trace_limit}个常用地址",
   "address_trace_delete": "删除地址",
   "address_trace_delete_tips": "请输入需删除的地址: ",
   "address_trace_menu": "地址跟踪",
@@ -282,4 +282,3 @@
   "usdt_freeze_alert": "链上安全"
 
 }
-

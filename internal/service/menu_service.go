@@ -120,6 +120,12 @@ func buildSwapExchangeText(lang string, db *gorm.DB) string {
 	})
 }
 
+func buildTransactionPlansText(lang string, addressTraceLimit int) string {
+	return renderMenuTemplate(global.Translations[lang]["transaction_plans_tips"], map[string]string{
+		"{address_trace_limit}": strconv.Itoa(addressTraceLimit),
+	})
+}
+
 func getDictionaryDetail(repo *repositories.SysDictionariesRepo, key string) string {
 	value, _ := repo.GetDictionaryDetail(key)
 	return value
@@ -357,7 +363,7 @@ func MenuNavigateEnergyExchange(lang string, db *gorm.DB, message *tgbotapi.Mess
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 }
-func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
+func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string, addressTraceLimit int) {
 	bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
 	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
@@ -377,7 +383,7 @@ func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbo
 		buildBundleExtraButtons(lang, "address_list", "click_bundle_package_address_stats", "click_bundle_package_cost_records"),
 	)
 
-	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["transaction_plans_tips"])
+	msg := tgbotapi.NewMessage(chatID, buildTransactionPlansText(lang, addressTraceLimit))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 
