@@ -12,10 +12,7 @@ import (
 )
 
 func HandleCallbackQuery(callbackQuery *tgbotapi.CallbackQuery, ctx Context) {
-	lang, err := ctx.Cache.Get("LANG_" + strconv.FormatInt(callbackQuery.Message.Chat.ID, 10))
-	if err != nil {
-		lang = "zh"
-	}
+	lang := resolveUserLanguage(ctx.Cache, ctx.DB, callbackQuery.Message.Chat.ID)
 	if handleRiskCallback(lang, callbackQuery, ctx) {
 		return
 	}

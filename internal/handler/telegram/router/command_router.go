@@ -141,24 +141,20 @@ func handleStartBootstrap(message *tgbotapi.Message, ctx Context) {
 		if createErr := userRepo.Create(context.Background(), &user); createErr != nil {
 			return
 		}
-		ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), "zh", 24*time.Hour)
+		cacheUserLanguage(ctx.Cache, message.Chat.ID, defaultUserLang)
 	} else {
 		record.Username = message.From.UserName
 		userRepo.UpdateUsernameByChatID(message.From.UserName, message.Chat.ID)
-		if len(record.Lang) > 0 {
-			ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), record.Lang, 24*time.Hour)
-		} else {
-			ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), "zh", 24*time.Hour)
-		}
+		cacheUserLanguage(ctx.Cache, message.Chat.ID, record.Lang)
 	}
 
 	handleStartCommand(ctx.Cache, ctx.Bot, message)
 }
 
 func handleStartCommand(cacheStore cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
-	lang, err := cacheStore.Get("LANG_" + strconv.FormatInt(message.Chat.ID, 10))
-	if err != nil {
-		lang = "zh"
+	lang, _ := cacheStore.Get(languageCacheKey(message.Chat.ID))
+	if len(lang) == 0 {
+		lang = defaultUserLang
 	}
 	keyboard := tgbotapi.NewReplyKeyboard(
 		tgbotapi.NewKeyboardButtonRow(

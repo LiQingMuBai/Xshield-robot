@@ -3,9 +3,7 @@ package router
 import (
 	"strconv"
 	"strings"
-	"time"
 	"ushield_bot/internal/global"
-	"ushield_bot/internal/infrastructure/repositories"
 	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 
@@ -13,13 +11,7 @@ import (
 )
 
 func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
-	lang, err := ctx.Cache.Get("LANG_" + strconv.FormatInt(message.Chat.ID, 10))
-	if len(lang) == 0 || err != nil {
-		userRepo := repositories.NewUserRepository(ctx.DB)
-		record, _ := userRepo.GetByChatID(message.Chat.ID)
-		ctx.Cache.Set("LANG_"+strconv.FormatInt(message.Chat.ID, 10), record.Lang, 24*time.Hour)
-		lang = record.Lang
-	}
+	lang := resolveUserLanguage(ctx.Cache, ctx.DB, message.Chat.ID)
 
 	if handleMenuMessage(message, ctx, lang) {
 		return

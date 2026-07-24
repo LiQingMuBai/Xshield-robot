@@ -40,7 +40,7 @@ func handleGenericCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		return true
 	case strings.HasPrefix(callbackQuery.Data, "set_lang_"):
 		nextLang := strings.TrimPrefix(callbackQuery.Data, "set_lang_")
-		ctx.Cache.Set("LANG_"+strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), nextLang, 24*time.Hour)
+		cacheUserLanguage(ctx.Cache, callbackQuery.Message.Chat.ID, nextLang)
 		userRepo := repositories.NewUserRepository(ctx.DB)
 		userRepo.UpdateLang(nextLang, callbackQuery.Message.Chat.ID)
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[nextLang]["set_lang"]+"\n")
