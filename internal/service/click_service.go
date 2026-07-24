@@ -26,7 +26,6 @@ func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 
 	usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
 
-	//trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
 	var info request.UserUsdtDepositsSearch
 	info.PageInfo.Page = 1
 	info.PageInfo.PageSize = 10
@@ -63,7 +62,6 @@ func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_usdt_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
@@ -76,7 +74,6 @@ func ShowBusinessCooperation(lang string, callbackQuery *tgbotapi.CallbackQuery,
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
@@ -89,7 +86,6 @@ func ShowOfficialChannel(lang string, callbackQuery *tgbotapi.CallbackQuery, bot
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
@@ -102,7 +98,6 @@ func ShowCallCenter(lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgb
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
@@ -129,7 +124,6 @@ func ShowTRXDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
@@ -156,7 +150,6 @@ func ShowTRXDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_trx_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
@@ -184,7 +177,6 @@ func ShowReceiptSummary(lang string, db *gorm.DB, callbackQuery *tgbotapi.Callba
 			tgbotapi.NewInlineKeyboardButtonData("⬇️"+global.Translations[lang]["usdt_deposit_records"], "click_deposit_usdt_records"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)

@@ -19,7 +19,6 @@ import (
 )
 
 func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
-	//deductionAmount := callbackQuery.Data[7:len(callbackQuery.Data)]
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "bundle_", "")
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
@@ -30,7 +29,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 
 	deductionAmount := bundlePackage.Amount
 
-	//logger.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -57,11 +55,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 
 	if lessBalance {
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			//"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-			//	"💵"+"<b>"+"余额不足 "+"</b>"+"\n"+
-			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
 			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
@@ -129,7 +122,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅"+"🧾"+global.Translations[lang]["package_order_purchased_successfully"]+"\n\n"+
 		global.Translations[lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[lang]["笔"])+"\n"+
 		global.Translations[lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n"+
-		//global.Translations[lang]["address"]+"："+message.Text+"\n\n"+
 		global.Translations[lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n")
 	msg.ParseMode = "HTML"
 	// 当点击"按钮 1"时显示内联键盘
@@ -152,7 +144,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 }
 
 func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
-	//deductionAmount := callbackQuery.Data[7:len(callbackQuery.Data)]
 	userOperationBundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "ST_bundle_", "")
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
@@ -163,7 +154,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 
 	deductionAmount := bundlePackage.Amount
 
-	//logger.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -203,7 +193,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 					))
 				msg.ReplyMarkup = inlineKeyboard
 				msg.ParseMode = "HTML"
-				//msg.DisableWebPagePreview = true
 				bot.Send(msg)
 				return
 
@@ -217,7 +206,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 					))
 				msg.ReplyMarkup = inlineKeyboard
 				msg.ParseMode = "HTML"
-				//msg.DisableWebPagePreview = true
 				bot.Send(msg)
 
 				return
@@ -249,10 +237,7 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 
 			trxDeposit.BundleId = value
 
-			//dictRepo := repositories.NewSysDictionariesRepo(db)
 			agent := os.Getenv("BOT_AGENT")
-			//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-			//agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
 			_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 			trxDeposit.Address = depositAddress
@@ -264,21 +249,12 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 				logger.Errorf("Error creating trxDeposit: %v", createErr)
 			}
 
-			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			//	global.Translations[lang]["order_id"]+"：TOPUP-"+usdtDeposit.OrderNO+"\n"+
-			//		global.Translations[lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[lang]["copy_text_tips"]+"\n"+
-			//		global.Translations[lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[lang]["copy_text_tips"]+"\n"+
-			//		global.Translations[lang]["tx_time_limit_tips"]+"\n"+
-			//		global.Translations[lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
-			//		global.Translations[lang]["amount_suffix_tips"]+"\n")
-
 			videoPath := "./static/Audi.png"
 
 			// 创建视频消息（从本地文件）
 			msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
 
 			msg.Caption =
-				//"🧾 智能托管套餐订单创建成功\n\n套餐："+bundlePackage.Name+"\n\n支付金额："+realTransferAmount+bundlePackage.Token+"\n收款地址："+"<code>"+trxDeposit.Address+"</code>"+"\n\n"+global.Translations[lang]["order_id"]+"：PKG-"+trxDeposit.OrderNO+"\n\n订单有效期：10 分钟\n\n⚠️ 请务必准确输入尾数金额，否则将无法入账！")
 
 				global.Translations[lang]["catfee_smart_transaction_head_1"] +
 					bundlePackage.Name + global.Translations[lang]["catfee_smart_transaction_head_2"] +
@@ -327,7 +303,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 					))
 				msg.ReplyMarkup = inlineKeyboard
 				msg.ParseMode = "HTML"
-				//msg.DisableWebPagePreview = true
 				bot.Send(msg)
 				return
 
@@ -341,7 +316,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 					))
 				msg.ReplyMarkup = inlineKeyboard
 				msg.ParseMode = "HTML"
-				//msg.DisableWebPagePreview = true
 				bot.Send(msg)
 
 				return
@@ -373,10 +347,7 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 
 			usdtDeposit.BundleId = value
 
-			//dictRepo := repositories.NewSysDictionariesRepo(db)
 			agent := os.Getenv("BOT_AGENT")
-			//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-			//agent := os.Getenv("Agent")
 			sysUserRepo := repositories.NewSysUsersRepository(db)
 			_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 			usdtDeposit.Address = depositAddress
@@ -387,14 +358,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 			if createErr != nil {
 				logger.Errorf("Error creating usdtDeposit: %v", createErr)
 			}
-
-			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			//	global.Translations[lang]["order_id"]+"：TOPUP-"+usdtDeposit.OrderNO+"\n"+
-			//		global.Translations[lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[lang]["copy_text_tips"]+"\n"+
-			//		global.Translations[lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[lang]["copy_text_tips"]+"\n"+
-			//		global.Translations[lang]["tx_time_limit_tips"]+"\n"+
-			//		global.Translations[lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
-			//		global.Translations[lang]["amount_suffix_tips"]+"\n")
 
 			videoPath := "./static/Audi.png"
 
@@ -460,7 +423,6 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 
 	var record domain.UserSmartTransactionPackageSubscriptions
 	record.ChatID = callbackQuery.Message.Chat.ID
-	//record.Address = message.Text
 	bundle, _ := strconv.ParseInt(bundleID, 10, 64)
 
 	record.BundleID = bundle
@@ -475,12 +437,7 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, strings.ReplaceAll(global.Translations[lang]["catfee_smart_transaction_tips"], "{bundle_package_name}", bundlePackage.Name)+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
-		//),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
@@ -510,11 +467,6 @@ func HandleBundleSubscriptionInput(lang string, message *tgbotapi.Message, bot *
 	if CompareStringsWithFloat(fee, user.Amount, 1) {
 		//余额不足，需充值
 		msg := tgbotapi.NewMessage(message.Chat.ID,
-			//"💬"+"<b>"+"余额不足: "+"</b>"+"\n"+
-			//	"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-			//	"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[lang]["balance"]+": "+"\n"+
@@ -533,18 +485,11 @@ func HandleBundleSubscriptionInput(lang string, message *tgbotapi.Message, bot *
 		//扣款
 		//调用trxfee接口
 
-		//trxfeeHandler := handler.NewTrxfeeHandler()
-
-		//trxfeeHandler.RequestTimesOrder(context.Background(),"","",message.Text,)
 		rest, _ := SubtractStringNumbers(user.Amount, fee, 1)
 		user.Amount = rest
 		userRepo.Save(context.Background(), &user)
 		msg := tgbotapi.NewMessage(message.Chat.ID,
 			"<b>"+"✅笔数套餐订阅成功"+"</b>"+"\n"+
-				//"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-				//"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-				//"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-				//"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 				"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[lang]["balance"]+": "+"\n"+

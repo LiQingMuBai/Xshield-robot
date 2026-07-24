@@ -74,7 +74,6 @@ func TestCatfeeService_MateOpenBasicGet(t *testing.T) {
 	if err != nil {
 		t.Fatal(err)
 	}
-	//logger.Printf("%#v\n", response)
 
 	logger.Printf("地址：%s\n", response.Data.Address)
 	logger.Printf("已用次数：%d\n", response.Data.UsedCount)

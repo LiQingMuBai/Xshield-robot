@@ -25,8 +25,6 @@ func SubtractAndRound(s1, s2 string, n float64) (string, error) {
 	// Multiply by 10, round, then divide by 10
 	rounded := math.Round(result*10) / 10
 
-	//return rounded, nil
-
 	// 3. 将结果转为字符串
 	return fmt.Sprintf("%v", rounded), nil
 

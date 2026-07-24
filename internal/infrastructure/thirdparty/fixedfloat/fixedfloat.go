@@ -181,11 +181,5 @@ func (api *FixedFloatAPI) req2(method string, payload interface{}) (map[string]i
 
 	logger.Printf("result: %v\n", result)
 
-	//response, err := MapToResponse(result)
-	////data, ok := result["data"].(map[string]interface{})
-	//if err != nil {
-	//	return nil, fmt.Errorf("'data' field is not an object")
-	//}
-
 	return result, nil
 }

@@ -28,7 +28,6 @@ func ShowPrevTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 		trxlist, _, _ := trxDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
@@ -54,7 +53,6 @@ func ShowPrevTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_trx_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
@@ -69,7 +67,6 @@ func ShowPrevTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 		trxlist, _, _ := trxDepositRepo.ListByPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
@@ -95,7 +92,6 @@ func ShowPrevTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_trx_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
@@ -112,7 +108,6 @@ func ShowNextTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 		state2.CurrentPage = 1
 		state = &state2
 	}
-	//if state != nil && state.CurrentPage > 1 {
 	state.CurrentPage = state.CurrentPage + 1
 	trxDepositRepo := repositories.NewUserTRXDepositsRepository(db)
 	var info request.UserTrxDepositsSearch
@@ -131,7 +126,6 @@ func ShowNextTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 	}
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
@@ -157,13 +151,11 @@ func ShowNextTRXDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_trx_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
-	//}
 	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state

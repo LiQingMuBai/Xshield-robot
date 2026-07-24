@@ -23,9 +23,6 @@ func MenuLaunderNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.B
 	coinLaunderingConfigRepo := repositories.NewCoinLaunderingConfigRepository(db)
 
 	configs, _ := coinLaunderingConfigRepo.ListActive(context.Background())
-	//star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
-	//logger.Printf("star_unit: %s\n", star_unit)
-	//unitPrice, _ := strconv.ParseFloat(star_unit, 64)
 
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var keyboard [][]tgbotapi.InlineKeyboardButton
@@ -36,37 +33,9 @@ func MenuLaunderNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.B
 	var extraButtons []tgbotapi.InlineKeyboardButton
 
 	btn := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
-	//row := tgbotapi.NewInlineKeyboardRow(btn)
 
 	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_callcenter"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_callcenter"), btn)
-	//
-	//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-	//	//tgbotapi.NewInlineKeyboardRow(
-	//	//
-	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["member_telegram_menu"], "purchase_telegram_premium"),
-	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
-	//	//),
-	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData("100"+"U", "click_launder_"+"100"),
-	//		tgbotapi.NewInlineKeyboardButtonData("200"+"U", "click_launder_"+"200"),
-	//		tgbotapi.NewInlineKeyboardButtonData("400"+"U", "click_launder_"+"400"),
-	//		tgbotapi.NewInlineKeyboardButtonData("800"+"U", "click_launder_"+"800"),
-	//	),
-	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData("1000"+"U", "click_launder_"+"1000"),
-	//		tgbotapi.NewInlineKeyboardButtonData("2000"+"U", "click_launder_"+"2000"),
-	//		tgbotapi.NewInlineKeyboardButtonData("5000"+"U", "click_launder_"+"4000"),
-	//		tgbotapi.NewInlineKeyboardButtonData("10000"+"U", "click_launder_"+"8000"),
-	//	),
-	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_launder_"+"1000"),
-	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_launder_"+"2000"),
-	//	),
-	//)
 
-	// ⚠️ 替换为你自己的本地 MP4 路径，例如 "./videos/demo.mp4"
-	//videoPath := "../telegram_stars.mp4"
-	//videoPath := "./static/telegram_premium.mp4"
 	for i := 0; i < len(allButtons); i += 4 {
 		end := i + 4
 		if end > len(allButtons) {
@@ -90,38 +59,23 @@ func MenuLaunderNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.B
 	// 创建视频消息（从本地文件）
 	videoMsg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
 	videoMsg.Caption = global.Translations[lang]["fixedfloat_rules"] + "\n\n" + global.Translations[lang]["coin_laundering_tips"]
-	// 创建视频消息（从本地文件）
-	//videoMsg := tgbotapi.NewMessage(chatID, global.Translations[lang]["coin_laundering_tips"])
 	videoMsg.ParseMode = "HTML"
 	videoMsg.ReplyMarkup = inlineKeyboard
-	//videoMsg.SupportsStreaming = true // 启用流式播放（推荐）
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
 		logger.Errorf("发送视频失败: %v", err)
-		//// 可选：给用户发错误提示
-		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
-		//bot.Send(errorMsg)
 	}
 
 }
 
 func MenuNavigateForLaunder(cache cache.Cache, lang string, db *gorm.DB, chatID int64, username string, bot *tgbotapi.BotAPI, amount string) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["member_telegram_menu"], "purchase_telegram_premium"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
-		//),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["bsc_usdt_name"], "click_laundering_USDTBSC_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["ethereum_usdt_name"], "click_laundering_USDT_"+amount),
-			//tgbotapi.NewInlineKeyboardButtonData("Poly-U", "click_laundering_polygon_"+amount),
-			//tgbotapi.NewInlineKeyboardButtonData("Arb-U", "click_laundering_arbitrum_"+amount),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["bsc_usdt_name"], "click_laundering_bsc_"+amount),
-			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["ethereum_usdt_name"], "click_laundering_ethereum_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("Polygon-USDT", "click_laundering_USDTMATIC_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("Arbitrum-USDT", "click_laundering_USDTARBITRUM_"+amount),
 		),
@@ -130,26 +84,16 @@ func MenuNavigateForLaunder(cache cache.Cache, lang string, db *gorm.DB, chatID 
 			tgbotapi.NewInlineKeyboardButtonData("BTC", "click_laundering_BTC_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("ETH", "click_laundering_ETH_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("BNB", "click_laundering_BSC_"+amount),
-			//tgbotapi.NewInlineKeyboardButtonData("SOL", "click_laundering_sol_"+amount),
 		),
-
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_laundering_"+"1000"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_laundering_"+"2000"),
-		//),
 	)
 
 	videoMsg := tgbotapi.NewMessage(chatID, global.Translations[lang]["coin_laundering_choose_coin_tips"])
 
 	videoMsg.ReplyMarkup = inlineKeyboard
-	//videoMsg.SupportsStreaming = true // 启用流式播放（推荐）
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
 		logger.Errorf("发送视频失败: %v", err)
-		//// 可选：给用户发错误提示
-		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
-		//bot.Send(errorMsg)
 	}
 
 	expiration := 1 * time.Minute // 短时间缓存空值
@@ -185,11 +129,7 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 	usdtDeposit.Source = 5
 	_count, _ := strconv.ParseInt(count, 10, 64)
 	usdtDeposit.BundleId = _count
-	//
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
 	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
@@ -229,10 +169,6 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 	logger.Printf("有小数点：%s\n", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
-
-	//agent := os.Getenv("Agent")
-	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 

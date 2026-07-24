@@ -33,16 +33,12 @@ func BuildBundlePackageCostRecordsMessage(lang string, db *gorm.DB, callbackQuer
 	}
 	var builder strings.Builder
 	if total > 0 {
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
 			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-
-			//builder.WriteString(" TRX ")
-			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -62,7 +58,6 @@ func BuildBundlePackageCostRecordsMessage(lang string, db *gorm.DB, callbackQuer
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
@@ -77,7 +72,6 @@ func ShowNextBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 		state2.CurrentPage = 1
 		state = &state2
 	}
-	//if state != nil && state.CurrentPage > 1 {
 	state.CurrentPage = state.CurrentPage + 1
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
@@ -92,14 +86,12 @@ func ShowNextBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 	}
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
 		builder.WriteString("]")
 		builder.WriteString(" -")
 		builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-		//builder.WriteString(" （能量笔数套餐）")
 
 		builder.WriteString("\n") // 添加分隔符
 	}
@@ -115,13 +107,11 @@ func ShowNextBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
-	//}
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
 }
@@ -145,14 +135,12 @@ func ShowPrevBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
 			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -168,7 +156,6 @@ func ShowPrevBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
@@ -183,14 +170,12 @@ func ShowPrevBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
 			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -206,7 +191,6 @@ func ShowPrevBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuer
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
@@ -239,9 +223,6 @@ func ShowBundlePackageAddressManagement(lang string, cache cache.Cache, bot *tgb
 	msg.ParseMode = "HTML"
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("⚙地址设置", "click_bundle_package_address_manager_config"),
-		//),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["add_address"], "click_bundle_package_address_manager_add"),
 
@@ -402,23 +383,15 @@ func ApplyBundlePackageAddress(lang string, bundleAddress string, cache cache.Ca
 }
 
 func DispatchOthers(lang string, bundleID string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
-	//userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(db)
 
 	//addresses, _ := userOperationPackageAddressesRepo.ListByChatID(context.Background(), chatID)
 
-	//msg := tgbotapi.NewMessage(chatID, "我们设置了 "+"<b>「仅允许派送至已管理的地址」</b>"+" 的安全规则。这样可以更有效地保障您的资产安全，避免因误操作导致能量丢失。\n\n"+
-	//	"如果您尚未添加可用的接收地址，请前往<b>【首页】 ➝ 【添加地址】</b> 进行添加，完成后即可正常使用派送功能。\n\n📌 安全提示：建议定期检查并更新您的地址列表，确保所有地址均为您可控的合法地址。"+"\n\n"+
-	//	"👇请选择要派送的地址或输入需派发的地址："+"\n\n")
-	//地址绑定
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["enter_address"]+"\n\n")
 	msg.ParseMode = "HTML"
 
 	var allButtons []tgbotapi.InlineKeyboardButton
 	var extraButtons []tgbotapi.InlineKeyboardButton
 	var keyboard [][]tgbotapi.InlineKeyboardButton
-	//for _, item := range addresses {
-	//	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(TruncateString(item.Address), "dispatch_others_"+bundleID+"_"+item.Address))
-	//}
 
 	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"))
 

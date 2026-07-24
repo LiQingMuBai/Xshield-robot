@@ -47,7 +47,6 @@ func AddCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotap
 		msg := tgbotapi.NewMessage(chatID, "<b>"+global.Translations[lang]["catfee_energy_address_limit_tips"]+"</b>"+"\n")
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
@@ -63,7 +62,6 @@ func AddCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotap
 		msg := tgbotapi.NewMessage(chatID, "❌"+"<b>"+global.Translations[lang]["catfee_add_address_already_exit_tips"]+"</b>"+"\n")
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
@@ -87,7 +85,6 @@ func AddCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotap
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
@@ -236,14 +233,12 @@ func CatfeeAddressPrevePage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
 			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -259,7 +254,6 @@ func CatfeeAddressPrevePage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
@@ -274,14 +268,12 @@ func CatfeeAddressPrevePage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
 			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
-			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -297,7 +289,6 @@ func CatfeeAddressPrevePage(lang string, callbackQuery *tgbotapi.CallbackQuery, 
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)

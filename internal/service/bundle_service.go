@@ -19,7 +19,6 @@ import (
 )
 
 func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB) {
-	//deductionAmount := callbackQuery.Data[7:len(callbackQuery.Data)]
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundleID := strings.ReplaceAll(callbackQuery.Data, "bundle_", "")
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)
@@ -29,7 +28,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 
 	deductionAmount := bundlePackage.Amount
 
-	//logger.Printf("deductionAmount: %v\n", deductionAmount)
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -118,14 +116,11 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 				))
 			msg.ReplyMarkup = inlineKeyboard
 			msg.ParseMode = "HTML"
-			//msg.DisableWebPagePreview = true
 			sent, _ := bot.Send(msg)
 
 			expiration := 1 * time.Minute // 短时间缓存空值
 			//设置用户状态
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expiration)
-
-			//expiration := 1 * time.Minute // 短时间缓存空值
 
 			//设置用户状态
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "TRX_"+trxDeposit.OrderNO, expiration)
@@ -189,7 +184,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 				))
 			msg.ReplyMarkup = inlineKeyboard
 			msg.ParseMode = "HTML"
-			//msg.DisableWebPagePreview = true
 			sent, _ := bot.Send(msg)
 
 			expiration := 1 * time.Minute // 短时间缓存空值
@@ -197,24 +191,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order", strconv.Itoa(sent.MessageID), expiration)
 			cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"_order_no", "USDT_"+usdtDeposit.OrderNO, expiration)
 			//扫码支付
-
-			//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-			//	"🆔"+global.Translations[lang]["user_id"]+": "+user.Associates+"\n"+
-			//		"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
-			//		"💰"+global.Translations[lang]["balance"]+": "+"\n"+
-			//		"- TRX：   "+user.TronAmount+"\n"+
-			//		"-  USDT："+user.Amount)
-			//
-			//msg.ParseMode = "HTML"
-			//
-			//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-			//	tgbotapi.NewInlineKeyboardRow(
-			//		tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
-			//	),
-			//)
-			//
-			//msg.ReplyMarkup = inlineKeyboard
-			//bot.Send(msg)
 
 			return
 		}
@@ -267,7 +243,6 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅"+"🧾"+global.Translations[lang]["package_order_purchased_successfully"]+"\n\n"+
 		global.Translations[lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[lang]["笔"])+"\n"+
 		global.Translations[lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n"+
-		//global.Translations[lang]["address"]+"："+message.Text+"\n\n"+
 		global.Translations[lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n")
 	msg.ParseMode = "HTML"
 	// 当点击"按钮 1"时显示内联键盘
@@ -304,11 +279,6 @@ func HandleBundleSubscriptionInput(lang string, message *tgbotapi.Message, bot *
 	if CompareStringsWithFloat(fee, user.Amount, 1) {
 		//余额不足，需充值
 		msg := tgbotapi.NewMessage(message.Chat.ID,
-			//"💬"+"<b>"+"余额不足: "+"</b>"+"\n"+
-			//	"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-			//	"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[lang]["balance"]+": "+"\n"+
@@ -327,18 +297,11 @@ func HandleBundleSubscriptionInput(lang string, message *tgbotapi.Message, bot *
 		//扣款
 		//调用trxfee接口
 
-		//trxfeeHandler := handler.NewTrxfeeHandler()
-
-		//trxfeeHandler.RequestTimesOrder(context.Background(),"","",message.Text,)
 		rest, _ := SubtractStringNumbers(user.Amount, fee, 1)
 		user.Amount = rest
 		userRepo.Save(context.Background(), &user)
 		msg := tgbotapi.NewMessage(message.Chat.ID,
 			"<b>"+"✅笔数套餐订阅成功"+"</b>"+"\n"+
-				//"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-				//"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-				//"💵"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-				//"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 				"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
 				"💰"+global.Translations[lang]["balance"]+": "+"\n"+

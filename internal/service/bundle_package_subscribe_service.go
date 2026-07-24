@@ -121,11 +121,6 @@ func ApplyBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, me
 
 	if lessBalance {
 		msg := tgbotapi.NewMessage(message.Chat.ID,
-			//"💬"+"<b>"+"用户姓名: "+"</b>"+user.Username+"\n"+
-			//	"👤"+"<b>"+"用户电报ID: "+"</b>"+user.Associates+"\n"+
-			//	"💵"+"<b>"+"余额不足 "+"</b>"+"\n"+
-			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
-			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
 			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
 				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
@@ -206,12 +201,6 @@ func ApplyBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, me
 }
 func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//logger.Println("ExtractBundlePackage")
-	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
-	//var info request.UserAddressDetectionSearch
-	//
-	//info.Page = 1
-	//info.PageSize = 5
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(chatID)
 
@@ -235,66 +224,25 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 		builder.WriteString(strconv.FormatInt(user.BundleTimes, 10))
 		builder.WriteString(" " + global.Translations[lang]["笔"])
 
-		//usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
 		builder.WriteString("     " + global.Translations[lang]["used"])
 		builder.WriteString(strconv.FormatInt(usedTimes, 10))
 		builder.WriteString(" " + global.Translations[lang]["笔"])
 
-		//builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[lang]["address"]+"：")
-			//builder.WriteString("\n")
-			//builder.WriteString("<code>" + order.Address + "</code>")
-			//builder.WriteString("\n")
-			//builder.WriteString("状态：")
-			////0默认初始化状态  1 自动派送 2 手动 3 结束
-			//if order.Status == 3 {
-			//	builder.WriteString("<b>" + "已结束" + "</b>")
-			//} else if order.Status == 2 {
-			//	builder.WriteString("<b>" + "已停止" + "</b>")
-			//} else if order.Status == 1 {
-			//	builder.WriteString("<b>" + "已开启" + "</b>")
-			//} else if order.Status == 0 {
-			//	builder.WriteString("<b>" + "初始化" + "</b>")
-			//}
-			//
-
-			////builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 
-			//if user.BundleTimes <= 0 {
-			//	builder.WriteString("笔数为空")
-			//	builder.WriteString("\n")
-			//	//break
-			//}
-
-			//builder.WriteString(global.Translations[lang]["address"]+"：")
-			//builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
 
-			//if order.Status == 2 {
-			//	builder.WriteString("开启自动发能:/startDispatch")
-			//	builder.WriteString(strconv.FormatInt(order.Id, 10))
-			//}
-			//if order.Status == 1 {
-			//	builder.WriteString("关闭自动发能:/stopDispatch")
-			//	builder.WriteString(strconv.FormatInt(order.Id, 10))
-			//}
-			//builder.WriteString("\n") // 添加分隔符
 			if user.BundleTimes > 0 {
 				builder.WriteString(global.Translations[lang]["dispatch_now"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("_1")
 				builder.WriteString("\n") // 添加分隔符
 
-				//builder.WriteString(strconv.FormatInt(order.Id, 10))
-				//builder.WriteString("\n") // 添加分隔符
 			}
 			if user.BundleTimes > 1 {
-				//builder.WriteString("\n") // 添加分隔符
 				builder.WriteString(global.Translations[lang]["dispatch_now_2"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("_2")
@@ -302,15 +250,8 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 
 			}
 
-			//builder.WriteString("\n")
 			builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-			//builder.WriteString("\n")            // 添加分隔符
 		}
-		//if user.BundleTimes > 0 {
-		//	builder.WriteString(global.Translations[lang]["address_list_empty_tips"]+"\n\n") // 添加分隔符
-		//	builder.WriteString("<b>向其他地址发能</b>:/dispatchOthers")
-		//	builder.WriteString("\n") // 添加分隔符
-		//}
 	} else {
 		builder.WriteString("\n")
 
@@ -318,7 +259,6 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 		builder.WriteString(strconv.FormatInt(user.BundleTimes, 10))
 		builder.WriteString(" " + global.Translations[lang]["笔"])
 
-		//usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
 		builder.WriteString("     " + global.Translations[lang]["used"])
 		builder.WriteString(strconv.FormatInt(usedTimes, 10))
 		builder.WriteString(" " + global.Translations[lang]["笔"])
@@ -334,7 +274,6 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[lang]["dispatch_other"], "dispatch_Now_Others"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
@@ -344,7 +283,6 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 		),
 
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
@@ -353,7 +291,6 @@ func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID in
 }
 func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
 
@@ -366,25 +303,10 @@ func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID
 	}
 	var builder strings.Builder
 	if total > 0 {
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
-			//builder.WriteString("状态：")
-			////0默认初始化状态  1 自动派送 2 手动 3 结束
-			//if order.Status == 3 {
-			//	builder.WriteString("<b>" + "已结束" + "</b>")
-			//} else if order.Status == 2 {
-			//	builder.WriteString("<b>" + "已停止" + "</b>")
-			//} else if order.Status == 1 {
-			//	builder.WriteString("<b>" + "已开启" + "</b>")
-			//} else if order.Status == 0 {
-			//	builder.WriteString("<b>" + "初始化" + "</b>")
-			//}
-			//
-			//builder.WriteString("\n")
 
 			builder.WriteString(global.Translations[lang]["remaining"])
 			builder.WriteString(strconv.FormatInt(order.Times, 10))
@@ -394,8 +316,6 @@ func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID
 			builder.WriteString("     " + global.Translations[lang]["used"])
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
 			builder.WriteString(" " + global.Translations[lang]["笔"])
-
-			////builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 			if order.Times > 0 {
@@ -415,9 +335,7 @@ func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("\n") // 添加分隔符
 			}
-			//builder.WriteString("\n")
 			builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
 		builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
@@ -435,7 +353,6 @@ func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
@@ -449,7 +366,6 @@ func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 		state2.CurrentPage = 1
 		state = &state2
 	}
-	//if state != nil && state.CurrentPage > 1 {
 	state.CurrentPage = state.CurrentPage + 1
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
@@ -468,25 +384,10 @@ func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 	}
 	var builder strings.Builder
 	if total > 0 {
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
-			//builder.WriteString("状态：")
-			////0默认初始化状态  1 自动派送 2 手动 3 结束
-			//if order.Status == 3 {
-			//	builder.WriteString("<b>" + "已结束" + "</b>")
-			//} else if order.Status == 2 {
-			//	builder.WriteString("<b>" + "已停止" + "</b>")
-			//} else if order.Status == 1 {
-			//	builder.WriteString("<b>" + "已开启" + "</b>")
-			//} else if order.Status == 0 {
-			//	builder.WriteString("<b>" + "初始化" + "</b>")
-			//}
-			//
-			//builder.WriteString("\n")
 
 			builder.WriteString(global.Translations[lang]["remaining"])
 			builder.WriteString(strconv.FormatInt(order.Times, 10))
@@ -496,8 +397,6 @@ func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 			builder.WriteString("     " + global.Translations[lang]["used"])
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
 			builder.WriteString(" " + global.Translations[lang]["笔"])
-
-			////builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 			if order.Times > 0 {
@@ -518,9 +417,7 @@ func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("\n") // 添加分隔符
 			}
-			//builder.WriteString("\n")
 			builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
 		builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
@@ -537,13 +434,11 @@ func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
-	//}
 	logger.Printf("state: %v\n", state)
 
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
@@ -567,25 +462,10 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 		orderlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		if total > 0 {
-			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 			for _, order := range orderlist {
 				builder.WriteString("\n")
-				//builder.WriteString(global.Translations[lang]["address"]+"：")
 				builder.WriteString("<code>" + order.Address + "</code>")
 				builder.WriteString("\n")
-				//builder.WriteString("状态：")
-				////0默认初始化状态  1 自动派送 2 手动 3 结束
-				//if order.Status == 3 {
-				//	builder.WriteString("<b>" + "已结束" + "</b>")
-				//} else if order.Status == 2 {
-				//	builder.WriteString("<b>" + "已停止" + "</b>")
-				//} else if order.Status == 1 {
-				//	builder.WriteString("<b>" + "已开启" + "</b>")
-				//} else if order.Status == 0 {
-				//	builder.WriteString("<b>" + "初始化" + "</b>")
-				//}
-				//
-				//builder.WriteString("\n")
 
 				builder.WriteString(global.Translations[lang]["remaining"])
 				builder.WriteString(strconv.FormatInt(order.Times, 10))
@@ -595,8 +475,6 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 				builder.WriteString("     " + global.Translations[lang]["used"])
 				builder.WriteString(strconv.FormatInt(usedTimes, 10))
 				builder.WriteString(" " + global.Translations[lang]["笔"])
-
-				////builder.WriteString(" （能量笔数套餐）")
 
 				builder.WriteString("\n") // 添加分隔符
 				if order.Times > 0 {
@@ -616,9 +494,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 					builder.WriteString(strconv.FormatInt(order.Id, 10))
 					builder.WriteString("\n") // 添加分隔符
 				}
-				//builder.WriteString("\n")
 				builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-				//builder.WriteString("\n")            // 添加分隔符
 			}
 		} else {
 			builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
@@ -635,7 +511,6 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
@@ -650,25 +525,10 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 		orderlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		if total > 0 {
-			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 			for _, order := range orderlist {
-				//builder.WriteString(global.Translations[lang]["address"]+"：")
 				builder.WriteString("\n")
 				builder.WriteString("<code>" + order.Address + "</code>")
 				builder.WriteString("\n")
-				//builder.WriteString("状态：")
-				////0默认初始化状态  1 自动派送 2 手动 3 结束
-				//if order.Status == 3 {
-				//	builder.WriteString("<b>" + "已结束" + "</b>")
-				//} else if order.Status == 2 {
-				//	builder.WriteString("<b>" + "已停止" + "</b>")
-				//} else if order.Status == 1 {
-				//	builder.WriteString("<b>" + "已开启" + "</b>")
-				//} else if order.Status == 0 {
-				//	builder.WriteString("<b>" + "初始化" + "</b>")
-				//}
-				//
-				//builder.WriteString("\n")
 
 				builder.WriteString(global.Translations[lang]["remaining"])
 				builder.WriteString(strconv.FormatInt(order.Times, 10))
@@ -678,8 +538,6 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 				builder.WriteString("     " + global.Translations[lang]["used"])
 				builder.WriteString(strconv.FormatInt(usedTimes, 10))
 				builder.WriteString(" " + global.Translations[lang]["笔"])
-
-				////builder.WriteString(" （能量笔数套餐）")
 
 				builder.WriteString("\n") // 添加分隔符
 				if order.Times > 0 {
@@ -699,9 +557,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 					builder.WriteString(strconv.FormatInt(order.Id, 10))
 					builder.WriteString("\n") // 添加分隔符
 				}
-				//builder.WriteString("\n")
 				builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-				//builder.WriteString("\n")            // 添加分隔符
 			}
 		} else {
 			builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
@@ -718,7 +574,6 @@ func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbo
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
@@ -883,7 +738,6 @@ func ApplySmartTransactionBundlePackage(trxfeeClient *trxfee.TrxfeeClient, lang 
 }
 func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
-	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
 
@@ -896,25 +750,10 @@ func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID i
 	}
 	var builder strings.Builder
 	if total > 0 {
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
-			//builder.WriteString("状态：")
-			////0默认初始化状态  1 自动派送 2 手动 3 结束
-			//if order.Status == 3 {
-			//	builder.WriteString("<b>" + "已结束" + "</b>")
-			//} else if order.Status == 2 {
-			//	builder.WriteString("<b>" + "已停止" + "</b>")
-			//} else if order.Status == 1 {
-			//	builder.WriteString("<b>" + "已开启" + "</b>")
-			//} else if order.Status == 0 {
-			//	builder.WriteString("<b>" + "初始化" + "</b>")
-			//}
-			//
-			//builder.WriteString("\n")
 			if order.Status == 2 {
 				builder.WriteString(global.Translations[lang]["smart_transaction_disable"])
 			}
@@ -930,8 +769,6 @@ func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID i
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
 			builder.WriteString(" " + global.Translations[lang]["笔"])
 
-			////builder.WriteString(" （能量笔数套餐）")
-
 			builder.WriteString("\n") // 添加分隔符
 			if order.Times > 0 {
 				if order.Status == 2 {
@@ -944,9 +781,7 @@ func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID i
 				}
 				builder.WriteString("\n") // 添加分隔符
 			}
-			//builder.WriteString("\n")
 			builder.WriteString("➖➖➖➖➖➖➖➖➖➖➖➖➖") // 添加分隔符
-			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
 		builder.WriteString(global.Translations[lang]["smart_transaction__list_empty_tips"] + "\n\n") // 添加分隔符
@@ -959,12 +794,7 @@ func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID i
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
-		//),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 		),
 	)

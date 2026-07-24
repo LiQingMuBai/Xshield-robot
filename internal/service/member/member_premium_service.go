@@ -49,10 +49,7 @@ func Rent(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, use
 	usdtDeposit.Source = 4
 	usdtDeposit.BundleId = monthRecord.Id
 
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
 	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
@@ -87,10 +84,6 @@ func Rent(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, use
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(monthRecord.Amount, usdtDeposit.Placeholder))
 
-	//agent := os.Getenv("Agent")
-	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
-
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
 	videoPath := "./static/Audi.png"
@@ -99,7 +92,6 @@ func Rent(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, use
 	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
 	msg.Caption = tips
 
-	//msg := tgbotapi.NewMessage(chatID, tips)
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(

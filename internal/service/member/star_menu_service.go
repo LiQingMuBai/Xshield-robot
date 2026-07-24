@@ -51,8 +51,6 @@ func MenuStarNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotA
 		),
 	)
 
-	// ⚠️ 替换为你自己的本地 MP4 路径，例如 "./videos/demo.mp4"
-	//videoPath := "../telegram_stars.mp4"
 	videoPath := "./static/telegram_stars.mp4"
 
 	if err := sendVideoWithCache(
@@ -133,11 +131,7 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 	usdtDeposit.Source = 5
 	_count, _ := strconv.ParseInt(count, 10, 64)
 	usdtDeposit.BundleId = _count
-	//
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
 	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
@@ -178,10 +172,6 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
 
-	//agent := os.Getenv("Agent")
-	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
-
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
 	videoPath := "./static/Audi.png"
@@ -190,7 +180,6 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
 	msg.Caption = tips
 
-	//msg := tgbotapi.NewMessage(chatID, tips)
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(

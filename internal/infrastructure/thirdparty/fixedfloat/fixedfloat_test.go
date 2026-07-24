@@ -18,20 +18,6 @@ func TestCcies(t *testing.T) {
 	}
 	logger.Println("Supported coins:", ccies)
 
-	//// 示例：创建订单
-	//params := map[string]interface{}{
-	//	"from":      "btc",
-	//	"to":        "eth",
-	//	"type":      TypeFixed,
-	//	"amount":    0.01,
-	//	"addressTo": "0xYourEthAddressHere",
-	//}
-	//order, err := api.Create(params)
-	//if err != nil {
-	//	panic(err)
-	//}
-	//logger.Println("Order created:", order)
-
 }
 
 func TestPrice(t *testing.T) {
@@ -54,13 +40,6 @@ func TestPrice(t *testing.T) {
 func TestOrder(t *testing.T) {
 
 	api := New("AtHmGIAucigijgkqaTiOvuGTArkBrm4pparh7V5E", "jDDzTJKmB8jfzhlxfZuXtdNnNQLrSjaGiKg2e4kf")
-
-	// 示例：获取支持的币种
-	//ccies, err := api.Ccies()
-	//if err != nil {
-	//	panic(err)
-	//}
-	//logger.Println("Supported coins:", ccies)
 
 	// 示例：创建订单
 	params := map[string]interface{}{

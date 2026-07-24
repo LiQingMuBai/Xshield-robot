@@ -21,7 +21,6 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 	trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
@@ -29,7 +28,6 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" TRX ")
-		//builder.WriteString(" （" + global.Translations[lang]["address_detection_payment"] + "）")
 
 		builder.WriteString("\n") // 添加分隔符
 	}
@@ -46,7 +44,6 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_detection_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔍"+global.Translations[lang]["detect_again"], "back_address_detection_home"),
 		),
 	)
@@ -71,7 +68,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
@@ -79,7 +75,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" TRX ")
-			//builder.WriteString(" （地址风险检测）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -95,7 +90,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_detection_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
@@ -110,7 +104,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
@@ -118,7 +111,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 			builder.WriteString("-")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" TRX ")
-			//builder.WriteString(" （地址风险检测）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -134,7 +126,6 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_detection_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
@@ -150,7 +141,6 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		state2.CurrentPage = 1
 		state = &state2
 	}
-	//if state != nil && state.CurrentPage > 1 {
 	state.CurrentPage = state.CurrentPage + 1
 	usdtDepositRepo := repositories.NewUserAddressDetectionRepository(db)
 	var info request.UserAddressDetectionSearch
@@ -165,7 +155,6 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 	}
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
@@ -173,7 +162,6 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" TRX ")
-		//builder.WriteString(" （地址风险检测）")
 
 		builder.WriteString("\n") // 添加分隔符
 	}
@@ -189,13 +177,11 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_detection_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
-	//}
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
 }

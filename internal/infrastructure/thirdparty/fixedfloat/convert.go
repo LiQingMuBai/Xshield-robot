@@ -17,7 +17,6 @@ func mapToData(m map[string]interface{}) Data {
 
 	d.Back = mapToAddressInfo(m["back"].(map[string]interface{}))
 	d.Email = m["email"] // 可能是 nil
-	//d.Emergency = mapToEmergency(m["emergency"].(map[string]interface{}))
 	d.From = mapToAddressInfo(m["from"].(map[string]interface{}))
 	d.ID = m["id"].(string)
 	d.Status = m["status"].(string)

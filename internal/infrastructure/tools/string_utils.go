@@ -26,9 +26,6 @@ func ExtractNumber(s string) (int64, error) {
 func GenerateOrderID(tronAddress string, suffix int) (string, error) {
 	// 1. 校验波场地址格式
 	tronAddress = strings.TrimSpace(tronAddress)
-	//if len(tronAddress) != 34 || !strings.HasPrefix(tronAddress, "T") {
-	//	return "", fmt.Errorf("无效的波场地址（必须34位且以T开头）")
-	//}
 
 	// 2. 获取当前时间的 "年月日时分"（格式：200601021504）
 	timestamp := time.Now().Format("20060102150405")
@@ -282,18 +279,6 @@ func DeleteWhitespace(s string) string {
 		return r
 	}, s)
 }
-
-//
-//// RandomString 生成随机字符串
-//func RandomString(length int) string {
-//	const letters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz"
-//	result := make([]byte, length)
-//	for i := 0; i < length; i++ {
-//		num, _ := rand.Int(rand.Reader, big.NewInt(int64(len(letters))))
-//		result[i] = letters[num.Int64()]
-//	}
-//	return string(result)
-//}
 
 // IsEmail 检查字符串是否是有效的电子邮件地址
 func IsEmail(s string) bool {

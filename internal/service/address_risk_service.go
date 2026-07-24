@@ -20,14 +20,12 @@ func BuildFreezeAlertDeductionRecordsMessage(lang string, db *gorm.DB, callbackQ
 	trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
 	var builder strings.Builder
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
 		builder.WriteString("]")
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
-		//builder.WriteString(" （USDT冻结预警）")
 
 		builder.WriteString("\n") // 添加分隔符
 	}
@@ -70,14 +68,12 @@ func ShowPrevAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
-			//builder.WriteString(" （USDT冻结预警）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -107,14 +103,12 @@ func ShowPrevAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 		trxlist, _, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
 		builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString("-")
 			builder.WriteString(word.Amount)
-			//builder.WriteString(" （USDT冻结预警）")
 
 			builder.WriteString("\n") // 添加分隔符
 		}
@@ -146,7 +140,6 @@ func ShowNextAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 		state2.CurrentPage = 1
 		state = &state2
 	}
-	//if state != nil && state.CurrentPage > 1 {
 	state.CurrentPage = state.CurrentPage + 1
 	userAddressDetectionRepo := repositories.NewUserAddressMonitorEventRepo(db)
 	var info request.UserAddressDetectionSearch
@@ -161,14 +154,12 @@ func ShowNextAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 	}
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
-	//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
 		builder.WriteString("]")
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
-		//builder.WriteString(" （USDT冻结预警）")
 
 		builder.WriteString("\n") // 添加分隔符
 	}
@@ -189,7 +180,6 @@ func ShowNextAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
-	//}
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
 }

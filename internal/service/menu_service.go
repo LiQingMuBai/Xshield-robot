@@ -185,19 +185,9 @@ func ShowCoinToCoinSwapMenu(lang string, db *gorm.DB, message *tgbotapi.Message,
 
 func MenuNavigateTronEnergy(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
-		//
-		//),
-
-		//tgbotapi.NewKeyboardButton("⚡"+global.Translations[lang]["energy_swap"]),
-		//tgbotapi.NewKeyboardButton("🖊️"+global.Translations[lang]["transaction_plans"]),
-		//tgbotapi.NewKeyboardButton("🤖"+global.Translations[lang]["smart_transaction_plans"]),
 
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("⚡"+global.Translations[lang]["energy_swap"], "click_energy_swap"),
 			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[lang]["transaction_plans"], "click_transaction_plan"),
-			//tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[lang]["smart_transaction_plans"], "click_smart_transaction_plan"),
 			tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[lang]["catfee_smart_transaction_menu"], "click_smart_transaction_plan"),
 		),
 	)
@@ -209,34 +199,10 @@ func MenuNavigateTronEnergy(lang string, db *gorm.DB, message *tgbotapi.Message,
 
 	msg.Caption = buildEnergySwapText(lang, db)
 	msg.ReplyMarkup = inlineKeyboard
-	//msg.SupportsStreaming = true // 启用流式播放（推荐）
 
-	//msg := tgbotapi.new(message.Chat.ID, targetStr)
-	//msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
-	//str := ""
-	//if len(user.BackupChatID) > 0 {
-	//	//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
-	//	//backup_user, _ := userRepo.GetByChatID(id)
-	//	str = "🔗 " + global.Translations[lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
-	//} else {
-	//	str = global.Translations[lang]["secondary_contact_none"]
-	//}
 
-	//msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 "+global.Translations[lang]["user_id"]+"："+user.Associates+"\n👤 "+global.Translations[lang]["username"]+"：@"+user.Username+"\n"+
-	//	str+"\n💰"+
-	//	global.Translations[lang]["balance"]+"：\n"+
-	//	"- TRX："+user.TronAmount+"\n"+
-	//	"- USDT："+user.Amount)
-	//msg.ReplyMarkup = inlineKeyboard
-	//msg.ParseMode = "HTML"
-	//bot.Send(msg)
-
-	//msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 ID："+user.Associates+"\n👤：@"+user.Username+"\n\n")
-	//msg.ReplyMarkup = inlineKeyboard
-	//msg.ParseMode = "HTML"
-	//bot.Send(msg)
 }
 
 func MenuNavigateSwapExchange(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
@@ -246,12 +212,6 @@ func MenuNavigateSwapExchange(lang string, db *gorm.DB, message *tgbotapi.Messag
 			tgbotapi.NewInlineKeyboardButtonData("🔃"+global.Translations[lang]["coin_swap_coin_menu"], "coin_swap_coin"),
 		),
 	)
-	//agent := os.Getenv("Agent")
-	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
-
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	//receiveAddress, _ := dictRepo.GetReceiveAddress(agent)
 
 	videoPath := "./static/Prada.png"
 
@@ -260,10 +220,8 @@ func MenuNavigateSwapExchange(lang string, db *gorm.DB, message *tgbotapi.Messag
 
 	msg.Caption = buildSwapExchangeText(lang, db)
 
-	//msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
-	//msg.DisableWebPagePreview = true
 	bot.Send(msg)
 }
 
@@ -277,8 +235,6 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 	if len(orderlist) > 0 {
 
 		builder.WriteString("\n")
-		//builder.WriteString("\n") // 添加分隔符
-		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
 			builder.WriteString("\n") // 添加分隔符
 			builder.WriteString("<code>" + order.Address + "</code>")
@@ -290,9 +246,6 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-
-	//msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[lang]["package_address_list"]+"\n"+
-	//	result+"\n")
 
 	msg := tgbotapi.NewMessage(chatID, originStr+"\n"+
 		result+"\n")
@@ -323,18 +276,6 @@ func MenuNavigateAddressFreeze(lang string, cache cache.Cache, bot *tgbotapi.Bot
 
 	server_usdt_price, _ := userRepo.GetDictionaryDetail("server_usdt_price")
 
-	//msg := tgbotapi.NewMessage(chatID, "欢迎使用U盾 USDT冻结预警服务\n"+
-	//	"🛡️ U盾，做您链上资产的护盾！\n"+
-	//	"地址一旦被链上风控冻，资产将难以追回，损失巨大！\n"+
-	//	"每天都有数百个 USDT 钱包地址被冻结锁定，风险就在身边！\n"+
-	//	"✅ 适用于经常收付款 / 被制裁地址感染/与诈骗地址交互\n"+
-	//	"✅ 支持TRON/ETH网络的USDT 钱包地址\n"+
-	//	"📌 服务价格（每地址）：\n • "+server_trx_price+" TRX / 30天\n • "+
-	//	" 或 "+server_usdt_price+" USDT / 30天\n"+
-	//	"🎯 服务开启后U盾将24 小时不间断保护您的资产安全。\n"+
-	//	"⏰ 系统将在冻结前启动预警机制，持续 10 分钟每分钟推送提醒，通知您及时转移资产。\n"+
-	//	"📩 所有预警信息将通过 Telegram 实时推送")
-
 	originStr := global.Translations[lang]["usdt_freeze_alert_tips"]
 
 	targetStr := renderMenuTemplate(originStr, map[string]string{
@@ -348,7 +289,6 @@ func MenuNavigateAddressFreeze(lang string, cache cache.Cache, bot *tgbotapi.Bot
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[lang]["enable_freeze_alert"], "start_freeze_risk"),
-			//tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[lang]["alert_monitoring_list"], "address_list_trace"),
@@ -387,19 +327,6 @@ func MenuNavigateAddressDetection(lang string, cache cache.Cache, bot *tgbotapi.
 	})
 
 	msg := tgbotapi.NewMessage(chatID, targetStr)
-	//msg := tgbotapi.NewMessage(chatID, " 欢迎使用 U盾地址风险检测\n"+
-	//	"✅ 支持 TRON 或 ETH 网络任意地址查询\n"+
-	//	"✅ 系统将基于链上行为、风险标签、关联实体进行评分与分析\n📊 风险等级说明：\n"+
-	//	"🟢低风险(0–30):无异常交易，未关联已知风险实体\n"+
-	//	"🟡中风险(31–70):存在少量高风险交互，对手方不明\n"+
-	//	"🟠高风险(71–90):频繁异常转账，或与恶意地址有关\n"+
-	//	"🔴极高风险(91–100):涉及诈骗、制裁、黑客、洗钱等高风险行为\n\n"+
-	//	"📌 每位用户每天可免费检测 1 次\n"+
-	//	"📌 超出后每次扣除 "+address_detection_cost+"TRX 或 "+address_detection_cost_usdt+"USDT（系统将优先扣除 TRX）\n"+
-	//	"💰当前余额：\n"+
-	//	"- TRX："+user.TronAmount+"\n"+"- USDT："+user.Amount+"\n"+
-	//	//"\n🔋 快速充值：\n➡️ 充值TRX\n➡️ 充值USDT\n\n请输入要检测的地址 👇")
-	//	"请输入要检测的地址 👇")
 	msg.ParseMode = "HTML"
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -428,7 +355,6 @@ func MenuNavigateEnergyExchange(lang string, db *gorm.DB, message *tgbotapi.Mess
 	msg := tgbotapi.NewMessage(message.Chat.ID, buildEnergySwapText(lang, db))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
-	//msg.DisableWebPagePreview = true
 	bot.Send(msg)
 }
 func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
@@ -450,29 +376,6 @@ func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbo
 		buildBundleSwitchButtons(lang, token, "click_switch_usdt", "click_switch_trx"),
 		buildBundleExtraButtons(lang, "address_list", "click_bundle_package_address_stats", "click_bundle_package_cost_records"),
 	)
-	//
-	//msg := tgbotapi.NewMessage(chatID,
-	//	"欢迎使用 U盾能量笔数套餐\n"+
-	//		"一次购买/多地址使用/一键发能/快捷高效\n"+
-	//		"⚙️ 功能介绍\n"+
-	//		"📍 地址列表\n"+
-	//		"    最多可同时管理 4 个接收地址。\n"+
-	//		"⚡️ 发能管理\n"+
-	//		"自动发能开启后系统会自动检测地址能量余量，不足时自动补充（每次消耗 1 笔），默认关闭，可在“地址列表”中开启/关闭。\n "+
-	//		"一键发能：可向地址列表中任意地址或自定义地址快速发放 1 笔能量\n"+
-	//		"⏳ 能量有效期 1 小时，过期将自动回收并扣除笔数。\n"+
-	//		"🆔"+global.Translations[lang]["user_id"]+": "+user.Associates+"\n"+
-	//		"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
-	//		"💰"+global.Translations[lang]["balance"]+": "+"- TRX：   "+user.TronAmount+"   - USDT："+user.Amount)
-	//
-
-	//msg := tgbotapi.NewMessage(chatID,
-	//	"欢迎使用 U盾能量笔数套餐\n"+
-	//		"一次购买/多地址使用/一键发能\n"+
-	//		"⚙️ 功能介绍\n"+
-	//		"➕添加地址：可添加4个常用地址\n"+
-	//		"📍地址列表：可向4个常用地址或向其他地址快速发能\n"+
-	//		"⏳ 能量有效期 1 小时，过期将自动回收")
 
 	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard
@@ -483,19 +386,12 @@ func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbo
 
 func MenuNavigateHome(lang string, cache cache.Cache, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
-		//
-		//),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("💳"+global.Translations[lang]["deposit"], "deposit_amount"),
-			//tgbotapi.NewInlineKeyboardButtonData("🔗第二通知人", "click_backup_account"),
 			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], "click_my_recepit"),
 			tgbotapi.NewInlineKeyboardButtonData("🛎️"+global.Translations[lang]["support"], "click_callcenter"),
-			//tgbotapi.NewInlineKeyboardButtonData("🛠️我的服务", "click_my_service"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//	//tgbotapi.NewInlineKeyboardButtonData("🔗绑定备用帐号", "click_backup_account"),
 			tgbotapi.NewInlineKeyboardButtonData("👥"+global.Translations[lang]["business"], "click_business_cooperation"),
 			tgbotapi.NewInlineKeyboardButtonData("💬"+global.Translations[lang]["channel"], "click_offical_channel"),
 
@@ -504,7 +400,6 @@ func MenuNavigateHome(lang string, cache cache.Cache, db *gorm.DB, message *tgbo
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("🌍"+global.Translations[lang]["language"], "click_language"),
 		),
-		//tgbotapi.NewInlineKeyboardRow(),
 	)
 
 	user := loadMenuUser(db, message.Chat.ID)
@@ -517,10 +412,6 @@ func MenuNavigateHome(lang string, cache cache.Cache, db *gorm.DB, message *tgbo
 }
 func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
-		//
-		//),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("中文", "set_lang_"+"zh"),
 			tgbotapi.NewInlineKeyboardButtonData("English", "set_lang_"+"en"),
@@ -547,7 +438,6 @@ func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.Bot
 }
 
 func ShowSmartTransactionBundlePackageMenu(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
-	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
 	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)

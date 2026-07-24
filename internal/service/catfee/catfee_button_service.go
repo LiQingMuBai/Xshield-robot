@@ -22,10 +22,6 @@ import (
 // 已用笔数：16 笔
 // 剩余笔数：4 笔
 
-// 🔋托管地址【2】
-// ➖➖➖➖➖➖➖➖➖➖
-// TSwA...ZGCCTV  已用 - 6
-// TXLE...3n2222  已用 - 8
 func ShowSmartTransactionAddressStats(lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 	addresses, _ := userSmartTransactionAddressesRepo.ListByChatID(context.Background(), strconv.FormatInt(chatID, 10))
@@ -68,17 +64,6 @@ func ShowSmartTransactionAddressStats(lang string, cache cache.Cache, db *gorm.D
 
 	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{total_times}", strconv.FormatInt(totalTimes, 10)), "{used_times}", strconv.FormatInt(usedTimes, 10)), "{rest_times}", strconv.FormatInt(restTimes, 10))
 
-	//🔋托管地址【2】
-	//➖➖➖➖➖➖➖➖➖➖
-	//TSwA...ZGCCTV  已用 - 6
-	//TXLE...3n2222  已用 - 8
-	//
-	//🔹【转有U地址】 消耗  65K能量  扣1笔
-	//🔹【转无U地址】 消耗131K能量  扣2笔
-
-	//➖➖➖➖➖➖➖➖➖➖
-	//TSwA...ZGCCTV  已用 - 6
-	//TXLE...3n2222  已用 - 8
 	custodyOriginStr := global.Translations[lang]["catfee_custody_address_count"]
 	custodyTargetStr := strings.ReplaceAll(custodyOriginStr, "{custody_address_count}", strconv.Itoa(len(addresses)))
 
@@ -89,15 +74,7 @@ func ShowSmartTransactionAddressStats(lang string, cache cache.Cache, db *gorm.D
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
-	//expiration := 1 * time.Minute // 短时间缓存空值
-	//设置用户状态
-	//cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), "apply_ST_bundle_package_"+bundleID, expiration)
 
-	//// 发送初始的可勾选按钮
-	//keyboard := buildCheckboxKeyboard(nil)
-	//msg := tgbotapi.NewMessage(chatID, "请选择选项：")
-	//msg.ReplyMarkup = &keyboard
-	//bot.Send(msg)
 }
 
 // 构建带有勾选状态的键盘
@@ -238,17 +215,6 @@ func ToggleCustodyAddressOption(lang string, db *gorm.DB, chatID int64, messageI
 
 	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{total_times}", strconv.FormatInt(totalTimes, 10)), "{used_times}", strconv.FormatInt(usedTimes, 10)), "{rest_times}", strconv.FormatInt(restTimes, 10))
 
-	//🔋托管地址【2】
-	//➖➖➖➖➖➖➖➖➖➖
-	//TSwA...ZGCCTV  已用 - 6
-	//TXLE...3n2222  已用 - 8
-	//
-	//🔹【转有U地址】 消耗  65K能量  扣1笔
-	//🔹【转无U地址】 消耗131K能量  扣2笔
-
-	//➖➖➖➖➖➖➖➖➖➖
-	//TSwA...ZGCCTV  已用 - 6
-	//TXLE...3n2222  已用 - 8
 	custodyOriginStr := global.Translations[lang]["catfee_custody_address_count"]
 	custodyTargetStr := strings.ReplaceAll(custodyOriginStr, "{custody_address_count}", strconv.Itoa(len(addresses)))
 
@@ -258,8 +224,6 @@ func ToggleCustodyAddressOption(lang string, db *gorm.DB, chatID int64, messageI
 
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
-	//bot.Send(msg)
-	// 编辑消息，更新按钮
 	editMsg := tgbotapi.NewEditMessageReplyMarkup(chatID, messageID, inlineKeyboard)
 	bot.Send(editMsg)
 

@@ -36,7 +36,6 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 			))
 		msg.ReplyMarkup = inlineKeyboard
 		msg.ParseMode = "HTML"
-		//msg.DisableWebPagePreview = true
 		bot.Send(msg)
 		return
 
@@ -52,7 +51,6 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 			))
 		msg.ReplyMarkup = inlineKeyboard
 		msg.ParseMode = "HTML"
-		//msg.DisableWebPagePreview = true
 		bot.Send(msg)
 
 		return
@@ -76,10 +74,7 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 	usdtDeposit.Status = 0
 	usdtDeposit.Placeholder = placeholder.Placeholder
 
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
-	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
 	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
@@ -90,14 +85,6 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 	if createErr != nil {
 		logger.Errorf("Error creating usdtDeposit: %v", createErr)
 	}
-
-	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-	//	global.Translations[lang]["order_id"]+"：TOPUP-"+usdtDeposit.OrderNO+"\n"+
-	//		global.Translations[lang]["payment_amount"]+"："+"<code>"+realTransferAmount+"</code>"+" USDT "+global.Translations[lang]["copy_text_tips"]+"\n"+
-	//		global.Translations[lang]["receive_address"]+"<code>"+usdtDeposit.Address+"</code>"+global.Translations[lang]["copy_text_tips"]+"\n"+
-	//		global.Translations[lang]["tx_time_limit_tips"]+"\n"+
-	//		global.Translations[lang]["deposit_time_label"]+FormatDateTimeValue(usdtDeposit.CreatedAt)+"\n"+
-	//		global.Translations[lang]["amount_suffix_tips"]+"\n")
 
 	videoPath := "./static/Audi.png"
 
@@ -110,17 +97,6 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 		global.Translations[lang]["tx_time_limit_tips"] + "\n" +
 		global.Translations[lang]["deposit_time_label"] + FormatDateTimeValue(usdtDeposit.CreatedAt) + "\n" +
 		global.Translations[lang]["amount_suffix_tips"] + "\n"
-	//msg.ReplyMarkup = inlineKeyboard
-
-	//originStr := global.Translations[lang]["deposit_tips"]
-	//
-	//targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{order_no}", usdtDeposit.OrderNO), "{amount}", realTransferAmount), "{receiveAddress}", usdtDeposit.Address), "{createdAt}", FormatDateTimeValue(usdtDeposit.CreatedAt))
-
-	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, targetStr)
-	//"⚠️注意："+"\n"+
-	//"▫️注意小数点 "+realTransferAmount+" usdt 转错金额不能到账"+"\n"+
-	//"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+
-	//"转账10分钟后没到账及时联系"+"\n")
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
@@ -134,7 +110,6 @@ func DepositPrevUSDTOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 		))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
-	//msg.DisableWebPagePreview = true
 	sent, _ := bot.Send(msg)
 
 	expiration := 1 * time.Minute // 短时间缓存空值
@@ -154,7 +129,6 @@ func DepositCancelOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 	msg_order := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
 		global.Translations[lang]["order_id"]+"：TOPUP-"+orderNO+" , "+global.Translations[lang]["cancel_order_tips"])
 	msg_order.ParseMode = "HTML"
-	//msg.DisableWebPagePreview = true
 	bot.Send(msg_order)
 
 	prevMessageIDStr, _ := cache.Get(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10) + "_order")
@@ -162,7 +136,6 @@ func DepositCancelOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 	prevMessageID, err := strconv.Atoi(prevMessageIDStr)
 	if err != nil {
 		logger.Error("转换失败:", err)
-		//return
 	}
 
 	bot.Request(tgbotapi.DeleteMessageConfig{ChatID: callbackQuery.Message.Chat.ID, MessageID: prevMessageID})
@@ -199,25 +172,17 @@ func DepositCancelOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 	}
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
-		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
-		//
-		//),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("💳"+global.Translations[lang]["deposit"], "deposit_amount"),
-			//tgbotapi.NewInlineKeyboardButtonData("🔗第二通知人", "click_backup_account"),
 			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], "click_my_recepit"),
 			tgbotapi.NewInlineKeyboardButtonData("🛎️"+global.Translations[lang]["support"], "click_callcenter"),
-			//tgbotapi.NewInlineKeyboardButtonData("🛠️我的服务", "click_my_service"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("🔗绑定备用帐号", "click_backup_account"),
 			tgbotapi.NewInlineKeyboardButtonData("👥"+global.Translations[lang]["business"], "click_business_cooperation"),
 			tgbotapi.NewInlineKeyboardButtonData("💬"+global.Translations[lang]["channel"], "click_offical_channel"),
 
 			tgbotapi.NewInlineKeyboardButtonData("❓"+global.Translations[lang]["tutorials"], "click_QA"),
 		),
-		//tgbotapi.NewInlineKeyboardRow(),
 	)
 
 	userRepo := repositories.NewUserRepository(db)
@@ -269,7 +234,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			))
 		msg.ReplyMarkup = inlineKeyboard
 		msg.ParseMode = "HTML"
-		//msg.DisableWebPagePreview = true
 		bot.Send(msg)
 
 		return
@@ -285,7 +249,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 			))
 		msg.ReplyMarkup = inlineKeyboard
 		msg.ParseMode = "HTML"
-		//msg.DisableWebPagePreview = true
 		bot.Send(msg)
 
 		return
@@ -309,7 +272,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 	trxDeposit.Status = 0
 	trxDeposit.Placeholder = placeholder.Placeholder
 
-	//dictRepo := repositories.NewSysDictionariesRepo(db)
 	agent := os.Getenv("BOT_AGENT")
 	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
 	sysUserRepo := repositories.NewSysUsersRepository(db)
@@ -323,16 +285,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 		logger.Errorf("Error creating trxDeposit: %v", createErr)
 	}
 
-	//msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-	//	global.Translations[lang]["order_id"]+"：TOPUP-"+trxDeposit.OrderNO+"\n"+
-	//		"转账金额："+"<code>"+realTransferAmount+"</code>"+" TRX （点击即可复制）"+"\n"+
-	//		"转账地址："+"<code>"+trxDeposit.Address+"</code>"+"（点击即可复制）"+"\n"+
-	//		global.Translations[lang]["deposit_time_label"]+FormatDateTimeValue(trxDeposit.CreatedAt)+"\n"+
-	//		"⚠️注意："+"\n"+
-	//		"▫️注意小数点 "+realTransferAmount+" TRX 转错金额不能到账"+"\n"+
-	//		"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+
-	//		"转账10分钟后没到账及时联系"+"\n")
-
 	videoPath := "./static/Audi.png"
 
 	// 创建视频消息（从本地文件）
@@ -345,10 +297,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 		global.Translations[lang]["deposit_time_label"] + FormatDateTimeValue(trxDeposit.CreatedAt) + "\n" +
 		global.Translations[lang]["amount_suffix_tips"] + "\n"
 
-	//"⚠️注意："+"\n"+
-	//"▫️注意小数点 "+realTransferAmount+" usdt 转错金额不能到账"+"\n"+
-	//"▫️请在10分钟完成付款，转错金额不能到账。"+"\n"+
-	//"转账10分钟后没到账及时联系"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("⏳"+global.Translations[lang]["catfee_smart_transaction_pay_button"]+realTransferAmount+" TRX ", "noop"),
@@ -361,7 +309,6 @@ func DepositPrevOrder(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, call
 		))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
-	//msg.DisableWebPagePreview = true
 	sent, _ := bot.Send(msg)
 	expiration := 1 * time.Minute // 短时间缓存空值
 

@@ -54,8 +54,4 @@ func (r *UserUsdtPlaceholdersRepository) GetRandomAvailable(ctx context.Context)
 		Find(&placeholders, "status = ?", 0).Error
 	return placeholders, err
 
-	//err := r.db.WithContext(ctx).
-	//	Find(&placeholders, "status = ?", 0).Error
-	//return placeholders, err
-
 }

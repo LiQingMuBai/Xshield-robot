@@ -76,7 +76,6 @@ func ShowAddressTraceList(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📊 "+global.Translations[lang]["currently_monitoring_addresses"]+"\n"+
 		result+
-		//"💰 当前余额："+"\n- "+user.TronAmount+" TRX \n - "+user.Amount+" USDT \n"+
 		"💰"+global.Translations[lang]["balance"]+": "+" "+
 		"-TRX： "+user.TronAmount+"    "+
 		"-USDT： "+user.Amount+"\n"+
@@ -85,11 +84,8 @@ func ShowAddressTraceList(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, 
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
 			tgbotapi.NewInlineKeyboardButtonData("🛑"+global.Translations[lang]["stop_monitoring"], "stop_freeze_risk"),
 			tgbotapi.NewInlineKeyboardButtonData("🔗"+global.Translations[lang]["secondary_contact"], "click_backup_account"),
-			//tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
-			//tgbotapi.NewInlineKeyboardButtonData("地址管理", "user_backup_notify"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 
@@ -122,7 +118,6 @@ func ShowAddressManager(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ch
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["add_address"], "address_manager_add"),
-			//tgbotapi.NewInlineKeyboardButtonData("设置钱包", "address_manager"),
 			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[lang]["remove_address"], "address_manager_remove"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
