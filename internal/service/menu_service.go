@@ -68,7 +68,7 @@ func sendFixedFloatMenu(lang string, chatID int64, db *gorm.DB, bot *tgbotapi.Bo
 		),
 	)
 
-	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath("./static/fixedfloat.jpg"))
+	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(StaticFile("fixedfloat.jpg")))
 	msg.Caption = global.Translations[lang]["fixedfloat_rules"] + "\n\n" + global.Translations[lang]["coin_swap_coin_tips"]
 	msg.ReplyMarkup = keyboard
 	msg.ParseMode = "HTML"
@@ -192,7 +192,7 @@ func MenuNavigateTronEnergy(lang string, db *gorm.DB, message *tgbotapi.Message,
 		),
 	)
 
-	videoPath := "./static/Dior.png"
+	videoPath := StaticFile("Dior.png")
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
@@ -213,7 +213,7 @@ func MenuNavigateSwapExchange(lang string, db *gorm.DB, message *tgbotapi.Messag
 		),
 	)
 
-	videoPath := "./static/Prada.png"
+	videoPath := StaticFile("Prada.png")
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))

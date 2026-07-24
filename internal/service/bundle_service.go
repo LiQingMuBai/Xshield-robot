@@ -54,7 +54,7 @@ func CheckBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ca
 
 	if lessBalance {
 
-		videoPath := "./static/Audi.png"
+		videoPath := StaticFile("Audi.png")
 
 		// 创建视频消息（从本地文件）
 		msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))

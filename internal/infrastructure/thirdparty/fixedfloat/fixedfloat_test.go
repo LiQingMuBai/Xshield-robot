@@ -1,7 +1,6 @@
 package fixedfloat
 
 import (
-	"fmt"
 	"testing"
 	"time"
 	logger "ushield_bot/internal/logger"

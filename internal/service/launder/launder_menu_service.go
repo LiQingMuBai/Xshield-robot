@@ -54,7 +54,7 @@ func MenuLaunderNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.B
 	}
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
-	videoPath := "./static/fixedfloat.jpg"
+	videoPath := tools.StaticFile("fixedfloat.jpg")
 
 	// 创建视频消息（从本地文件）
 	videoMsg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))

@@ -1,6 +1,9 @@
 package global
 
-import "sync"
+import (
+	"sync"
+	"ushield_bot/internal/infrastructure/tools"
+)
 
 // BotState 存储每个聊天中的分页状态
 type DepositState struct {
@@ -21,7 +24,7 @@ var (
 var (
 	Translations = make(map[string]map[string]string) // 存储所有翻译
 
-	TranslationsDir = "translations"                                                                   // 翻译文件目录
+	TranslationsDir = tools.TranslationsDir()                                                          // 翻译文件目录
 	SupportedLangs  = []string{"en", "zh", "ar", "es", "pt", "ko", "th", "ja", "vi", "ch", "ru", "fa"} // 支持的语言
 	DefaultLang     = "zh"                                                                             // 默认语言
 	Mutex           = &sync.RWMutex{}                                                                  // 读写锁

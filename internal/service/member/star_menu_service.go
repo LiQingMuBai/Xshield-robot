@@ -51,7 +51,7 @@ func MenuStarNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotA
 		),
 	)
 
-	videoPath := "./static/telegram_stars.mp4"
+	videoPath := tools.StaticFile("telegram_stars.mp4")
 
 	if err := sendVideoWithCache(
 		bot,
@@ -174,7 +174,7 @@ func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI,
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
-	videoPath := "./static/Audi.png"
+	videoPath := tools.StaticFile("Audi.png")
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))

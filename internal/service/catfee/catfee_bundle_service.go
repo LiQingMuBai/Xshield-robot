@@ -249,7 +249,7 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 				logger.Errorf("Error creating trxDeposit: %v", createErr)
 			}
 
-			videoPath := "./static/Audi.png"
+			videoPath := StaticFile("Audi.png")
 
 			// 创建视频消息（从本地文件）
 			msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))
@@ -359,7 +359,7 @@ func CheckSmartTransactionBundlePackage(lang string, cache cache.Cache, bot *tgb
 				logger.Errorf("Error creating usdtDeposit: %v", createErr)
 			}
 
-			videoPath := "./static/Audi.png"
+			videoPath := StaticFile("Audi.png")
 
 			// 创建视频消息（从本地文件）
 			msg := tgbotapi.NewPhoto(callbackQuery.Message.Chat.ID, tgbotapi.FilePath(videoPath))

@@ -1,7 +1,6 @@
 package tools
 
 import (
-	"fmt"
 	"testing"
 	logger "ushield_bot/internal/logger"
 )

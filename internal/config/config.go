@@ -3,6 +3,7 @@ package config
 import (
 	"github.com/joho/godotenv"
 	"os"
+	"ushield_bot/internal/infrastructure/tools"
 )
 
 func Load() (*Config, error) {
@@ -30,7 +31,12 @@ func Load() (*Config, error) {
 			APISecret: os.Getenv("CATFEE_API_SECRET"),
 		},
 		FixedFloat: FixedFloatConfig{
-			RefURL: os.Getenv("FIXEDFLOAT_REF_URL"),
+			RefURL:    os.Getenv("FIXEDFLOAT_REF_URL"),
+			APIKey:    os.Getenv("FIXEDFLOAT_API_KEY"),
+			APISecret: os.Getenv("FIXEDFLOAT_API_SECRET"),
+		},
+		Tron: TronConfig{
+			Mnemonic: os.Getenv("TRON_MNEMONIC"),
 		},
 		Bot: BotConfig{
 			Name:       os.Getenv("BOT_NAME"),
@@ -38,7 +44,7 @@ func Load() (*Config, error) {
 			Agent:      os.Getenv("BOT_AGENT"),
 		},
 		Translation: TranslationConfig{
-			Dir:            "translations",
+			Dir:            tools.TranslationsDir(),
 			SupportedLangs: []string{"en", "zh", "ar", "es", "pt", "ko", "th", "ja", "vi", "ch", "ru", "fa"},
 			DefaultLang:    "zh",
 		},

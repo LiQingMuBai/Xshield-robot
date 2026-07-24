@@ -8,6 +8,7 @@ import (
 	"ushield_bot/internal/cache"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
+	"ushield_bot/internal/infrastructure/tools"
 	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -39,7 +40,7 @@ func MenuNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) 
 		),
 	)
 
-	videoPath := "./static/telegram_premium.mp4"
+	videoPath := tools.StaticFile("telegram_premium.mp4")
 
 	if err := sendVideoWithCache(
 		bot,

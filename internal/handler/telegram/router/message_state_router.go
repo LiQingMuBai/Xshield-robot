@@ -267,7 +267,14 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 
-		api := fixedfloat.New("AZxSXXl6VwqSgJkkC6HovFyxWib0ZPUNVBOO8Fkt", "vOGKrbXgFBepGBEze90EUUHHnsLzjQHC8197WtRC")
+		if len(ctx.FixedFloatAPIKey) == 0 || len(ctx.FixedFloatAPISecret) == 0 {
+			logger.Error("fixedfloat credentials are not configured")
+			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ Service temporarily unavailable")
+			ctx.Bot.Send(msg)
+			return
+		}
+
+		api := fixedfloat.New(ctx.FixedFloatAPIKey, ctx.FixedFloatAPISecret)
 		params := map[string]interface{}{
 			"fromCcy":   "USDTTRC",
 			"type":      fixedfloat.TypeFloat,
@@ -316,6 +323,10 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		desc = strings.ReplaceAll(desc, "{ExpireTime}", expTime.UTC().Format("2006-01-02 15:04:05 UTC"))
 		desc = strings.ReplaceAll(desc, "{token}", token)
 		desc = strings.ReplaceAll(desc, "{amount1}", amount)
+		if to.Amount == nil {
+			logger.Error("fixedfloat response missing to.amount")
+			return
+		}
 		desc = strings.ReplaceAll(desc, "{amount2}", *to.Amount)
 		desc = strings.ReplaceAll(desc, "{from_address}", from.Address)
 		desc = strings.ReplaceAll(desc, "{to_address}", to.Address)
@@ -327,8 +338,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 
-		videoPath := "/root/ushield-telegram-bot/old/" + filename
-		msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
+		msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(filename))
 		msg.Caption = "✅ " + desc
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)

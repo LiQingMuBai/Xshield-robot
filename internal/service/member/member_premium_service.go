@@ -86,7 +86,7 @@ func Rent(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, use
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
-	videoPath := "./static/Audi.png"
+	videoPath := tools.StaticFile("Audi.png")
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))

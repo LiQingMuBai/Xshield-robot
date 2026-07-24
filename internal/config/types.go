@@ -6,6 +6,7 @@ type Config struct {
 	Trxfee      TrxfeeConfig
 	Catfee      CatfeeConfig
 	FixedFloat  FixedFloatConfig
+	Tron        TronConfig
 	Bot         BotConfig
 	Translation TranslationConfig
 }
@@ -33,7 +34,13 @@ type CatfeeConfig struct {
 }
 
 type FixedFloatConfig struct {
-	RefURL string
+	RefURL    string
+	APIKey    string
+	APISecret string
+}
+
+type TronConfig struct {
+	Mnemonic string
 }
 
 type BotConfig struct {

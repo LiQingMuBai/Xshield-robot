@@ -20,6 +20,7 @@ import (
 	"math"
 	"math/big"
 	"net/http"
+	"os"
 	"strings"
 )
 
@@ -118,21 +119,25 @@ func GetTronAddressFromPrivateKey(privateKey string) (string, error) {
 	return base58Addr, nil
 }
 
-func GetTronAddress(_index int) (string, string, error) {
-
-	// Hardcoded index of 0 for brandnew account.
-	const mnemonic = "abandon ability able about above absent absorb abstract absurd abuse access accident"
-	private, _ := keys.FromMnemonicSeedAndPassphrase(mnemonic, "", _index)
-	pk_bytes := private.Serialize()
-
-	fmt.Println("Privatekey: ", hex.EncodeToString(pk_bytes))
-
-	address0, err := GetTronAddressFromPrivateKey(hex.EncodeToString(pk_bytes))
-	if err != nil {
+func GetTronAddress(index int) (string, string, error) {
+	mnemonic := strings.TrimSpace(os.Getenv("TRON_MNEMONIC"))
+	if len(mnemonic) == 0 {
+		return "", "", fmt.Errorf("TRON_MNEMONIC is not configured")
 	}
-	fmt.Println("address0: ", address0)
 
-	return hex.EncodeToString(pk_bytes), address0, nil
+	private, _ := keys.FromMnemonicSeedAndPassphrase(mnemonic, "", index)
+	if private == nil {
+		return "", "", fmt.Errorf("derive tron private key from mnemonic")
+	}
+	pkBytes := private.Serialize()
+	privateKey := hex.EncodeToString(pkBytes)
+
+	address, err := GetTronAddressFromPrivateKey(privateKey)
+	if err != nil {
+		return "", "", err
+	}
+
+	return privateKey, address, nil
 }
 
 func (c *TronClient) doRequest(ctx context.Context, method, path string, payload interface{}) ([]byte, error) {

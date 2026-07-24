@@ -3,146 +3,255 @@ package fixedfloat
 func MapToResponse(m map[string]interface{}) (*Response, error) {
 	resp := &Response{}
 
-	resp.Code = m["code"].(float64)
-	resp.Msg = m["msg"].(string)
+	code, ok := getFloat64(m, "code")
+	if !ok {
+		return nil, errInvalidFixedFloatField("code")
+	}
+	msg, ok := getString(m, "msg")
+	if !ok {
+		return nil, errInvalidFixedFloatField("msg")
+	}
+	dataMap, ok := getMap(m, "data")
+	if !ok {
+		return nil, errInvalidFixedFloatField("data")
+	}
+	data, err := mapToData(dataMap)
+	if err != nil {
+		return nil, err
+	}
 
-	dataMap := m["data"].(map[string]interface{})
-	resp.Data = mapToData(dataMap)
+	resp.Code = code
+	resp.Msg = msg
+	resp.Data = data
 
 	return resp, nil
 }
 
-func mapToData(m map[string]interface{}) Data {
+func mapToData(m map[string]interface{}) (Data, error) {
 	d := Data{}
 
-	d.Back = mapToAddressInfo(m["back"].(map[string]interface{}))
-	d.Email = m["email"] // 可能是 nil
-	d.From = mapToAddressInfo(m["from"].(map[string]interface{}))
-	d.ID = m["id"].(string)
-	d.Status = m["status"].(string)
-	d.Time = mapToTimeInfo(m["time"].(map[string]interface{}))
-	d.To = mapToAddressInfo(m["to"].(map[string]interface{}))
-	d.Token = m["token"].(string)
-	d.Type = m["type"].(string)
+	backMap, ok := getMap(m, "back")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.back")
+	}
+	back, err := mapToAddressInfo(backMap)
+	if err != nil {
+		return Data{}, err
+	}
 
-	return d
+	fromMap, ok := getMap(m, "from")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.from")
+	}
+	from, err := mapToAddressInfo(fromMap)
+	if err != nil {
+		return Data{}, err
+	}
+
+	timeMap, ok := getMap(m, "time")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.time")
+	}
+	timeInfo, err := mapToTimeInfo(timeMap)
+	if err != nil {
+		return Data{}, err
+	}
+
+	toMap, ok := getMap(m, "to")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.to")
+	}
+	to, err := mapToAddressInfo(toMap)
+	if err != nil {
+		return Data{}, err
+	}
+
+	id, ok := getString(m, "id")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.id")
+	}
+	status, ok := getString(m, "status")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.status")
+	}
+	token, ok := getString(m, "token")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.token")
+	}
+	orderType, ok := getString(m, "type")
+	if !ok {
+		return Data{}, errInvalidFixedFloatField("data.type")
+	}
+
+	d.Back = back
+	d.Email = m["email"]
+	d.From = from
+	d.ID = id
+	d.Status = status
+	d.Time = timeInfo
+	d.To = to
+	d.Token = token
+	d.Type = orderType
+
+	return d, nil
 }
 
-func mapToEmergency(m map[string]interface{}) Emergency {
+func mapToEmergency(m map[string]interface{}) (Emergency, error) {
 	e := Emergency{}
-	e.Choice = m["choice"].(string)
-	e.Repeat = m["repeat"].(int)
-	e.Status = m["status"].([]interface{})
-	return e
+
+	choice, ok := getString(m, "choice")
+	if !ok {
+		return Emergency{}, errInvalidFixedFloatField("emergency.choice")
+	}
+	repeat, ok := getInt(m, "repeat")
+	if !ok {
+		return Emergency{}, errInvalidFixedFloatField("emergency.repeat")
+	}
+	status, ok := m["status"].([]interface{})
+	if !ok {
+		return Emergency{}, errInvalidFixedFloatField("emergency.status")
+	}
+
+	e.Choice = choice
+	e.Repeat = repeat
+	e.Status = status
+	return e, nil
 }
 
-func mapToTimeInfo(m map[string]interface{}) TimeInfo {
+func mapToTimeInfo(m map[string]interface{}) (TimeInfo, error) {
 	t := TimeInfo{}
 
-	t.Expiration = m["expiration"].(float64)
-	t.Left = m["left"].(float64)
-	t.Reg = m["reg"].(float64)
-	t.Update = m["update"].(float64)
+	expiration, ok := getFloat64(m, "expiration")
+	if !ok {
+		return TimeInfo{}, errInvalidFixedFloatField("time.expiration")
+	}
+	left, ok := getFloat64(m, "left")
+	if !ok {
+		return TimeInfo{}, errInvalidFixedFloatField("time.left")
+	}
+	reg, ok := getFloat64(m, "reg")
+	if !ok {
+		return TimeInfo{}, errInvalidFixedFloatField("time.reg")
+	}
+	update, ok := getFloat64(m, "update")
+	if !ok {
+		return TimeInfo{}, errInvalidFixedFloatField("time.update")
+	}
 
-	// 处理可空字段
-	if f, ok := m["finish"]; ok && f != nil {
-		val := f.(float64)
+	t.Expiration = expiration
+	t.Left = left
+	t.Reg = reg
+	t.Update = update
+
+	if f, ok := getFloat64(m, "finish"); ok {
+		val := f
 		t.Finish = &val
 	}
-	if s, ok := m["start"]; ok && s != nil {
-		val := s.(float64)
+	if s, ok := getFloat64(m, "start"); ok {
+		val := s
 		t.Start = &val
 	}
 
-	return t
+	return t, nil
 }
 
 func ExtractTime(input map[string]interface{}) (TimeInfo, bool) {
-	// 安全访问 data.time
-	data, ok := input["data"].(map[string]interface{})
+	data, ok := getMap(input, "data")
 	if !ok {
 		return TimeInfo{}, false
 	}
 
-	timeMap, ok := data["time"].(map[string]interface{})
+	timeMap, ok := getMap(data, "time")
 	if !ok {
 		return TimeInfo{}, false
 	}
 
-	var ti TimeInfo
-
-	// 必填字段（根据你的数据，这些都存在）
-	ti.Expiration = timeMap["expiration"].(float64)
-	ti.Left = timeMap["left"].(float64)
-	ti.Reg = timeMap["reg"].(float64)
-	ti.Update = timeMap["update"].(float64)
-
-	// 可空字段：Finish 和 Start
-	if f := timeMap["finish"]; f != nil {
-		val := f.(float64)
-		ti.Finish = &val
-	}
-	if s := timeMap["start"]; s != nil {
-		val := s.(float64)
-		ti.Start = &val
+	ti, err := mapToTimeInfo(timeMap)
+	if err != nil {
+		return TimeInfo{}, false
 	}
 
 	return ti, true
 }
 
 func ExtractFromAndTo(input map[string]interface{}) (from, to AddressInfo, ok bool) {
-	defer func() {
-		if r := recover(); r != nil {
-			ok = false // 防止 panic，可选
-		}
-	}()
-
-	data, exists := input["data"].(map[string]interface{})
+	data, exists := getMap(input, "data")
 	if !exists {
 		return AddressInfo{}, AddressInfo{}, false
 	}
 
-	fromMap, fromExists := data["from"].(map[string]interface{})
-	toMap, toExists := data["to"].(map[string]interface{})
-
+	fromMap, fromExists := getMap(data, "from")
+	toMap, toExists := getMap(data, "to")
 	if !fromExists || !toExists {
 		return AddressInfo{}, AddressInfo{}, false
 	}
 
-	from = mapToAddressInfo(fromMap)
-	to = mapToAddressInfo(toMap)
+	from, err := mapToAddressInfo(fromMap)
+	if err != nil {
+		return AddressInfo{}, AddressInfo{}, false
+	}
+	to, err = mapToAddressInfo(toMap)
+	if err != nil {
+		return AddressInfo{}, AddressInfo{}, false
+	}
+
 	return from, to, true
 }
 
-func mapToAddressInfo(m map[string]interface{}) AddressInfo {
+func mapToAddressInfo(m map[string]interface{}) (AddressInfo, error) {
 	a := AddressInfo{}
 
-	// 必填或已知存在的字段（根据你的数据）
-	a.Address = m["address"].(string)
-	a.Alias = m["alias"].(string)
-	a.Code = m["code"].(string)
-	a.Coin = m["coin"].(string)
-	a.Name = m["name"].(string)
-	a.Network = m["network"].(string)
-	a.Tag = m["tag"].(string)
-
-	// 可选字段（可能为 nil）
-	if v := m["addressAlt"]; v != nil {
-		a.AddressAlt = v
+	address, ok := getString(m, "address")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.address")
 	}
-	if amt, ok := m["amount"].(string); ok {
+	alias, ok := getString(m, "alias")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.alias")
+	}
+	code, ok := getString(m, "code")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.code")
+	}
+	coin, ok := getString(m, "coin")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.coin")
+	}
+	name, ok := getString(m, "name")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.name")
+	}
+	network, ok := getString(m, "network")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.network")
+	}
+	tag, ok := getString(m, "tag")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.tag")
+	}
+	txMap, ok := getMap(m, "tx")
+	if !ok {
+		return AddressInfo{}, errInvalidFixedFloatField("address.tx")
+	}
+
+	a.Address = address
+	a.Alias = alias
+	a.Code = code
+	a.Coin = coin
+	a.Name = name
+	a.Network = network
+	a.Tag = tag
+	a.AddressAlt = m["addressAlt"]
+	if amt, ok := getString(m, "amount"); ok {
 		a.Amount = &amt
 	}
-	if mc, ok := m["maxConfirmations"].(int); ok {
+	if mc, ok := getInt(m, "maxConfirmations"); ok {
 		a.MaxConfirmations = mc
 	}
-	if rc, ok := m["reqConfirmations"].(int); ok {
+	if rc, ok := getInt(m, "reqConfirmations"); ok {
 		a.ReqConfirmations = rc
 	}
-	a.TagName = m["tagName"] // 可能是 nil
-
-	// Tx 字段（全 nil，但结构要对）
-	txMap := m["tx"].(map[string]interface{})
+	a.TagName = m["tagName"]
 	a.Tx = TxInfo{
 		Amount:        txMap["amount"],
 		CcyFee:        txMap["ccyfee"],
@@ -153,22 +262,76 @@ func mapToAddressInfo(m map[string]interface{}) AddressInfo {
 		TimeReg:       txMap["timeReg"],
 	}
 
-	return a
+	return a, nil
 }
+
 func ExtractIDAndStatus(input map[string]interface{}) (id string, status string, ok bool) {
-	// 安全访问 data 字段
-	data, exists := input["data"].(map[string]interface{})
+	data, exists := getMap(input, "data")
 	if !exists {
 		return "", "", false
 	}
 
-	// 提取 id 和 status
-	idVal, idExists := data["id"].(string)
-	statusVal, statusExists := data["status"].(string)
+	idVal, idExists := getString(data, "id")
+	statusVal, statusExists := getString(data, "status")
 
 	if !idExists || !statusExists {
 		return "", "", false
 	}
 
 	return idVal, statusVal, true
+}
+
+func getMap(input map[string]interface{}, key string) (map[string]interface{}, bool) {
+	value, ok := input[key]
+	if !ok || value == nil {
+		return nil, false
+	}
+	result, ok := value.(map[string]interface{})
+	return result, ok
+}
+
+func getString(input map[string]interface{}, key string) (string, bool) {
+	value, ok := input[key]
+	if !ok || value == nil {
+		return "", false
+	}
+	result, ok := value.(string)
+	return result, ok
+}
+
+func getFloat64(input map[string]interface{}, key string) (float64, bool) {
+	value, ok := input[key]
+	if !ok || value == nil {
+		return 0, false
+	}
+	result, ok := value.(float64)
+	return result, ok
+}
+
+func getInt(input map[string]interface{}, key string) (int, bool) {
+	value, ok := input[key]
+	if !ok || value == nil {
+		return 0, false
+	}
+
+	switch v := value.(type) {
+	case int:
+		return v, true
+	case float64:
+		return int(v), true
+	default:
+		return 0, false
+	}
+}
+
+func errInvalidFixedFloatField(field string) error {
+	return &FieldError{Field: field}
+}
+
+type FieldError struct {
+	Field string
+}
+
+func (e *FieldError) Error() string {
+	return "invalid fixedfloat field: " + e.Field
 }

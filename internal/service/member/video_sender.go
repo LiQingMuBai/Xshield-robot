@@ -3,15 +3,15 @@ package member
 import (
 	"encoding/json"
 	"os"
-	"path/filepath"
 	"sync"
+	"ushield_bot/internal/infrastructure/tools"
 	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
 var videoFileIDCache sync.Map
-var videoCacheFilePath = filepath.Join(".", "video_file_ids.json")
+var videoCacheFilePath = tools.VideoCacheFilePath()
 
 func init() {
 	loadVideoFileIDCacheFromDisk()
