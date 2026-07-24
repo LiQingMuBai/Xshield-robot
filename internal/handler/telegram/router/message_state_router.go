@@ -21,7 +21,7 @@ import (
 func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, status string) {
 	switch {
 	case strings.HasPrefix(status, "user_backup_notify"):
-		if service.ExtractBackup(message, ctx.Bot, ctx.DB) {
+		if service.HandleBackupContactInput(message, ctx.Bot, ctx.DB) {
 			return
 		}
 	case strings.HasPrefix(status, "start_freeze_risk"):
@@ -34,7 +34,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		if previewErr != nil {
-			logger.Printf("freeze alert preview err: %v", previewErr)
+			logger.Errorf("freeze alert preview err: %v", previewErr)
 			return
 		}
 
@@ -90,8 +90,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		service.AddManagedAddress(lang, message, ctx.DB, ctx.Bot)
 		service.ShowAddressManager(lang, ctx.Cache, ctx.Bot, message.Chat.ID, ctx.DB)
 	case strings.HasPrefix(status, "bundle_"):
-		logger.Printf(">>>>>>>>>>>>>>>>>>>>bundle: %s", status)
-		if service.ExtractBundleService(lang, message, ctx.Bot, ctx.DB, status) {
+		if service.HandleBundleSubscriptionInput(lang, message, ctx.Bot, ctx.DB, status) {
 			return
 		}
 	case strings.HasPrefix(status, "address_trace_add"):
@@ -195,11 +194,10 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		}
 	case strings.HasPrefix(status, "apply_ST_bundle_package_"):
 		trxfeeClient := trxfee.NewTrxfeeClient(ctx.TrxfeeURL, ctx.TrxfeeAPIKey, ctx.TrxfeeSecret)
-		if service.APPLY_ST_BUNDLE_PACKAGE(trxfeeClient, lang, ctx.Cache, ctx.Bot, message, ctx.DB, status) {
+		if service.ApplySmartTransactionBundlePackage(trxfeeClient, lang, ctx.Cache, ctx.Bot, message, ctx.DB, status) {
 			return
 		}
 	case strings.HasPrefix(status, "click_backup_account"):
-		logger.Printf("进入click_backup_account状态：%s\n", message.Text)
 		if strings.Contains(message.Text, "@") {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ "+global.Translations[lang]["backup_account_tips"])
 			msg.ParseMode = "HTML"
@@ -207,11 +205,9 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		userName := strings.ReplaceAll(message.Text, "@", "")
-		logger.Printf("备份用户：%s\n", userName)
 		userRepo := repositories.NewUserRepository(ctx.DB)
 		user, err := userRepo.GetByUsername(userName)
 		if err != nil || user.Id == 0 {
-			logger.Printf("访问失败 %v\n", err)
 			msg := tgbotapi.NewMessage(message.Chat.ID, "❌"+global.Translations[lang]["backup_account_tips2"])
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
@@ -228,7 +224,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		service.MenuNavigateHome(lang, ctx.Cache, ctx.DB, message, ctx.Bot)
 
 	case strings.HasPrefix(status, "usdt_risk_query"):
-		service.ExtractSlowMistRiskQuery(lang, ctx.Cache, message, ctx.DB, ctx.RandomCookie, ctx.Bot)
+		service.HandleAddressDetectionInput(lang, ctx.Cache, message, ctx.DB, ctx.RandomCookie, ctx.Bot)
 
 	case strings.HasPrefix(status, "catfee_add_address"):
 		trxfeeClient := trxfee.NewTrxfeeClient(ctx.TrxfeeURL, ctx.TrxfeeAPIKey, ctx.TrxfeeSecret)
@@ -243,7 +239,6 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		month := strings.ReplaceAll(status, "premium_user_rent_month", "")
-		logger.Printf("message text: %s\n", message.Text)
 		member.Rent(lang, ctx.Cache, ctx.DB, ctx.Bot, username, message.Chat.ID, month)
 
 	case strings.HasPrefix(status, "purchase_telegram_stars"):
@@ -252,16 +247,12 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		count := strings.ReplaceAll(status, "purchase_telegram_stars", "")
-		logger.Printf("message text: %s\n", message.Text)
 		member.Purchase(lang, ctx.Cache, ctx.DB, ctx.Bot, message.Text, message.Chat.ID, count)
 
 	case strings.HasPrefix(status, "click_laundering_"):
 		content := strings.ReplaceAll(status, "click_laundering_", "")
-		logger.Printf("内容: %s\n", content)
-		logger.Printf("输入内容: %s\n", message.Text)
 		token := strings.Split(content, "_")[0]
 		amount := strings.Split(content, "_")[1]
-		logger.Printf("状态 代币: %s - 金额: %s\n", token, amount)
 
 		if strings.ToUpper(token) != "BTC" && !IsValidEthereumAddress(message.Text) {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
@@ -295,13 +286,13 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 
 		from, to, ok := fixedfloat.ExtractFromAndTo(rawMap)
 		if !ok {
-			logger.Println("Failed to extract from/to")
+			logger.Error("Failed to extract from/to")
 			return
 		}
 
 		timeInfo, ok := fixedfloat.ExtractTime(rawMap)
 		if !ok {
-			logger.Println("Failed to extract time")
+			logger.Error("Failed to extract time")
 			return
 		}
 
@@ -309,7 +300,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		expTime := time.Unix(int64(timeInfo.Expiration), 0)
 		id, _, ok := fixedfloat.ExtractIDAndStatus(rawMap)
 		if !ok {
-			logger.Println("Failed to extract id or status")
+			logger.Error("Failed to extract id or status")
 			return
 		}
 

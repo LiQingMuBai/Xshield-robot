@@ -33,7 +33,7 @@ func sendVideoWithCache(
 		if _, err := bot.Send(cfg); err == nil {
 			return nil
 		} else {
-			logger.Printf("send cached video failed, fallback upload: %v", err)
+			logger.Errorf("send cached video failed, fallback upload: %v", err)
 		}
 	}
 
@@ -73,7 +73,7 @@ func loadVideoFileIDCacheFromDisk() {
 
 	cache := make(map[string]string)
 	if err := json.Unmarshal(raw, &cache); err != nil {
-		logger.Printf("load video file id cache failed: %v", err)
+		logger.Errorf("load video file id cache failed: %v", err)
 		return
 	}
 
@@ -102,11 +102,11 @@ func persistVideoFileIDCache() {
 
 	raw, err := json.MarshalIndent(cache, "", "  ")
 	if err != nil {
-		logger.Printf("marshal video file id cache failed: %v", err)
+		logger.Errorf("marshal video file id cache failed: %v", err)
 		return
 	}
 
 	if err := os.WriteFile(videoCacheFilePath, raw, 0o644); err != nil {
-		logger.Printf("persist video file id cache failed: %v", err)
+		logger.Errorf("persist video file id cache failed: %v", err)
 	}
 }

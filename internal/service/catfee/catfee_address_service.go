@@ -18,8 +18,8 @@ import (
 	"gorm.io/gorm"
 )
 
-func PromptCustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["catfee_custody_address_tips"]+"\n")
+func PromptCustodyAddressAdd(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["catfee_custody_address_tips"]+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 	expiration := 1 * time.Minute // 短时间缓存空值
@@ -27,11 +27,11 @@ func PromptCustodyAddressAdd(_lang string, cache cache.Cache, db *gorm.DB, bot *
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), callbackQuery.Data, expiration)
 }
 
-func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, trxfeeClient *thirdparty.TrxfeeClient) {
-	_address := message.Text
-	_chatID := message.Chat.ID
-	if !tools.IsValidAddress(_address) {
-		msg := tgbotapi.NewMessage(_chatID, "❌"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
+func AddCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, trxfeeClient *thirdparty.TrxfeeClient) {
+	address := message.Text
+	chatID := message.Chat.ID
+	if !tools.IsValidAddress(address) {
+		msg := tgbotapi.NewMessage(chatID, "❌"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return
@@ -41,14 +41,14 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 	//要查下是否已经有绑定的地址
 
-	total, _ := userSmartTransactionAddressesRepo.CountByChatID(context.Background(), _chatID)
+	total, _ := userSmartTransactionAddressesRepo.CountByChatID(context.Background(), chatID)
 
 	if total >= 8 {
-		msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["catfee_energy_address_limit_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(chatID, "<b>"+global.Translations[lang]["catfee_energy_address_limit_tips"]+"</b>"+"\n")
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -57,14 +57,14 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 		return
 	}
-	record, _ := userSmartTransactionAddressesRepo.GetActiveByAddress(context.Background(), _address)
+	record, _ := userSmartTransactionAddressesRepo.GetActiveByAddress(context.Background(), address)
 
 	if record.ID > 0 {
-		msg := tgbotapi.NewMessage(_chatID, "❌"+"<b>"+global.Translations[_lang]["catfee_add_address_already_exit_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(chatID, "❌"+"<b>"+global.Translations[lang]["catfee_add_address_already_exit_tips"]+"</b>"+"\n")
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -77,18 +77,18 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 
 	userAddress.Status = "0"
 	userAddress.CreatedAt = time.Now()
-	userAddress.ChatID = strconv.FormatInt(_chatID, 10)
+	userAddress.ChatID = strconv.FormatInt(chatID, 10)
 	userAddress.QuotaMode = "UNLIMITED"
-	userAddress.Address = _address
+	userAddress.Address = address
 	userSmartTransactionAddressesRepo.Create(context.Background(), &userAddress)
 
 	//添加成功
-	msg := tgbotapi.NewMessage(_chatID, "✅"+"<b>"+global.Translations[_lang]["address_added_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(chatID, "✅"+"<b>"+global.Translations[lang]["address_added_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -96,13 +96,13 @@ func AddCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbota
 	bot.Send(msg)
 
 	//添加激活地址
-	if err := trxfeeClient.Activation(_address); err != nil {
-		logger.Printf("activate custody address failed: %v", err)
+	if err := trxfeeClient.Activation(address); err != nil {
+		logger.Errorf("activate custody address failed: %v", err)
 	}
 }
 
-func PromptCustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["energy_address_remove_tips"]+"\n")
+func PromptCustodyAddressRemove(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery) {
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["energy_address_remove_tips"]+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 	expiration := 1 * time.Minute // 短时间缓存空值
@@ -110,13 +110,13 @@ func PromptCustodyAddressRemove(_lang string, cache cache.Cache, db *gorm.DB, bo
 	cache.Set(strconv.FormatInt(callbackQuery.Message.Chat.ID, 10), callbackQuery.Data, expiration)
 }
 
-func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, catfee *thirdparty.CatfeeService) {
+func RemoveCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, message *tgbotapi.Message, catfee *thirdparty.CatfeeService) {
 
-	_address := message.Text
-	_chatID := message.Chat.ID
-	logger.Printf("删除用户id %d，地址 %s\v", _chatID, _address)
-	if !tools.IsValidAddress(_address) {
-		msg := tgbotapi.NewMessage(_chatID, "💬"+"<b>"+global.Translations[_lang]["address_wrong_tips"]+"</b>"+"\n")
+	address := message.Text
+	chatID := message.Chat.ID
+	logger.Printf("删除用户id %d，地址 %s\v", chatID, address)
+	if !tools.IsValidAddress(address) {
+		msg := tgbotapi.NewMessage(chatID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return
@@ -124,24 +124,24 @@ func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.MarkDeletedByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.MarkDeletedByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), address)
 
 	if err != nil {
-		logger.Printf("删除地址失败%v\n", err)
+		logger.Errorf("删除地址失败%v", err)
 	}
 
-	code, err := catfee.MateOpenBasicDelete(_address)
+	code, err := catfee.MateOpenBasicDelete(address)
 
 	if err != nil {
-		logger.Printf("catfee.MateOpenBasicDelete: %v\n", err)
+		logger.Errorf("catfee.MateOpenBasicDelete: %v", err)
 	}
 	logger.Printf("catfee删除状态 %d\n", code)
 
-	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(chatID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -151,30 +151,30 @@ func RemoveCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 }
 
-func DisableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
+func DisableCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
 
-	_address := callbackQuery.Message.Text
-	_chatID := callbackQuery.Message.Chat.ID
-	logger.Printf("暂停用户id %d，地址 %s\v", _chatID, _address)
+	address := callbackQuery.Message.Text
+	chatID := callbackQuery.Message.Chat.ID
+	logger.Printf("暂停用户id %d，地址 %s\v", chatID, address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.DisableByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.DisableByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), address)
 
 	if err != nil {
-		logger.Printf("暂停地址失败%v\n", err)
+		logger.Errorf("暂停地址失败%v", err)
 	}
-	code, err := catfee.MateOpenBasicDisable(_address)
+	code, err := catfee.MateOpenBasicDisable(address)
 
 	if err != nil {
 
 	}
-	logger.Printf("catfee暂停地址失败 %d\n", code)
+	logger.Errorf("catfee暂停地址失败 %d", code)
 
-	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(chatID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -184,30 +184,30 @@ func DisableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tg
 
 }
 
-func EnableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
+func EnableCustodyAddress(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, callbackQuery *tgbotapi.CallbackQuery, catfee *thirdparty.CatfeeService) {
 
-	_address := callbackQuery.Message.Text
-	_chatID := callbackQuery.Message.Chat.ID
-	logger.Printf("启用用户id %d，地址 %s\v", _chatID, _address)
+	address := callbackQuery.Message.Text
+	chatID := callbackQuery.Message.Chat.ID
+	logger.Printf("启用用户id %d，地址 %s\v", chatID, address)
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 
-	err := userSmartTransactionAddressesRepo.EnableByChatIDAndAddress(context.Background(), strconv.FormatInt(_chatID, 10), _address)
+	err := userSmartTransactionAddressesRepo.EnableByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), address)
 
 	if err != nil {
-		logger.Printf("启用地址失败%v\n", err)
+		logger.Errorf("启用地址失败%v", err)
 	}
-	code, err := catfee.MateOpenBasicDisable(_address)
+	code, err := catfee.MateOpenBasicDisable(address)
 
 	if err != nil {
 
 	}
-	logger.Printf("catfee启用地址失败 %d\n", code)
+	logger.Errorf("catfee启用地址失败 %d", code)
 
-	msg := tgbotapi.NewMessage(_chatID, "✅ "+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(chatID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -217,7 +217,7 @@ func EnableCustodyAddress(_lang string, cache cache.Cache, db *gorm.DB, bot *tgb
 
 }
 
-func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func CatfeeAddressPrevePage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -242,7 +242,7 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
@@ -250,17 +250,17 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_bundle_package_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+				tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -280,7 +280,7 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
@@ -288,17 +288,17 @@ func CatfeeAddressPrevePage(_lang string, callbackQuery *tgbotapi.CallbackQuery,
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_bundle_package_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard

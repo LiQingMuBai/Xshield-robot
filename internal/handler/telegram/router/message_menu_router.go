@@ -38,7 +38,7 @@ func handleMenuMessage(message *tgbotapi.Message, ctx Context, lang string) bool
 		additional.MenuNavigate(lang, ctx.DB, message.Chat.ID, ctx.Bot)
 		return true
 	case "🔃" + global.Translations[lang]["coin_swap_coin_menu"]:
-		service.MenuNavigateCoin2CoinSwap(lang, ctx.DB, message, ctx.Bot, ctx.FixedfloatURL)
+		service.ShowCoinToCoinSwapMenu(lang, ctx.DB, message, ctx.Bot)
 		return true
 	case "🧧" + global.Translations[lang]["yhb_menu"]:
 		yhb.MenuNavigateTronEnergy(lang, ctx.DB, message, ctx.Bot)

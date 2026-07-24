@@ -46,7 +46,7 @@ func NewAddressDetectionService(db *gorm.DB, mistCookie string) *AddressDetectio
 	}
 }
 
-func ExtractSlowMistRiskQuery(lang string, cacheStore cache.Cache, message *tgbotapi.Message, db *gorm.DB, mistCookie string, bot *tgbotapi.BotAPI) {
+func HandleAddressDetectionInput(lang string, cacheStore cache.Cache, message *tgbotapi.Message, db *gorm.DB, mistCookie string, bot *tgbotapi.BotAPI) {
 	detectionService := NewAddressDetectionService(db, mistCookie)
 	result, err := detectionService.Detect(context.Background(), lang, cacheStore, message.Chat.ID, strings.TrimSpace(message.Text))
 	if err == ErrAddressDetectionInvalidAddress {
@@ -56,7 +56,7 @@ func ExtractSlowMistRiskQuery(lang string, cacheStore cache.Cache, message *tgbo
 		return
 	}
 	if err != nil {
-		logger.Printf("address detection err: %v", err)
+		logger.Errorf("address detection err: %v", err)
 		return
 	}
 
@@ -103,7 +103,7 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 	result.Text = text
 
 	if err := userRepo.UpdateDetectionTimesByChatID(1, chatID); err != nil {
-		logger.Printf("update address detection times err: %v", err)
+		logger.Errorf("update address detection times err: %v", err)
 	}
 
 	if user.Times >= 0 && !temporaryFailure {

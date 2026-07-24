@@ -4,7 +4,6 @@ import (
 	"strconv"
 	"strings"
 	"ushield_bot/internal/global"
-	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
@@ -18,7 +17,6 @@ func HandleMessageUpdate(message *tgbotapi.Message, ctx Context) {
 	}
 
 	status, _ := ctx.Cache.Get(strconv.FormatInt(message.Chat.ID, 10))
-	logger.Printf("用户状态status %s", status)
 	handleStateMessage(message, ctx, lang, status)
 }
 

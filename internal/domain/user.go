@@ -39,16 +39,16 @@ func (User) TableName() string {
 //eth_address VARCHAR(50),
 //eth_amount VARCHAR(255),
 
-func NewUser(username, _amount, _Associates, _TronAmount, _TronAddress, _EthAddress, _EthAmount, _Address string) *User {
+func NewUser(username, amount, associates, tronAmount, tronAddress, ethAddress, ethAmount, address string) *User {
 	return &User{
 		//UserID:      _userId,
 		Username:    username,
-		Amount:      _amount,
-		Associates:  _Associates,
-		TronAmount:  _TronAmount,
-		TronAddress: _TronAddress,
-		EthAddress:  _EthAddress,
-		EthAmount:   _EthAmount,
-		Address:     _Address,
+		Amount:      amount,
+		Associates:  associates,
+		TronAmount:  tronAmount,
+		TronAddress: tronAddress,
+		EthAddress:  ethAddress,
+		EthAmount:   ethAmount,
+		Address:     address,
 	}
 }

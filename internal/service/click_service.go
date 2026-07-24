@@ -13,7 +13,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func ShowUSDTDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -54,63 +54,63 @@ func ShowUSDTDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	//
 	//// 去除最后一个空格
 	result = strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deposit_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_deposit_usdt_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_deposit_usdt_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_deposit_usdt_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_usdt_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
 
-func ShowBusinessCooperation(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["promotion_link"]+"："+"https://t.me/ushield_bot?start="+strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"\n\n")
+func ShowBusinessCooperation(lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["promotion_link"]+"："+"https://t.me/ushield_bot?start="+strconv.FormatInt(callbackQuery.Message.Chat.ID, 10)+"\n\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
 
-func ShowOfficialChannel(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["join_vip_cooperation"]+"https://t.me/ushield1\n")
+func ShowOfficialChannel(lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["join_vip_cooperation"]+"https://t.me/ushield1\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
 
-func ShowCallCenter(_lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📞"+global.Translations[_lang]["support"]+"：@Ushield001\n")
+func ShowCallCenter(lang string, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📞"+global.Translations[lang]["support"]+"：@Ushield001\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
 
-func ShowTRXDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowTRXDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -147,23 +147,23 @@ func ShowTRXDepositRecords(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deposit_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_deposit_trx_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_deposit_trx_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_deposit_trx_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_trx_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 }
-func ShowReceiptSummary(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowReceiptSummary(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	userRepo := repositories.NewUserRepository(db)
 	user, _ := userRepo.GetByChatID(callbackQuery.Message.Chat.ID)
 	if IsEmpty(user.Amount) {
@@ -174,18 +174,18 @@ func ShowReceiptSummary(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Callb
 		user.TronAmount = "0"
 	}
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["billing"]+"\n\n📌 "+
-		global.Translations[_lang]["balance"]+"：\n\n- TRX："+user.TronAmount+"\n- USDT："+user.Amount+"\n")
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["billing"]+"\n\n📌 "+
+		global.Translations[lang]["balance"]+"：\n\n- TRX："+user.TronAmount+"\n- USDT："+user.Amount+"\n")
 
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("⬇️"+global.Translations[_lang]["trx_deposit_records"], "click_deposit_trx_records"),
-			tgbotapi.NewInlineKeyboardButtonData("⬇️"+global.Translations[_lang]["usdt_deposit_records"], "click_deposit_usdt_records"),
+			tgbotapi.NewInlineKeyboardButtonData("⬇️"+global.Translations[lang]["trx_deposit_records"], "click_deposit_trx_records"),
+			tgbotapi.NewInlineKeyboardButtonData("⬇️"+global.Translations[lang]["usdt_deposit_records"], "click_deposit_usdt_records"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

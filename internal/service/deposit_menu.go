@@ -9,7 +9,7 @@ import (
 	. "ushield_bot/internal/infrastructure/tools"
 )
 
-func ShowDepositOptions(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func ShowDepositOptions(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 	trxSubscriptionsRepo := repositories.NewUserTRXSubscriptionsRepository(db)
 
 	trxlist, _ := trxSubscriptionsRepo.ListActive(context.Background())
@@ -21,7 +21,7 @@ func ShowDepositOptions(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Callb
 		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData("💰"+trx.Name, "deposit_trx_"+trx.Amount))
 	}
 
-	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["switch_to_usdt_deposit"], "forward_deposit_usdt"), tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"))
+	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["switch_to_usdt_deposit"], "forward_deposit_usdt"), tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"))
 
 	for i := 0; i < len(allButtons); i += 2 {
 		end := i + 2
@@ -56,9 +56,9 @@ func ShowDepositOptions(_lang string, db *gorm.DB, callbackQuery *tgbotapi.Callb
 	}
 
 	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID,
-		"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
-			"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-			"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+		"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
+			"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+			"💰"+global.Translations[lang]["balance"]+": "+"\n"+
 			"- TRX：   "+user.TronAmount+"\n"+
 			"-  USDT："+user.Amount)
 

@@ -27,7 +27,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 			return true
 		}
 		if err != nil {
-			logger.Printf("freeze alert confirm err: %v", err)
+			logger.Errorf("freeze alert confirm err: %v", err)
 			return true
 		}
 		sendFreezeAlertEnableSuccess(ctx.Bot, callbackQuery.Message.Chat.ID, lang, result)
@@ -37,7 +37,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		preview, err := freezeAlertService.PreviewClose(callbackQuery.Message.Chat.ID, target)
 		if err != nil {
-			logger.Printf("freeze alert close preview err: %v", err)
+			logger.Errorf("freeze alert close preview err: %v", err)
 			return true
 		}
 		sendFreezeAlertClosePreview(ctx.Bot, callbackQuery.Message.Chat.ID, lang, preview)
@@ -46,7 +46,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		target := strings.TrimPrefix(callbackQuery.Data, "close_risk_")
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		if err := freezeAlertService.Close(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			logger.Printf("freeze alert close err: %v", err)
+			logger.Errorf("freeze alert close err: %v", err)
 			return true
 		}
 		sendFreezeAlertCloseSuccess(ctx.Bot, callbackQuery.Message.Chat.ID, lang)
@@ -65,11 +65,11 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		service.ShowAddressTraceList(lang, ctx.Cache, ctx.Bot, callbackQuery, ctx.DB)
 		return true
 	case callbackQuery.Data == "address_freeze_risk_records":
-		msg := service.ExtractAddressRiskQuery(lang, ctx.DB, callbackQuery)
+		msg := service.BuildFreezeAlertDeductionRecordsMessage(lang, ctx.DB, callbackQuery)
 		ctx.Bot.Send(msg)
 		return true
 	case callbackQuery.Data == "user_detection_cost_records":
-		msg := service.ExtractAddressDetection(lang, ctx.Cache, ctx.DB, callbackQuery)
+		msg := service.BuildAddressDetectionCostRecordsMessage(lang, ctx.DB, callbackQuery)
 		ctx.Bot.Send(msg)
 		return true
 	case callbackQuery.Data == "user_backup_notify":
@@ -94,7 +94,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
 		items, err := freezeAlertService.ListActive(callbackQuery.Message.Chat.ID)
 		if err != nil {
-			logger.Printf("freeze alert list err: %v", err)
+			logger.Errorf("freeze alert list err: %v", err)
 			return true
 		}
 		sendFreezeAlertStopList(ctx.Bot, callbackQuery.Message.Chat.ID, lang, items)
@@ -105,7 +105,7 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 			sendFreezeAlertInsufficientBalance(ctx.Bot, callbackQuery.Message.Chat.ID, lang)
 			return true
 		} else if err != nil {
-			logger.Printf("freeze alert start err: %v", err)
+			logger.Errorf("freeze alert start err: %v", err)
 			return true
 		}
 		sendFreezeAlertPromptAddress(ctx.Bot, callbackQuery.Message.Chat.ID, lang)

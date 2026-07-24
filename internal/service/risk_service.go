@@ -9,9 +9,9 @@ import (
 	"ushield_bot/internal/global"
 )
 
-func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
+func StartFreezeRiskInput(lang string, cache cache.Cache, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery, bot *tgbotapi.BotAPI) {
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[_lang]["enter_address_for_alert"])
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["enter_address_for_alert"])
 	msg.ParseMode = "HTML"
 	//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 	//	tgbotapi.NewInlineKeyboardRow(
@@ -19,7 +19,7 @@ func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callback
 	//		tgbotapi.NewInlineKeyboardButtonData("❌ 取消操作", "back_risk_home"),
 	//	),
 	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+	//		tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 	//	),
 	//)
 	//msg.ReplyMarkup = inlineKeyboard
@@ -65,7 +65,7 @@ func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callback
 	//
 	//	for _, item := range addresses {
 	//
-	//		builder.WriteString(global.Translations[_lang]["address"]+"：")
+	//		builder.WriteString(global.Translations[lang]["address"]+"：")
 	//		builder.WriteString(item.Address)
 	//		builder.WriteString("\n")
 	//	}
@@ -135,7 +135,7 @@ func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callback
 	//		tgbotapi.NewInlineKeyboardButtonData("❌ 取消操作", "back_risk_home"),
 	//	),
 	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+	//		tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 	//	),
 	//)
 	//msg.ReplyMarkup = inlineKeyboard
@@ -156,15 +156,15 @@ func StartFreezeRiskInput(_lang string, cache cache.Cache, db *gorm.DB, callback
 	//		//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 	//
 	//		"⚠️ 当前余额不足，无法开启冻结预警服务 "+"\n"+
-	//			"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
-	//			"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-	//			"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+	//			"🆔"+global.Translations[lang]["user_id"]+": "+user.Associates+"\n"+
+	//			"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+	//			"💰"+global.Translations[lang]["balance"]+": "+"\n"+
 	//			"- TRX：   "+user.TronAmount+"\n"+
 	//			"-  USDT："+user.Amount)
 	//	msg.ParseMode = "HTML"
 	//	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 	//		tgbotapi.NewInlineKeyboardRow(
-	//			tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+	//			tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
 	//		),
 	//	)
 	//

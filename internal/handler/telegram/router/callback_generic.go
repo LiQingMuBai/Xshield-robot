@@ -87,7 +87,7 @@ func handleGenericCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		sendForwardDepositUSDT(ctx.Bot, callbackQuery.Message.Chat.ID, lang, ctx.DB)
 		return true
 	case callbackQuery.Data == "coin_swap_coin":
-		service.MenuNavigateCoin2CoinSwap2(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot)
+		service.ShowCoinToCoinSwapMenuByChatID(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot)
 		return true
 	case callbackQuery.Data == "function_address_trace":
 		service.MenuNavigateAddressTrace(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB)

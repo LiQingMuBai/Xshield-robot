@@ -11,7 +11,6 @@ import (
 	"net/http"
 	"strconv"
 	"time"
-	logger "ushield_bot/internal/logger"
 
 	jsoniter "github.com/json-iterator/go"
 )
@@ -22,9 +21,9 @@ type TrxfeeClient struct {
 	URL       string
 }
 
-func NewTrxfeeClient(_url, apiKey, apiSecret string) *TrxfeeClient {
+func NewTrxfeeClient(url, apiKey, apiSecret string) *TrxfeeClient {
 	return &TrxfeeClient{
-		URL:       _url,
+		URL:       url,
 		APIKey:    apiKey,
 		APISecret: apiSecret,
 	}
@@ -68,9 +67,6 @@ func (c *TrxfeeClient) Account() (resp *AccountDataResp, err error) {
 		return nil, fmt.Errorf("read trxfee account response failed: %w", err)
 	}
 
-	logger.Println(res)
-	logger.Println(string(body))
-
 	var accountResp AccountDataResp
 
 	if err := json.Unmarshal(body, &accountResp); err != nil {
@@ -80,18 +76,18 @@ func (c *TrxfeeClient) Account() (resp *AccountDataResp, err error) {
 
 }
 
-func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount int) error {
+func (c *TrxfeeClient) Order(outTradeNo, receiveAddress string, energyAmount int) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
-	_energyAmount = 65001
+	energyAmount = 65001
 
 	data := Data{
-		EnergyAmount:   _energyAmount,
+		EnergyAmount:   energyAmount,
 		Period:         "1H",
-		ReceiveAddress: _receiveAddress,
+		ReceiveAddress: receiveAddress,
 		CallbackURL:    "",
-		OutTradeNo:     _outTradeNo,
+		OutTradeNo:     outTradeNo,
 	}
 
 	ordered_data := map[string]interface{}{
@@ -129,11 +125,9 @@ func (c *TrxfeeClient) Order(_outTradeNo, _receiveAddress string, _energyAmount 
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	if _, err := ioutil.ReadAll(resp.Body); err != nil {
 		return fmt.Errorf("read trxfee order response failed: %w", err)
 	}
-	logger.Println(string(respBody))
 	return nil
 }
 
@@ -144,13 +138,13 @@ type TimeOrderData struct {
 	ResourceReplenish string `json:"resourceReplenish"`
 }
 
-func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) error {
+func (c *TrxfeeClient) TimesOrder(receiveAddress string, times int) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 
 	data := TimeOrderData{
-		RentTimes:         _times,
-		RecvAddr:          _receiveAddress,
+		RentTimes:         times,
+		RecvAddr:          receiveAddress,
 		FreePause:         2,
 		ResourceReplenish: "1",
 	}
@@ -189,19 +183,17 @@ func (c *TrxfeeClient) TimesOrder(_receiveAddress string, _times int) error {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	if _, err := ioutil.ReadAll(resp.Body); err != nil {
 		return fmt.Errorf("read trxfee times order response failed: %w", err)
 	}
-	logger.Println(string(respBody))
 	return nil
 }
 
-func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) error {
+func (c *TrxfeeClient) EnableTimesOrder(receiveAddress string) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	ordered_data := map[string]interface{}{
-		"recvAddr": _receiveAddress,
+		"recvAddr": receiveAddress,
 	}
 
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
@@ -231,11 +223,9 @@ func (c *TrxfeeClient) EnableTimesOrder(_receiveAddress string) error {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	if _, err := ioutil.ReadAll(resp.Body); err != nil {
 		return fmt.Errorf("read trxfee enable times order response failed: %w", err)
 	}
-	logger.Println("trxfee response : ", string(respBody))
 	return nil
 }
 
@@ -245,11 +235,11 @@ func createHmac(message string, secret string) string {
 	return hex.EncodeToString(h.Sum(nil))
 }
 
-func (c *TrxfeeClient) Activation(_receiveAddress string) error {
+func (c *TrxfeeClient) Activation(receiveAddress string) error {
 	time.Sleep(1 * time.Second)
 	timestamp := strconv.FormatInt(time.Now().Unix(), 10)
 	ordered_data := map[string]interface{}{
-		"receive_address": _receiveAddress,
+		"receive_address": receiveAddress,
 	}
 
 	json := jsoniter.ConfigCompatibleWithStandardLibrary
@@ -279,10 +269,8 @@ func (c *TrxfeeClient) Activation(_receiveAddress string) error {
 	}
 	defer resp.Body.Close()
 
-	respBody, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
+	if _, err := ioutil.ReadAll(resp.Body); err != nil {
 		return fmt.Errorf("read trxfee activation response failed: %w", err)
 	}
-	logger.Println("trxfee response : ", string(respBody))
 	return nil
 }

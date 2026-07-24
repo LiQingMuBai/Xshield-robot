@@ -18,7 +18,7 @@ import (
 func handleCommerceCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx Context) bool {
 	switch {
 	case strings.HasPrefix(callbackQuery.Data, "ST_bundle_"):
-		catfee.ST_BUNDLE_CHECK(lang, ctx.Cache, ctx.Bot, callbackQuery, ctx.DB)
+		catfee.CheckSmartTransactionBundlePackage(lang, ctx.Cache, ctx.Bot, callbackQuery, ctx.DB)
 		return true
 	case callbackQuery.Data == "click_visa":
 		sendAdditionalServiceDetail(ctx.Bot, callbackQuery.Message.Chat.ID, lang, ctx.DB, "ushield_additional_services_visa_desc")

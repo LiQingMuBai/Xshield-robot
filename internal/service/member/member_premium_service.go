@@ -18,11 +18,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, _month string) {
+func Rent(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, month string) {
 	username = strings.ReplaceAll(username, "@", "")
-	name := global.Translations[_lang][_month+"_month_premium"]
+	name := global.Translations[lang][month+"_month_premium"]
 
-	tips := global.Translations[_lang]["premium_activation_tips"]
+	tips := global.Translations[lang]["premium_activation_tips"]
 
 	tips = strings.ReplaceAll(tips, "{premium_package}", name)
 	tips = strings.ReplaceAll(tips, "{username}", username)
@@ -32,7 +32,7 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
-	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), _month+"_month_premium_fee")
+	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), month+"_month_premium_fee")
 
 	//生成订单
 	usdtDepositRepo := repositories.NewUserUSDTDepositsRepository(db)
@@ -50,23 +50,23 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 	usdtDeposit.BundleId = monthRecord.Id
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
-	//_agent := os.Getenv("Agent")
+	agent := os.Getenv("BOT_AGENT")
+	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
+	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
 	usdtDeposit.Amount = monthRecord.Amount
 	usdtDeposit.CreatedAt = time.Now()
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		logger.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Errorf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		logger.Printf("Error updating usdt placeholder: %v", err)
+		logger.Errorf("Error updating usdt placeholder: %v", err)
 	}
 
 	//新增会员订单
@@ -74,7 +74,7 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 	var tgOrder domain.TelegramPremiumOrder
 	tgOrder.OrderNO = orderNO
 	tgOrder.Amount = monthRecord.Amount
-	tgOrder.Month = _month
+	tgOrder.Month = month
 	tgOrder.ChatID = chatID
 	tgOrder.Status = 0
 	tgOrder.CreatedAt = time.Now()
@@ -87,9 +87,9 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(monthRecord.Amount, usdtDeposit.Placeholder))
 
-	//_agent := os.Getenv("Agent")
+	//agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
@@ -103,8 +103,8 @@ func Rent(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, us
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["balance_pay_order"], "pay_premium_order_"+usdtDeposit.OrderNO),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["cancel_order"], "cancel_premium_order_"+usdtDeposit.OrderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["balance_pay_order"], "pay_premium_order_"+usdtDeposit.OrderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["cancel_order"], "cancel_premium_order_"+usdtDeposit.OrderNO),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

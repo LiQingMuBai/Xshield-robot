@@ -26,7 +26,7 @@ package catfee
 //// ➖➖➖➖➖➖➖➖➖➖
 //// TSwA...ZGCCTV  已用 - 6
 //// TXLE...3n2222  已用 - 8
-//func ShowSmartTransactionAddressStats(_lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+//func ShowSmartTransactionAddressStats(lang string, cache cache.Cache, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 //
 //	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 // addresses, _ := userSmartTransactionAddressesRepo.SummarizeUsedCountByChatID(context.Background(), strconv.FormatInt(chatID, 10))
@@ -36,12 +36,12 @@ package catfee
 //		logger.Println(st_address)
 //
 //		builder.WriteString("<code>" + st_address.Address + "</code>")
-//		builder.WriteString(global.Translations[_lang]["used"])
+//		builder.WriteString(global.Translations[lang]["used"])
 //		builder.WriteString("-")
 //		builder.WriteString(strconv.Itoa(st_address.TotalCount))
 //		builder.WriteString("\n") // 添加分隔符
 //
-//		label := global.Translations[_lang]["catfee_custody_address_energy"]
+//		label := global.Translations[lang]["catfee_custody_address_energy"]
 //
 //		model, _ := userSmartTransactionAddressesRepo.Get(context.Background(), chatID, st_address.Address)
 //		if model.Status == "1" {
@@ -52,13 +52,13 @@ package catfee
 //		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(tools.TruncateString(st_address.Address), "noop"), tgbotapi.NewInlineKeyboardButtonData(label, fmt.Sprintf("custody_address_check_%d_%s", model.ID, model.Status)))
 //	}
 //
-//	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"))
+//	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["back_homepage"], "back_bundle_package_ST"))
 //
 //	logger.Printf("按钮数量 %d\n", len(allButtons))
 //	// 调用函数，按每行 2 个排列
 //	keyboard := LayoutButtonsInRowsOfTwo(allButtons)
 //
-//	originStr := global.Translations[_lang]["catfee_custody_address_list_head"]
+//	originStr := global.Translations[lang]["catfee_custody_address_list_head"]
 //
 //	userRepo := repositories.NewUserRepository(db)
 //
@@ -81,10 +81,10 @@ package catfee
 //	//➖➖➖➖➖➖➖➖➖➖
 //	//TSwA...ZGCCTV  已用 - 6
 //	//TXLE...3n2222  已用 - 8
-//	custodyOriginStr := global.Translations[_lang]["catfee_custody_address_count"]
+//	custodyOriginStr := global.Translations[lang]["catfee_custody_address_count"]
 //	custodyTargetStr := strings.ReplaceAll(custodyOriginStr, "{custody_address_count}", strconv.Itoa(len(addresses)))
 //
-//	msg := tgbotapi.NewMessage(chatID, custodyTargetStr+"\n"+targetStr+"\n"+builder.String()+global.Translations[_lang]["catfee_custody_address_energy_rule"])
+//	msg := tgbotapi.NewMessage(chatID, custodyTargetStr+"\n"+targetStr+"\n"+builder.String()+global.Translations[lang]["catfee_custody_address_energy_rule"])
 //	// 3. 创建键盘标记
 //	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 //
@@ -124,10 +124,10 @@ package catfee
 //// 存储用户的选择状态（实际应用中应使用数据库或缓存）
 //var userSelections = make(map[int64]map[int]bool) // chatID -> 选项ID -> 是否选中
 //
-//func ToggleCustodyAddressOption(_lang string, db *gorm.DB, chatID int64, messageID int, _data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
+//func ToggleCustodyAddressOption(lang string, db *gorm.DB, chatID int64, messageID int, data string, bot *tgbotapi.BotAPI, catfeeClient *trxfee.CatfeeService) {
 //
 //	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
-//	result := strings.ReplaceAll(_data, "custody_address_check_", "")
+//	result := strings.ReplaceAll(data, "custody_address_check_", "")
 //
 //	ID := strings.Split(result, "_")[0]
 //	status := strings.Split(result, "_")[1]
@@ -149,11 +149,11 @@ package catfee
 //
 //		if user.StTimes <= user.UsedStTimes {
 //			logger.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
-//			msg := tgbotapi.NewMessage(chatID, global.Translations[_lang]["catfee_energy_address_buy_error"])
+//			msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["catfee_energy_address_buy_error"])
 //			msg.ParseMode = "HTML"
 //			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 //				tgbotapi.NewInlineKeyboardRow(
-//					tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+//					tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 //				))
 //			msg.ReplyMarkup = inlineKeyboard
 //			msg.ParseMode = "HTML"
@@ -175,11 +175,11 @@ package catfee
 //
 //		if user.StTimes <= user.UsedStTimes {
 //			logger.Printf("\n 无法开启用户%s伴侣，当前托管笔数 %d，已用笔数%d\n", user.Associates, user.StTimes, user.UsedStTimes)
-//			msg := tgbotapi.NewMessage(chatID, global.Translations[_lang]["catfee_energy_address_buy_error"])
+//			msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["catfee_energy_address_buy_error"])
 //			msg.ParseMode = "HTML"
 //			inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 //				tgbotapi.NewInlineKeyboardRow(
-//					tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+//					tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
 //				))
 //			msg.ReplyMarkup = inlineKeyboard
 //			msg.ParseMode = "HTML"
@@ -201,12 +201,12 @@ package catfee
 //		logger.Println(st_address)
 //
 //		builder.WriteString("<code>" + st_address.Address + "</code>")
-//		builder.WriteString(global.Translations[_lang]["used"])
+//		builder.WriteString(global.Translations[lang]["used"])
 //		builder.WriteString("-")
 //		builder.WriteString(strconv.Itoa(st_address.TotalCount))
 //		builder.WriteString("\n") // 添加分隔符
 //
-//		label := global.Translations[_lang]["catfee_custody_address_energy"]
+//		label := global.Translations[lang]["catfee_custody_address_energy"]
 //
 //		model, _ := userSmartTransactionAddressesRepo.Get(context.Background(), chatID, st_address.Address)
 //		if model.Status == "1" {
@@ -217,13 +217,13 @@ package catfee
 //		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(tools.TruncateString(st_address.Address), "noop"), tgbotapi.NewInlineKeyboardButtonData(label, fmt.Sprintf("custody_address_check_%d_%s", model.ID, model.Status)))
 //	}
 //
-//	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"))
+//	allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["catfee_add_address"], "catfee_add_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["catfee_remove_address"], "catfee_remove_address"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["back_homepage"], "back_bundle_package_ST"))
 //
 //	logger.Printf("按钮数量 %d\n", len(allButtons))
 //	// 调用函数，按每行 2 个排列
 //	keyboard := LayoutButtonsInRowsOfTwo(allButtons)
 //
-//	originStr := global.Translations[_lang]["catfee_custody_address_list_head"]
+//	originStr := global.Translations[lang]["catfee_custody_address_list_head"]
 //
 //	userRepo := repositories.NewUserRepository(db)
 //
@@ -246,10 +246,10 @@ package catfee
 //	//➖➖➖➖➖➖➖➖➖➖
 //	//TSwA...ZGCCTV  已用 - 6
 //	//TXLE...3n2222  已用 - 8
-//	custodyOriginStr := global.Translations[_lang]["catfee_custody_address_count"]
+//	custodyOriginStr := global.Translations[lang]["catfee_custody_address_count"]
 //	custodyTargetStr := strings.ReplaceAll(custodyOriginStr, "{custody_address_count}", strconv.Itoa(len(addresses)))
 //
-//	msg := tgbotapi.NewMessage(chatID, custodyTargetStr+"\n"+targetStr+"\n"+builder.String()+global.Translations[_lang]["catfee_custody_address_energy_rule"])
+//	msg := tgbotapi.NewMessage(chatID, custodyTargetStr+"\n"+targetStr+"\n"+builder.String()+global.Translations[lang]["catfee_custody_address_energy_rule"])
 //	// 3. 创建键盘标记
 //	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 //

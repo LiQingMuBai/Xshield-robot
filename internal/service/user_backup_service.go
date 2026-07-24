@@ -8,7 +8,7 @@ import (
 	"ushield_bot/internal/infrastructure/repositories"
 )
 
-func ExtractBackup(message *tgbotapi.Message, bot *tgbotapi.BotAPI, db *gorm.DB) bool {
+func HandleBackupContactInput(message *tgbotapi.Message, bot *tgbotapi.BotAPI, db *gorm.DB) bool {
 	chat_ID, err := strconv.ParseInt(message.Text, 10, 64)
 	if err != nil {
 

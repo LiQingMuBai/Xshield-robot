@@ -36,7 +36,7 @@ func PayPremiumOrder(bot *tgbotapi.BotAPI, chatID int64, lang string, db *gorm.D
 	orderRecord, _ := tgOrderDB.GetByOrderNo(context.Background(), orderNO)
 	tgOrderDB.UpdateStatusByOrderNo(context.Background(), orderNO, 1)
 	if _, err := catfeeClient.Premium(orderRecord.TGUsername, orderRecord.Month); err != nil {
-		logger.Printf("pay premium order failed: %v", err)
+		logger.Errorf("pay premium order failed: %v", err)
 		return
 	}
 

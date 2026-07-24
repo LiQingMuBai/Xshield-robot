@@ -30,7 +30,7 @@ func (a *App) Run(processor UpdateProcessor) error {
 		tgbotapi.BotCommand{Command: "hide", Description: "hide"},
 	))
 	if err != nil {
-		logger.Printf("error setting commands: %v", err)
+		logger.Errorf("error setting commands: %v", err)
 	}
 
 	u := tgbotapi.NewUpdate(0)

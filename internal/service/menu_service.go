@@ -11,7 +11,6 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
-	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -99,13 +98,8 @@ func buildEnergySwapText(lang string, db *gorm.DB) string {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
 	energyCost, _ := dictRepo.GetDictionaryDetail("energy_cost")
 
-	logger.Printf("energy_cost: %s\n", energyCost)
-
 	energyCost2x, _ := StringMultiply(energyCost, 2)
 	energyCost10x, _ := StringMultiply(energyCost, 10)
-
-	logger.Printf("energy_cost_2x: %s\n", energyCost2x)
-	logger.Printf("energy_cost_10x: %s\n", energyCost10x)
 
 	return renderMenuTemplate(global.Translations[lang]["energy_swap_tips"], map[string]string{
 		"{energy_cost}":     energyCost,
@@ -181,31 +175,30 @@ func buildHomeSummaryText(lang string, user domain.User, chatID int64) string {
 		global.Translations[lang]["promotion_link"] + ":" + "<code>" + "https://t.me/ushield_bot?start=" + strconv.FormatInt(chatID, 10) + "</code>"
 }
 
-func MenuNavigateCoin2CoinSwap2(_lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
-	sendFixedFloatMenu(_lang, chatID, db, bot)
+func ShowCoinToCoinSwapMenuByChatID(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
+	sendFixedFloatMenu(lang, chatID, db, bot)
 }
 
-func MenuNavigateCoin2CoinSwap(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI, fixfloatedUrl string) {
-	_ = fixfloatedUrl
-	sendFixedFloatMenu(_lang, message.Chat.ID, db, bot)
+func ShowCoinToCoinSwapMenu(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+	sendFixedFloatMenu(lang, message.Chat.ID, db, bot)
 }
 
-func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+func MenuNavigateTronEnergy(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		//tgbotapi.NewInlineKeyboardRow(
 		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
 		//
 		//),
 
-		//tgbotapi.NewKeyboardButton("⚡"+global.Translations[_lang]["energy_swap"]),
-		//tgbotapi.NewKeyboardButton("🖊️"+global.Translations[_lang]["transaction_plans"]),
-		//tgbotapi.NewKeyboardButton("🤖"+global.Translations[_lang]["smart_transaction_plans"]),
+		//tgbotapi.NewKeyboardButton("⚡"+global.Translations[lang]["energy_swap"]),
+		//tgbotapi.NewKeyboardButton("🖊️"+global.Translations[lang]["transaction_plans"]),
+		//tgbotapi.NewKeyboardButton("🤖"+global.Translations[lang]["smart_transaction_plans"]),
 
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData("⚡"+global.Translations[_lang]["energy_swap"], "click_energy_swap"),
-			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[_lang]["transaction_plans"], "click_transaction_plan"),
-			//tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[_lang]["smart_transaction_plans"], "click_smart_transaction_plan"),
-			tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[_lang]["catfee_smart_transaction_menu"], "click_smart_transaction_plan"),
+			//tgbotapi.NewInlineKeyboardButtonData("⚡"+global.Translations[lang]["energy_swap"], "click_energy_swap"),
+			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[lang]["transaction_plans"], "click_transaction_plan"),
+			//tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[lang]["smart_transaction_plans"], "click_smart_transaction_plan"),
+			tgbotapi.NewInlineKeyboardButtonData("🤖"+global.Translations[lang]["catfee_smart_transaction_menu"], "click_smart_transaction_plan"),
 		),
 	)
 
@@ -214,7 +207,7 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
 
-	msg.Caption = buildEnergySwapText(_lang, db)
+	msg.Caption = buildEnergySwapText(lang, db)
 	msg.ReplyMarkup = inlineKeyboard
 	//msg.SupportsStreaming = true // 启用流式播放（推荐）
 
@@ -226,14 +219,14 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	//if len(user.BackupChatID) > 0 {
 	//	//id, _ := strconv.ParseInt(user.BackupChatID, 10, 64)
 	//	//backup_user, _ := userRepo.GetByChatID(id)
-	//	str = "🔗 " + global.Translations[_lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
+	//	str = "🔗 " + global.Translations[lang]["secondary_contact"] + "：  " + "@" + user.BackupChatID
 	//} else {
-	//	str = global.Translations[_lang]["secondary_contact_none"]
+	//	str = global.Translations[lang]["secondary_contact_none"]
 	//}
 
-	//msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 "+global.Translations[_lang]["user_id"]+"："+user.Associates+"\n👤 "+global.Translations[_lang]["username"]+"：@"+user.Username+"\n"+
+	//msg := tgbotapi.NewMessage(message.Chat.ID, "🆔 "+global.Translations[lang]["user_id"]+"："+user.Associates+"\n👤 "+global.Translations[lang]["username"]+"：@"+user.Username+"\n"+
 	//	str+"\n💰"+
-	//	global.Translations[_lang]["balance"]+"：\n"+
+	//	global.Translations[lang]["balance"]+"：\n"+
 	//	"- TRX："+user.TronAmount+"\n"+
 	//	"- USDT："+user.Amount)
 	//msg.ReplyMarkup = inlineKeyboard
@@ -246,26 +239,26 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	//bot.Send(msg)
 }
 
-func MenuNavigateSwapExchange(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+func MenuNavigateSwapExchange(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔃"+global.Translations[_lang]["coin_swap_coin_menu"], "coin_swap_coin"),
+			tgbotapi.NewInlineKeyboardButtonData("🔃"+global.Translations[lang]["coin_swap_coin_menu"], "coin_swap_coin"),
 		),
 	)
-	//_agent := os.Getenv("Agent")
+	//agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	//receiveAddress, _ := dictRepo.GetReceiveAddress(_agent)
+	//receiveAddress, _ := dictRepo.GetReceiveAddress(agent)
 
 	videoPath := "./static/Prada.png"
 
 	// 创建视频消息（从本地文件）
 	msg := tgbotapi.NewPhoto(message.Chat.ID, tgbotapi.FilePath(videoPath))
 
-	msg.Caption = buildSwapExchangeText(_lang, db)
+	msg.Caption = buildSwapExchangeText(lang, db)
 
 	//msg := tgbotapi.NewMessage(message.Chat.ID, targetStr)
 	msg.ReplyMarkup = inlineKeyboard
@@ -274,9 +267,9 @@ func MenuNavigateSwapExchange(_lang string, db *gorm.DB, message *tgbotapi.Messa
 	bot.Send(msg)
 }
 
-func MenuNavigateAddressTrace(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
+func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
 
-	originStr := global.Translations[_lang]["address_trace_head_tips"]
+	originStr := global.Translations[lang]["address_trace_head_tips"]
 	userRepo := repositories.NewUserAddressTraceRepo(db)
 	orderlist, _ := userRepo.ListByChatID(context.Background(), chatID)
 
@@ -298,7 +291,7 @@ func MenuNavigateAddressTrace(_lang string, cache cache.Cache, bot *tgbotapi.Bot
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	//msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[_lang]["package_address_list"]+"\n"+
+	//msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[lang]["package_address_list"]+"\n"+
 	//	result+"\n")
 
 	msg := tgbotapi.NewMessage(chatID, originStr+"\n"+
@@ -308,8 +301,8 @@ func MenuNavigateAddressTrace(_lang string, cache cache.Cache, bot *tgbotapi.Bot
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["address_trace_add"], "address_trace_add"),
-			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[_lang]["address_trace_delete"], "address_trace_delete"),
+			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["address_trace_add"], "address_trace_add"),
+			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[lang]["address_trace_delete"], "address_trace_delete"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -322,7 +315,7 @@ func MenuNavigateAddressTrace(_lang string, cache cache.Cache, bot *tgbotapi.Bot
 	cache.Set(strconv.FormatInt(chatID, 10), "usdt_address_trace", expiration)
 }
 
-func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
+func MenuNavigateAddressFreeze(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
 
 	userRepo := repositories.NewSysDictionariesRepo(db)
 
@@ -342,7 +335,7 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 	//	"⏰ 系统将在冻结前启动预警机制，持续 10 分钟每分钟推送提醒，通知您及时转移资产。\n"+
 	//	"📩 所有预警信息将通过 Telegram 实时推送")
 
-	originStr := global.Translations[_lang]["usdt_freeze_alert_tips"]
+	originStr := global.Translations[lang]["usdt_freeze_alert_tips"]
 
 	targetStr := renderMenuTemplate(originStr, map[string]string{
 		"{server_usdt_price}": server_usdt_price,
@@ -354,16 +347,16 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[_lang]["enable_freeze_alert"], "start_freeze_risk"),
+			tgbotapi.NewInlineKeyboardButtonData("⚠️"+global.Translations[lang]["enable_freeze_alert"], "start_freeze_risk"),
 			//tgbotapi.NewInlineKeyboardButtonData("地址管理", "address_manager"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[_lang]["alert_monitoring_list"], "address_list_trace"),
-			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
+			tgbotapi.NewInlineKeyboardButtonData("👁️‍🗨️ "+global.Translations[lang]["alert_monitoring_list"], "address_list_trace"),
+			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["freeze_alert_deduction_record"], "address_freeze_risk_records"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🕸"+global.Translations[_lang]["address_trace_menu"], "function_address_trace"),
-			tgbotapi.NewInlineKeyboardButtonData("🧽"+global.Translations[_lang]["coin_laundering_menu"], "function_remove_label"),
+			tgbotapi.NewInlineKeyboardButtonData("🕸"+global.Translations[lang]["address_trace_menu"], "function_address_trace"),
+			tgbotapi.NewInlineKeyboardButtonData("🧽"+global.Translations[lang]["coin_laundering_menu"], "function_remove_label"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -376,7 +369,7 @@ func MenuNavigateAddressFreeze(_lang string, cache cache.Cache, bot *tgbotapi.Bo
 	cache.Set(strconv.FormatInt(chatID, 10), "usdt_risk_monitor", expiration)
 }
 
-func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
+func MenuNavigateAddressDetection(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {
 	user := loadMenuUser(db, chatID)
 
 	dictRepo := repositories.NewSysDictionariesRepo(db)
@@ -384,7 +377,7 @@ func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi
 	address_detection_cost, _ := dictRepo.GetDictionaryDetail("address_detection_cost")
 	address_detection_cost_usdt, _ := dictRepo.GetDictionaryDetail("address_detection_cost_usdt")
 
-	originStr := global.Translations[_lang]["address_check_tips"]
+	originStr := global.Translations[lang]["address_check_tips"]
 
 	targetStr := renderMenuTemplate(originStr, map[string]string{
 		"{address_detection_cost}":      address_detection_cost,
@@ -411,8 +404,8 @@ func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
-			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["address_detection_payment_history"], "user_detection_cost_records"),
+			tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
+			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["address_detection_payment_history"], "user_detection_cost_records"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -425,20 +418,20 @@ func MenuNavigateAddressDetection(_lang string, cache cache.Cache, bot *tgbotapi
 	cache.Set(strconv.FormatInt(chatID, 10), "usdt_risk_query", expiration)
 }
 
-func MenuNavigateEnergyExchange(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+func MenuNavigateEnergyExchange(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[_lang]["transaction_plans"], "back_bundle_package"),
+			tgbotapi.NewInlineKeyboardButtonData("🖊️"+global.Translations[lang]["transaction_plans"], "back_bundle_package"),
 		),
 	)
-	msg := tgbotapi.NewMessage(message.Chat.ID, buildEnergySwapText(_lang, db))
+	msg := tgbotapi.NewMessage(message.Chat.ID, buildEnergySwapText(lang, db))
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 	//msg.DisableWebPagePreview = true
 	bot.Send(msg)
 }
-func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
 	bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 
 	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
@@ -453,12 +446,12 @@ func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tg
 	}
 
 	inlineKeyboard := buildBundleMenuKeyboard(
-		buildBundleOptionButtons(_lang, options, "bundle_"),
-		buildBundleSwitchButtons(_lang, token, "click_switch_usdt", "click_switch_trx"),
-		buildBundleExtraButtons(_lang, "address_list", "click_bundle_package_address_stats", "click_bundle_package_cost_records"),
+		buildBundleOptionButtons(lang, options, "bundle_"),
+		buildBundleSwitchButtons(lang, token, "click_switch_usdt", "click_switch_trx"),
+		buildBundleExtraButtons(lang, "address_list", "click_bundle_package_address_stats", "click_bundle_package_cost_records"),
 	)
 	//
-	//msg := tgbotapi.NewMessage(_chatID,
+	//msg := tgbotapi.NewMessage(chatID,
 	//	"欢迎使用 U盾能量笔数套餐\n"+
 	//		"一次购买/多地址使用/一键发能/快捷高效\n"+
 	//		"⚙️ 功能介绍\n"+
@@ -468,12 +461,12 @@ func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tg
 	//		"自动发能开启后系统会自动检测地址能量余量，不足时自动补充（每次消耗 1 笔），默认关闭，可在“地址列表”中开启/关闭。\n "+
 	//		"一键发能：可向地址列表中任意地址或自定义地址快速发放 1 笔能量\n"+
 	//		"⏳ 能量有效期 1 小时，过期将自动回收并扣除笔数。\n"+
-	//		"🆔"+global.Translations[_lang]["user_id"]+": "+user.Associates+"\n"+
-	//		"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-	//		"💰"+global.Translations[_lang]["balance"]+": "+"- TRX：   "+user.TronAmount+"   - USDT："+user.Amount)
+	//		"🆔"+global.Translations[lang]["user_id"]+": "+user.Associates+"\n"+
+	//		"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+	//		"💰"+global.Translations[lang]["balance"]+": "+"- TRX：   "+user.TronAmount+"   - USDT："+user.Amount)
 	//
 
-	//msg := tgbotapi.NewMessage(_chatID,
+	//msg := tgbotapi.NewMessage(chatID,
 	//	"欢迎使用 U盾能量笔数套餐\n"+
 	//		"一次购买/多地址使用/一键发能\n"+
 	//		"⚙️ 功能介绍\n"+
@@ -481,42 +474,42 @@ func MenuNavigateBundlePackage(_lang string, db *gorm.DB, _chatID int64, bot *tg
 	//		"📍地址列表：可向4个常用地址或向其他地址快速发能\n"+
 	//		"⏳ 能量有效期 1 小时，过期将自动回收")
 
-	msg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["transaction_plans_tips"])
+	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 
 	bot.Send(msg)
 }
 
-func MenuNavigateHome(_lang string, cache cache.Cache, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+func MenuNavigateHome(lang string, cache cache.Cache, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		//tgbotapi.NewInlineKeyboardRow(
 		//	tgbotapi.NewInlineKeyboardButtonData("🆔我的账户", "click_my_account"),
 		//
 		//),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("💳"+global.Translations[_lang]["deposit"], "deposit_amount"),
+			tgbotapi.NewInlineKeyboardButtonData("💳"+global.Translations[lang]["deposit"], "deposit_amount"),
 			//tgbotapi.NewInlineKeyboardButtonData("🔗第二通知人", "click_backup_account"),
-			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_my_recepit"),
-			tgbotapi.NewInlineKeyboardButtonData("🛎️"+global.Translations[_lang]["support"], "click_callcenter"),
+			tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], "click_my_recepit"),
+			tgbotapi.NewInlineKeyboardButtonData("🛎️"+global.Translations[lang]["support"], "click_callcenter"),
 			//tgbotapi.NewInlineKeyboardButtonData("🛠️我的服务", "click_my_service"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//	//tgbotapi.NewInlineKeyboardButtonData("🔗绑定备用帐号", "click_backup_account"),
-			tgbotapi.NewInlineKeyboardButtonData("👥"+global.Translations[_lang]["business"], "click_business_cooperation"),
-			tgbotapi.NewInlineKeyboardButtonData("💬"+global.Translations[_lang]["channel"], "click_offical_channel"),
+			tgbotapi.NewInlineKeyboardButtonData("👥"+global.Translations[lang]["business"], "click_business_cooperation"),
+			tgbotapi.NewInlineKeyboardButtonData("💬"+global.Translations[lang]["channel"], "click_offical_channel"),
 
-			tgbotapi.NewInlineKeyboardButtonData("❓"+global.Translations[_lang]["tutorials"], "click_QA"),
+			tgbotapi.NewInlineKeyboardButtonData("❓"+global.Translations[lang]["tutorials"], "click_QA"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🌍"+global.Translations[_lang]["language"], "click_language"),
+			tgbotapi.NewInlineKeyboardButtonData("🌍"+global.Translations[lang]["language"], "click_language"),
 		),
 		//tgbotapi.NewInlineKeyboardRow(),
 	)
 
 	user := loadMenuUser(db, message.Chat.ID)
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, buildHomeSummaryText(_lang, user, message.Chat.ID))
+	msg := tgbotapi.NewMessage(message.Chat.ID, buildHomeSummaryText(lang, user, message.Chat.ID))
 
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
@@ -553,7 +546,7 @@ func MenuNavigateHome2(db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.Bot
 	bot.Send(msg)
 }
 
-func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func ShowSmartTransactionBundlePackageMenu(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
@@ -569,12 +562,12 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 	}
 
 	inlineKeyboard := buildBundleMenuKeyboard(
-		buildBundleOptionButtons(_lang, options, "ST_bundle_"),
-		buildBundleSwitchButtons(_lang, token, "click_switch_usdt_ST", "click_switch_trx_ST"),
-		buildBundleExtraButtons(_lang, "smart_transaction_address_list", "click_bundle_package_address_stats_ST", "click_bundle_package_cost_records_ST"),
+		buildBundleOptionButtons(lang, options, "ST_bundle_"),
+		buildBundleSwitchButtons(lang, token, "click_switch_usdt_ST", "click_switch_trx_ST"),
+		buildBundleExtraButtons(lang, "smart_transaction_address_list", "click_bundle_package_address_stats_ST", "click_bundle_package_cost_records_ST"),
 	)
 
-	msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[_lang]["smart_transaction_plans_tips"])
+	msg := tgbotapi.NewMessage(chatID, "<b>"+global.Translations[lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[lang]["smart_transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 

@@ -11,7 +11,7 @@ import (
 	"ushield_bot/internal/request"
 )
 
-func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevUSDTDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -45,17 +45,17 @@ func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deposit_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_deposit_usdt_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_deposit_usdt_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_deposit_usdt_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_usdt_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -86,17 +86,17 @@ func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deposit_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_deposit_usdt_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_deposit_usdt_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_deposit_usdt_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_usdt_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -105,7 +105,7 @@ func ShowPrevUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	return state, false
 }
 
-func ShowNextUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextUSDTDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -148,17 +148,17 @@ func ShowNextUSDTDepositPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deposit_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_deposit_usdt_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_deposit_usdt_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_deposit_usdt_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_deposit_usdt_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[_lang]["back_home"], "back_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙"+global.Translations[lang]["back_home"], "back_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

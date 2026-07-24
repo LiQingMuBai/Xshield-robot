@@ -10,18 +10,18 @@ import (
 	logger "ushield_bot/internal/logger"
 )
 
-func ListRiskAddresses(_coin string, _address, _cookie string) LabeledAddressList {
-	//_cookie = "_bl_uid=1wmz8eCq1445tmhU8hktzps2hC51; detect_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyYW5kb21fc3RyIjoiODY3NzM5In0.DaCjSesFMsjGWQkB7iHA1EI5Lp2s3-DTPmxB7nNIPKI; csrftoken=u5xzDP2pcMqbACyYHyVUlJNtmNlr4pIn5i6ullnZNtNunsFbIHvHZk9rteAcyq2l; sessionid=uqs748r6gmq6cjjrqig5461rw8nc3gq9"
-	//_coin = "ETH"
+func ListRiskAddresses(coin string, address, cookie string) LabeledAddressList {
+	//cookie = "_bl_uid=1wmz8eCq1445tmhU8hktzps2hC51; detect_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyYW5kb21fc3RyIjoiODY3NzM5In0.DaCjSesFMsjGWQkB7iHA1EI5Lp2s3-DTPmxB7nNIPKI; csrftoken=u5xzDP2pcMqbACyYHyVUlJNtmNlr4pIn5i6ullnZNtNunsFbIHvHZk9rteAcyq2l; sessionid=uqs748r6gmq6cjjrqig5461rw8nc3gq9"
+	//coin = "ETH"
 	//
-	//_address = "0xf510e53ef8da4e45ffa59eb554511a7410e5efd3"
-	url := "https://dashboard.misttrack.io/api/v1/address_graph_analysis?coin=" + _coin + "&address=" + _address + "&time_filter="
+	//address = "0xf510e53ef8da4e45ffa59eb554511a7410e5efd3"
+	url := "https://dashboard.misttrack.io/api/v1/address_graph_analysis?coin=" + coin + "&address=" + address + "&time_filter="
 	req, _ := http.NewRequest("GET", url, nil)
 	//https://dashboard.misttrack.io/api/v1/address_graph_analysis?coin=ETH&address=0xf510e53ef8da4e45ffa59eb554511a7410e5efd3&time_filter=
 	req.Header.Add("accept", "application/json, text/plain, */*")
 
 	//req.Header.Add("cookie", "_ga=GA1.1.23337514.1742894564; _bl_uid=O8m7m8ksonwa0Ifjgw0erRqd9147; _ga_SGF4VCWFZY=GS1.1.1743393981.8.0.1743393981.0.0.0; detect_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyYW5kb21fc3RyIjoiMzI0Njk1In0.t5lYLE_oSwyNIJUSWAwxL7YrzXN5Di38sh4Vh9gjyJE; csrftoken=AOzVpYUl0Wdyk2gtoIzUQ5uOUEOxRBSMsqlINKjOh30dCmHX2ajNk8EcwFxrWy6g; sessionid=rn1a71d9nkn3coczdn08ahc00u5mw46i; _ga_40VGDGQFCB=GS1.1.1743393983.12.1.1743394123.0.0.0; _ga_5X5Z4KZ7PC=GS1.1.1743393983.12.1.1743394123.0.0.0")
-	req.Header.Add("cookie", _cookie)
+	req.Header.Add("cookie", cookie)
 	req.Header.Add("language", "EN")
 
 	//req.Header.Add("referer", "https://dashboard.misttrack.io/address/ETH/0xf510e53ef8da4e45ffa59eb554511a7410e5efd3")
@@ -31,11 +31,9 @@ func ListRiskAddresses(_coin string, _address, _cookie string) LabeledAddressLis
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	logger.Println(string(body))
-
 	var labeledAddressList LabeledAddressList
 	if err := json.Unmarshal(body, &labeledAddressList); err != nil { // Parse []byte to go struct pointer
-		logger.Println("Can not unmarshal JSON")
+		logger.Error("Can not unmarshal JSON")
 	}
 	return labeledAddressList
 }
@@ -96,36 +94,35 @@ type AddressProfile struct {
 	BalanceUsd       string `json:"balance_usd"`
 }
 
-func GetAddressInfo(_symbol string, _address, _cookie string) (SlowMistAddressInfo, error) {
-	url := "https://dashboard.misttrack.io/api/v1/address_risk_analysis?coin=" + _symbol + "&address=" + _address
+func GetAddressInfo(symbol string, address, cookie string) (SlowMistAddressInfo, error) {
+	url := "https://dashboard.misttrack.io/api/v1/address_risk_analysis?coin=" + symbol + "&address=" + address
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json, text/plain, */*")
-	req.Header.Add("cookie", _cookie)
+	req.Header.Add("cookie", cookie)
 	req.Header.Add("language", "EN")
 
-	req.Header.Add("referer", "https://dashboard.misttrack.io/address/"+_symbol+"/"+_address)
+	req.Header.Add("referer", "https://dashboard.misttrack.io/address/"+symbol+"/"+address)
 	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
 
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	logger.Println(string(body))
 	var addressInfo SlowMistAddressInfo
 	if err := json.Unmarshal(body, &addressInfo); err != nil { // Parse []byte to go struct pointer
-		logger.Println("Can not unmarshal JSON")
+		logger.Error("Can not unmarshal JSON")
 		return addressInfo, err
 	}
 	return addressInfo, nil
 }
 
-func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {
+func BuildRiskSummaryText(lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {
 	_item0 := addressInfo.RiskDic.TriangleLevel[0]
 	_item1 := addressInfo.RiskDic.TriangleLevel[1]
 	_item2 := addressInfo.RiskDic.TriangleLevel[2]
 
-	_text0 := "🔍" + global.Translations[_lang]["risk_score"] + ":" + strconv.Itoa(addressInfo.RiskDic.Score)
+	_text0 := "🔍" + global.Translations[lang]["risk_score"] + ":" + strconv.Itoa(addressInfo.RiskDic.Score)
 
 	if addressInfo.RiskDic.Score <= 30 {
 		_text0 += " 🟢" + "\n"
@@ -145,22 +142,22 @@ func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistA
 	_text4 := ""
 	if _item0 > 1 {
 		//logger.Println("⚠️有与疑似恶意地址交互")
-		_text1 = "⚠️" + global.Translations[_lang]["suspected_malicious_address_contact"] + "\n"
+		_text1 = "⚠️" + global.Translations[lang]["suspected_malicious_address_contact"] + "\n"
 	}
 	if _item1 > 1 {
 		//logger.Println("⚠️️有与恶意地址交互")
-		_text2 = "⚠️️" + global.Translations[_lang]["confirmed_malicious_address_contact"] + "\n"
+		_text2 = "⚠️️" + global.Translations[lang]["confirmed_malicious_address_contact"] + "\n"
 	}
 	if _item2 > 1 {
 		//logger.Println("⚠️️️有与高风险标签地址交互")
-		_text3 = "⚠️" + global.Translations[_lang]["high_risk_address_contact"] + "\n"
+		_text3 = "⚠️" + global.Translations[lang]["high_risk_address_contact"] + "\n"
 	}
 
 	_banned_item := addressInfo.RiskDic.HackingEvent
 
 	if _banned_item != "" {
 		//logger.Println("⚠️️受制裁实体")
-		_text4 = "⚠️️" + global.Translations[_lang]["sanctioned_entity_association"] + "\n"
+		_text4 = "⚠️️" + global.Translations[lang]["sanctioned_entity_association"] + "\n"
 	}
 	//msg = domain.MessageToSend{
 	//	ChatId: message.Chat.ID,
@@ -173,7 +170,7 @@ func BuildRiskSummaryText(_lang string, cache cache.Cache, addressInfo SlowMistA
 	//}
 	//logger.Println(events)
 
-	_text6 := "📊 " + global.Translations[_lang]["address_overview"] + "\n"
+	_text6 := "📊 " + global.Translations[lang]["address_overview"] + "\n"
 
 	text := _text0 + _text1 + _text2 + _text3 + _text4 + _text6
 	return text
@@ -193,28 +190,26 @@ type SlowMistAddressInfo struct {
 	} `json:"risk_dic"`
 }
 
-func GetAddressProfile(_coin string, _address, _cookie string) AddressProfile {
-	url := "https://dashboard.misttrack.io/api/v1/address_overview?coin=" + _coin + "&address=" + _address
+func GetAddressProfile(coin string, address, cookie string) AddressProfile {
+	url := "https://dashboard.misttrack.io/api/v1/address_overview?coin=" + coin + "&address=" + address
 	req, _ := http.NewRequest("GET", url, nil)
 
 	req.Header.Add("accept", "application/json, text/plain, */*")
 
 	//req.Header.Add("cookie", "_ga=GA1.1.23337514.1742894564; _bl_uid=O8m7m8ksonwa0Ifjgw0erRqd9147; _ga_SGF4VCWFZY=GS1.1.1743393981.8.0.1743393981.0.0.0; detect_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyYW5kb21fc3RyIjoiMzI0Njk1In0.t5lYLE_oSwyNIJUSWAwxL7YrzXN5Di38sh4Vh9gjyJE; csrftoken=AOzVpYUl0Wdyk2gtoIzUQ5uOUEOxRBSMsqlINKjOh30dCmHX2ajNk8EcwFxrWy6g; sessionid=rn1a71d9nkn3coczdn08ahc00u5mw46i; _ga_40VGDGQFCB=GS1.1.1743393983.12.1.1743394123.0.0.0; _ga_5X5Z4KZ7PC=GS1.1.1743393983.12.1.1743394123.0.0.0")
-	req.Header.Add("cookie", _cookie)
+	req.Header.Add("cookie", cookie)
 	req.Header.Add("language", "EN")
 
-	req.Header.Add("referer", "https://dashboard.misttrack.io/address/"+_coin+"/"+_address)
+	req.Header.Add("referer", "https://dashboard.misttrack.io/address/"+coin+"/"+address)
 	req.Header.Add("user-agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36")
 
 	res, _ := http.DefaultClient.Do(req)
 	defer res.Body.Close()
 	body, _ := io.ReadAll(res.Body)
 
-	logger.Println(string(body))
-
 	var addressProfile AddressProfile
 	if err := json.Unmarshal(body, &addressProfile); err != nil { // Parse []byte to go struct pointer
-		logger.Println("Can not unmarshal JSON")
+		logger.Error("Can not unmarshal JSON")
 	}
 	return addressProfile
 }

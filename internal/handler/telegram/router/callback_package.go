@@ -18,7 +18,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		target := strings.TrimPrefix(callbackQuery.Data, "set_bundle_package_default_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
 		if err := userOperationPackageAddressesRepo.SetDefaultByChatIDAndAddress(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			logger.Printf("set default bundle address err: %v", err)
+			logger.Errorf("set default bundle address err: %v", err)
 			return true
 		}
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>设置默认地址成功 </b>\n")
@@ -30,7 +30,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		target := strings.TrimPrefix(callbackQuery.Data, "remove_bundle_package_")
 		userOperationPackageAddressesRepo := repositories.NewUserOperationPackageAddressesRepo(ctx.DB)
 		if err := userOperationPackageAddressesRepo.DeleteByChatIDAndAddress(context.Background(), callbackQuery.Message.Chat.ID, target); err != nil {
-			logger.Printf("remove bundle address err: %v", err)
+			logger.Errorf("remove bundle address err: %v", err)
 			return true
 		}
 		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>"+global.Translations[lang]["address_deleted_success"]+"</b>\n")
@@ -108,11 +108,11 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		service.ShowBundlePackageAddressManagement(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB)
 		return true
 	case callbackQuery.Data == "click_bundle_package_cost_records":
-		msg := service.ExtractBundlePackage(lang, ctx.DB, callbackQuery)
+		msg := service.BuildBundlePackageCostRecordsMessage(lang, ctx.DB, callbackQuery)
 		ctx.Bot.Send(msg)
 		return true
 	case callbackQuery.Data == "click_bundle_package_cost_records_ST":
-		msg := catfee.ExtractBundlePackageST(lang, ctx.DB, callbackQuery)
+		msg := catfee.BuildSmartTransactionPackageCostRecordsMessage(lang, ctx.DB, callbackQuery)
 		ctx.Bot.Send(msg)
 		return true
 	case callbackQuery.Data == "prev_st_bundle_package_page":
@@ -128,7 +128,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		catfee.PromptCustodyAddressRemove(lang, ctx.Cache, ctx.DB, ctx.Bot, callbackQuery)
 		return true
 	case callbackQuery.Data == "click_bundle_package_management":
-		msg := service.ExtractBundlePackage(lang, ctx.DB, callbackQuery)
+		msg := service.BuildBundlePackageCostRecordsMessage(lang, ctx.DB, callbackQuery)
 		ctx.Bot.Send(msg)
 		return true
 	case callbackQuery.Data == "click_deposit_usdt_records":

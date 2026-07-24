@@ -19,12 +19,12 @@ func main() {
 
 	application, err := bootstrap.BuildApp()
 	if err != nil {
-		logger.Printf("build app err: %v", err)
+		logger.Errorf("build app err: %v", err)
 		os.Exit(1)
 	}
 
 	if err := application.Run(processUpdate); err != nil {
-		logger.Printf("run app err: %v", err)
+		logger.Errorf("run app err: %v", err)
 		os.Exit(1)
 	}
 }

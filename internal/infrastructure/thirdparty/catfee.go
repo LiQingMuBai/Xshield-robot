@@ -38,14 +38,14 @@ type PremiumDataResp struct {
 }
 
 // 下单
-func (s CatfeeService) Order(_address string) {
+func (s CatfeeService) Order(address string) {
 	method := "POST" // Can be "GET", "PUT", or "DELETE"
 	path := "/v1/order"
 
 	// Example: Create order
 	queryParams := map[string]string{
 		"quantity": "65000",
-		"receiver": _address,
+		"receiver": address,
 		"duration": "1h",
 	}
 
@@ -57,19 +57,16 @@ func (s CatfeeService) Order(_address string) {
 
 	resp, err := s.CreateRequest(url, method, timestamp, signature)
 	if err != nil {
-		logger.Printf("catfee order request failed: %v", err)
+		logger.Errorf("catfee order request failed: %v", err)
 		return
 	}
 	defer resp.Body.Close()
 
-	body, err := ioutil.ReadAll(resp.Body)
-	if err != nil {
-		logger.Printf("catfee order response read failed: %v", err)
+	if _, err := ioutil.ReadAll(resp.Body); err != nil {
+		logger.Errorf("catfee order response read failed: %v", err)
 		return
 	}
 
-	logger.Println("Response Status:", resp.Status)
-	logger.Println("Response Body:", string(body))
 }
 
 // 购买电报会员
@@ -109,7 +106,7 @@ func (s CatfeeService) Premium(username string, months string) (PremiumDataResp,
 	// 解析JSON响应
 	err = json.Unmarshal(body, &dataResp)
 	if err != nil {
-		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("添加基础版地址，解析JSON失败: %v", err)
 	}
 
 	return dataResp, nil
@@ -117,7 +114,7 @@ func (s CatfeeService) Premium(username string, months string) (PremiumDataResp,
 }
 
 // 增加
-func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, error) {
+func (s CatfeeService) MateOpenBasicGet(address string) (BasicAddressResp, error) {
 	method := "GET" // 可以修改为 "GET", "PUT", "DELETE"
 	var baseAddressResp BasicAddressResp
 
@@ -127,7 +124,7 @@ func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, erro
 	//CF-ACCESS-SIGN: text
 	//CF-ACCESS-TIMESTAMP: text
 	//Accept: */*
-	path := "/v1/mate/open/basic/" + _address
+	path := "/v1/mate/open/basic/" + address
 	//// 生成请求头
 	timestamp := s.GenerateTimestamp()
 	queryParams := map[string]string{}
@@ -150,11 +147,10 @@ func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, erro
 		return baseAddressResp, fmt.Errorf("catfee mate open basic get response read failed: %w", err)
 	}
 
-	logger.Println(string(body))
 	// 解析JSON响应
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		logger.Printf("查询基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("查询基础版地址，解析JSON失败: %v", err)
 	}
 
 	return baseAddressResp, nil
@@ -162,7 +158,7 @@ func (s CatfeeService) MateOpenBasicGet(_address string) (BasicAddressResp, erro
 }
 
 // 增加
-func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error) {
+func (s CatfeeService) MateOpenBasicAdd(address, chatID string) (string, error) {
 	method := "POST" // 可以修改为 "GET", "PUT", "DELETE"
 
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
@@ -171,7 +167,7 @@ func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error
 	//CF-ACCESS-SIGN: text
 	//CF-ACCESS-TIMESTAMP: text
 	//Accept: */*
-	path := "/v1/mate/open/basic?address=" + _address + "&remark=" + _chatID + "&is_auto_closable=true&quota_mode=UNLIMITED"
+	path := "/v1/mate/open/basic?address=" + address + "&remark=" + chatID + "&is_auto_closable=true&quota_mode=UNLIMITED"
 	//// 生成请求头
 	timestamp := s.GenerateTimestamp()
 	queryParams := map[string]string{}
@@ -198,7 +194,7 @@ func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("添加基础版地址，解析JSON失败: %v", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -206,7 +202,7 @@ func (s CatfeeService) MateOpenBasicAdd(_address, _chatID string) (string, error
 }
 
 // 关闭
-func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
+func (s CatfeeService) MateOpenBasicDisable(address string) (string, error) {
 	method := "PATCH" // 可以修改为 "GET", "PUT", "DELETE"
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
 	//Host: api.catfee.io
@@ -214,7 +210,7 @@ func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
 	//CF-ACCESS-SIGN: text
 	//CF-ACCESS-TIMESTAMP: text
 	//Accept: */*
-	path := "/v1/mate/open/basic/" + _address + "/enable"
+	path := "/v1/mate/open/basic/" + address + "/enable"
 	//// 生成请求头
 	timestamp := s.GenerateTimestamp()
 	queryParams := map[string]string{
@@ -238,12 +234,11 @@ func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
 	if err != nil {
 		return "", fmt.Errorf("catfee mate open basic disable response read failed: %w", err)
 	}
-	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("添加基础版地址，解析JSON失败: %v", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -251,7 +246,7 @@ func (s CatfeeService) MateOpenBasicDisable(_address string) (string, error) {
 }
 
 // 启动
-func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
+func (s CatfeeService) MateOpenBasicEnable(address string) (string, error) {
 	method := "PATCH" // 可以修改为 "GET", "PUT", "DELETE"
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
 	//Host: api.catfee.io
@@ -259,7 +254,7 @@ func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
 	//CF-ACCESS-SIGN: text
 	//CF-ACCESS-TIMESTAMP: text
 	//Accept: */*
-	path := "/v1/mate/open/basic/" + _address + "/enable"
+	path := "/v1/mate/open/basic/" + address + "/enable"
 	//// 生成请求头
 	timestamp := s.GenerateTimestamp()
 	queryParams := map[string]string{
@@ -284,12 +279,11 @@ func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
 		return "", fmt.Errorf("catfee mate open basic enable response read failed: %w", err)
 	}
 
-	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		logger.Printf("添加基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("添加基础版地址，解析JSON失败: %v", err)
 	}
 
 	return baseAddressResp.Data.Status, nil
@@ -297,7 +291,7 @@ func (s CatfeeService) MateOpenBasicEnable(_address string) (string, error) {
 }
 
 // 删除
-func (s CatfeeService) MateOpenBasicDelete(_address string) (int, error) {
+func (s CatfeeService) MateOpenBasicDelete(address string) (int, error) {
 	method := "DELETE" // 可以修改为 "GET", "PUT", "DELETE"
 	//POST /v1/mate/open/basic?address=text&is_auto_closable=true&quota_mode=UNLIMITED HTTP/1.1
 	//Host: api.catfee.io
@@ -305,7 +299,7 @@ func (s CatfeeService) MateOpenBasicDelete(_address string) (int, error) {
 	//CF-ACCESS-SIGN: text
 	//CF-ACCESS-TIMESTAMP: text
 	//Accept: */*
-	path := "/v1/mate/open/basic/" + _address
+	path := "/v1/mate/open/basic/" + address
 	//// 生成请求头
 	timestamp := s.GenerateTimestamp()
 	queryParams := map[string]string{}
@@ -328,12 +322,11 @@ func (s CatfeeService) MateOpenBasicDelete(_address string) (int, error) {
 		return 0, fmt.Errorf("catfee mate open basic delete response read failed: %w", err)
 	}
 
-	logger.Println(string(body))
 	// 解析JSON响应
 	var baseAddressResp BasicAddressDeleteResp
 	err = json.Unmarshal(body, &baseAddressResp)
 	if err != nil {
-		logger.Printf("删除基础版地址，解析JSON失败: %v\n", err)
+		logger.Errorf("删除基础版地址，解析JSON失败: %v", err)
 	}
 
 	return baseAddressResp.Code, nil

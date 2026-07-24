@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI) {
+func MenuNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
@@ -25,22 +25,22 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["star_telegram_second_menu"], "purchase_star_menu"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["star_telegram_second_menu"], "purchase_star_menu"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["3_month_premium_fee"]+monthRecord_3m.Amount+"U", "click_buy_month_3"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["3_month_premium_fee"]+monthRecord_3m.Amount+"U", "click_buy_month_3"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["6_month_premium_fee"]+monthRecord_6m.Amount+"U", "click_buy_month_6"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["6_month_premium_fee"]+monthRecord_6m.Amount+"U", "click_buy_month_6"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["12_month_premium_fee"]+monthRecord_12m.Amount+"U", "click_buy_month_12"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["12_month_premium_fee"]+monthRecord_12m.Amount+"U", "click_buy_month_12"),
 		),
 
 		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["balance_pay_order"], "click_bundle_package_address_stats"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["cancel_order"], "click_bundle_package_address_stats"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["balance_pay_order"], "click_bundle_package_address_stats"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["cancel_order"], "click_bundle_package_address_stats"),
 		//),
 	)
 
@@ -50,13 +50,13 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 
 	if err := sendVideoWithCache(
 		bot,
-		_chatID,
+		chatID,
 		"telegram_premium.mp4",
 		videoPath,
-		global.Translations[_lang]["purchase_telegram_products_tips"],
+		global.Translations[lang]["purchase_telegram_products_tips"],
 		inlineKeyboard,
 	); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 	}
 
 	//dictDetailRepo := repositories.NewSysDictionariesRepo(db)
@@ -72,7 +72,7 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 	//
 	//logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
 	//
-	//originStr := global.Translations[_lang]["member_telegram_desc"]
+	//originStr := global.Translations[lang]["member_telegram_desc"]
 	//
 	//targetStr := strings.ReplaceAll(originStr, "{1_times_cost_trx}", energy_cost)
 	//targetStr = strings.ReplaceAll(targetStr, "{2_times_cost_trx}", energy_cost_2x)
@@ -80,43 +80,43 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 	//targetStr = strings.ReplaceAll(targetStr, "{4_times_cost_trx}", energy_cost_4x)
 	//targetStr = strings.ReplaceAll(targetStr, "{5_times_cost_trx}", energy_cost_5x)
 	//
-	//msg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["member_telegram_desc"])
+	//msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["member_telegram_desc"])
 	//msg.ReplyMarkup = inlineKeyboard
 	//msg.ParseMode = "HTML"
 	//
 	//bot.Send(msg)
 }
 
-func MenuNavigateForMonth(cache cache.Cache, _lang string, db *gorm.DB, _chatID int64, username string, bot *tgbotapi.BotAPI, _month string) {
+func MenuNavigateForMonth(cache cache.Cache, lang string, db *gorm.DB, chatID int64, username string, bot *tgbotapi.BotAPI, month string) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["activate_current_user"], "activate_current_user_"+_month),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["activate_current_user"], "activate_current_user_"+month),
 		),
 	)
 
-	tips := global.Translations[_lang]["activate_current_user_tips"]
+	tips := global.Translations[lang]["activate_current_user_tips"]
 
 	tips = strings.ReplaceAll(tips, "{username}", username)
-	tips = strings.ReplaceAll(tips, "{month}", _month)
+	tips = strings.ReplaceAll(tips, "{month}", month)
 	premiumUserDB := repositories.NewTelegramPremiumConfigRepository(db)
 
-	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), _month+"_month_premium_fee")
+	monthRecord, _ := premiumUserDB.GetByEnName(context.Background(), month+"_month_premium_fee")
 
 	tips = strings.ReplaceAll(tips, "{price}", monthRecord.Amount)
 
 	// 创建视频消息（从本地文件）
-	videoMsg := tgbotapi.NewMessage(_chatID, tips)
+	videoMsg := tgbotapi.NewMessage(chatID, tips)
 	videoMsg.ReplyMarkup = inlineKeyboard
 	videoMsg.ParseMode = "HTML"
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 	}
 
 	expiration := 1 * time.Minute // 短时间缓存空值
 
 	//设置用户状态
-	cache.Set(strconv.FormatInt(_chatID, 10), "premium_user_rent_month"+_month, expiration)
+	cache.Set(strconv.FormatInt(chatID, 10), "premium_user_rent_month"+month, expiration)
 
 }

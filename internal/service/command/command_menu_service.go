@@ -11,11 +11,11 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI) {
+func MenuNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["address_list"], "click_bundle_package_address_stats"),
-			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["add_address"], "address_manager_add"),
+			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[lang]["address_list"], "click_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["add_address"], "address_manager_add"),
 		),
 	)
 
@@ -32,7 +32,7 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 
 	logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
 
-	originStr := global.Translations[_lang]["command_energy_desc"]
+	originStr := global.Translations[lang]["command_energy_desc"]
 
 	targetStr := strings.ReplaceAll(originStr, "{1_times_cost_trx}", energy_cost)
 	targetStr = strings.ReplaceAll(targetStr, "{2_times_cost_trx}", energy_cost_2x)
@@ -40,7 +40,7 @@ func MenuNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI
 	targetStr = strings.ReplaceAll(targetStr, "{4_times_cost_trx}", energy_cost_4x)
 	targetStr = strings.ReplaceAll(targetStr, "{5_times_cost_trx}", energy_cost_5x)
 
-	msg := tgbotapi.NewMessage(_chatID, targetStr)
+	msg := tgbotapi.NewMessage(chatID, targetStr)
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 

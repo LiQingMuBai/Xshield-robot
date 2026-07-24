@@ -11,7 +11,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
+func MenuNavigateTronEnergy(lang string, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
 
@@ -31,7 +31,7 @@ func MenuNavigateTronEnergy(_lang string, db *gorm.DB, message *tgbotapi.Message
 	logger.Printf("energy_cost_2x: %s\n", energy_cost_2x)
 	logger.Printf("energy_cost_10x: %s\n", energy_cost_10x)
 
-	originStr := global.Translations[_lang]["yhb_desc"]
+	originStr := global.Translations[lang]["yhb_desc"]
 
 	targetStr := strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(strings.ReplaceAll(originStr, "{energy_cost}", result), "{energy_cost_2x}", energy_cost_2x), "{receiveAddress}", yhb_tron_receive_address), "{energy_cost_10x}", energy_cost_10x)
 

@@ -30,34 +30,23 @@ func Setup(logDir string) error {
 	encoderConfig.EncodeTime = zapcore.TimeEncoderOfLayout("2006-01-02 15:04:05.000000")
 	encoderConfig.EncodeLevel = zapcore.CapitalLevelEncoder
 
-	syncer := zapcore.AddSync(&stdoutFileWriter{
-		stdout: os.Stdout,
-		file:   writer,
-	})
-
-	core := zapcore.NewCore(
-		zapcore.NewConsoleEncoder(encoderConfig),
-		syncer,
+	encoder := zapcore.NewConsoleEncoder(encoderConfig)
+	fileCore := zapcore.NewCore(
+		encoder,
+		zapcore.AddSync(writer),
 		zapcore.DebugLevel,
 	)
+	stderrCore := zapcore.NewCore(
+		encoder,
+		zapcore.AddSync(os.Stderr),
+		zapcore.ErrorLevel,
+	)
 
-	logger := zap.New(core)
+	logger := zap.New(zapcore.NewTee(fileCore, stderrCore))
 	zap.ReplaceGlobals(logger)
 	_ = zap.RedirectStdLog(logger)
 
 	log.SetFlags(0)
 	log.SetPrefix("")
 	return nil
-}
-
-type stdoutFileWriter struct {
-	stdout *os.File
-	file   *DailyRotateWriter
-}
-
-func (w *stdoutFileWriter) Write(p []byte) (int, error) {
-	if _, err := w.stdout.Write(p); err != nil {
-		return 0, err
-	}
-	return w.file.Write(p)
 }

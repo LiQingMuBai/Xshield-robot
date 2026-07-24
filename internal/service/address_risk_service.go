@@ -7,11 +7,10 @@ import (
 	"strings"
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
-	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/request"
 )
 
-func ExtractAddressRiskQuery(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
+func BuildFreezeAlertDeductionRecordsMessage(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
 
 	userAddressDetectionRepo := repositories.NewUserAddressMonitorEventRepo(db)
 	var info request.UserAddressDetectionSearch
@@ -36,23 +35,23 @@ func ExtractAddressRiskQuery(_lang string, db *gorm.DB, callbackQuery *tgbotapi.
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["freeze_alert_deduction_record"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_address_risk_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_address_risk_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_address_risk_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_risk_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
 
-func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -85,16 +84,16 @@ func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["freeze_alert_deduction_record"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_address_risk_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_address_risk_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_address_risk_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_risk_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -122,16 +121,16 @@ func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["freeze_alert_deduction_record"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_address_risk_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_address_risk_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_address_risk_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_risk_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -140,7 +139,7 @@ func ShowPrevAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	return state, false
 }
 
-func ShowNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextAddressRiskPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -155,11 +154,7 @@ func ShowNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 	info.PageInfo.PageSize = 10
 	trxlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	logger.Printf("currentpage : %d", state.CurrentPage)
-	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
-
-	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -180,23 +175,21 @@ func ShowNextAddressRiskPage(_lang string, callbackQuery *tgbotapi.CallbackQuery
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[_lang]["freeze_alert_deduction_record"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["freeze_alert_deduction_record"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_address_risk_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_address_risk_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_address_risk_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_address_risk_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_risk_home"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	logger.Printf("state: %v\n", state)
-
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
 }

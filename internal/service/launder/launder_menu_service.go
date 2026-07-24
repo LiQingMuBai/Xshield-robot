@@ -18,7 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI) {
+func MenuLaunderNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 
 	coinLaunderingConfigRepo := repositories.NewCoinLaunderingConfigRepository(db)
 
@@ -38,13 +38,13 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 	btn := tgbotapi.NewInlineKeyboardButtonURL("FixedFloat rules", "https://ff.io/terms-of-service")
 	//row := tgbotapi.NewInlineKeyboardRow(btn)
 
-	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["other_blockchain_usdt_tips"], "click_callcenter"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["customize_usdt_amount_tips"], "click_callcenter"), btn)
+	extraButtons = append(extraButtons, tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_callcenter"), tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_callcenter"), btn)
 	//
 	//inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 	//	//tgbotapi.NewInlineKeyboardRow(
 	//	//
-	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["member_telegram_menu"], "purchase_telegram_premium"),
-	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
+	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["member_telegram_menu"], "purchase_telegram_premium"),
+	//	//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
 	//	//),
 	//	tgbotapi.NewInlineKeyboardRow(
 	//		tgbotapi.NewInlineKeyboardButtonData("100"+"U", "click_launder_"+"100"),
@@ -59,8 +59,8 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 	//		tgbotapi.NewInlineKeyboardButtonData("10000"+"U", "click_launder_"+"8000"),
 	//	),
 	//	tgbotapi.NewInlineKeyboardRow(
-	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["other_blockchain_usdt_tips"], "click_launder_"+"1000"),
-	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["customize_usdt_amount_tips"], "click_launder_"+"2000"),
+	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_launder_"+"1000"),
+	//		tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_launder_"+"2000"),
 	//	),
 	//)
 
@@ -88,17 +88,17 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 	videoPath := "./static/fixedfloat.jpg"
 
 	// 创建视频消息（从本地文件）
-	videoMsg := tgbotapi.NewPhoto(_chatID, tgbotapi.FilePath(videoPath))
-	videoMsg.Caption = global.Translations[_lang]["fixedfloat_rules"] + "\n\n" + global.Translations[_lang]["coin_laundering_tips"]
+	videoMsg := tgbotapi.NewPhoto(chatID, tgbotapi.FilePath(videoPath))
+	videoMsg.Caption = global.Translations[lang]["fixedfloat_rules"] + "\n\n" + global.Translations[lang]["coin_laundering_tips"]
 	// 创建视频消息（从本地文件）
-	//videoMsg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["coin_laundering_tips"])
+	//videoMsg := tgbotapi.NewMessage(chatID, global.Translations[lang]["coin_laundering_tips"])
 	videoMsg.ParseMode = "HTML"
 	videoMsg.ReplyMarkup = inlineKeyboard
 	//videoMsg.SupportsStreaming = true // 启用流式播放（推荐）
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 		//// 可选：给用户发错误提示
 		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
 		//bot.Send(errorMsg)
@@ -106,22 +106,22 @@ func MenuLaunderNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi
 
 }
 
-func MenuNavigateForLaunder(cache cache.Cache, _lang string, db *gorm.DB, _chatID int64, username string, bot *tgbotapi.BotAPI, amount string) {
+func MenuNavigateForLaunder(cache cache.Cache, lang string, db *gorm.DB, chatID int64, username string, bot *tgbotapi.BotAPI, amount string) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		//tgbotapi.NewInlineKeyboardRow(
 		//
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["member_telegram_menu"], "purchase_telegram_premium"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["member_telegram_menu"], "purchase_telegram_premium"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
 		//),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["bsc_usdt_name"], "click_laundering_USDTBSC_"+amount),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["ethereum_usdt_name"], "click_laundering_USDT_"+amount),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["bsc_usdt_name"], "click_laundering_USDTBSC_"+amount),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["ethereum_usdt_name"], "click_laundering_USDT_"+amount),
 			//tgbotapi.NewInlineKeyboardButtonData("Poly-U", "click_laundering_polygon_"+amount),
 			//tgbotapi.NewInlineKeyboardButtonData("Arb-U", "click_laundering_arbitrum_"+amount),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["bsc_usdt_name"], "click_laundering_bsc_"+amount),
-			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["ethereum_usdt_name"], "click_laundering_ethereum_"+amount),
+			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["bsc_usdt_name"], "click_laundering_bsc_"+amount),
+			//tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["ethereum_usdt_name"], "click_laundering_ethereum_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("Polygon-USDT", "click_laundering_USDTMATIC_"+amount),
 			tgbotapi.NewInlineKeyboardButtonData("Arbitrum-USDT", "click_laundering_USDTARBITRUM_"+amount),
 		),
@@ -134,19 +134,19 @@ func MenuNavigateForLaunder(cache cache.Cache, _lang string, db *gorm.DB, _chatI
 		),
 
 		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["other_blockchain_usdt_tips"], "click_laundering_"+"1000"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["customize_usdt_amount_tips"], "click_laundering_"+"2000"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["other_blockchain_usdt_tips"], "click_laundering_"+"1000"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["customize_usdt_amount_tips"], "click_laundering_"+"2000"),
 		//),
 	)
 
-	videoMsg := tgbotapi.NewMessage(_chatID, global.Translations[_lang]["coin_laundering_choose_coin_tips"])
+	videoMsg := tgbotapi.NewMessage(chatID, global.Translations[lang]["coin_laundering_choose_coin_tips"])
 
 	videoMsg.ReplyMarkup = inlineKeyboard
 	//videoMsg.SupportsStreaming = true // 启用流式播放（推荐）
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 		//// 可选：给用户发错误提示
 		//errorMsg := tgbotapi.NewMessage(callback.Message.Chat.ID, "❌ 视频发送失败，请稍后再试。")
 		//bot.Send(errorMsg)
@@ -155,14 +155,14 @@ func MenuNavigateForLaunder(cache cache.Cache, _lang string, db *gorm.DB, _chatI
 	expiration := 1 * time.Minute // 短时间缓存空值
 
 	//设置用户状态
-	cache.Set(strconv.FormatInt(_chatID, 10), "purchase_telegram_stars"+amount, expiration)
+	cache.Set(strconv.FormatInt(chatID, 10), "purchase_telegram_stars"+amount, expiration)
 
 }
 
-func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, count string) {
+func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, count string) {
 	username = strings.ReplaceAll(username, "@", "")
 
-	tips := global.Translations[_lang]["purchase_telegram_stars"]
+	tips := global.Translations[lang]["purchase_telegram_stars"]
 
 	tips = strings.ReplaceAll(tips, "{stars}", count)
 	tips = strings.ReplaceAll(tips, "{username}", username)
@@ -187,11 +187,11 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	usdtDeposit.BundleId = _count
 	//
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
-	//_agent := os.Getenv("Agent")
+	agent := os.Getenv("BOT_AGENT")
+	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
+	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
@@ -204,12 +204,12 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		logger.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Errorf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		logger.Printf("Error updating usdt placeholder: %v", err)
+		logger.Errorf("Error updating usdt placeholder: %v", err)
 	}
 
 	//新增会员订单
@@ -230,9 +230,9 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
 
-	//_agent := os.Getenv("Agent")
+	//agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
@@ -240,8 +240,8 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["balance_pay_order"], "launder_"+orderNO),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["cancel_order"], "cancel_stars_"+orderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["balance_pay_order"], "launder_"+orderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["cancel_order"], "cancel_stars_"+orderNO),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

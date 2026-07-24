@@ -14,7 +14,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func MenuNavigateCatfeeSmartTransactionPlans(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
 
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 	trxlist, err := bundlesRepo.ListActiveByToken(context.Background(), token)
@@ -25,23 +25,23 @@ func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID 
 	var onlyButtons []tgbotapi.InlineKeyboardButton
 	var keyboard [][]tgbotapi.InlineKeyboardButton
 	for _, trx := range trxlist {
-		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData("🛒"+strings.ReplaceAll(trx.Name, "笔", global.Translations[_lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
+		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData("🛒"+strings.ReplaceAll(trx.Name, "笔", global.Translations[lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
 	}
 
 	if token == "TRX" {
 		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
 		)
 	}
 	if token == "USDT" {
 		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
 		)
 	}
 
 	extraButtons = append(extraButtons,
-		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
-		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_bundle_package_cost_records_ST"),
+		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], "click_bundle_package_cost_records_ST"),
 	)
 
 	for i := 0; i < len(allButtons); i += 2 {
@@ -74,7 +74,7 @@ func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(_chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -83,13 +83,13 @@ func MenuNavigateCatfeeSmartTransactionPlans(_lang string, db *gorm.DB, _chatID 
 		user.TronAmount = "0"
 	}
 
-	msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[_lang]["smart_transaction_plans_tips"])
+	msg := tgbotapi.NewMessage(chatID, "<b>"+global.Translations[lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[lang]["smart_transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 
 	bot.Send(msg)
 }
-func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI, token string) {
+func ShowSmartTransactionBundlePackageMenu(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string) {
 	//bundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlesRepo := repositories.NewUserSmartTransactionBundlesRepository(db)
 
@@ -105,24 +105,24 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 	var keyboard [][]tgbotapi.InlineKeyboardButton
 	for _, trx := range trxlist {
 
-		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(strings.ReplaceAll(trx.Name, "笔", global.Translations[_lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
+		allButtons = append(allButtons, tgbotapi.NewInlineKeyboardButtonData(strings.ReplaceAll(trx.Name, "笔", global.Translations[lang]["笔"]), CombineInt64AndString("ST_bundle_", trx.Id)))
 	}
 
 	if token == "TRX" {
 		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_usdt_payment"], "click_switch_usdt_ST"),
 		)
 	}
 	if token == "USDT" {
 		onlyButtons = append(onlyButtons,
-			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[_lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔁"+global.Translations[lang]["transaction_plans_trx_payment"], "click_switch_trx_ST"),
 		)
 	}
 
 	extraButtons = append(extraButtons,
-		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[_lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
-		//tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["add_address"], "click_bundle_package_address_management"),
-		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[_lang]["billing"], "click_bundle_package_cost_records_ST"),
+		tgbotapi.NewInlineKeyboardButtonData("🔢"+global.Translations[lang]["smart_transaction_address_list"], "click_bundle_package_address_stats_ST"),
+		//tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["add_address"], "click_bundle_package_address_management"),
+		tgbotapi.NewInlineKeyboardButtonData("📜"+global.Translations[lang]["billing"], "click_bundle_package_cost_records_ST"),
 	)
 
 	for i := 0; i < len(allButtons); i += 2 {
@@ -155,7 +155,7 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(keyboard...)
 
 	userRepo := repositories.NewUserRepository(db)
-	user, _ := userRepo.GetByChatID(_chatID)
+	user, _ := userRepo.GetByChatID(chatID)
 	if IsEmpty(user.Amount) {
 		user.Amount = "0"
 	}
@@ -164,16 +164,15 @@ func ShowSmartTransactionBundlePackageMenu(_lang string, db *gorm.DB, _chatID in
 		user.TronAmount = "0"
 	}
 
-	msg := tgbotapi.NewMessage(_chatID, "<b>"+global.Translations[_lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[_lang]["smart_transaction_plans_tips"])
+	msg := tgbotapi.NewMessage(chatID, "<b>"+global.Translations[lang]["smart_transaction_plans_head"]+"</b>"+"\n\n"+global.Translations[lang]["smart_transaction_plans_tips"])
 	msg.ReplyMarkup = inlineKeyboard
 	msg.ParseMode = "HTML"
 
 	bot.Send(msg)
 }
 
-func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
+func BuildSmartTransactionPackageCostRecordsMessage(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
 
-	logger.Println("ExtractBundlePackageST")
 	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
 	var info request.UserAddressDetectionSearch
@@ -183,7 +182,7 @@ func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	trxlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 	if err != nil {
 
-		logger.Println("能量笔数套餐空", err)
+		logger.Error("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
@@ -193,7 +192,7 @@ func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 
 			//builder.WriteString(" TRX ")
 			//builder.WriteString(" （能量笔数套餐）")
@@ -207,24 +206,24 @@ func ExtractBundlePackageST(_lang string, db *gorm.DB, callbackQuery *tgbotapi.C
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_st_bundle_package_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_st_bundle_package_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_st_bundle_package_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_st_bundle_package_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
 
-func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -239,11 +238,7 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 	info.PageInfo.PageSize = 5
 	trxlist, total, _ := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 
-	logger.Printf("currentpage : %d", state.CurrentPage)
-	logger.Printf("total: %v\n", total)
 	totalPages := (total + 5 - 1) / 5
-
-	logger.Printf("totalPages : %d", totalPages)
 	if int64(state.CurrentPage) > totalPages {
 		state.CurrentPage = totalPages
 		return true
@@ -256,7 +251,7 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 		builder.WriteString(word.CreatedDate)
 		builder.WriteString("]")
 		builder.WriteString(" -")
-		builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+		builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 		//builder.WriteString(" （能量笔数套餐）")
 
 		builder.WriteString("\n") // 添加分隔符
@@ -264,28 +259,26 @@ func ShowNextBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_st_bundle_package_page"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_st_bundle_package_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_st_bundle_package_page"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_st_bundle_package_page"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	bot.Send(msg)
 	//}
-	logger.Printf("state: %v\n", state)
-
 	global.DepositStates[callbackQuery.Message.Chat.ID] = state
 	return false
 }
 
-func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevBundlePackagePage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -310,7 +303,7 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
@@ -318,17 +311,17 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_st_bundle_package_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_st_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_st_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_st_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -348,7 +341,7 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString(" -")
-			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[_lang]["笔"]))
+			builder.WriteString(strings.ReplaceAll(word.BundleName, "笔", global.Translations[lang]["笔"]))
 			//builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
@@ -356,17 +349,17 @@ func ShowPrevBundlePackagePage(_lang string, callbackQuery *tgbotapi.CallbackQue
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["deduction_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deduction_records"]+"\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "prev_st_bundle_package_page"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "next_st_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "prev_st_bundle_package_page"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "next_st_bundle_package_page"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard

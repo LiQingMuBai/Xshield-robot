@@ -19,9 +19,9 @@ import (
 	"gorm.io/gorm"
 )
 
-func RemoveBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
+func RemoveBundlePackageAddress(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
 	if !IsValidAddress(message.Text) {
-		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return true
@@ -36,21 +36,21 @@ func RemoveBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.B
 
 	createErr := userOperationPackageAddressesRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text)
 	if createErr != nil {
-		logger.Printf("createErr: %s", createErr)
+		logger.Errorf("createErr: %v", createErr)
 		return true
 	}
-	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_deleted_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
 	//ShowBundlePackageAddressManagement(cache, bot, message.Chat.ID, db)
 
-	msg2 := BuildBundlePackageAddressSummaryMessage(_lang, db, message.Chat.ID)
+	msg2 := BuildBundlePackageAddressSummaryMessage(lang, db, message.Chat.ID)
 	bot.Send(msg2)
 	return false
 }
-func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
+func AddBundlePackageAddress(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) bool {
 	if !IsValidAddress(message.Text) {
-		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return true
@@ -61,10 +61,10 @@ func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotA
 	exitRecord, _ := userOperationPackageAddressesRepo.GetByAddressAndChatID(context.Background(), message.Text, message.Chat.ID)
 
 	if exitRecord.Id > 0 {
-		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+global.Translations[_lang]["address_added_tips"]+"\n")
+		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+global.Translations[lang]["address_added_tips"]+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
-		ShowBundlePackageAddressManagement(_lang, cache, bot, message.Chat.ID, db)
+		ShowBundlePackageAddressManagement(lang, cache, bot, message.Chat.ID, db)
 		return true
 	}
 
@@ -75,19 +75,19 @@ func AddBundlePackageAddress(_lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	createErr := userOperationPackageAddressesRepo.Create(context.Background(), &record)
 	if createErr != nil {
-		logger.Printf("createErr: %s", createErr)
+		logger.Errorf("createErr: %v", createErr)
 		return true
 	}
-	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[_lang]["address_added_success"]+"</b>"+"\n")
+	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_added_success"]+"</b>"+"\n")
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
-	ShowBundlePackageAddressManagement(_lang, cache, bot, message.Chat.ID, db)
+	ShowBundlePackageAddressManagement(lang, cache, bot, message.Chat.ID, db)
 	return false
 }
 
-func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
+func ApplyBundlePackage(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
 	if !IsValidAddress(message.Text) {
-		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return true
@@ -127,9 +127,9 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 			//	"💴"+"<b>"+"当前TRX余额:  "+"</b>"+user.TronAmount+" TRX"+"\n"+
 			//	"💴"+"<b>"+"当前USDT余额:  "+"</b>"+user.Amount+" USDT")
 
-			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
-				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
+				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+				"💰"+global.Translations[lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
 				"- USDT："+user.Amount)
 
@@ -137,7 +137,7 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
 			),
 		)
 
@@ -181,17 +181,17 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 	if err != nil {
 		return true
 	}
-	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"🧾"+global.Translations[_lang]["package_order_purchased_successfully"]+"\n\n"+
-		global.Translations[_lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[_lang]["笔"])+"\n\n"+
-		global.Translations[_lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n\n"+
-		global.Translations[_lang]["address"]+"："+message.Text+"\n\n"+
-		global.Translations[_lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n\n")
+	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"🧾"+global.Translations[lang]["package_order_purchased_successfully"]+"\n\n"+
+		global.Translations[lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[lang]["笔"])+"\n\n"+
+		global.Translations[lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n\n"+
+		global.Translations[lang]["address"]+"："+message.Text+"\n\n"+
+		global.Translations[lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n\n")
 	msg.ParseMode = "HTML"
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["package_address_list"], "click_bundle_package_address_stats"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[lang]["package_address_list"], "click_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -204,7 +204,7 @@ func ApplyBundlePackage(_lang string, cache cache.Cache, bot *tgbotapi.BotAPI, m
 	cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_apply_bundle_package_address", expiration)
 	return false
 }
-func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildBundlePackageAddressSummaryMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//logger.Println("ExtractBundlePackage")
 	//userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
@@ -224,26 +224,26 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 
 	if err != nil {
 
-		logger.Println("能量笔数套餐空", err)
+		logger.Error("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if len(orderlist) > 0 {
 
 		builder.WriteString("\n")
 
-		builder.WriteString(global.Translations[_lang]["remaining"])
+		builder.WriteString(global.Translations[lang]["remaining"])
 		builder.WriteString(strconv.FormatInt(user.BundleTimes, 10))
-		builder.WriteString(" " + global.Translations[_lang]["笔"])
+		builder.WriteString(" " + global.Translations[lang]["笔"])
 
 		//usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-		builder.WriteString("     " + global.Translations[_lang]["used"])
+		builder.WriteString("     " + global.Translations[lang]["used"])
 		builder.WriteString(strconv.FormatInt(usedTimes, 10))
-		builder.WriteString(" " + global.Translations[_lang]["笔"])
+		builder.WriteString(" " + global.Translations[lang]["笔"])
 
 		//builder.WriteString("\n") // 添加分隔符
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[_lang]["address"]+"：")
+			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			//builder.WriteString("\n")
 			//builder.WriteString("<code>" + order.Address + "</code>")
 			//builder.WriteString("\n")
@@ -270,7 +270,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 			//	//break
 			//}
 
-			//builder.WriteString(global.Translations[_lang]["address"]+"：")
+			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			//builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
@@ -285,7 +285,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 			//}
 			//builder.WriteString("\n") // 添加分隔符
 			if user.BundleTimes > 0 {
-				builder.WriteString(global.Translations[_lang]["dispatch_now"] + ":/dispatchNow")
+				builder.WriteString(global.Translations[lang]["dispatch_now"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("_1")
 				builder.WriteString("\n") // 添加分隔符
@@ -295,7 +295,7 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 			}
 			if user.BundleTimes > 1 {
 				//builder.WriteString("\n") // 添加分隔符
-				builder.WriteString(global.Translations[_lang]["dispatch_now_2"] + ":/dispatchNow")
+				builder.WriteString(global.Translations[lang]["dispatch_now_2"] + ":/dispatchNow")
 				builder.WriteString(strconv.FormatInt(order.Id, 10))
 				builder.WriteString("_2")
 				builder.WriteString("\n") // 添加分隔符
@@ -307,51 +307,51 @@ func BuildBundlePackageAddressSummaryMessage(_lang string, db *gorm.DB, chatID i
 			//builder.WriteString("\n")            // 添加分隔符
 		}
 		//if user.BundleTimes > 0 {
-		//	builder.WriteString(global.Translations[_lang]["address_list_empty_tips"]+"\n\n") // 添加分隔符
+		//	builder.WriteString(global.Translations[lang]["address_list_empty_tips"]+"\n\n") // 添加分隔符
 		//	builder.WriteString("<b>向其他地址发能</b>:/dispatchOthers")
 		//	builder.WriteString("\n") // 添加分隔符
 		//}
 	} else {
 		builder.WriteString("\n")
 
-		builder.WriteString(global.Translations[_lang]["remaining"])
+		builder.WriteString(global.Translations[lang]["remaining"])
 		builder.WriteString(strconv.FormatInt(user.BundleTimes, 10))
-		builder.WriteString(" " + global.Translations[_lang]["笔"])
+		builder.WriteString(" " + global.Translations[lang]["笔"])
 
 		//usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-		builder.WriteString("     " + global.Translations[_lang]["used"])
+		builder.WriteString("     " + global.Translations[lang]["used"])
 		builder.WriteString(strconv.FormatInt(usedTimes, 10))
-		builder.WriteString(" " + global.Translations[_lang]["笔"])
+		builder.WriteString(" " + global.Translations[lang]["笔"])
 		builder.WriteString("\n")
-		builder.WriteString(global.Translations[_lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
+		builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
 	}
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[_lang]["package_address_list"]+"\n"+
+	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[lang]["package_address_list"]+"\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[_lang]["dispatch_other"], "dispatch_Now_Others"),
+			tgbotapi.NewInlineKeyboardButtonData("⚡️"+global.Translations[lang]["dispatch_other"], "dispatch_Now_Others"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[_lang]["add_address"], "click_bundle_package_address_manager_add"),
+			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["add_address"], "click_bundle_package_address_manager_add"),
 
-			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[_lang]["remove_address"], "click_bundle_package_address_manager_remove"),
+			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[lang]["remove_address"], "click_bundle_package_address_manager_remove"),
 		),
 
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
-func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildBundlePackageSubscriptionStatsMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserPackageSubscriptionsRepository(db)
@@ -362,13 +362,13 @@ func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatI
 	orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 	if err != nil {
 
-		logger.Println("能量笔数套餐空", err)
+		logger.Error("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[_lang]["address"]+"：")
+			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
@@ -386,14 +386,14 @@ func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatI
 			//
 			//builder.WriteString("\n")
 
-			builder.WriteString(global.Translations[_lang]["remaining"])
+			builder.WriteString(global.Translations[lang]["remaining"])
 			builder.WriteString(strconv.FormatInt(order.Times, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-			builder.WriteString("     " + global.Translations[_lang]["used"])
+			builder.WriteString("     " + global.Translations[lang]["used"])
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			////builder.WriteString(" （能量笔数套餐）")
 
@@ -420,29 +420,29 @@ func BuildBundlePackageSubscriptionStatsMessage(_lang string, db *gorm.DB, chatI
 			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
-		builder.WriteString(global.Translations[_lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
+		builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
 	}
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[_lang]["package_address_list"]+"\n\n"+
+	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[lang]["package_address_list"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 	return msg
 }
-func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
+func ShowNextBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) bool {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 	if state == nil {
 		var state2 global.DepositState
@@ -470,7 +470,7 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	if total > 0 {
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[_lang]["address"]+"：")
+			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
@@ -488,14 +488,14 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 			//
 			//builder.WriteString("\n")
 
-			builder.WriteString(global.Translations[_lang]["remaining"])
+			builder.WriteString(global.Translations[lang]["remaining"])
 			builder.WriteString(strconv.FormatInt(order.Times, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-			builder.WriteString("     " + global.Translations[_lang]["used"])
+			builder.WriteString("     " + global.Translations[lang]["used"])
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			////builder.WriteString(" （能量笔数套餐）")
 
@@ -523,22 +523,22 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
-		builder.WriteString(global.Translations[_lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
+		builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
 	}
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["package_address_list"]+"：</b>\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["package_address_list"]+"：</b>\n\n "+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -550,7 +550,7 @@ func ShowNextBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	return false
 }
 
-func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
+func ShowPrevBundlePackageSubscriptionStatsPage(lang string, callbackQuery *tgbotapi.CallbackQuery, db *gorm.DB, bot *tgbotapi.BotAPI) (*global.DepositState, bool) {
 	state := global.DepositStates[callbackQuery.Message.Chat.ID]
 
 	if state != nil && state.CurrentPage == 1 {
@@ -570,7 +570,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 			for _, order := range orderlist {
 				builder.WriteString("\n")
-				//builder.WriteString(global.Translations[_lang]["address"]+"：")
+				//builder.WriteString(global.Translations[lang]["address"]+"：")
 				builder.WriteString("<code>" + order.Address + "</code>")
 				builder.WriteString("\n")
 				//builder.WriteString("状态：")
@@ -587,14 +587,14 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 				//
 				//builder.WriteString("\n")
 
-				builder.WriteString(global.Translations[_lang]["remaining"])
+				builder.WriteString(global.Translations[lang]["remaining"])
 				builder.WriteString(strconv.FormatInt(order.Times, 10))
-				builder.WriteString(" " + global.Translations[_lang]["笔"])
+				builder.WriteString(" " + global.Translations[lang]["笔"])
 
 				usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-				builder.WriteString("     " + global.Translations[_lang]["used"])
+				builder.WriteString("     " + global.Translations[lang]["used"])
 				builder.WriteString(strconv.FormatInt(usedTimes, 10))
-				builder.WriteString(" " + global.Translations[_lang]["笔"])
+				builder.WriteString(" " + global.Translations[lang]["笔"])
 
 				////builder.WriteString(" （能量笔数套餐）")
 
@@ -621,22 +621,22 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 				//builder.WriteString("\n")            // 添加分隔符
 			}
 		} else {
-			builder.WriteString(global.Translations[_lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
+			builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
 		}
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["package_address_list"]+"：</b>\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["package_address_list"]+"：</b>\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -652,7 +652,7 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 		if total > 0 {
 			//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 			for _, order := range orderlist {
-				//builder.WriteString(global.Translations[_lang]["address"]+"：")
+				//builder.WriteString(global.Translations[lang]["address"]+"：")
 				builder.WriteString("\n")
 				builder.WriteString("<code>" + order.Address + "</code>")
 				builder.WriteString("\n")
@@ -670,14 +670,14 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 				//
 				//builder.WriteString("\n")
 
-				builder.WriteString(global.Translations[_lang]["remaining"])
+				builder.WriteString(global.Translations[lang]["remaining"])
 				builder.WriteString(strconv.FormatInt(order.Times, 10))
-				builder.WriteString(" " + global.Translations[_lang]["笔"])
+				builder.WriteString(" " + global.Translations[lang]["笔"])
 
 				usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-				builder.WriteString("     " + global.Translations[_lang]["used"])
+				builder.WriteString("     " + global.Translations[lang]["used"])
 				builder.WriteString(strconv.FormatInt(usedTimes, 10))
-				builder.WriteString(" " + global.Translations[_lang]["笔"])
+				builder.WriteString(" " + global.Translations[lang]["笔"])
 
 				////builder.WriteString(" （能量笔数套餐）")
 
@@ -704,22 +704,22 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 				//builder.WriteString("\n")            // 添加分隔符
 			}
 		} else {
-			builder.WriteString(global.Translations[_lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
+			builder.WriteString(global.Translations[lang]["address_list_empty_tips"] + "\n\n") // 添加分隔符
 		}
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[_lang]["package_address_list"]+"：</b>\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["package_address_list"]+"：</b>\n\n "+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-				tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
+				tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 			),
 			tgbotapi.NewInlineKeyboardRow(
 				//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package"),
 			),
 		)
 		msg.ReplyMarkup = inlineKeyboard
@@ -727,9 +727,9 @@ func ShowPrevBundlePackageSubscriptionStatsPage(_lang string, callbackQuery *tgb
 	}
 	return state, false
 }
-func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
+func ApplySmartTransactionBundlePackage(trxfeeClient *trxfee.TrxfeeClient, lang string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB, status string) bool {
 	if !IsValidAddress(message.Text) {
-		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[_lang]["invalid_address_tips"]+"</b>"+"\n")
+		msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["invalid_address_tips"]+"</b>"+"\n")
 		msg.ParseMode = "HTML"
 		bot.Send(msg)
 		return true
@@ -763,9 +763,9 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 	if lessBalance {
 		msg := tgbotapi.NewMessage(message.Chat.ID,
-			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
-				"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-				"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
+				"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+				"💰"+global.Translations[lang]["balance"]+": "+"\n"+
 				"- TRX：   "+user.TronAmount+"\n"+
 				"- USDT："+user.Amount)
 
@@ -773,7 +773,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
 			),
 		)
 
@@ -794,10 +794,10 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	}
 
 	if item.Id > 0 {
-		msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[_lang]["smart_transaction_plans_repeat_order"]+
-			"🆔"+global.Translations[_lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
-			"👤"+global.Translations[_lang]["username"]+": @"+user.Username+"\n"+
-			"💰"+global.Translations[_lang]["balance"]+": "+"\n"+
+		msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[lang]["smart_transaction_plans_repeat_order"]+
+			"🆔"+global.Translations[lang]["user_id"]+": <code>"+user.Associates+"</code>\n"+
+			"👤"+global.Translations[lang]["username"]+": @"+user.Username+"\n"+
+			"💰"+global.Translations[lang]["balance"]+": "+"\n"+
 			"- TRX：   "+user.TronAmount+"\n"+
 			"- USDT："+user.Amount)
 
@@ -805,7 +805,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[_lang]["deposit"], "deposit_amount"),
+				tgbotapi.NewInlineKeyboardButtonData("💵"+global.Translations[lang]["deposit"], "deposit_amount"),
 			),
 		)
 
@@ -855,20 +855,20 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	logger.Printf("times %d\n", record.Times)
 
 	if err := trxfeeClient.TimesOrder(record.Address, int(record.Times)); err != nil {
-		logger.Printf("create trxfee times order failed: %v", err)
+		logger.Errorf("create trxfee times order failed: %v", err)
 	}
 
-	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+global.Translations[_lang]["smart_transaction_package_order_purchased_successfully"]+"\n"+
-		global.Translations[_lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[_lang]["笔"])+"\n"+
-		global.Translations[_lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n"+
-		global.Translations[_lang]["address"]+"："+message.Text+"\n"+
-		global.Translations[_lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n")
+	msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+global.Translations[lang]["smart_transaction_package_order_purchased_successfully"]+"\n"+
+		global.Translations[lang]["package_name"]+"："+strings.ReplaceAll(bundlePackage.Name, "笔", global.Translations[lang]["笔"])+"\n"+
+		global.Translations[lang]["payment_amount"]+"："+bundlePackage.Amount+" "+bundlePackage.Token+"\n"+
+		global.Translations[lang]["address"]+"："+message.Text+"\n"+
+		global.Translations[lang]["order_id"]+"："+fmt.Sprintf("%d", record.Id)+""+"\n")
 	msg.ParseMode = "HTML"
 	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[_lang]["smart_transaction_package_address_list"], "click_bundle_package_address_stats_ST"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🧾"+global.Translations[lang]["smart_transaction_package_address_list"], "click_bundle_package_address_stats_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -881,7 +881,7 @@ func APPLY_ST_BUNDLE_PACKAGE(trxfeeClient *trxfee.TrxfeeClient, _lang string, ca
 	cache.Set(strconv.FormatInt(message.Chat.ID, 10), "null_apply_bundle_package_address_ST", expiration)
 	return false
 }
-func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
+func BuildSmartTransactionAddressStatsMessage(lang string, db *gorm.DB, chatID int64) tgbotapi.MessageConfig {
 
 	//logger.Println("ExtractBundlePackage")
 	userAddressDetectionRepo := repositories.NewUserSmartTransactionPackageSubscriptionsRepository(db)
@@ -892,13 +892,13 @@ func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID 
 	orderlist, total, err := userAddressDetectionRepo.ListByChatIDPage(context.Background(), info, chatID)
 	if err != nil {
 
-		logger.Println("能量笔数套餐空", err)
+		logger.Error("能量笔数套餐空", err)
 	}
 	var builder strings.Builder
 	if total > 0 {
 		//- [6.29] +3000 TRX（订单 #TOPUP-92308）
 		for _, order := range orderlist {
-			//builder.WriteString(global.Translations[_lang]["address"]+"：")
+			//builder.WriteString(global.Translations[lang]["address"]+"：")
 			builder.WriteString("\n")
 			builder.WriteString("<code>" + order.Address + "</code>")
 			builder.WriteString("\n")
@@ -916,30 +916,30 @@ func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID 
 			//
 			//builder.WriteString("\n")
 			if order.Status == 2 {
-				builder.WriteString(global.Translations[_lang]["smart_transaction_disable"])
+				builder.WriteString(global.Translations[lang]["smart_transaction_disable"])
 			}
 			if order.Status == 1 {
-				builder.WriteString(global.Translations[_lang]["smart_transaction_enable"])
+				builder.WriteString(global.Translations[lang]["smart_transaction_enable"])
 			}
-			builder.WriteString(global.Translations[_lang]["remaining"])
+			builder.WriteString(global.Translations[lang]["remaining"])
 			builder.WriteString(strconv.FormatInt(order.Times, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			usedTimes := ExtractLeadingInt64(order.BundleName) - order.Times
-			builder.WriteString("     " + global.Translations[_lang]["used"])
+			builder.WriteString("     " + global.Translations[lang]["used"])
 			builder.WriteString(strconv.FormatInt(usedTimes, 10))
-			builder.WriteString(" " + global.Translations[_lang]["笔"])
+			builder.WriteString(" " + global.Translations[lang]["笔"])
 
 			////builder.WriteString(" （能量笔数套餐）")
 
 			builder.WriteString("\n") // 添加分隔符
 			if order.Times > 0 {
 				if order.Status == 2 {
-					builder.WriteString(global.Translations[_lang]["close_auto_dispatch_energy"] + ":/close_ST")
+					builder.WriteString(global.Translations[lang]["close_auto_dispatch_energy"] + ":/close_ST")
 					builder.WriteString(strconv.FormatInt(order.Id, 10))
 				}
 				if order.Status == 1 {
-					builder.WriteString(global.Translations[_lang]["open_auto_dispatch_energy"] + ":/open_ST")
+					builder.WriteString(global.Translations[lang]["open_auto_dispatch_energy"] + ":/open_ST")
 					builder.WriteString(strconv.FormatInt(order.Id, 10))
 				}
 				builder.WriteString("\n") // 添加分隔符
@@ -949,23 +949,23 @@ func BuildSmartTransactionAddressStatsMessage(_lang string, db *gorm.DB, chatID 
 			//builder.WriteString("\n")            // 添加分隔符
 		}
 	} else {
-		builder.WriteString(global.Translations[_lang]["smart_transaction__list_empty_tips"] + "\n\n") // 添加分隔符
+		builder.WriteString(global.Translations[lang]["smart_transaction__list_empty_tips"] + "\n\n") // 添加分隔符
 	}
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[_lang]["smart_transaction_package_address_list"]+"\n\n"+
+	msg := tgbotapi.NewMessage(chatID, "🧾"+global.Translations[lang]["smart_transaction_package_address_list"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		//tgbotapi.NewInlineKeyboardRow(
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["prev"], "next_bundle_package_address_stats"),
-		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["next"], "prev_bundle_package_address_stats"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["prev"], "next_bundle_package_address_stats"),
+		//	tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["next"], "prev_bundle_package_address_stats"),
 		//),
 		tgbotapi.NewInlineKeyboardRow(
 			//tgbotapi.NewInlineKeyboardButtonData("解绑地址", "free_monitor_address"),
-			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[_lang]["back_homepage"], "back_bundle_package_ST"),
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_bundle_package_ST"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

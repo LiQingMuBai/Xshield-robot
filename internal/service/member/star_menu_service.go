@@ -18,7 +18,7 @@ import (
 	"gorm.io/gorm"
 )
 
-func MenuStarNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.BotAPI) {
+func MenuStarNavigate(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI) {
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
 	star_unit, _ := dictDetailRepo.GetDictionaryDetail("star_unit")
@@ -28,8 +28,8 @@ func MenuStarNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.Bo
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
 
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["member_telegram_menu"], "purchase_telegram_premium"),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["member_telegram_menu"], "purchase_telegram_premium"),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["telegram_id_menu"], "purchase_anonymous_mobile"),
 		),
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("100"+" "+tools.StringMultiply2("100", unitPrice)+"U", "click_purchase_stars_"+"100"),
@@ -57,25 +57,25 @@ func MenuStarNavigate(_lang string, db *gorm.DB, _chatID int64, bot *tgbotapi.Bo
 
 	if err := sendVideoWithCache(
 		bot,
-		_chatID,
+		chatID,
 		"telegram_stars.mp4",
 		videoPath,
-		global.Translations[_lang]["purchase_telegram_stars_tips"],
+		global.Translations[lang]["purchase_telegram_stars_tips"],
 		inlineKeyboard,
 	); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 	}
 
 }
 
-func MenuNavigateForStar(cache cache.Cache, _lang string, db *gorm.DB, _chatID int64, username string, bot *tgbotapi.BotAPI, count string) {
+func MenuNavigateForStar(cache cache.Cache, lang string, db *gorm.DB, chatID int64, username string, bot *tgbotapi.BotAPI, count string) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["purchase_stars_current_user"], "purchase_stars_current_user_"+count),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["purchase_stars_current_user"], "purchase_stars_current_user_"+count),
 		),
 	)
 
-	tips := global.Translations[_lang]["purchase_stars_tips"]
+	tips := global.Translations[lang]["purchase_stars_tips"]
 
 	tips = strings.ReplaceAll(tips, "{username}", username)
 	tips = strings.ReplaceAll(tips, "{count}", count)
@@ -91,26 +91,26 @@ func MenuNavigateForStar(cache cache.Cache, _lang string, db *gorm.DB, _chatID i
 	tips = strings.ReplaceAll(tips, "{price}", price)
 
 	// 创建视频消息（从本地文件）
-	videoMsg := tgbotapi.NewMessage(_chatID, tips)
+	videoMsg := tgbotapi.NewMessage(chatID, tips)
 	videoMsg.ReplyMarkup = inlineKeyboard
 	videoMsg.ParseMode = "HTML"
 
 	// 发送视频
 	if _, err := bot.Send(videoMsg); err != nil {
-		logger.Printf("发送视频失败: %v", err)
+		logger.Errorf("发送视频失败: %v", err)
 	}
 
 	expiration := 1 * time.Minute // 短时间缓存空值
 
 	//设置用户状态
-	cache.Set(strconv.FormatInt(_chatID, 10), "purchase_telegram_stars"+count, expiration)
+	cache.Set(strconv.FormatInt(chatID, 10), "purchase_telegram_stars"+count, expiration)
 
 }
 
-func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, count string) {
+func Purchase(lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI, username string, chatID int64, count string) {
 	username = strings.ReplaceAll(username, "@", "")
 
-	tips := global.Translations[_lang]["purchase_telegram_stars"]
+	tips := global.Translations[lang]["purchase_telegram_stars"]
 
 	tips = strings.ReplaceAll(tips, "{stars}", count)
 	tips = strings.ReplaceAll(tips, "{username}", username)
@@ -135,11 +135,11 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	usdtDeposit.BundleId = _count
 	//
 	//dictRepo := repositories.NewSysDictionariesRepo(db)
-	_agent := os.Getenv("BOT_AGENT")
-	//depositAddress, _ := dictRepo.GetDepositAddress(_agent)
-	//_agent := os.Getenv("Agent")
+	agent := os.Getenv("BOT_AGENT")
+	//depositAddress, _ := dictRepo.GetDepositAddress(agent)
+	//agent := os.Getenv("Agent")
 	sysUserRepo := repositories.NewSysUsersRepository(db)
-	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	_, depositAddress, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 	usdtDeposit.Address = depositAddress
 
 	dictDetailRepo := repositories.NewSysDictionariesRepo(db)
@@ -152,12 +152,12 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 
 	createErr := usdtDepositRepo.Create(context.Background(), &usdtDeposit)
 	if createErr != nil {
-		logger.Printf("Error creating usdtDeposit: %v", createErr)
+		logger.Errorf("Error creating usdtDeposit: %v", createErr)
 	}
 
 	err := usdtPlaceholderRepo.UpdateStatusByID(context.Background(), placeholder.Id, 1)
 	if err != nil {
-		logger.Printf("Error updating usdt placeholder: %v", err)
+		logger.Errorf("Error updating usdt placeholder: %v", err)
 	}
 
 	//新增会员订单
@@ -178,9 +178,9 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	logger.Printf("小数点：%s\n", usdtDeposit.Placeholder)
 	tips = strings.ReplaceAll(tips, "{amount}", tools.AddStringsAsFloats(price, usdtDeposit.Placeholder))
 
-	//_agent := os.Getenv("Agent")
+	//agent := os.Getenv("Agent")
 	//sysUserRepo := repositories.NewSysUsersRepository(db)
-	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), _agent)
+	//receiveAddress, _, _ := sysUserRepo.GetAddressesByUsername(context.Background(), agent)
 
 	tips = strings.ReplaceAll(tips, "{address}", depositAddress)
 
@@ -194,8 +194,8 @@ func Purchase(_lang string, cache cache.Cache, db *gorm.DB, bot *tgbotapi.BotAPI
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["balance_pay_order"], "purchase_stars_"+orderNO),
-			tgbotapi.NewInlineKeyboardButtonData(global.Translations[_lang]["cancel_order"], "cancel_stars_"+orderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["balance_pay_order"], "purchase_stars_"+orderNO),
+			tgbotapi.NewInlineKeyboardButtonData(global.Translations[lang]["cancel_order"], "cancel_stars_"+orderNO),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

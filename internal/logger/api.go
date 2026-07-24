@@ -20,20 +20,28 @@ func Println(args ...any) {
 	zap.S().Info(strings.TrimRight(fmt.Sprintln(args...), "\n"))
 }
 
-func Fatal(args ...any) {
+func Error(args ...any) {
 	zap.S().Error(strings.TrimRight(fmt.Sprintln(args...), "\n"))
+}
+
+func Errorf(format string, args ...any) {
+	zap.S().Errorf(format, args...)
+}
+
+func Fatal(args ...any) {
+	Error(args...)
 	os.Exit(1)
 }
 
 func Fatalf(format string, args ...any) {
-	zap.S().Errorf(format, args...)
+	Errorf(format, args...)
 	os.Exit(1)
 }
 
 func Panic(args ...any) {
-	zap.S().Error(strings.TrimRight(fmt.Sprintln(args...), "\n"))
+	Error(args...)
 }
 
 func Panicf(format string, args ...any) {
-	zap.S().Errorf(format, args...)
+	Errorf(format, args...)
 }
