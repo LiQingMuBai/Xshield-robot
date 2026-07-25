@@ -92,6 +92,7 @@
   "energy_address_remove_tips": "Please enter the address you wish to delete: \uD83D\uDDD1\uFE0F",
   "deduction_records": "Deduction Records",
   "UShield_sent_transaction_energy": "UShield has successfully sent a transaction of energy.",
+  "UShield_sent_transaction_energy_with_times": "UShield has successfully sent {times} energy transactions.",
   "to_address": "To Address：",
   "remaining_transactions": "Remaining Transactions：",
   "dispatch_again": "Dispatch Again",

@@ -62,7 +62,7 @@ func HandleCallbackQuery(callbackQuery *tgbotapi.CallbackQuery, ctx Context) {
 }
 
 func sendDispatchSuccess(bot *tgbotapi.BotAPI, chatID int64, result *service.DispatchResult) {
-	msg := tgbotapi.NewMessage(chatID, "📢【✅"+global.Translations[result.UserLang]["UShield_sent_transaction_energy"]+"】\n\n"+
+	msg := tgbotapi.NewMessage(chatID, "📢【✅"+buildDispatchSuccessTitle(result.UserLang, result.DispatchedTimes)+"】\n\n"+
 		global.Translations[result.UserLang]["to_address"]+result.Address+"\n\n"+
 		global.Translations[result.UserLang]["remaining_transactions"]+strconv.FormatInt(result.RemainingTimes, 10)+"\n\n")
 	msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
@@ -72,4 +72,17 @@ func sendDispatchSuccess(bot *tgbotapi.BotAPI, chatID int64, result *service.Dis
 	)
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
+}
+
+func buildDispatchSuccessTitle(lang string, dispatchedTimes int) string {
+	if dispatchedTimes <= 1 {
+		return global.Translations[lang]["UShield_sent_transaction_energy"]
+	}
+
+	template := global.Translations[lang]["UShield_sent_transaction_energy_with_times"]
+	if template == "" {
+		return global.Translations[lang]["UShield_sent_transaction_energy"] + " x" + strconv.Itoa(dispatchedTimes)
+	}
+
+	return strings.ReplaceAll(template, "{times}", strconv.Itoa(dispatchedTimes))
 }

@@ -31,9 +31,10 @@ type EnergyDispatchService struct {
 }
 
 type DispatchResult struct {
-	Address        string
-	RemainingTimes int64
-	UserLang       string
+	Address         string
+	DispatchedTimes int
+	RemainingTimes  int64
+	UserLang        string
 }
 
 func NewEnergyDispatchService(db *gorm.DB, trxfeeURL, trxfeeAPIKey, trxfeeSecret string, catfeeClient *trxfee.CatfeeService) *EnergyDispatchService {
@@ -95,6 +96,9 @@ func (s *EnergyDispatchService) DispatchFromPackageAddress(ctx context.Context, 
 			return nil, err
 		}
 	}
+	if result != nil {
+		result.DispatchedTimes = times
+	}
 
 	return result, nil
 }
@@ -133,9 +137,10 @@ func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bu
 	}
 
 	return &DispatchResult{
-		Address:        address,
-		RemainingTimes: restTimes,
-		UserLang:       user.Lang,
+		Address:         address,
+		DispatchedTimes: 1,
+		RemainingTimes:  restTimes,
+		UserLang:        user.Lang,
 	}, nil
 }
 
@@ -164,9 +169,10 @@ func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context,
 	}
 
 	return &DispatchResult{
-		Address:        address,
-		RemainingTimes: remainingTimes,
-		UserLang:       user.Lang,
+		Address:         address,
+		DispatchedTimes: 1,
+		RemainingTimes:  remainingTimes,
+		UserLang:        user.Lang,
 	}, nil
 }
 

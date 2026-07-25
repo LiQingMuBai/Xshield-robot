@@ -99,6 +99,7 @@
   "energy_address_remove_tips": "请输入需要删除的地址: \uD83D\uDDD1\uFE0F",
   "deduction_records": "扣款记录",
   "UShield_sent_transaction_energy": "U盾成功发送一笔能量",
+  "UShield_sent_transaction_energy_with_times": "U盾成功发送{times}笔能量",
   "to_address": "接受地址：",
   "remaining_transactions": "剩余笔数：",
   "dispatch_again": "再次发能",
