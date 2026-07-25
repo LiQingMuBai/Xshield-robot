@@ -22,22 +22,22 @@ func Load() (*Config, error) {
 			Timeout: 60,
 		},
 		Trxfee: TrxfeeConfig{
-			BaseURL:   os.Getenv("TRXFEE_BASE_URL"),
-			APIKey:    os.Getenv("TRXFEE_API_KEY"),
-			APISecret: os.Getenv("TRXFEE_API_SECRET"),
+			BaseURL:   firstEnv("TRXFEE_BASE_URL"),
+			APIKey:    firstEnv("TRXFEE_API_KEY", "TRXFEE_APIKEY"),
+			APISecret: firstEnv("TRXFEE_API_SECRET", "TRXFEE_APISECRET"),
 		},
 		Catfee: CatfeeConfig{
-			BaseURL:   os.Getenv("CATFEE_BASE_URL"),
-			APIKey:    os.Getenv("CATFEE_API_KEY"),
-			APISecret: os.Getenv("CATFEE_API_SECRET"),
+			BaseURL:   firstEnv("CATFEE_BASE_URL"),
+			APIKey:    firstEnv("CATFEE_API_KEY", "CATFEE_APIKEY"),
+			APISecret: firstEnv("CATFEE_API_SECRET", "CATFEE_APISECRET"),
 		},
 		FixedFloat: FixedFloatConfig{
-			RefURL:    os.Getenv("FIXEDFLOAT_REF_URL"),
-			APIKey:    os.Getenv("FIXEDFLOAT_API_KEY"),
-			APISecret: os.Getenv("FIXEDFLOAT_API_SECRET"),
+			RefURL:    firstEnv("FIXEDFLOAT_REF_URL"),
+			APIKey:    firstEnv("FIXEDFLOAT_API_KEY", "FIXEDFLOAT_APIKEY"),
+			APISecret: firstEnv("FIXEDFLOAT_API_SECRET", "FIXEDFLOAT_APISECRET"),
 		},
 		Tron: TronConfig{
-			Mnemonic: os.Getenv("TRON_MNEMONIC"),
+			Mnemonic: firstEnv("TRON_MNEMONIC"),
 		},
 		Limits: LimitsConfig{
 			AddressTraceLimit: parsePositiveIntEnv("ADDRESS_TRACE_LIMIT", 4),
@@ -69,4 +69,15 @@ func parsePositiveIntEnv(key string, fallback int) int {
 	}
 
 	return parsed
+}
+
+func firstEnv(keys ...string) string {
+	for _, key := range keys {
+		value := os.Getenv(key)
+		if value != "" {
+			return value
+		}
+	}
+
+	return ""
 }

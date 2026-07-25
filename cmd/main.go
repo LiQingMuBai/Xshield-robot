@@ -32,6 +32,10 @@ func main() {
 func processUpdate(update tgbotapi.Update, c *app.Container) {
 	handlerCtx := telegramrouter.NewContext(c)
 
+	//fmt.Printf("trxfeeURL %s\n", c.Config.Trxfee.BaseURL)
+	//fmt.Printf("trxfeeAPIKey %s\n", c.Config.Trxfee.APIKey)
+	//fmt.Printf("trxfeeSecret %s\n", c.Config.Trxfee.APISecret)
+
 	switch {
 	case update.Message != nil && update.Message.IsCommand():
 		telegramrouter.RouteCommandUpdate(update, handlerCtx)

@@ -3,6 +3,7 @@ package service
 import (
 	"context"
 	"errors"
+	"fmt"
 	"strconv"
 	"strings"
 	"time"
@@ -194,14 +195,18 @@ func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, ch
 	}
 
 	if flag {
+
 		trxfeeClient := trxfee.NewTrxfeeClient(s.trxfeeURL, s.trxfeeAPIKey, s.trxfeeSecret)
 		if err := trxfeeClient.Order(orderNo, address, 65_000); err != nil {
+
+			fmt.Printf("=====>err: %v\n", err)
+
 			return err
 		}
 		return nil
+	} else {
+		s.catfeeClient.Order(address)
 	}
-
-	s.catfeeClient.Order(address)
 	return nil
 }
 

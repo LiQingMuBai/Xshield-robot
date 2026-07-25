@@ -128,6 +128,8 @@ func (c *TrxfeeClient) Order(outTradeNo, receiveAddress string, energyAmount int
 	if _, err := ioutil.ReadAll(resp.Body); err != nil {
 		return fmt.Errorf("read trxfee order response failed: %w", err)
 	}
+
+	fmt.Printf("trxfee order response: %s\n", resp.Status)
 	return nil
 }
 
