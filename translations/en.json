@@ -30,6 +30,7 @@
   "first_tx_time": "FirstTxTime",
   "last_tx_time": "LastTxTime",
   "tx_count": "TxCount",
+  "no_data_placeholder": "NoData",
   "counterparty_analysis": "CounterpartyAnalysis",
   "sanctioned": "Sanctioned",
   "scam": "scam",

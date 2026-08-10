@@ -34,3 +34,8 @@ func (r *SysDictionariesRepo) GetDictionaryDetail(label string) (string, error) 
 	err := r.db.Raw("SELECT value FROM sys_dictionary_details where label ='" + label + "'").Scan(&dict).Error
 	return dict, err
 }
+func (r *SysDictionariesRepo) GetDictionaryByType(key string) (int64, error) {
+	var dict int64
+	err := r.db.Raw("SELECT status FROM sys_dictionaries where type ='" + key + "'").Scan(&dict).Error
+	return dict, err
+}

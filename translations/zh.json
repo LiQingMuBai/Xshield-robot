@@ -31,6 +31,7 @@
   "first_tx_time": "首次活跃时间",
   "last_tx_time": "最后活跃时间",
   "tx_count": "交易次数",
+  "no_data_placeholder": "暂无数据",
   "counterparty_analysis": "主要交易对手分析",
   "sanctioned": "制裁",
   "scam": "诈骗",

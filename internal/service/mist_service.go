@@ -145,11 +145,18 @@ func (s *AddressDetectionService) buildDetectionText(lang string, cacheStore cac
 	addressProfile := handler.GetAddressProfile(symbol, address, s.mistCookie)
 	labelAddressList := handler.ListRiskAddresses(graphCoin, address, s.mistCookie)
 
+	if isMissingAddressProfileData(addressProfile) {
+		return mistTemporaryUnavailableText + "\n\n⚠️" + global.Translations[lang]["address_overview"] + global.Translations[lang]["no_data_placeholder"], true, nil
+	}
+
+	firstTxTimeDisplay := sanitizeAddressProfileTime(addressProfile.FirstTxTime, global.Translations[lang]["no_data_placeholder"])
+	lastTxTimeDisplay := sanitizeAddressProfileTime(addressProfile.LastTxTime, global.Translations[lang]["no_data_placeholder"])
+
 	text += global.Translations[lang]["balance"] + "：" + addressProfile.BalanceUsd + "\n"
 	text += global.Translations[lang]["total_received"] + "：" + addressProfile.TotalReceivedUsd + "\n"
 	text += global.Translations[lang]["total_spent"] + "：" + addressProfile.TotalSpentUsd + "\n"
-	text += global.Translations[lang]["first_tx_time"] + "：" + addressProfile.FirstTxTime + "\n"
-	text += global.Translations[lang]["last_tx_time"] + "：" + addressProfile.LastTxTime + "\n"
+	text += global.Translations[lang]["first_tx_time"] + "：" + firstTxTimeDisplay + "\n"
+	text += global.Translations[lang]["last_tx_time"] + "：" + lastTxTimeDisplay + "\n"
 	text += global.Translations[lang]["tx_count"] + "：" + addressProfile.TxCount + "\n"
 	text += global.Translations[lang]["counterparty_analysis"] + "：" + "\n"
 	text += addressDetectionCounterpartyText(lang, labelAddressList)
@@ -276,6 +283,21 @@ func addressDetectionCounterpartyText(lang string, labelAddressList handler.Labe
 		}
 	}
 	return builder.String()
+}
+
+func isMissingAddressProfileData(profile handler.AddressProfile) bool {
+	if strings.Contains(profile.FirstTxTime, "1970") || strings.Contains(profile.LastTxTime, "1970") {
+		return true
+	}
+	return strings.TrimSpace(profile.FirstTxTime) == "" || strings.TrimSpace(profile.LastTxTime) == ""
+}
+
+func sanitizeAddressProfileTime(value, placeholder string) string {
+	trimmed := strings.TrimSpace(value)
+	if trimmed == "" || strings.Contains(trimmed, "1970") {
+		return placeholder
+	}
+	return trimmed
 }
 
 func abbreviateAddressDetectionTitle(title string) string {

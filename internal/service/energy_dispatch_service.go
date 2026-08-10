@@ -195,7 +195,7 @@ func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, ch
 		return err
 	}
 
-	flag, err := s.inTrxfeeTimeRange()
+	flag, err := s.isTrxfee()
 	if err != nil {
 		return err
 	}
@@ -239,4 +239,17 @@ func (s *EnergyDispatchService) inTrxfeeTimeRange() (bool, error) {
 
 	hour := time.Now().Hour()
 	return hour >= startHour && hour <= endHour, nil
+}
+
+func (s *EnergyDispatchService) isTrxfee() (bool, error) {
+	sysDictionariesRepo := repositories.NewSysDictionariesRepo(s.db)
+	status, err := sysDictionariesRepo.GetDictionaryByType("energy")
+	if err != nil {
+		return true, nil
+	}
+
+	if status == 1 {
+		return true, nil
+	}
+	return false, nil
 }
