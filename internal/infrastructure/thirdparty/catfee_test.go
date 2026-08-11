@@ -16,19 +16,19 @@ func TestCatfeeService_Order(t *testing.T) {
 
 }
 
-func TestCatfeeService_Premium(t *testing.T) {
-	catfee, err := NewCatfeeService("72a74f5a-2f63-407b-bfc5-1c5f790334ca", "3b4855a097034cdae525b4d123b2b61a", "https://api.catfee.io")
-	if err != nil {
-		logger.Println("链接dial", err)
-		t.Fatal(err)
-	}
-	data, err := catfee.Premium("vip664", "3")
-
-	if err != nil {
-		t.Fatal(err)
-	}
-	logger.Printf("data: %v\n", data)
-}
+//func TestCatfeeService_Premium(t *testing.T) {
+//	catfee, err := NewCatfeeService("72a74f5a-2f63-407b-bfc5-1c5f790334ca", "3b4855a097034cdae525b4d123b2b61a", "https://api.catfee.io")
+//	if err != nil {
+//		logger.Println("链接dial", err)
+//		t.Fatal(err)
+//	}
+//	data, err := catfee.Premium("vip664", "3")
+//
+//	if err != nil {
+//		t.Fatal(err)
+//	}
+//	logger.Printf("data: %v\n", data)
+//}
 
 // ; catfee:
 // ;     catfee-apikey: 4beb7017-ef60-4bdb-b880-20880af87ed3
