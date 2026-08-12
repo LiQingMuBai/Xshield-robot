@@ -146,7 +146,7 @@ func (s *AddressDetectionService) buildDetectionText(lang string, cacheStore cac
 	labelAddressList := handler.ListRiskAddresses(graphCoin, address, s.mistCookie)
 
 	if isMissingAddressProfileData(addressProfile) {
-		return mistTemporaryUnavailableText + "\n\n⚠️" + global.Translations[lang]["address_overview"] + global.Translations[lang]["no_data_placeholder"], true, nil
+		return "⚠️" + global.Translations[lang]["address_overview"] + global.Translations[lang]["no_data_placeholder"], true, nil
 	}
 
 	firstTxTimeDisplay := sanitizeAddressProfileTime(addressProfile.FirstTxTime, global.Translations[lang]["no_data_placeholder"])
