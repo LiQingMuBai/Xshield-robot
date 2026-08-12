@@ -32,6 +32,7 @@
   "last_tx_time": "Última atividade",
   "tx_count": "Número de transações",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ Nosso sistema de percepção situacional por IA atualiza continuamente o rastreamento de endereços.",
   "counterparty_analysis": "Análise de contrapartes principais",
   "sanctioned": "Sancionado",
   "scam": "Fraude",

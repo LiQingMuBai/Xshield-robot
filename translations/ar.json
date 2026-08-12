@@ -31,6 +31,7 @@
   "last_tx_time": "زمان آخرین تراکنش",
   "tx_count": "تعداد تراکنش‌ها",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ نظام الوعي الموقف بالذكاء الاصطناعي لدينا يقوم بتحديث تتبع العناوين باستمرار.",
   "counterparty_analysis": "تحلیل طرف مقابل",
   "sanctioned": "تحریم‌شده",
   "scam": "کلاهبرداری",

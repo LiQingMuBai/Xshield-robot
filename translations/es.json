@@ -32,6 +32,7 @@
   "last_tx_time": "Última actividad",
   "tx_count": "Número de transacciones",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ Nuestro sistema de conocimiento situacional AI actualiza continuamente el seguimiento de direcciones.",
   "counterparty_analysis": "Análisis de contrapartes principales",
   "sanctioned": "Sancionado",
   "scam": "Estafa",

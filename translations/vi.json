@@ -32,6 +32,7 @@
   "last_tx_time": "Thời gian hoạt động cuối cùng",
   "tx_count": "Số giao dịch",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ Hệ thống nhận thức tình huống AI của chúng tôi đang liên tục cập nhật theo dõi địa chỉ.",
   "counterparty_analysis": "Phân tích đối tác chính",
   "sanctioned": "Bị trừng phạt",
   "scam": "Lừa đảo",

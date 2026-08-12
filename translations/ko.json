@@ -32,6 +32,7 @@
   "last_tx_time": "최종 활동 시간",
   "tx_count": "거래 횟수",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ AI 상황인식 시스템이 주소 추적을 지속적으로 업데이트하고 있습니다.",
   "counterparty_analysis": "주요 거래 상대 분석",
   "sanctioned": "제재",
   "scam": "사기",

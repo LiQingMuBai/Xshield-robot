@@ -32,6 +32,7 @@
   "last_tx_time": "最後活躍時間",
   "tx_count": "交易次数",
   "no_data_placeholder": "暫無數據",
+  "no_data_updating_tip": "🛡️ 我們的 AI 態勢感知系統正在持續更新地址追蹤。",
   "counterparty_analysis": "主要交易對手分析",
   "sanctioned": "制裁",
   "scam": "詐騙",

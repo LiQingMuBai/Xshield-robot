@@ -32,6 +32,7 @@
   "last_tx_time": "最終アクティブ時間",
   "tx_count": "取引回数",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ AI状況認識システムによりアドレス追跡を継続更新中です。",
   "counterparty_analysis": "主要取引相手分析",
   "sanctioned": "制裁",
   "scam": "詐欺",

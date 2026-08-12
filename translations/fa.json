@@ -31,6 +31,7 @@
   "last_tx_time": "زمان آخرین تراکنش",
   "tx_count": "تعداد تراکنش‌ها",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ سیستم آگاهی موقعیتی هوش مصنوعی ما به‌طور مداوم ردیابی آدرس را به‌روزرسانی می‌کند.",
   "counterparty_analysis": "تحلیل طرف مقابل",
   "sanctioned": "تحریم‌شده",
   "scam": "کلاهبرداری",

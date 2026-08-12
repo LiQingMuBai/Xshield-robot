@@ -31,6 +31,7 @@
   "last_tx_time": "เวลาทำธุรกรรมล่าสุด",
   "tx_count": "จำนวนธุรกรรม",
   "no_data_placeholder": "NoData",
+  "no_data_updating_tip": "🛡️ ระบบ AI Situational Awareness ของเรากำลังอัปเดตการติดตามที่อยู่อย่างต่อเนื่อง",
   "counterparty_analysis": "การวิเคราะห์ฝ่ายตรงข้าม",
   "sanctioned": "ถูกคว่ำบาตร",
   "scam": "ฉ้อโกง",
