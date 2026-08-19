@@ -3,6 +3,8 @@
   "hide": "ซ่อน",
   "set_lang": "ตั้งค่าภาษาอังกฤษสำเร็จ!",
   "back_home": "บัญชีของฉัน",
+  "back_homepage": "กลับไปที่หน้าแรก",
+  "back_address_trace": "กลับไปที่ติดตามที่อยู่",
   "energy_swap": "แลกเปลี่ยนพลังงาน",
   "transaction_plans": "แผนการทำธุรกรรม",
   "address_check": "ตรวจสอบที่อยู่",

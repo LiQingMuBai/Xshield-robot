@@ -11,6 +11,7 @@ import (
 	"ushield_bot/internal/global"
 	"ushield_bot/internal/infrastructure/repositories"
 	. "ushield_bot/internal/infrastructure/tools"
+	logger "ushield_bot/internal/logger"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 	"gorm.io/gorm"
@@ -235,43 +236,121 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	originStr := global.Translations[lang]["address_trace_head_tips"]
 	userRepo := repositories.NewUserAddressTraceRepo(db)
-	orderlist, _ := userRepo.ListByChatID(context.Background(), chatID)
-
-	var builder strings.Builder
-	if len(orderlist) > 0 {
-
-		builder.WriteString("\n")
-		for _, order := range orderlist {
-			builder.WriteString("\n") // 添加分隔符
-			builder.WriteString("<code>" + order.Address + "</code>")
-			builder.WriteString("\n")
-			// 添加分隔符
-		}
-
+	tronList, tronErr := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, "tron")
+	bscList, bscErr := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, "bsc")
+	if tronErr != nil {
+		logger.Errorf("address_trace list tron err: %v", tronErr)
+	}
+	if bscErr != nil {
+		logger.Errorf("address_trace list bsc err: %v", bscErr)
 	}
 
-	// 去除最后一个空格
+	var builder strings.Builder
+	builder.WriteString("\n")
+
+	builder.WriteString("\n🔷 <b>TRON 波场链</b>")
+	if len(tronList) == 0 {
+		builder.WriteString("\n（暂无）")
+	} else {
+		for _, order := range tronList {
+			builder.WriteString("\n")
+			builder.WriteString("<code>" + order.Address + "</code>")
+		}
+	}
+
+	builder.WriteString("\n\n🟡 <b>BSC 币安链</b>")
+	if len(bscList) == 0 {
+		builder.WriteString("\n（暂无）")
+	} else {
+		for _, order := range bscList {
+			builder.WriteString("\n")
+			builder.WriteString("<code>" + order.Address + "</code>")
+		}
+	}
+
 	result := strings.TrimSpace(builder.String())
 
 	msg := tgbotapi.NewMessage(chatID, originStr+"\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 
-	// 当点击"按钮 1"时显示内联键盘
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["address_trace_add"], "address_trace_add"),
-			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[lang]["address_trace_delete"], "address_trace_delete"),
+			tgbotapi.NewInlineKeyboardButtonData("🔷 TRON波场链", "address_trace_chain_tron"),
+			tgbotapi.NewInlineKeyboardButtonData("🟡 BSC币安链", "address_trace_chain_bsc"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
 
 	bot.Send(msg)
 
-	expiration := 1 * time.Minute // 短时间缓存空值
+	expiration := 1 * time.Minute
 
-	//设置用户状态
 	cache.Set(strconv.FormatInt(chatID, 10), "usdt_address_trace", expiration)
+}
+
+func displayChainName(network string) string {
+	switch strings.ToLower(network) {
+	case "tron":
+		return "TRON"
+	case "bsc":
+		return "BSC"
+	case "ethereum":
+		return "ETH"
+	default:
+		return strings.ToUpper(network)
+	}
+}
+
+func ShowAddressTraceChainMenu(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB, chain string) {
+	chainLabel := displayChainName(chain)
+	originStr := global.Translations[lang]["address_trace_head_tips"]
+	userRepo := repositories.NewUserAddressTraceRepo(db)
+	orderlist, err := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, chain)
+	if err != nil {
+		logger.Errorf("address_trace list err (chain=%s): %v", chain, err)
+	}
+
+	var builder strings.Builder
+	builder.WriteString("\n")
+	builder.WriteString("📡 当前链：<b>")
+	builder.WriteString(chainLabel)
+	builder.WriteString("</b>\n")
+	count := 0
+	for _, order := range orderlist {
+		builder.WriteString("\n")
+		builder.WriteString("<code>" + order.Address + "</code>")
+		builder.WriteString("\n")
+		count++
+	}
+	if count == 0 {
+		builder.WriteString("\n（暂无跟踪地址）\n")
+	}
+
+	result := strings.TrimSpace(builder.String())
+
+	msg := tgbotapi.NewMessage(chatID, originStr+"\n"+
+		result+"\n")
+	msg.ParseMode = "HTML"
+
+	addCallback := "address_trace_add_" + chain
+	deleteCallback := "address_trace_delete_" + chain
+
+	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("➕"+global.Translations[lang]["address_trace_add"], addCallback),
+			tgbotapi.NewInlineKeyboardButtonData("➖"+global.Translations[lang]["address_trace_delete"], deleteCallback),
+		),
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
+		),
+	)
+	msg.ReplyMarkup = inlineKeyboard
+
+	bot.Send(msg)
+
+	expiration := 1 * time.Minute
+	cache.Set(strconv.FormatInt(chatID, 10), "usdt_address_trace_chain_"+chain, expiration)
 }
 
 func MenuNavigateAddressFreeze(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, chatID int64, db *gorm.DB) {

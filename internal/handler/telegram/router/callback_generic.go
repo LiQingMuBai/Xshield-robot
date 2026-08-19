@@ -68,17 +68,44 @@ func handleGenericCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 	case callbackQuery.Data == "cancel_catfee_order":
 		service.DepositCancelOrder(lang, ctx.Cache, ctx.Bot, callbackQuery, ctx.DB)
 		return true
-	case callbackQuery.Data == "address_trace_add":
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["address_trace_add_tips"]+"\n")
-		msg.ParseMode = "HTML"
-		ctx.Bot.Send(msg)
-		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, callbackQuery.Data)
+	case strings.HasPrefix(callbackQuery.Data, "address_trace_chain_"):
+		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_chain_")
+		if chain != "tron" && chain != "bsc" {
+			return false
+		}
+		service.ShowAddressTraceChainMenu(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB, chain)
 		return true
-	case callbackQuery.Data == "address_trace_delete":
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, global.Translations[lang]["address_trace_delete_tips"]+"\n")
+	case strings.HasPrefix(callbackQuery.Data, "address_trace_add_"):
+		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_add_")
+		if chain != "tron" && chain != "bsc" {
+			return false
+		}
+		tips := global.Translations[lang]["address_trace_add_tips"]
+		if chain == "bsc" {
+			tips += "\n（请输入 BSC 链 0x 开头地址）"
+		} else {
+			tips += "\n（请输入 TRON 链 T 开头地址）"
+		}
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, tips+"\n")
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
-		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, callbackQuery.Data)
+		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, "address_trace_add_"+chain)
+		return true
+	case strings.HasPrefix(callbackQuery.Data, "address_trace_delete_"):
+		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_delete_")
+		if chain != "tron" && chain != "bsc" {
+			return false
+		}
+		tips := global.Translations[lang]["address_trace_delete_tips"]
+		if chain == "bsc" {
+			tips += "\n（请输入 BSC 链 0x 开头地址）"
+		} else {
+			tips += "\n（请输入 TRON 链 T 开头地址）"
+		}
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, tips+"\n")
+		msg.ParseMode = "HTML"
+		ctx.Bot.Send(msg)
+		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, "address_trace_delete_"+chain)
 		return true
 	case callbackQuery.Data == "deposit_amount":
 		service.ShowDepositOptions(lang, ctx.DB, callbackQuery, ctx.Bot)

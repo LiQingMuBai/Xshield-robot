@@ -40,7 +40,7 @@ func Load() (*Config, error) {
 			Mnemonic: firstEnv("TRON_MNEMONIC"),
 		},
 		Limits: LimitsConfig{
-			AddressTraceLimit: parsePositiveIntEnv("ADDRESS_TRACE_LIMIT", 4),
+			AddressTraceLimit: parsePositiveIntEnvFloor("ADDRESS_TRACE_LIMIT", 10, 10),
 		},
 		Bot: BotConfig{
 			Name:       os.Getenv("BOT_NAME"),
@@ -69,6 +69,14 @@ func parsePositiveIntEnv(key string, fallback int) int {
 	}
 
 	return parsed
+}
+
+func parsePositiveIntEnvFloor(key string, fallback, floor int) int {
+	v := parsePositiveIntEnv(key, fallback)
+	if v < floor {
+		return floor
+	}
+	return v
 }
 
 func firstEnv(keys ...string) string {

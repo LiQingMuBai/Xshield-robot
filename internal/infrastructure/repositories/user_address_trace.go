@@ -28,12 +28,23 @@ func (r *UserAddressTraceRepo) DeleteByChatIDAndAddress(ctx context.Context, cha
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressTrace{}, "chat_id = ? AND address = ?", chatID, address).Error
 }
 
+func (r *UserAddressTraceRepo) DeleteByChatIDAddressAndNetwork(ctx context.Context, chatID int64, address, network string) error {
+	return r.db.WithContext(ctx).Delete(&domain.UserAddressTrace{},
+		"chat_id = ? AND address = ? AND network = ?", chatID, address, network).Error
+}
+
 func (r *UserAddressTraceRepo) GetByChatIDAndAddress(ctx context.Context, chatID int64, address string) (domain.UserAddressTrace, error) {
 	var item domain.UserAddressTrace
 	err := r.db.WithContext(ctx).
 		Find(&item, "chat_id = ? AND address = ?", chatID, address).Error
 	return item, err
+}
 
+func (r *UserAddressTraceRepo) GetByChatIDAddressAndNetwork(ctx context.Context, chatID int64, address, network string) (domain.UserAddressTrace, error) {
+	var item domain.UserAddressTrace
+	err := r.db.WithContext(ctx).
+		Find(&item, "chat_id = ? AND address = ? AND network = ?", chatID, address, network).Error
+	return item, err
 }
 
 func (r *UserAddressTraceRepo) CountByChatID(ctx context.Context, chatID int64) (count int64, err error) {
@@ -44,6 +55,12 @@ func (r *UserAddressTraceRepo) CountByChatID(ctx context.Context, chatID int64) 
 	return count, nil
 }
 
+func (r *UserAddressTraceRepo) CountByChatIDAndNetwork(ctx context.Context, chatID int64, network string) (count int64, err error) {
+	err = r.db.WithContext(ctx).Model(&domain.UserAddressTrace{}).
+		Where("chat_id = ? AND network = ?", chatID, network).Count(&count).Error
+	return count, err
+}
+
 func (r *UserAddressTraceRepo) ListByChatID(ctx context.Context, chatID int64) ([]domain.UserAddressTrace, error) {
 	var subscriptions []domain.UserAddressTrace
 	err := r.db.WithContext(ctx).
@@ -52,5 +69,14 @@ func (r *UserAddressTraceRepo) ListByChatID(ctx context.Context, chatID int64) (
 		Where("chat_id = ?", chatID).
 		Scan(&subscriptions).Error
 	return subscriptions, err
+}
 
+func (r *UserAddressTraceRepo) ListByChatIDAndNetwork(ctx context.Context, chatID int64, network string) ([]domain.UserAddressTrace, error) {
+	var subscriptions []domain.UserAddressTrace
+	err := r.db.WithContext(ctx).
+		Model(&domain.UserAddressTrace{}).
+		Select("id", "address", "network").
+		Where("chat_id = ? AND network = ?", chatID, network).
+		Scan(&subscriptions).Error
+	return subscriptions, err
 }

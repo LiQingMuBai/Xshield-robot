@@ -3,6 +3,8 @@
   "hide": "hide",
   "set_lang": "Set English language successfully!",
   "back_home": "My Account",
+  "back_homepage": "Home",
+  "back_address_trace": "Back to Address Tracking",
   "energy_swap": "Energy Swap",
   "transaction_plans": "Transaction Plans",
   "address_check": "Address Check",

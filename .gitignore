@@ -1,3 +1,16 @@
 .env
+.env.*
+!.env.example
 .DS_Store
 .idea/
+*.log
+*.png
+*.jpg
+*.jpeg
+*.mp4
+*.out
+*.swp
+ushield_bot
+ushield_bot.exe
+tmp_diff.py
+video_file_ids.json

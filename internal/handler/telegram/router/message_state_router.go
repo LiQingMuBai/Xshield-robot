@@ -19,6 +19,28 @@ import (
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
 )
 
+func extractChainFromStatus(status, prefix string) string {
+	rest := strings.TrimPrefix(status, prefix)
+	rest = strings.TrimPrefix(rest, "_")
+	switch rest {
+	case "tron", "bsc", "ethereum":
+		return rest
+	default:
+		return ""
+	}
+}
+
+func isValidAddressForChain(address, chain string) bool {
+	switch chain {
+	case "tron":
+		return IsValidAddress(address)
+	case "bsc", "ethereum":
+		return IsValidEthereumAddress(address)
+	default:
+		return IsValidAddress(address) || IsValidEthereumAddress(address)
+	}
+}
+
 func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, status string) {
 	switch {
 	case strings.HasPrefix(status, "user_backup_notify"):
@@ -95,7 +117,11 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 	case strings.HasPrefix(status, "address_trace_add"):
-		if !IsValidAddress(message.Text) {
+		chain := extractChainFromStatus(status, "address_trace_add")
+		if chain == "" {
+			chain = "tron"
+		}
+		if !isValidAddressForChain(message.Text, chain) {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
@@ -103,12 +129,15 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		}
 
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
-		model, _ := userRepo.GetByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text)
+		model, err := userRepo.GetByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
+		if err != nil {
+			logger.Errorf("address_trace get err (chain=%s): %v", chain, err)
+		}
 		if model.Id > 0 {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_repeat_tips"]+"</b>"+"\n")
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_user_address_trace"),
+					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
 				),
 			)
 			msg.ParseMode = "HTML"
@@ -116,13 +145,16 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 
-		total, _ := userRepo.CountByChatID(context.Background(), message.Chat.ID)
+		total, err := userRepo.CountByChatIDAndNetwork(context.Background(), message.Chat.ID, chain)
+		if err != nil {
+			logger.Errorf("address_trace count err (chain=%s): %v", chain, err)
+		}
 		if total >= int64(ctx.AddressTraceLimit) {
 			limitTips := strings.ReplaceAll(global.Translations[lang]["address_trace_add_max_tips"], "{address_trace_limit}", strconv.Itoa(ctx.AddressTraceLimit))
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+limitTips+"</b>"+"\n")
 			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 				tgbotapi.NewInlineKeyboardRow(
-					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_user_address_trace"),
+					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
 				),
 			)
 			msg.ParseMode = "HTML"
@@ -134,38 +166,44 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		record.ChatID = message.Chat.ID
 		record.Address = message.Text
 		record.Status = 1
-		if IsValidAddress(message.Text) {
-			record.Network = "tron"
+		record.Network = chain
+		if err := userRepo.Create(context.Background(), &record); err != nil {
+			logger.Errorf("address_trace create err (chain=%s,addr=%s): %v", chain, message.Text, err)
+			failMsg := tgbotapi.NewMessage(message.Chat.ID, "❌ Address save failed, please try again later")
+			failMsg.ParseMode = "HTML"
+			ctx.Bot.Send(failMsg)
+			return
 		}
-		if IsValidEthereumAddress(message.Text) {
-			record.Network = "ethereum"
-		}
-		_ = userRepo.Create(context.Background(), &record)
 
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_added_success"]+"</b>"+"\n")
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_user_address_trace"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
 			),
 		)
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
 
 	case strings.HasPrefix(status, "address_trace_delete"):
-		if !IsValidAddress(message.Text) {
+		chain := extractChainFromStatus(status, "address_trace_delete")
+		if chain == "" {
+			chain = "tron"
+		}
+		if !isValidAddressForChain(message.Text, chain) {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
 			return
 		}
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
-		if err := userRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text); err != nil {
+		if err := userRepo.DeleteByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain); err != nil {
+			logger.Errorf("address_trace delete err (chain=%s): %v", chain, err)
 			return
 		}
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
-				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_user_address_trace"),
+				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
 			),
 		)
 		msg.ParseMode = "HTML"
