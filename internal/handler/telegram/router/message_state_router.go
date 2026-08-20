@@ -17,6 +17,7 @@ import (
 	"ushield_bot/internal/service/member"
 
 	tgbotapi "github.com/go-telegram-bot-api/telegram-bot-api/v5"
+	"gorm.io/gorm"
 )
 
 func extractChainFromStatus(status, prefix string) string {
@@ -129,9 +130,9 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		}
 
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
-		model, err := userRepo.GetByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
-		if err != nil {
-			logger.Errorf("address_trace get err (chain=%s): %v", chain, err)
+		model, getErr := userRepo.GetByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
+		if getErr != nil && getErr != gorm.ErrRecordNotFound {
+			logger.Errorf("address_trace get err (chain=%s): %v", chain, getErr)
 		}
 		if model.Id > 0 {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_repeat_tips"]+"</b>"+"\n")
@@ -145,9 +146,9 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 
-		total, err := userRepo.CountByChatIDAndNetwork(context.Background(), message.Chat.ID, chain)
-		if err != nil {
-			logger.Errorf("address_trace count err (chain=%s): %v", chain, err)
+		total, cntErr := userRepo.CountByChatIDAndNetwork(context.Background(), message.Chat.ID, chain)
+		if cntErr != nil {
+			logger.Errorf("address_trace count err (chain=%s): %v", chain, cntErr)
 		}
 		if total >= int64(ctx.AddressTraceLimit) {
 			limitTips := strings.ReplaceAll(global.Translations[lang]["address_trace_add_max_tips"], "{address_trace_limit}", strconv.Itoa(ctx.AddressTraceLimit))
@@ -196,11 +197,36 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 			return
 		}
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
-		if err := userRepo.DeleteByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain); err != nil {
-			logger.Errorf("address_trace delete err (chain=%s): %v", chain, err)
+		_, getErr := userRepo.GetByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
+		if getErr == gorm.ErrRecordNotFound {
+			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ 该地址不在当前链的跟踪列表里")
+			msg.ParseMode = "HTML"
+			ctx.Bot.Send(msg)
 			return
 		}
-		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
+		if getErr != nil {
+			logger.Errorf("address_trace get before delete err (chain=%s): %v", chain, getErr)
+		}
+		rows, delErr := userRepo.DeleteByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
+		if delErr != nil {
+			logger.Errorf("address_trace delete err (chain=%s): %v", chain, delErr)
+			failMsg := tgbotapi.NewMessage(message.Chat.ID, "❌ Delete failed, please try again later")
+			failMsg.ParseMode = "HTML"
+			ctx.Bot.Send(failMsg)
+			return
+		}
+		if rows == 0 {
+			logger.Errorf("address_trace delete rows=0 (chain=%s, addr=%s)", chain, message.Text)
+			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ 该地址不在当前链的跟踪列表里")
+			msg.ParseMode = "HTML"
+			ctx.Bot.Send(msg)
+			return
+		}
+		chainTip := "TRON"
+		if chain == "bsc" {
+			chainTip = "BSC"
+		}
+		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"（"+chainTip+"）"+"</b>"+"\n")
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
 			tgbotapi.NewInlineKeyboardRow(
 				tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_address_trace"], "back_user_address_trace"),
