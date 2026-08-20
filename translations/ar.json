@@ -238,5 +238,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Please enter your receiving address:",
   "coin_laundering_order_desc": "Order created successfully\nOrder No. {orderNO}\nOrder creation time: {RegTime}\nOrder expiration time: {ExpireTime}\n\nSelected trading pair: USDTTRC20 - {token}. You will send <code>{amount1} USDTTRC20</code>; you will receive approximately {amount2} {token}.\nYour receiving wallet address is:\n<code>{to_address}</code>\n\nPlease send <code>{amount1}</code> USDTTRC20 to the following address:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "شبكة TRON",
+  "chain_bsc_title": "شبكة BSC",
+  "chain_tron_btn": "شبكة TRON",
+  "chain_bsc_btn": "شبكة BSC",
+  "no_data_short": "(لا يوجد)",
+  "current_chain_label": "📡 الشبكة الحالية: ",
+  "no_trace_address": "(لا توجد عناوين متتبعة)",
+  "address_not_in_chain_list": "❌ هذا العنوان ليس في قائمة التتبع للشبكة الحالية",
+
+  "monitoring_address_list_title": "قائمة عناوين المراقبة",
+  "set_default_address_success": "تم ضبط العنوان الافتراضي بنجاح",
+  "delete_failed_tips": "❌ فشل الحذف، يرجى المحاولة مرة أخرى لاحقًا",
+  "feature_dev_promo": "📢 الميزة قيد التطوير! هل تريد أن تعرف أولًا عندما يتم إطلاقها؟ تابع قناتنا الرسمية: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "تم إخفاء لوحة المفاتيح. أرسل /start لإظهارها مرة أخرى"
+
 }

@@ -248,5 +248,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Vui lòng nhập địa chỉ nhận của bạn:",
   "coin_laundering_order_desc": "Tạo đơn hàng thành công\nMã đơn hàng: {orderNO}\nThời gian tạo đơn: {RegTime}\nThời gian hết hạn đơn: {ExpireTime}\n\nCặp giao dịch đã chọn: USDTTRC20 - {token}. Bạn sẽ gửi <code>{amount1} USDTTRC20</code>; bạn sẽ nhận được khoảng {amount2} {token}.\nĐịa chỉ ví nhận của bạn là:\n<code>{to_address}</code>\n\nVui lòng gửi <code>{amount1}</code> USDTTRC20 đến địa chỉ sau:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "Mạng TRON",
+  "chain_bsc_title": "Mạng BSC",
+  "chain_tron_btn": "Mạng TRON",
+  "chain_bsc_btn": "Mạng BSC",
+  "no_data_short": "（Chưa có）",
+  "current_chain_label": "📡 Mạng hiện tại：",
+  "no_trace_address": "（Chưa có địa chỉ theo dõi）",
+  "address_not_in_chain_list": "❌ Địa chỉ này không có trong danh sách theo dõi của mạng hiện tại",
+
+  "monitoring_address_list_title": "Danh sách địa chỉ giám sát",
+  "set_default_address_success": "Đặt địa chỉ mặc định thành công",
+  "delete_failed_tips": "❌ Xóa không thành công, vui lòng thử lại sau",
+  "feature_dev_promo": "📢 Tính năng đang phát triển! Muốn biết khi nào nó ra mắt không? Hãy theo dõi kênh chính thức của chúng tôi: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "Bàn phím đã ẩn. Gửi /start để hiển thị lại"
+
 }

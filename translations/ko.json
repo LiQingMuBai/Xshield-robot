@@ -247,7 +247,23 @@
   "coin_laundering_choose_coin_tips": "교환하고자 하는 코인을 선택하세요:",
   "bsc_usdt_name": "바이낸스체인-USDT",
   "ethereum_usdt_name": "이더리움체인-USDT",
-  "input_receive_address": "수신 주소를 입력하세요:",
-  "coin_laundering_order_desc": "주문이 성공적으로 생성되었습니다.\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래쌍: USDTTRC20 - {token}. 귀하는 <code>{amount1} USDTTRC20</code>을(를) 보내시고, 약 {amount2} {token}을(를) 받게 됩니다.\n귀하의 수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을(를) 보내주세요:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "input_receive_address": "수신 주소를 입력해 주세요:",
+  "coin_laundering_order_desc": "주문이 정상적으로 생성되었습니다\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래 페어: USDTTRC20 - {token}. <code>{amount1} USDTTRC20</code>를 전송하면 약 {amount2} {token}을(를) 받게 됩니다.\n수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을 전송해 주세요:\n\n<code>{from_address}</code>",
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "TRON 트론체인",
+  "chain_bsc_title": "BSC 바이낸스체인",
+  "chain_tron_btn": "TRON트론체인",
+  "chain_bsc_btn": "BSC바이낸스체인",
+  "no_data_short": "（없음）",
+  "current_chain_label": "📡 현재 체인：",
+  "no_trace_address": "（추적 주소 없음）",
+  "address_not_in_chain_list": "❌ 해당 주소는 현재 체인의 추적 목록에 없습니다",
+
+  "monitoring_address_list_title": "모니터링 주소 목록",
+  "set_default_address_success": "기본 주소 설정 성공",
+  "delete_failed_tips": "❌ 삭제에 실패했습니다. 나중에 다시 시도해 주세요",
+  "feature_dev_promo": "📢 기능 개발 중! 출시 소식을 가장 먼저 받고 싶으신가요? 공식 채널을 팔로우하세요: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "키보드가 숨겨졌습니다. /start를 보내서 다시 표시하세요"
+
 }

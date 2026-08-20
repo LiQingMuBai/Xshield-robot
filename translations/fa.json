@@ -239,5 +239,21 @@
   "ethereum_usdt_name": "اتریوم-USDT",
   "input_receive_address": "لطفاً آدرس دریافتی خود را وارد کنید:",
   "coin_laundering_order_desc": "سفارش با موفقیت ایجاد شد\nشماره سفارش: {orderNO}\nزمان ایجاد سفارش: {RegTime}\nزمان انقضای سفارش: {ExpireTime}\n\nجفت معاملاتی انتخاب‌شده: USDTTRC20 - {token}. شما <code>{amount1} USDTTRC20</code> ارسال خواهید کرد؛ و حدود {amount2} {token} دریافت خواهید کرد.\nآدرس کیف پول دریافتی شما:\n<code>{to_address}</code>\n\nلطفاً <code>{amount1}</code> USDTTRC20 را به آدرس زیر ارسال کنید:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "شبکه TRON",
+  "chain_bsc_title": "شبکه BSC",
+  "chain_tron_btn": "شبکه TRON",
+  "chain_bsc_btn": "شبکه BSC",
+  "no_data_short": "(ندارد)",
+  "current_chain_label": "📡 شبکه فعلی: ",
+  "no_trace_address": "(آدرس ردیابی‌شده‌ای وجود ندارد)",
+  "address_not_in_chain_list": "❌ این آدرس در لیست ردیابی شبکه فعلی نیست",
+
+  "monitoring_address_list_title": "لیست آدرس‌های نظارتی",
+  "set_default_address_success": "تنظیم آدرس پیش‌فرض موفق بود",
+  "delete_failed_tips": "❌ حذف ناموفق بود، لطفاً دوباره تلاش کنید",
+  "feature_dev_promo": "📢 قابلیت در حال توسعه است! می‌خواهید اولین نفری باشید که از راه‌اندازی آن را می‌داند؟ کانال رسمی ما را دنبال کنید: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "صفحه کلید مخفی شد. /start را ارسال کنید تا دوباره نمایش داده شود"
+
 }

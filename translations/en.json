@@ -248,5 +248,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Please enter your receiving address:",
   "coin_laundering_order_desc": "Order created successfully\nOrder No. {orderNO}\nOrder creation time: {RegTime}\nOrder expiration time: {ExpireTime}\n\nSelected trading pair: USDTTRC20 - {token}. You will send <code>{amount1} USDTTRC20</code>; you will receive approximately {amount2} {token}.\nYour receiving wallet address is:\n<code>{to_address}</code>\n\nPlease send <code>{amount1}</code> USDTTRC20 to the following address:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "TRON Chain",
+  "chain_bsc_title": "BSC Chain",
+  "chain_tron_btn": "TRON Chain",
+  "chain_bsc_btn": "BSC Chain",
+  "no_data_short": "(None)",
+  "current_chain_label": "📡 Current Chain: ",
+  "no_trace_address": "(No tracked addresses)",
+  "address_not_in_chain_list": "❌ This address is not in the current chain's tracking list",
+
+  "monitoring_address_list_title": "Monitoring Address List",
+  "set_default_address_success": "Default address set successfully",
+  "delete_failed_tips": "❌ Delete failed, please try again later",
+  "feature_dev_promo": "📢 Feature in development! Want to know when it goes live? Follow our official channel: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "Keyboard hidden. Send /start to show it again"
+
 }

@@ -254,6 +254,21 @@
   "ethereum_usdt_name": "以太坊鏈-USDT",
   "input_receive_address": "請輸入您的收款地址：",
   "coin_laundering_order_desc": "訂單創建成功\n訂單號{orderNO}\n訂單創建時間{RegTime}\n訂單失效時間{ExpireTime}\n\n選擇的交易對為 USDTTRC20 - {token}。您將發送<code> {amount1} USDTTRC20</code>；您將獲得約 {amount2} {token}。\n您的接收錢包地址為\n <code>{to_address}</code>\n\n請發送<code>{amount1} </code>USDTTRC20至地址：\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>",
+
+  "chain_tron_title": "TRON 波場鏈",
+  "chain_bsc_title": "BSC 幣安鏈",
+  "chain_tron_btn": "TRON波場鏈",
+  "chain_bsc_btn": "BSC幣安鏈",
+  "no_data_short": "（暫無）",
+  "current_chain_label": "📡 當前鏈：",
+  "no_trace_address": "（暫無跟踪地址）",
+  "address_not_in_chain_list": "❌ 該地址不在當前鏈的跟踪列表裡",
+
+  "monitoring_address_list_title": "預警地址列表",
+  "set_default_address_success": "設置默認地址成功",
+  "delete_failed_tips": "❌ 刪除失敗，請稍後重試",
+  "feature_dev_promo": "📢 功能開發中！想第一時間知道它上線嗎？記得關註我們的官方頻道：@ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "鍵盤已隱藏，發送 /start 重新顯示"
 
 }

@@ -249,6 +249,22 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "กรุณาใส่ที่อยู่รับเงินของคุณ:",
   "coin_laundering_order_desc": "สร้างคำสั่งซื้อสำเร็จ\nหมายเลขคำสั่งซื้อ: {orderNO}\nเวลาสร้างคำสั่งซื้อ: {RegTime}\nเวลาหมดอายุคำสั่งซื้อ: {ExpireTime}\n\nคู่เทรดที่เลือกคือ USDTTRC20 - {token} คุณจะส่ง <code>{amount1} USDTTRC20</code> และจะได้รับประมาณ {amount2} {token}\nที่อยู่กระเป๋าเงินรับของคุณคือ:\n<code>{to_address}</code>\n\nกรุณาส่ง <code>{amount1}</code> USDTTRC20 ไปยังที่อยู่ต่อไปนี้:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "TRON โซ่ตรอน",
+  "chain_bsc_title": "BSC โซ่ไบแนนซ์",
+  "chain_tron_btn": "TRONโซ่ตรอน",
+  "chain_bsc_btn": "BSCโซ่ไบแนนซ์",
+  "no_data_short": "（ยังไม่มี）",
+  "current_chain_label": "📡 โซ่ปัจจุบัน：",
+  "no_trace_address": "（ยังไม่มีที่อยู่ติดตาม）",
+  "address_not_in_chain_list": "❌ ที่อยู่นี้ไม่อยู่ในรายการติดตามของโซ่ปัจจุบัน",
+
+  "monitoring_address_list_title": "รายการที่อยู่ที่เฝ้าดู",
+  "set_default_address_success": "ตั้งค่าที่อยู่เริ่มต้นสำเร็จ",
+  "delete_failed_tips": "❌ ลบไม่สำเร็จ โปรดลองอีกครั้งในภายหลัง",
+  "feature_dev_promo": "📢 ฟีเจอร์กำลังพัฒนา! อยากรู้ว่ามันจะเปิดตัวเมื่อไหร่? กดติดตามช่องทางทางการของเราเลย: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "ซ่อนแป้นพิมพ์แล้ว ส่ง /start เพื่อแสดงอีกครั้ง"
+
 }
 

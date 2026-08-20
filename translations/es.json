@@ -250,5 +250,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Por favor, introduzca su dirección de recepción:",
   "coin_laundering_order_desc": "Pedido creado con éxito\nNúmero de pedido: {orderNO}\nHora de creación del pedido: {RegTime}\nHora de vencimiento del pedido: {ExpireTime}\n\nPar de operación seleccionado: USDTTRC20 - {token}. Usted enviará <code>{amount1} USDTTRC20</code>; recibirá aproximadamente {amount2} {token}.\nSu dirección de billetera receptora es:\n<code>{to_address}</code>\n\nPor favor, envíe <code>{amount1}</code> USDTTRC20 a la siguiente dirección:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "Cadena TRON",
+  "chain_bsc_title": "Cadena BSC",
+  "chain_tron_btn": "Cadena TRON",
+  "chain_bsc_btn": "Cadena BSC",
+  "no_data_short": "(Ninguno)",
+  "current_chain_label": "📡 Cadena actual: ",
+  "no_trace_address": "(Sin direcciones rastreadas)",
+  "address_not_in_chain_list": "❌ Esta dirección no está en la lista de seguimiento de la cadena actual",
+
+  "monitoring_address_list_title": "Lista de direcciones en monitoreo",
+  "set_default_address_success": "Dirección predeterminada configurada correctamente",
+  "delete_failed_tips": "❌ Error al eliminar, inténtelo de nuevo más tarde",
+  "feature_dev_promo": "📢 ¡Función en desarrollo! ¿Quieres saber en qué momento estará disponible? ¡Sigue nuestro canal oficial! 🔔 @ushield1:\n\n",
+  "keyboard_hidden_tips": "Teclado oculto. Envía /start para volver a mostrarlo"
+
 }

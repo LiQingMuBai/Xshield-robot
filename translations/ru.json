@@ -239,5 +239,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Пожалуйста, введите ваш адрес для получения:",
   "coin_laundering_order_desc": "Заказ успешно создан\nНомер заказа: {orderNO}\nВремя создания заказа: {RegTime}\nВремя истечения заказа: {ExpireTime}\n\nВыбранная торговая пара: USDTTRC20 – {token}. Вы отправите <code>{amount1} USDTTRC20</code>; вы получите примерно {amount2} {token}.\nВаш адрес кошелька для получения:\n<code>{to_address}</code>\n\nПожалуйста, отправьте <code>{amount1}</code> USDTTRC20 на следующий адрес:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "TRON сеть",
+  "chain_bsc_title": "BSC сеть",
+  "chain_tron_btn": "TRON сеть",
+  "chain_bsc_btn": "BSC сеть",
+  "no_data_short": "(Нет данных)",
+  "current_chain_label": "📡 Текущая сеть: ",
+  "no_trace_address": "(Нет отслеживаемых адресов)",
+  "address_not_in_chain_list": "❌ Этот адрес отсутствует в списке отслеживания текущей сети",
+
+  "monitoring_address_list_title": "Список адресов для мониторинга",
+  "set_default_address_success": "Адрес по умолчанию успешно установлен",
+  "delete_failed_tips": "❌ Не удалось удалить, повторите попытку позже",
+  "feature_dev_promo": "📢 Функция в разработке! Хотите первыми узнать о запуске? Подпишитесь на наш официальный канал: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "Клавиатура скрыта. Отправьте /start, чтобы показать её снова"
+
 }

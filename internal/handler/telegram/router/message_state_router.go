@@ -199,7 +199,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		userRepo := repositories.NewUserAddressTraceRepo(ctx.DB)
 		_, getErr := userRepo.GetByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
 		if getErr == gorm.ErrRecordNotFound {
-			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ 该地址不在当前链的跟踪列表里")
+			msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[lang]["address_not_in_chain_list"])
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
 			return
@@ -210,14 +210,14 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		rows, delErr := userRepo.DeleteByChatIDAddressAndNetwork(context.Background(), message.Chat.ID, message.Text, chain)
 		if delErr != nil {
 			logger.Errorf("address_trace delete err (chain=%s): %v", chain, delErr)
-			failMsg := tgbotapi.NewMessage(message.Chat.ID, "❌ Delete failed, please try again later")
+			failMsg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[lang]["delete_failed_tips"])
 			failMsg.ParseMode = "HTML"
 			ctx.Bot.Send(failMsg)
 			return
 		}
 		if rows == 0 {
 			logger.Errorf("address_trace delete rows=0 (chain=%s, addr=%s)", chain, message.Text)
-			msg := tgbotapi.NewMessage(message.Chat.ID, "❌ 该地址不在当前链的跟踪列表里")
+			msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[lang]["address_not_in_chain_list"])
 			msg.ParseMode = "HTML"
 			ctx.Bot.Send(msg)
 			return

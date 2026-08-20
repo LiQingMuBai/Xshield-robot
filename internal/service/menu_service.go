@@ -248,9 +248,9 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 	var builder strings.Builder
 	builder.WriteString("\n")
 
-	builder.WriteString("\n🔷 <b>TRON 波场链</b>")
+	builder.WriteString("\n🔷 <b>" + global.Translations[lang]["chain_tron_title"] + "</b>")
 	if len(tronList) == 0 {
-		builder.WriteString("\n（暂无）")
+		builder.WriteString("\n" + global.Translations[lang]["no_data_short"])
 	} else {
 		for _, order := range tronList {
 			builder.WriteString("\n")
@@ -258,9 +258,9 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 		}
 	}
 
-	builder.WriteString("\n\n🟡 <b>BSC 币安链</b>")
+	builder.WriteString("\n\n🟡 <b>" + global.Translations[lang]["chain_bsc_title"] + "</b>")
 	if len(bscList) == 0 {
-		builder.WriteString("\n（暂无）")
+		builder.WriteString("\n" + global.Translations[lang]["no_data_short"])
 	} else {
 		for _, order := range bscList {
 			builder.WriteString("\n")
@@ -276,8 +276,8 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(
-			tgbotapi.NewInlineKeyboardButtonData("🔷 TRON波场链", "address_trace_chain_tron"),
-			tgbotapi.NewInlineKeyboardButtonData("🟡 BSC币安链", "address_trace_chain_bsc"),
+			tgbotapi.NewInlineKeyboardButtonData("🔷 "+global.Translations[lang]["chain_tron_btn"], "address_trace_chain_tron"),
+			tgbotapi.NewInlineKeyboardButtonData("🟡 "+global.Translations[lang]["chain_bsc_btn"], "address_trace_chain_bsc"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard
@@ -313,7 +313,7 @@ func ShowAddressTraceChainMenu(lang string, cache cache.Cache, bot *tgbotapi.Bot
 
 	var builder strings.Builder
 	builder.WriteString("\n")
-	builder.WriteString("📡 当前链：<b>")
+	builder.WriteString(global.Translations[lang]["current_chain_label"] + "<b>")
 	builder.WriteString(chainLabel)
 	builder.WriteString("</b>\n")
 	count := 0
@@ -324,7 +324,7 @@ func ShowAddressTraceChainMenu(lang string, cache cache.Cache, bot *tgbotapi.Bot
 		count++
 	}
 	if count == 0 {
-		builder.WriteString("\n（暂无跟踪地址）\n")
+		builder.WriteString("\n" + global.Translations[lang]["no_trace_address"] + "\n")
 	}
 
 	result := strings.TrimSpace(builder.String())
