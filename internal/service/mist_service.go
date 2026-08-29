@@ -96,11 +96,17 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 		return result, nil
 	}
 
-	text, temporaryFailure, err := s.buildDetectionText(lang, cacheStore, address)
+	text, temporaryFailure, raw, err := s.fetchDetectionData(lang, cacheStore, address)
 	if err != nil {
 		return nil, err
 	}
 	result.Text = text
+
+	if !temporaryFailure && raw != nil {
+		if persistErr := s.persistRiskData(ctx, address, raw); persistErr != nil {
+			logger.Errorf("persist risk data err (addr=%s): %v", address, persistErr)
+		}
+	}
 
 	if err := userRepo.UpdateDetectionTimesByChatID(1, chatID); err != nil {
 		logger.Errorf("update address detection times err: %v", err)
@@ -118,37 +124,36 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 	return result, nil
 }
 
-func (s *AddressDetectionService) loadCosts() (*addressDetectionCosts, error) {
-	dictRepo := repositories.NewSysDictionariesRepo(s.db)
-	trxCost, err := dictRepo.GetDictionaryDetail("address_detection_cost")
-	if err != nil {
-		return nil, err
-	}
-	usdtCost, err := dictRepo.GetDictionaryDetail("address_detection_cost_usdt")
-	if err != nil {
-		return nil, err
-	}
-	return &addressDetectionCosts{
-		TRX:  trxCost,
-		USDT: usdtCost,
-	}, nil
+type detectionRawData struct {
+	AddressInfo      handler.SlowMistAddressInfo
+	AddressProfile   handler.AddressProfile
+	LabelAddressList handler.LabeledAddressList
+	Network          string
 }
 
-func (s *AddressDetectionService) buildDetectionText(lang string, cacheStore cache.Cache, address string) (string, bool, error) {
+func (s *AddressDetectionService) fetchDetectionData(lang string, cacheStore cache.Cache, address string) (string, bool, *detectionRawData, error) {
 	symbol, graphCoin := addressDetectionSymbol(address)
+	network := addressDetectionNetwork(address)
 	addressInfo, err := handler.GetAddressInfo(symbol, address, s.mistCookie)
 	if err != nil || !addressInfo.Success {
-		return mistTemporaryUnavailableText, true, nil
+		return mistTemporaryUnavailableText, true, nil, nil
 	}
 
 	text := handler.BuildRiskSummaryText(lang, cacheStore, addressInfo)
 	addressProfile := handler.GetAddressProfile(symbol, address, s.mistCookie)
 	labelAddressList := handler.ListRiskAddresses(graphCoin, address, s.mistCookie)
 
+	raw := &detectionRawData{
+		AddressInfo:      addressInfo,
+		AddressProfile:   addressProfile,
+		LabelAddressList: labelAddressList,
+		Network:          network,
+	}
+
 	if isMissingAddressProfileData(addressProfile) {
 		line1 := "⚠️ " + global.Translations[lang]["address_overview"] + "：" + global.Translations[lang]["no_data_placeholder"]
 		line2 := global.Translations[lang]["no_data_updating_tip"]
-		return line1 + "\n" + line2, true, nil
+		return line1 + "\n" + line2, true, raw, nil
 	}
 
 	firstTxTimeDisplay := sanitizeAddressProfileTime(addressProfile.FirstTxTime, global.Translations[lang]["no_data_placeholder"])
@@ -164,7 +169,81 @@ func (s *AddressDetectionService) buildDetectionText(lang string, cacheStore cac
 	text += addressDetectionCounterpartyText(lang, labelAddressList)
 	text += global.Translations[lang]["ushield_tips"] + "\n"
 
-	return text, false, nil
+	return text, false, raw, nil
+}
+
+func (s *AddressDetectionService) persistRiskData(ctx context.Context, address string, raw *detectionRawData) error {
+	score := raw.AddressInfo.RiskDic.Score
+	trimmedSource := strings.TrimSpace(address)
+	cpRepo := repositories.NewAddressCounterpartyRepo(s.db)
+
+	if score > 70 {
+		label := "中风险"
+		if score > 90 {
+			label = "高风险"
+		}
+		self := domain.AddressCounterparty{
+			Network:          raw.Network,
+			CounterpartyAddr: trimmedSource,
+			Label:            label,
+			Title:            label,
+			RiskScore:        score,
+			Layer:            0,
+		}
+		if err := cpRepo.Upsert(ctx, &self); err != nil {
+			logger.Errorf("upsert risk label err (addr=%s, score=%d): %v", trimmedSource, score, err)
+		}
+	}
+
+	return s.persistCounterparties(ctx, raw, cpRepo)
+}
+
+func (s *AddressDetectionService) persistCounterparties(ctx context.Context, raw *detectionRawData, cpRepo *repositories.AddressCounterpartyRepo) error {
+	nodeList := raw.LabelAddressList.GraphDic.NodeList
+	if len(nodeList) == 0 {
+		return nil
+	}
+	for _, node := range nodeList {
+		if strings.TrimSpace(node.Label) == "" {
+			continue
+		}
+		addr := node.Addr
+		if addr == "" {
+			addr = node.ID
+		}
+		cp := domain.AddressCounterparty{
+			Network:          raw.Network,
+			CounterpartyAddr: addr,
+			Label:            node.Label,
+			Title:            node.Title,
+			RiskScore:        node.Malicious,
+			Layer:            node.Layer,
+			Malicious:        node.Malicious,
+			Track:            node.Track,
+			Color:            node.Color,
+			Dex:              node.Dex,
+		}
+		if err := cpRepo.Upsert(ctx, &cp); err != nil {
+			logger.Errorf("upsert counterparty err (addr=%s): %v", addr, err)
+		}
+	}
+	return nil
+}
+
+func (s *AddressDetectionService) loadCosts() (*addressDetectionCosts, error) {
+	dictRepo := repositories.NewSysDictionariesRepo(s.db)
+	trxCost, err := dictRepo.GetDictionaryDetail("address_detection_cost")
+	if err != nil {
+		return nil, err
+	}
+	usdtCost, err := dictRepo.GetDictionaryDetail("address_detection_cost_usdt")
+	if err != nil {
+		return nil, err
+	}
+	return &addressDetectionCosts{
+		TRX:  trxCost,
+		USDT: usdtCost,
+	}, nil
 }
 
 func (s *AddressDetectionService) chargeAndRecord(ctx context.Context, user *domain.User, chatID int64, address string, costs *addressDetectionCosts) (string, error) {
