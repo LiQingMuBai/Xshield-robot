@@ -173,31 +173,7 @@ func (s *AddressDetectionService) fetchDetectionData(lang string, cacheStore cac
 }
 
 func (s *AddressDetectionService) persistRiskData(ctx context.Context, address string, raw *detectionRawData) error {
-	score := raw.AddressInfo.RiskDic.Score
-	trimmedSource := strings.TrimSpace(address)
 	cpRepo := repositories.NewAddressCounterpartyRepo(s.db)
-
-	if score >= 30 {
-		label := "低风险"
-		switch {
-		case score > 90:
-			label = "高风险"
-		case score > 70:
-			label = "中风险"
-		}
-		self := domain.AddressCounterparty{
-			Network:          raw.Network,
-			CounterpartyAddr: trimmedSource,
-			Label:            label,
-			Title:            label,
-			RiskScore:        score,
-			Layer:            0,
-		}
-		if err := cpRepo.Upsert(ctx, &self); err != nil {
-			logger.Errorf("upsert risk label err (addr=%s, score=%d): %v", trimmedSource, score, err)
-		}
-	}
-
 	return s.persistCounterparties(ctx, raw, cpRepo)
 }
 
@@ -213,6 +189,9 @@ func (s *AddressDetectionService) persistCounterparties(ctx context.Context, raw
 		addr := node.Addr
 		if addr == "" {
 			addr = node.ID
+		}
+		if isLabelLooksLikeAddress(node.Label, addr, node.ID) {
+			continue
 		}
 		cp := domain.AddressCounterparty{
 			Network:          raw.Network,
@@ -231,6 +210,28 @@ func (s *AddressDetectionService) persistCounterparties(ctx context.Context, raw
 		}
 	}
 	return nil
+}
+
+func isLabelLooksLikeAddress(label, addr, id string) bool {
+	if strings.Contains(label, "...") {
+		return true
+	}
+	trimmed := strings.TrimSpace(label)
+	if trimmed == "" {
+		return true
+	}
+	if strings.EqualFold(trimmed, strings.TrimSpace(addr)) {
+		return true
+	}
+	if strings.EqualFold(trimmed, strings.TrimSpace(id)) {
+		return true
+	}
+	lower := strings.ToLower(trimmed)
+	switch lower {
+	case "binance", "okx", "kucoin", "huobi":
+		return true
+	}
+	return false
 }
 
 func (s *AddressDetectionService) loadCosts() (*addressDetectionCosts, error) {
