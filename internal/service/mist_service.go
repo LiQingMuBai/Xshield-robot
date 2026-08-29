@@ -177,10 +177,13 @@ func (s *AddressDetectionService) persistRiskData(ctx context.Context, address s
 	trimmedSource := strings.TrimSpace(address)
 	cpRepo := repositories.NewAddressCounterpartyRepo(s.db)
 
-	if score > 70 {
-		label := "中风险"
-		if score > 90 {
+	if score >= 30 {
+		label := "低风险"
+		switch {
+		case score > 90:
 			label = "高风险"
+		case score > 70:
+			label = "中风险"
 		}
 		self := domain.AddressCounterparty{
 			Network:          raw.Network,
