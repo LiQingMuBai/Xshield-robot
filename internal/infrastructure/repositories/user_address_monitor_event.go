@@ -53,6 +53,14 @@ func (r *UserAddressMonitorEventRepo) DeleteAllByChatID(ctx context.Context, cha
 	return r.db.WithContext(ctx).Delete(&domain.UserAddressMonitorEvent{}, "chat_id = ?", chatID).Error
 }
 
+func (r *UserAddressMonitorEventRepo) GetActiveByChatIDAndAddress(ctx context.Context, chatID int64, address string) (domain.UserAddressMonitorEvent, error) {
+	var event domain.UserAddressMonitorEvent
+	err := r.db.WithContext(ctx).
+		Where("chat_id = ? AND LOWER(address) = LOWER(?) AND status = 1", chatID, address).
+		First(&event).Error
+	return event, err
+}
+
 func (r *UserAddressMonitorEventRepo) ListByChatIDPage(ctx context.Context, info request.UserAddressDetectionSearch, chatID int64) (list []domain.UserAddressMonitorEvent, total int64, err error) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)

@@ -173,6 +173,7 @@
   "smart_transaction_address_list": "Danh sách địa chỉ",
 
   "catfee_smart_transaction_menu": "Ủy thác thông minh",
+  "catfee_smart_bundle_package_menu": "Gói giao dịch thông minh",
   "catfee_smart_transaction_pay_button": "Vui lòng thanh toán",
   "catfee_smart_transaction_head_1": "✅  Tạo đơn đặt hàng gói ủy thác thông minh thành công\nGói: ",
   "catfee_smart_transaction_head_2": "\nSố tiền thanh toán: ",

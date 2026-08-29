@@ -173,6 +173,7 @@
   "smart_transaction_address_list": "주소 목록",
 
   "catfee_smart_transaction_menu": "스마트 위탁",
+  "catfee_smart_bundle_package_menu": "스마트 거래 패키지",
   "catfee_smart_transaction_pay_button": "결제하기",
   "catfee_smart_transaction_head_1": "✅  스마트 위탁 패키지 주문이 성공적으로 생성되었습니다\n패키지: ",
   "catfee_smart_transaction_head_2": "\n결제 금액: ",

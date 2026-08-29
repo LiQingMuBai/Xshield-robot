@@ -469,6 +469,21 @@ func MenuNavigateBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbo
 	bot.Send(msg)
 }
 
+func MenuNavigateSmartBundlePackage(lang string, db *gorm.DB, chatID int64, bot *tgbotapi.BotAPI, token string, addressTraceLimit int) {
+	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
+		tgbotapi.NewInlineKeyboardRow(
+			tgbotapi.NewInlineKeyboardButtonData("手工发能", "smart_manual_dispatch"),
+			tgbotapi.NewInlineKeyboardButtonData("自动发能", "smart_auto_dispatch"),
+		),
+	)
+
+	msg := tgbotapi.NewMessage(chatID, buildTransactionPlansText(lang, addressTraceLimit))
+	msg.ReplyMarkup = inlineKeyboard
+	msg.ParseMode = "HTML"
+
+	bot.Send(msg)
+}
+
 func MenuNavigateHome(lang string, cache cache.Cache, db *gorm.DB, message *tgbotapi.Message, bot *tgbotapi.BotAPI) {
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
 		tgbotapi.NewInlineKeyboardRow(

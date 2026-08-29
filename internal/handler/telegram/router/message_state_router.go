@@ -50,6 +50,17 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		}
 	case strings.HasPrefix(status, "start_freeze_risk"):
 		freezeAlertService := service.NewFreezeAlertService(ctx.DB)
+		if freezeAlertService.ExistsActive(message.Chat.ID, message.Text) {
+			msg := tgbotapi.NewMessage(message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_repeat_tips"]+"</b>"+"\n")
+			msg.ParseMode = "HTML"
+			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
+				),
+			)
+			ctx.Bot.Send(msg)
+			return
+		}
 		preview, previewErr := freezeAlertService.Preview(message.Text)
 		if previewErr == service.ErrFreezeAlertInvalidAddress {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")

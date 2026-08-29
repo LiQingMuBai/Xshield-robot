@@ -172,6 +172,7 @@
   "smart_transaction_address_list": "Address List",
 
   "catfee_smart_transaction_menu": "Smart Custody",
+  "catfee_smart_bundle_package_menu": "Smart Transaction Plans",
   "catfee_smart_transaction_pay_button": "Please Pay",
   "catfee_smart_transaction_head_1": "✅  Smart Custody Package Order Created Successfully\nPackage: ",
   "catfee_smart_transaction_head_2": "\nPayment Amount: ",

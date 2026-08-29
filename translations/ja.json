@@ -173,6 +173,7 @@
   "smart_transaction_address_list": "アドレスリスト",
 
   "catfee_smart_transaction_menu": "スマートカストディ",
+  "catfee_smart_bundle_package_menu": "スマート取引パッケージ",
   "catfee_smart_transaction_pay_button": "お支払いください",
   "catfee_smart_transaction_head_1": "✅  スマートカストディパッケージ注文が作成されました\nパッケージ：",
   "catfee_smart_transaction_head_2": "\n支払い金額：",

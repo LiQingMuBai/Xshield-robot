@@ -171,6 +171,7 @@
   "smart_transaction_address_list": "รายการที่อยู่",
 
   "catfee_smart_transaction_menu": "การฝากอัจฉริยะ",
+  "catfee_smart_bundle_package_menu": "แผนธุรกรรมอัจฉริยะ",
   "catfee_smart_transaction_pay_button": "กรุณาชำระเงิน",
   "catfee_smart_transaction_head_1": "✅  สร้างคำสั่งซื้อแพ็กเกจการฝากอัจฉริยะสำเร็จแล้ว\nแพ็กเกจ: ",
   "catfee_smart_transaction_head_2": "\nจำนวนเงินที่ต้องชำระ: ",

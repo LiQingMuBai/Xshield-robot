@@ -184,6 +184,7 @@
   "smart_transaction_address_list": "托管列表",
 
   "catfee_smart_transaction_menu": "智能托管",
+  "catfee_smart_bundle_package_menu": "智能笔数套餐",
   "catfee_smart_transaction_pay_button": "请支付",
   "catfee_smart_transaction_head_1": "✅ 智能托管套餐订单创建成功\n\n套餐：",
   "catfee_smart_transaction_head_2": "\n\n支付金额：",

@@ -164,6 +164,7 @@
   "smart_transaction_address_list": "Список управления",
 
   "catfee_smart_transaction_menu": "Умное хранение",
+  "catfee_smart_bundle_package_menu": "Умные пакеты транзакций",
   "catfee_smart_transaction_pay_button": "Оплатить",
   "catfee_smart_transaction_head_1": "✅  Успешно создан заказ на пакет умного хранения\nПакет: ",
   "catfee_smart_transaction_head_2": "\nСумма оплаты: ",

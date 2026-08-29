@@ -173,6 +173,7 @@
   "smart_transaction_address_list": "Lista de endereços",
 
   "catfee_smart_transaction_menu": "Custódia Inteligente",
+  "catfee_smart_bundle_package_menu": "Pacotes de Transações Inteligentes",
   "catfee_smart_transaction_pay_button": "Por favor, pague",
   "catfee_smart_transaction_head_1": "✅  Pedido do pacote de custódia inteligente criado com sucesso\nPacote: ",
   "catfee_smart_transaction_head_2": "\nValor do pagamento: ",
