@@ -103,9 +103,16 @@ func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cache
 	result.Text = text
 
 	if !temporaryFailure && raw != nil {
-		if persistErr := s.persistRiskData(ctx, address, raw); persistErr != nil {
-			logger.Errorf("persist risk data err (addr=%s): %v", address, persistErr)
-		}
+		go func(pCtx context.Context, pAddress string, pRaw *detectionRawData) {
+			defer func() {
+				if r := recover(); r != nil {
+					logger.Errorf("persist risk data panic (addr=%s): %v", pAddress, r)
+				}
+			}()
+			if persistErr := s.persistRiskData(pCtx, pAddress, pRaw); persistErr != nil {
+				logger.Errorf("persist risk data err (addr=%s): %v", pAddress, persistErr)
+			}
+		}(ctx, address, raw)
 	}
 
 	if err := userRepo.UpdateDetectionTimesByChatID(1, chatID); err != nil {
