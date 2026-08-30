@@ -233,11 +233,6 @@ func isLabelLooksLikeAddress(label, addr, id string) bool {
 	if strings.EqualFold(trimmed, strings.TrimSpace(id)) {
 		return true
 	}
-	lower := strings.ToLower(trimmed)
-	switch lower {
-	case "binance", "okx", "kucoin", "huobi":
-		return true
-	}
 	return false
 }
 
