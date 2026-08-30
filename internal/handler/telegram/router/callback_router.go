@@ -33,6 +33,10 @@ func HandleCallbackQuery(callbackQuery *tgbotapi.CallbackQuery, ctx Context) {
 		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
 	case callbackQuery.Data == "click_smart_transaction_plan":
 		catfee.MenuNavigateCatfeeSmartTransactionPlans(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
+	case callbackQuery.Data == "smart_manual_dispatch":
+		service.MenuNavigateBundlePackage(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX", ctx.AddressTraceLimit)
+	case callbackQuery.Data == "smart_auto_dispatch":
+		catfee.MenuNavigateCatfeeSmartTransactionPlans(lang, ctx.DB, callbackQuery.Message.Chat.ID, ctx.Bot, "TRX")
 	case callbackQuery.Data == "click_language":
 		service.MenuNavigateHome2(ctx.DB, callbackQuery.Message, ctx.Bot)
 	case callbackQuery.Data == "dispatch_Now_Others":

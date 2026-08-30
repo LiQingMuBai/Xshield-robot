@@ -110,7 +110,7 @@ func ShowAddressManager(lang string, cache cache.Cache, bot *tgbotapi.BotAPI, ch
 	for _, item := range addresses {
 		result += "<code>" + item.Address + "</code>" + "\n"
 	}
-	msg := tgbotapi.NewMessage(chatID, "预警地址列表"+"\n"+result)
+	msg := tgbotapi.NewMessage(chatID, global.Translations[lang]["monitoring_address_list_title"]+"\n"+result)
 	//地址绑定
 
 	msg.ParseMode = "HTML"

@@ -26,6 +26,17 @@ func handleRiskCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, ctx 
 			sendFreezeAlertInsufficientBalance(ctx.Bot, callbackQuery.Message.Chat.ID, lang)
 			return true
 		}
+		if err == service.ErrFreezeAlertAddressExists {
+			msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅"+"<b>"+global.Translations[lang]["address_trace_add_repeat_tips"]+"</b>"+"\n")
+			msg.ParseMode = "HTML"
+			msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
+				tgbotapi.NewInlineKeyboardRow(
+					tgbotapi.NewInlineKeyboardButtonData("🔙️"+global.Translations[lang]["back_homepage"], "back_risk_home"),
+				),
+			)
+			ctx.Bot.Send(msg)
+			return true
+		}
 		if err != nil {
 			logger.Errorf("freeze alert confirm err: %v", err)
 			return true

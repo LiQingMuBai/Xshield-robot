@@ -4,6 +4,7 @@
   "set_lang": "言語を日本語に切り替えました！",
   "back_home": "個人センターに戻る",
   "back_homepage": "ホームページに戻る",
+  "back_address_trace": "アドレス追跡に戻る",
   "energy_swap": "エネルギー高速交換",
   "transaction_plans": "取引パッケージ",
   "address_check": "アドレス確認",
@@ -172,6 +173,7 @@
   "smart_transaction_address_list": "アドレスリスト",
 
   "catfee_smart_transaction_menu": "スマートカストディ",
+  "catfee_smart_bundle_package_menu": "スマート取引パッケージ",
   "catfee_smart_transaction_pay_button": "お支払いください",
   "catfee_smart_transaction_head_1": "✅  スマートカストディパッケージ注文が作成されました\nパッケージ：",
   "catfee_smart_transaction_head_2": "\n支払い金額：",
@@ -249,5 +251,21 @@
   "ethereum_usdt_name": "イーサリアムチェーン-USDT",
   "input_receive_address": "受取アドレスを入力してください：",
   "coin_laundering_order_desc": "注文が正常に作成されました\n注文番号：{orderNO}\n注文作成時刻：{RegTime}\n注文有効期限：{ExpireTime}\n\n選択された取引ペア：USDTTRC20 - {token}。あなたは<code>{amount1} USDTTRC20</code>を送信し、約{amount2} {token}を受け取ります。\nあなたの受け取りウォレットアドレス：\n<code>{to_address}</code>\n\n以下のアドレスに<code>{amount1}</code> USDTTRC20を送金してください：\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "TRON ボーチェーン",
+  "chain_bsc_title": "BSC バイナンスチェーン",
+  "chain_tron_btn": "TRONボーチェーン",
+  "chain_bsc_btn": "BSCバイナンスチェーン",
+  "no_data_short": "（なし）",
+  "current_chain_label": "📡 現在のチェーン：",
+  "no_trace_address": "（追跡アドレスなし）",
+  "address_not_in_chain_list": "❌ このアドレスは現在のチェーンの追跡リストにありません",
+
+  "monitoring_address_list_title": "監視アドレスリスト",
+  "set_default_address_success": "デフォルトアドレス設定成功",
+  "delete_failed_tips": "❌ 削除に失敗しました。後でもう一度お試しください",
+  "feature_dev_promo": "📢 機能開発中！最新情報をいち早くお届けするため、公式チャンネルをフォローしてください：@ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "キーボードを非表示にしました。/start を送信して再表示してください"
+
 }

@@ -16,9 +16,15 @@ import (
 )
 
 func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
+	userRepo := repositories.NewUserRepository(ctx.DB)
+	userRecord, getErr := userRepo.GetByChatID(update.Message.Chat.ID)
+	lang := "zh"
+	if getErr == nil && len(userRecord.Lang) > 0 {
+		lang = userRecord.Lang
+	}
 	switch {
 	case strings.HasPrefix(update.Message.Command(), "startDispatch"):
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢 功能开发中！想第一时间知道它上线吗？记得关注我们的官方频道：@ushield1 🔔\n\n")
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, global.Translations[lang]["feature_dev_promo"])
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
 
@@ -89,7 +95,7 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		sendDispatchSuccess(ctx.Bot, update.Message.Chat.ID, result)
 
 	case strings.HasPrefix(update.Message.Command(), "stopDispatch"):
-		msg := tgbotapi.NewMessage(update.Message.Chat.ID, "📢 功能开发中！想第一时间知道它上线吗？记得关注我们的官方频道：@ushield1 🔔\n\n")
+		msg := tgbotapi.NewMessage(update.Message.Chat.ID, global.Translations[lang]["feature_dev_promo"])
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
 
@@ -103,7 +109,7 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		handleStartBootstrap(update.Message, ctx)
 
 	case update.Message.Command() == "hide":
-		handleHideCommand(ctx.Bot, update.Message)
+		handleHideCommand(ctx.Cache, ctx.Bot, update.Message)
 	}
 }
 
@@ -182,9 +188,13 @@ func handleStartCommand(cacheStore cache.Cache, bot *tgbotapi.BotAPI, message *t
 	bot.Send(msg)
 }
 
-func handleHideCommand(bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
+func handleHideCommand(cacheStore cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message) {
+	lang, _ := cacheStore.Get(languageCacheKey(message.Chat.ID))
+	if len(lang) == 0 {
+		lang = defaultUserLang
+	}
 	hideKeyboard := tgbotapi.NewRemoveKeyboard(true)
-	msg := tgbotapi.NewMessage(message.Chat.ID, "键盘已隐藏，发送 /start 重新显示")
+	msg := tgbotapi.NewMessage(message.Chat.ID, global.Translations[lang]["keyboard_hidden_tips"])
 	msg.ReplyMarkup = hideKeyboard
 	bot.Send(msg)
 }

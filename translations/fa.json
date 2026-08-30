@@ -3,6 +3,8 @@
   "hide": "پنهان کردن",
   "set_lang": "زبان انگلیسی با موفقیت تنظیم شد!",
   "back_home": "حساب من",
+  "back_homepage": "بازگشت به صفحه اصلی",
+  "back_address_trace": "بازگشت به ردیابی آدرس",
   "energy_swap": "تبادل انرژی",
   "transaction_plans": "طرح‌های تراکنش",
   "address_check": "بررسی آدرس",
@@ -160,6 +162,7 @@
   "coin_swap_coin_tips": "مراحل صرافی ارز\n۱. دکمه زیر را بزنید 【صرافی ارز】⬇️\n۲. توکن مبدا و توکن مقصد را وارد کنید\n۳. مقدار را وارد کنید\n۴. آدرس دریافت را وارد کنید\n۵. <b>اختیاری</b>، انتخاب کنید که آیا می‌خواهید هنگام وصول وجه ایمیل دریافت کنید یا خیر\n۶. منتظر آدرس پرداخت QR Code باشید، سپس مقدار دقیق را انتقال دهید\n۷. وجه ظرف ۳ دقیقه به شما تحویل داده می‌شود",
   "smart_transaction_address_list": "لیست آدرس‌ها",
   "catfee_smart_transaction_menu": "حفظت هوشمند",
+  "catfee_smart_bundle_package_menu": "طرح‌های تراکنش هوشمند",
   "catfee_smart_transaction_pay_button": "لطفاً پرداخت کنید",
   "catfee_smart_transaction_head_1": "🧾 سفارش بسته حفظت هوشمند با موفقیت ایجاد شد\nبسته: ",
   "catfee_smart_transaction_head_2": "\nمبلغ پرداختی: ",
@@ -237,5 +240,21 @@
   "ethereum_usdt_name": "اتریوم-USDT",
   "input_receive_address": "لطفاً آدرس دریافتی خود را وارد کنید:",
   "coin_laundering_order_desc": "سفارش با موفقیت ایجاد شد\nشماره سفارش: {orderNO}\nزمان ایجاد سفارش: {RegTime}\nزمان انقضای سفارش: {ExpireTime}\n\nجفت معاملاتی انتخاب‌شده: USDTTRC20 - {token}. شما <code>{amount1} USDTTRC20</code> ارسال خواهید کرد؛ و حدود {amount2} {token} دریافت خواهید کرد.\nآدرس کیف پول دریافتی شما:\n<code>{to_address}</code>\n\nلطفاً <code>{amount1}</code> USDTTRC20 را به آدرس زیر ارسال کنید:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "شبکه TRON",
+  "chain_bsc_title": "شبکه BSC",
+  "chain_tron_btn": "شبکه TRON",
+  "chain_bsc_btn": "شبکه BSC",
+  "no_data_short": "(ندارد)",
+  "current_chain_label": "📡 شبکه فعلی: ",
+  "no_trace_address": "(آدرس ردیابی‌شده‌ای وجود ندارد)",
+  "address_not_in_chain_list": "❌ این آدرس در لیست ردیابی شبکه فعلی نیست",
+
+  "monitoring_address_list_title": "لیست آدرس‌های نظارتی",
+  "set_default_address_success": "تنظیم آدرس پیش‌فرض موفق بود",
+  "delete_failed_tips": "❌ حذف ناموفق بود، لطفاً دوباره تلاش کنید",
+  "feature_dev_promo": "📢 قابلیت در حال توسعه است! می‌خواهید اولین نفری باشید که از راه‌اندازی آن را می‌داند؟ کانال رسمی ما را دنبال کنید: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "صفحه کلید مخفی شد. /start را ارسال کنید تا دوباره نمایش داده شود"
+
 }

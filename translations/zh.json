@@ -4,6 +4,7 @@
   "set_lang": "语言切换成中文！",
   "back_home": "返回个人中心",
   "back_homepage": "返回首页",
+  "back_address_trace": "返回地址跟踪",
   "energy_swap": "能量闪兑",
   "transaction_plans": "笔数套餐",
 
@@ -183,6 +184,7 @@
   "smart_transaction_address_list": "托管列表",
 
   "catfee_smart_transaction_menu": "智能托管",
+  "catfee_smart_bundle_package_menu": "智能笔数套餐",
   "catfee_smart_transaction_pay_button": "请支付",
   "catfee_smart_transaction_head_1": "✅ 智能托管套餐订单创建成功\n\n套餐：",
   "catfee_smart_transaction_head_2": "\n\n支付金额：",
@@ -282,6 +284,21 @@
   "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>",
 
 
-  "usdt_freeze_alert": "链上安全"
+  "usdt_freeze_alert": "链上安全",
+
+  "chain_tron_title": "TRON 波场链",
+  "chain_bsc_title": "BSC 币安链",
+  "chain_tron_btn": "TRON波场链",
+  "chain_bsc_btn": "BSC币安链",
+  "no_data_short": "（暂无）",
+  "current_chain_label": "📡 当前链：",
+  "no_trace_address": "（暂无跟踪地址）",
+  "address_not_in_chain_list": "❌ 该地址不在当前链的跟踪列表里",
+
+  "monitoring_address_list_title": "预警地址列表",
+  "set_default_address_success": "设置默认地址成功",
+  "delete_failed_tips": "❌ 删除失败，请稍后重试",
+  "feature_dev_promo": "📢 功能开发中！想第一时间知道它上线吗？记得关注我们的官方频道：@ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "键盘已隐藏，发送 /start 重新显示"
 
 }

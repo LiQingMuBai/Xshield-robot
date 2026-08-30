@@ -4,6 +4,7 @@
   "set_lang": "Idioma alterado para português!",
   "back_home": "Voltar ao centro pessoal",
   "back_homepage": "Voltar à página inicial",
+  "back_address_trace": "Voltar ao Rastreamento de Endereço",
   "energy_swap": "Troca rápida de energia",
   "transaction_plans": "Pacotes de transações",
   "address_check": "Verificação de endereço",
@@ -172,6 +173,7 @@
   "smart_transaction_address_list": "Lista de endereços",
 
   "catfee_smart_transaction_menu": "Custódia Inteligente",
+  "catfee_smart_bundle_package_menu": "Pacotes de Transações Inteligentes",
   "catfee_smart_transaction_pay_button": "Por favor, pague",
   "catfee_smart_transaction_head_1": "✅  Pedido do pacote de custódia inteligente criado com sucesso\nPacote: ",
   "catfee_smart_transaction_head_2": "\nValor do pagamento: ",
@@ -248,5 +250,21 @@
   "ethereum_usdt_name": "Ethereum-USDT",
   "input_receive_address": "Por favor, insira seu endereço de recebimento:",
   "coin_laundering_order_desc": "Pedido criado com sucesso\nNúmero do pedido: {orderNO}\nHora de criação do pedido: {RegTime}\nValidade do pedido: {ExpireTime}\n\nPar negociado selecionado: USDTTRC20 - {token}. Você enviará <code>{amount1} USDTTRC20</code>; receberá aproximadamente {amount2} {token}.\nSeu endereço de carteira de recebimento:\n<code>{to_address}</code>\n\nPor favor, envie <code>{amount1}</code> USDTTRC20 para o seguinte endereço:\n\n<code>{from_address}</code>",
-  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>."
+  "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
+
+  "chain_tron_title": "Rede TRON",
+  "chain_bsc_title": "Rede BSC",
+  "chain_tron_btn": "Rede TRON",
+  "chain_bsc_btn": "Rede BSC",
+  "no_data_short": "(Nenhum)",
+  "current_chain_label": "📡 Rede atual: ",
+  "no_trace_address": "(Sem endereços rastreados)",
+  "address_not_in_chain_list": "❌ Este endereço não está na lista de rastreamento da rede atual",
+
+  "monitoring_address_list_title": "Lista de endereços em monitoramento",
+  "set_default_address_success": "Endereço padrão configurado com sucesso",
+  "delete_failed_tips": "❌ Falha ao excluir, tente novamente mais tarde",
+  "feature_dev_promo": "📢 Recurso em desenvolvimento! Quer saber quando ele estiver disponível? Siga nosso canal oficial: @ushield1 🔔\n\n",
+  "keyboard_hidden_tips": "Teclado oculto. Envie /start para mostrá-lo novamente"
+
 }

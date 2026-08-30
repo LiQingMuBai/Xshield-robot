@@ -22,7 +22,7 @@ func handlePackageCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 			logger.Errorf("set default bundle address err: %v", err)
 			return true
 		}
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>设置默认地址成功 </b>\n")
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "✅<b>"+global.Translations[lang]["set_default_address_success"]+"</b>\n")
 		msg.ParseMode = "HTML"
 		ctx.Bot.Send(msg)
 		service.ShowBundlePackageAddressManagement(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB)

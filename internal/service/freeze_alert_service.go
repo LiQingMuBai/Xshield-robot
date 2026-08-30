@@ -17,6 +17,7 @@ var (
 	ErrFreezeAlertInsufficientBalance = errors.New("freeze alert insufficient balance")
 	ErrFreezeAlertMonitorNotFound     = errors.New("freeze alert monitor not found")
 	ErrFreezeAlertForbidden           = errors.New("freeze alert forbidden")
+	ErrFreezeAlertAddressExists       = errors.New("freeze alert address already exists")
 )
 
 type FreezeAlertService struct {
@@ -48,6 +49,16 @@ type FreezeAlertClosePreview struct {
 
 func NewFreezeAlertService(db *gorm.DB) *FreezeAlertService {
 	return &FreezeAlertService{db: db}
+}
+
+func (s *FreezeAlertService) ExistsActive(chatID int64, address string) bool {
+	eventRepo := repositories.NewUserAddressMonitorEventRepo(s.db)
+	normalizedAddress := strings.TrimSpace(address)
+	event, err := eventRepo.GetActiveByChatIDAndAddress(context.Background(), chatID, normalizedAddress)
+	if err != nil {
+		return false
+	}
+	return event.Id > 0
 }
 
 func (s *FreezeAlertService) Start(chatID int64) error {
@@ -91,6 +102,10 @@ func (s *FreezeAlertService) Confirm(ctx context.Context, chatID int64, address 
 	preview, err := s.Preview(address)
 	if err != nil {
 		return nil, err
+	}
+
+	if s.ExistsActive(chatID, preview.Address) {
+		return nil, ErrFreezeAlertAddressExists
 	}
 
 	userRepo := repositories.NewUserRepository(s.db)
