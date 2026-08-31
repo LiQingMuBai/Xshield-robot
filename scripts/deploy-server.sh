@@ -75,20 +75,97 @@ pushd "${REPO_DIR}" >/dev/null
   log "  sha256 = ${BUILD_SHA}"
 popd >/dev/null
 
-# ---------- 2. Stop services ----------
-log "Step 2/5: stopping systemd services (bot1 + bot2)..."
+# ---------- 2. Stop services/processes (systemd first, then direct pid-kill fallback) ----------
+# Process detection: find PIDs whose /proc/<pid>/exe points at the binary (canonical match),
+# OR whose /proc/<pid>/cmdline argv[0] basename matches the binary name.
+# This covers: systemd services, nohup background, screen/tmux, supervisor, manual & etc.
+pids_of_bin() {
+  local bin_path="$1" bin_name
+  bin_name="$(basename "${bin_path}")"
+  local -a pids=() pid exe cmdname
+  # Prefer /proc-based exact exe match (works when process still has original binary fd open)
+  for pid in /proc/[0-9]*; do
+    pid="${pid##*/}"
+    [ -d "/proc/${pid}" ] || continue
+    exe="$(readlink "/proc/${pid}/exe" 2>/dev/null || true)"
+    cmdname="$(tr '\0' ' ' < "/proc/${pid}/cmdline" 2>/dev/null | awk '{print $1}' || true)"
+    cmdname="$(basename "${cmdname}" 2>/dev/null || true)"
+    if [ -n "${exe}" ] && [ "${exe}" = "${bin_path}" -o "$(basename "${exe}")" = "${bin_name}" ]; then
+      pids+=("${pid}")
+    elif [ -n "${cmdname}" ] && [ "${cmdname}" = "${bin_name}" ]; then
+      pids+=("${pid}")
+    fi
+  done
+  printf '%s\n' "${pids[@]}" 2>/dev/null | sort -u | grep -v '^$' || true
+}
+
+kill_pids() {
+  local name="$1" bin_path="$2"
+  local -a pids
+  mapfile -t pids < <(pids_of_bin "${bin_path}")
+  if [ "${#pids[@]}" -eq 0 ]; then
+    log "  ${name}: no running processes found (nothing to kill)"
+    return 0
+  fi
+  log "  ${name}: found running PIDs [${pids[*]}], stopping gracefully..."
+  # SIGTERM
+  sudo kill -TERM "${pids[@]}" 2>/dev/null || true
+  local waited=0 total=15
+  while [ "${waited}" -lt "${total}" ]; do
+    sleep 1
+    waited=$((waited+1))
+    local -a still
+    mapfile -t still < <(pids_of_bin "${bin_path}")
+    if [ "${#still[@]}" -eq 0 ]; then
+      log "  ${name}: all PIDs exited within ${waited}s after SIGTERM"
+      return 0
+    fi
+  done
+  local -a still
+  mapfile -t still < <(pids_of_bin "${bin_path}")
+  if [ "${#still[@]}" -gt 0 ]; then
+    warn "  ${name}: PIDs [${still[*]}] still alive after ${total}s, sending SIGKILL..."
+    sudo kill -9 "${still[@]}" 2>/dev/null || true
+    sleep 1
+    local -a remain
+    mapfile -t remain < <(pids_of_bin "${bin_path}")
+    [ "${#remain[@]}" -eq 0 ] && log "  ${name}: killed via SIGKILL" \
+      || warn "  ${name}: PIDs [${remain[*]}] could not be killed (zombie or permissions?)"
+  fi
+}
+
+log "Step 2/5: stopping bot1 + bot2 (systemd stop first, fallback to process kill)..."
 svc_stop() {
   local s="$1"
-  if systemctl is-active --quiet "${s}" 2>/dev/null; then
-    log "  stopping ${s}..."
-    sudo systemctl stop "${s}" || die "failed to stop ${s}"
-    log "  ${s} stopped"
+  if systemctl list-unit-files --full 2>/dev/null | grep -q "^${s}\.service"; then
+    if systemctl is-active --quiet "${s}" 2>/dev/null; then
+      log "  systemd stop ${s}..."
+      sudo systemctl stop "${s}" || warn "  systemctl stop ${s} returned non-zero (will rely on process kill below)"
+    else
+      log "  systemd unit ${s} exists but is inactive"
+    fi
   else
-    log "  ${s} already inactive or unknown (skip)"
+    log "  systemd unit ${s}.service NOT installed (process may be managed by nohup/screen/supervisor/...)"
   fi
 }
 svc_stop "${BOT1_SERVICE}"
 svc_stop "${BOT2_SERVICE}"
+
+# Settle: give systemd time to actually kill child cgroup processes before we probe
+sleep 1
+
+# Pre-kill process-survey: ensure we know what we're stopping
+echo "    [before-stop process snapshot]"
+ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || echo "      (nothing matched by grep)"
+
+kill_pids "bot1" "${BOT1_BIN}"
+sleep 1
+kill_pids "bot2" "${BOT2_BIN}"
+sleep 1
+
+echo "    [after-stop process snapshot]"
+ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || echo "      (nothing matched by grep — all clean)"
+sleep 1
 
 # ---------- 3. Backup BOTH existing binaries (to their own directories) ----------
 log "Step 3/5: backing up existing bot1 and bot2 to each own directory..."
@@ -103,7 +180,9 @@ backup_bin() {
   fi
 }
 backup_bin "${BOT1_BIN}" "ushield-bot1" "${BOT1_BACKUP_DIR}"
+sleep 1
 backup_bin "${BOT2_BIN}" "ushield-bot2" "${BOT2_BACKUP_DIR}"
+sleep 1
 
 # ---------- 4. Replace BOTH bot1 and bot2 with the same new binary ----------
 log "Step 4/5: installing freshly built binary to BOTH bot1 and bot2..."
@@ -114,7 +193,9 @@ install_bin() {
   log "  installed ${name} => ${dst}  ($(du -h "${dst}" | cut -f1), sha256: $(sha256sum "${dst}" | cut -d' ' -f1))"
 }
 install_bin "${BOT1_BIN}" "bot1"
+sleep 1
 install_bin "${BOT2_BIN}" "bot2"
+sleep 1
 
 # Verify both installed binaries match the build output
 BOT1_SHA="$(sha256sum "${BOT1_BIN}" | cut -d' ' -f1)"
@@ -123,20 +204,39 @@ if [ "${BOT1_SHA}" != "${BUILD_SHA}" ] || [ "${BOT2_SHA}" != "${BUILD_SHA}" ]; t
   die "sha256 mismatch after install! build=${BUILD_SHA} bot1=${BOT1_SHA} bot2=${BOT2_SHA}"
 fi
 log "  sha256 verified: build == bot1 == bot2"
+sleep 1
 
 # Cleanup build temp file
 rm -f "${BUILD_OUT}"
 log "  removed temp build file ${BUILD_OUT}"
+sleep 1
 
-# ---------- 5. Services status ----------
-log "Step 5/5: confirming services remain stopped..."
+# ---------- 5. Final stopped-state verification ----------
+log "Step 5/5: confirming both services/processes remain STOPPED..."
+sleep 1
+echo "    [final process snapshot]"
+FINAL_PS="$(ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || true)"
+if [ -n "${FINAL_PS}" ]; then
+  echo "${FINAL_PS}"
+  warn "WARNING: processes still running!  They were NOT started by systemd nor matched by our /proc exe/cmdline detection."
+  warn "Please kill them manually using the PIDs shown above, or report their full cmdline so the kill rule can be extended."
+else
+  echo "      (nothing matched by grep — all clean, services/processes STOPPED as required)"
+fi
+sleep 1
+
 report_svc() {
   local s="$1"
   local state
-  state="$(systemctl is-active "${s}" 2>/dev/null || echo unknown)"
-  log "  ${s}: ${state}"
+  if systemctl list-unit-files --full 2>/dev/null | grep -q "^${s}\.service"; then
+    state="$(systemctl is-active "${s}" 2>/dev/null || echo unknown)"
+    log "  systemd unit ${s}.service: state=${state}"
+  else
+    log "  systemd unit ${s}.service: NOT INSTALLED (process was stopped by direct pid-kill)"
+  fi
 }
 report_svc "${BOT1_SERVICE}"
+sleep 1
 report_svc "${BOT2_SERVICE}"
 
 log "===== Deploy finished ====="
@@ -149,8 +249,9 @@ echo "  - Installed sha256: ${BUILD_SHA}"
 echo "  - Timestamped backups (each in its own directory):"
 echo "      bot1 backup dir: ${BOT1_BACKUP_DIR}"
 echo "      bot2 backup dir: ${BOT2_BACKUP_DIR}"
-echo "  - Services ${BOT1_SERVICE} / ${BOT2_SERVICE} are STOPPED (per requirement)."
+echo "  - Processes ushield-bot1 + ushield-bot2 are STOPPED (both systemctl stop + direct pid-kill were applied)."
 echo ""
-echo "To start services manually later:"
-echo "  sudo systemctl start ${BOT1_SERVICE}"
-echo "  sudo systemctl start ${BOT2_SERVICE}"
+echo "To start manually later, pick ONE depending on how you run them:"
+echo "  (A) If you use systemd:   sudo systemctl start ${BOT1_SERVICE} ; sudo systemctl start ${BOT2_SERVICE}"
+echo "  (B) If you use nohup:     nohup ${BOT1_BIN} >/var/log/ushield-bot1.log 2>&1 &  (similar for bot2)"
+echo "  (C) If you use screen/tmux/supervisor: use your existing wrapper"
