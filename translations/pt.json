@@ -43,8 +43,8 @@
   "energy_swap_tips": "Bem-vindo ao serviço de troca rápida de energia UShield\n🔘 Transferência {energy_cost} TRX = 1 transação de energia\n🔘 Transferência {energy_cost_2x} TRX = 2 transações de energia\n🔘 Endereço de recebimento: <code>{receiveAddress}</code>\n—————————Clique para copiar—————————\nImportante:\n1. {energy_cost} TRX por transação, máximo 10 transações ({energy_cost_10x} TRX, excedente não será creditado)\n2. Transferências para endereços sem USDT requerem 2 transações de energia\n3. A energia será trocada immediately após transferência bem-sucedida\n4. Proibido usar carteiras de exchange\n5.Efetividade energética por uma hora",
   "welcome_tips1": "🛡️ UShield, seu escudo para ativos on-chain!\nFocamos não apenas em energia de baixo custo, mas também em segurança!\nTorne cada transferência mais segura, cada interação on-chain confiável!\n🤖 3 funcionalidades práticas para gerenciar ativos on-chain com segurança e eficiência\n🔊 Troca de energia TRON, economize mais de 80%!\n🕵️ Detecção de risco de endereço, torne cada transferência mais segura!\n🚨 Alerta de congelamento USDT, resposta em segundos, seu USDT nunca congelará!\n🎁 Benefício para novos usuários: Verificação de risco de endereço gratuita 1 vez ao dia",
   "welcome_tips": "🛡️ UShield, seu escudo para ativos on-chain!\nFocamos não apenas em energia de baixo custo, mas também em segurança!\nTorne cada transferência mais segura, cada interação on-chain confiável!\n🤖 3 funcionalidades práticas para gerenciar ativos on-chain com segurança e eficiência\n🔊 Troca de energia TRON, economize mais de 80%!\n🕵️ Detecção de risco de endereço, torne cada transferência mais segura!\n🚨 Alerta de congelamento USDT, resposta em segundos, seu USDT nunca congelará!\n",
-  "address_check_tips": "Bem-vindo ao serviço de detecção de risco de endereço UShield\n✅ Suporta endereços nas redes TRON ou ETH\n✅ O sistema irá pontuar e analisar com base em comportamento on-chain, rótulos de risco e entidades relacionadas\n📊 Níveis de risco:\n🟢 Risco baixo (0-30): Sem transações anômalas, sem associação com entidades de risco conhecidas\n🟡 Risco médio (31-70): Algumas interações de alto risco, contrapartes não claras\n🟠 Risco alto (71-90): Transferências anômalas frequentes ou associação com endereços maliciosos\n🔴 Risco muito alto (91-100): Envolve comportamentos de alto risco como fraude, sanções, hackers, lavagem de dinheiro\n\n📌 Cada usuário tem 1 verificação gratuita por dia\n📌 Verificações adicionais custam {address_detection_cost} TRX ou {address_detection_cost_usdt} USDT (o sistema prioriza TRX)\n💰 Saldo atual:\n- TRX: {tron_amount}\n- USDT: {amount}\nPor favor insira o endereço para verificar 👇",
-  "address_check_tips1":"Welcome to U-Shield Address Risk Detection\n✅ Supports address queries on both TRON and ETH networks\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n\uD83D\uDCCA Risk Level Description:\n\uD83D\uDFE2 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n\uD83D\uDFE1 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n\uD83D\uDFE0 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n\uD83D\uDD34 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n\uD83D\uDCCC Each user gets 1 free detection per day\n\uD83D\uDCCC Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n\uD83D\uDCB0 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check \uD83D\uDC47",
+  "address_check_tips": "Bem-vindo ao serviço de detecção de risco de endereço UShield\n✅ Suporta endereços nas redes TRON ou ETH / BTC\n✅ O sistema irá pontuar e analisar com base em comportamento on-chain, rótulos de risco e entidades relacionadas\n📊 Níveis de risco:\n🟢 Risco baixo (0-30): Sem transações anômalas, sem associação com entidades de risco conhecidas\n🟡 Risco médio (31-70): Algumas interações de alto risco, contrapartes não claras\n🟠 Risco alto (71-90): Transferências anômalas frequentes ou associação com endereços maliciosos\n🔴 Risco muito alto (91-100): Envolve comportamentos de alto risco como fraude, sanções, hackers, lavagem de dinheiro\n\n📌 Cada usuário tem 1 verificação gratuita por dia\n📌 Verificações adicionais custam {address_detection_cost} TRX ou {address_detection_cost_usdt} USDT (o sistema prioriza TRX)\n💰 Saldo atual:\n- TRX: {tron_amount}\n- USDT: {amount}\nPor favor insira o endereço para verificar 👇",
+  "address_check_tips1": "Welcome to U-Shield Address Risk Detection\n✅ Compatível com qualquer endereço nas redes TRON / ETH / BTC\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n📊 Risk Level Description:\n🟢 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n🟡 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n🟠 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n🔴 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n📌 Each user gets 1 free detection per day\n📌 Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n💰 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check 👇",
   "daily_free_limit": "Limite diário gratuito excedido, por favor deposite para continuar usando",
   "user_id": "ID do usuário",
   "username": "Nome de usuário",
@@ -61,7 +61,7 @@
   "trx_deposit_records": "Registros de depósito TRX",
   "usdt_deposit_records": "Registros de depósito USDT",
   "deposit_records": "Registros de depósito",
-  "usdt_freeze_alert_tips": "Bem-vindo ao serviço de alerta de congelamento USDT da UShield\n🛡️ UShield, seu escudo para ativos on-chain!\nUma vez que um endereço é congelado pelo controle de risco on-chain, os ativos são difíceis de recuperar, com grandes perdas!\nCentenas de carteiras USDT são congeladas e bloqueadas diariamente, o risco está presente!\n✅ Adequado para: Transações frequentes/Infecção por endereços sancionados/Interação com endereços fraudulentos\n✅ Suporta endereços de carteira USDT nas redes TRON/ETH\n📌 Preço do serviço (por endereço):\n • {server_trx_price} TRX / 30 dias ou {server_usdt_price} USDT / 30 dias\n🎯 Após ativação, UShield protegerá seus ativos 24/7\n⏰ O sistema ativará alertas antes de um congelamento, enviando notificações a cada minuto por 10 minutos\n📩 Todas as informações de alerta são enviadas em tempo real via Telegram",
+  "usdt_freeze_alert_tips": "📩 Todas as informações de alerta são enviadas em tempo real via Telegram",
   "enable_freeze_alert": "Ativar alerta de congelamento",
   "alert_monitoring_list": "Lista de monitoramento de alertas",
   "freeze_alert_deduction_record": "Registro de dedução de alerta de congelamento",
@@ -126,16 +126,12 @@
   "confirm_stop_monitoring_address_tips": "Dias restantes atuais: {days} dias\nO monitoramento parará immediately upon cancelamento. O tempo de serviço não é reembolsável\n🔒 Para evitar operações acidentais, por favor confirme novamente:",
   "confirm_stop_monitoring_address_yes": "Confirmar parada",
   "confirm_stop_monitoring_address_success_tips": "Monitoramento de endereço parado com sucesso ✅",
-  "address_list_empty_tips":"Nenhum endereço na lista, por favor adicione um endereço primeiro.",
+  "address_list_empty_tips": "Nenhum endereço na lista, por favor adicione um endereço primeiro.",
   "promotion_link": "Link de promoção exclusivo",
-  "join_vip_cooperation":"Junte-se ao grupo VIP de cooperação empresarial:",
-  "visit_tutorial":"Por favor, visite nosso tutorial:",
-
-
-
+  "join_vip_cooperation": "Junte-se ao grupo VIP de cooperação empresarial:",
+  "visit_tutorial": "Por favor, visite nosso tutorial:",
   "usdt_trx_swap": "Troca de USDT para TRX",
-  "usdt_trx_swap_head": "Bem-vindo ao Serviço de Troca de USDT para TRX da U-Shield\n\uD83D\uDCC8Taxa de câmbio em tempo real\n\uD83D\uDD381 USDT  ≈   {trx_amount} TRX\n\uD83D\uDD38Endereço de recebimento da troca: <code>{swap_address}</code>\n➖➖➖➖\uD83D\uDC46Clique para copiar\uD83D\uDC46➖➖➖➖\n⚙\uFE0F Introdução à função\nTroca de USDT → TRX (Retorno automático)\nLimite de transação única:\nUSDT: Mínimo {min_amount}U   Máximo {max_amount}U\n\n⚠\uFE0F Use uma carteira descentralizada para transferências",
-
+  "usdt_trx_swap_head": "Bem-vindo ao Serviço de Troca de USDT para TRX da U-Shield\n📈Taxa de câmbio em tempo real\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Endereço de recebimento da troca: <code>{swap_address}</code>\n➖➖➖➖👆Clique para copiar👆➖➖➖➖\n⚙️ Introdução à função\nTroca de USDT → TRX (Retorno automático)\nLimite de transação única:\nUSDT: Mínimo {min_amount}U   Máximo {max_amount}U\n\n⚠️ Use uma carteira descentralizada para transferências",
   "address_trace_add": "Adicionar endereço",
   "address_trace_add_tips": "Por favor, insira o endereço a ser adicionado: ",
   "address_trace_add_repeat_tips": "O endereço que você inseriu já existe, por favor, insira novamente",
@@ -143,43 +139,37 @@
   "address_trace_delete": "Excluir endereço",
   "address_trace_delete_tips": "Por favor, insira o endereço a ser excluído: ",
   "address_trace_menu": "Rastreamento de endereço",
-  "address_trace_head_tips": "Bem-vindo ao Serviço de Monitoramento de Endereços U-Shield para informações de transações TRX e USDT\n",
-
+  "address_trace_head_tips": "Bem-vindo ao Serviço de Monitoramento de Endereços U-Shield para informações de transações TRX e USDT (TRON/BSC/BTC)\n",
   "backup_account_tips": "Formato de nome de usuário incorreto. Remova o símbolo @ e insira novamente.",
   "backup_account_tips2": "Formato de nome de usuário incorreto, por favor, insira novamente",
   "backup_account_tip3": "Contato de emergência secundário vinculado com sucesso: ",
-
   "smart_transaction__list_empty_tips": "A lista está vazia, por favor, compre transações inteligentes primeiro",
   "smart_transaction_auto_dispatch_close_successfully": "Transação inteligente fechada com sucesso",
   "smart_transaction_auto_dispatch_open_successfully": "Transação inteligente aberta com sucesso",
   "smart_transaction_package_address_list": "Lista de endereços de transações inteligentes",
-
   "smart_transaction_package_order_purchased_successfully": "Pedido de pacote de transações inteligentes comprado com sucesso",
   "smart_transaction_plans_repeat_order": "Já existe um registro de assinatura para este endereço e está em andamento. Não há necessidade de comprar novamente.\n\n",
   "smart_transaction_plans": "Transações inteligentes",
   "smart_transaction_plans_head1": "Introdução às transações inteligentes",
   "smart_transaction_plans_head": "",
   "smart_transaction_plans_tips1": "O sistema detectará automaticamente seu saldo de energia. Se não for suficiente para uma transação, ele reabastecerá automaticamente sua energia. Dentro do número de transações compradas, você não queimará mais TRX para comprar transações, mas, em vez disso, a taxa será deduzida com base no consumo real de energia. Consumir 65k deduz 1 transação, consumir 131k deduz 2 transações.\n\nExplicação 1: Se não houver transações por um longo período, 2 transações serão deduzidas por dia como taxa de ocupação. Esta taxa não será cobrada se houver transações.\nExplicação 2: Não faça transações com muita frequência, pois a energia pode ainda não ter chegado. Recomenda-se um intervalo de pelo menos 1 minuto.\nExplicação 3: Se você entrar em um estado de pausa ocioso, ligue-o manualmente na lista.",
-  "smart_transaction_plans_tips": "Bem-vindo ao Gerenciamento Inteligente de Energia U-Shield\n⚙\uFE0F Introdução à função\n\uD83E\uDD16Depois que o gerenciamento inteligente é ativado, o sistema detecta automaticamente o saldo de energia do endereço. Quando a energia for menor que 131k, o sistema reabastecerá automaticamente a energia.\n\uD83D\uDCCC As transações do pacote são limitadas apenas ao endereço vinculado e não podem ser compartilhadas entre si.\n\uD83D\uDD0B Consumir 65k deduz 1 transação, consumir 131k deduz 2 transações.\n⛽ Cada transação requer 0,345TRX de largura de banda. Certifique-se de que haja TRX suficiente no endereço.\n⏰ A energia é válida no mesmo dia. Se não houver transações, uma taxa de ocupação de 2 transações/dia será cobrada. Para transações consecutivas, recomenda-se um intervalo de 1 minuto.\n\uD83D\uDCA4 Você pode ativar ou pausar o gerenciamento na lista. Se o endereço ficar inativo por dois dias, o sistema pausará automaticamente o gerenciamento.",
-
+  "smart_transaction_plans_tips": "Bem-vindo ao Gerenciamento Inteligente de Energia U-Shield\n⚙️ Introdução à função\n🤖Depois que o gerenciamento inteligente é ativado, o sistema detecta automaticamente o saldo de energia do endereço. Quando a energia for menor que 131k, o sistema reabastecerá automaticamente a energia.\n📌 As transações do pacote são limitadas apenas ao endereço vinculado e não podem ser compartilhadas entre si.\n🔋 Consumir 65k deduz 1 transação, consumir 131k deduz 2 transações.\n⛽ Cada transação requer 0,345TRX de largura de banda. Certifique-se de que haja TRX suficiente no endereço.\n⏰ A energia é válida no mesmo dia. Se não houver transações, uma taxa de ocupação de 2 transações/dia será cobrada. Para transações consecutivas, recomenda-se um intervalo de 1 minuto.\n💤 Você pode ativar ou pausar o gerenciamento na lista. Se o endereço ficar inativo por dois dias, o sistema pausará automaticamente o gerenciamento.",
   "close_auto_dispatch_energy": "Pausar",
   "open_auto_dispatch_energy": "Abrir",
   "tron_energy_menu": "Energia Tron",
   "smart_transaction_disable": "Gerenciado: 🟢 Ativado ",
   "smart_transaction_enable": "Gerenciado: 🔴 Pausado ",
-
   "coin_swap_coin_menu": "Troca Rápida de Criptomoedas",
-  "coin_swap_coin_tips": "Descrição dos passos para troca de moedas\n1. Clique no botão abaixo 【Trocar moedas】⬇\uFE0F\n2. Insira o token de origem e o token de destino\n3. Insira a quantidade\n4. Insira o endereço de recebimento\n5. <b>Opcional</b>, pode escolher receber notificação por e‑mail ao receber os fundos (pode escolher sem notificação)\n6. Aguarde o endereço de pagamento em QR code, insira o valor correto e faça a transferência\n7. Você receberá os fundos dentro de 3 minutos",
+  "coin_swap_coin_tips": "Descrição dos passos para troca de moedas\n1. Clique no botão abaixo 【Trocar moedas】⬇️\n2. Insira o token de origem e o token de destino\n3. Insira a quantidade\n4. Insira o endereço de recebimento\n5. <b>Opcional</b>, pode escolher receber notificação por e‑mail ao receber os fundos (pode escolher sem notificação)\n6. Aguarde o endereço de pagamento em QR code, insira o valor correto e faça a transferência\n7. Você receberá os fundos dentro de 3 minutos",
   "smart_transaction_address_list": "Lista de endereços",
-
   "catfee_smart_transaction_menu": "Custódia Inteligente",
   "catfee_smart_bundle_package_menu": "Pacotes de Transações Inteligentes",
   "catfee_smart_transaction_pay_button": "Por favor, pague",
   "catfee_smart_transaction_head_1": "✅  Pedido do pacote de custódia inteligente criado com sucesso\nPacote: ",
   "catfee_smart_transaction_head_2": "\nValor do pagamento: ",
   "catfee_smart_transaction_head_3": "\nEndereço de recebimento: ",
-  "catfee_smart_transaction_head_4": "\nValidade do pedido: 10 minutos\n⚠\uFE0F Certifique-se de inserir o valor exato, caso contrário, o pagamento não será creditado!",
-  "catfee_smart_transaction_tips": "\uD83C\uDF89 Compra bem-sucedida do pacote de custódia inteligente {bundle_package_name}",
+  "catfee_smart_transaction_head_4": "\nValidade do pedido: 10 minutos\n⚠️ Certifique-se de inserir o valor exato, caso contrário, o pagamento não será creditado!",
+  "catfee_smart_transaction_tips": "🎉 Compra bem-sucedida do pacote de custódia inteligente {bundle_package_name}",
   "placeholder_array_size_warning": "Devido à instabilidade na rede TRON, as transações podem ser atrasadas ou falhar.\nPara garantir a segurança dos ativos dos usuários, decidimos fechar temporariamente o canal de depósito da rede TRON e reabri-lo quando a rede estiver estável.\n✅ Outras funções: alertas, detecção, pacotes de transações etc. estão funcionando normalmente e não são afetadas.\nSugestão:\nSe precisar depositar, aguarde 10 minutos e tente novamente.\nEstamos monitorando de perto a situação da rede TRON. Pedimos desculpas por qualquer inconveniente causado!",
   "catfee_add_address": "Adicionar custódia",
   "catfee_add_address_already_exit_tips": "O endereço já está sob custódia, não é necessário adicionar novamente",
@@ -189,15 +179,12 @@
   "catfee_disable_address_success": "Pausado com sucesso",
   "catfee_custody_address_list_head": "Total comprado: {total_times} transações, Usadas: {used_times} transações, Restantes: {rest_times} transações",
   "catfee_custody_address_energy": "Energia",
-  "catfee_custody_address_count": "\uD83D\uDD0BEndereço sob custódia 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
-  "catfee_custody_address_energy_rule": "\n\uD83D\uDD39【Transferência para endereço com USDT】 Consome 65K de energia, deduz 1 transação\n\uD83D\uDD39【Transferência para endereço sem USDT】 Consome 131K de energia, deduz 2 transações",
-  "catfee_energy_address_limit_tips": "⚠\uFE0F Você já adicionou 8 endereços. Para adicionar um novo, exclua primeiro um endereço antigo.\uD83D\uDEAB",
+  "catfee_custody_address_count": "🔋Endereço sob custódia 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
+  "catfee_custody_address_energy_rule": "\n🔹【Transferência para endereço com USDT】 Consome 65K de energia, deduz 1 transação\n🔹【Transferência para endereço sem USDT】 Consome 131K de energia, deduz 2 transações",
+  "catfee_energy_address_limit_tips": "⚠️ Você já adicionou 8 endereços. Para adicionar um novo, exclua primeiro um endereço antigo.🚫",
   "catfee_energy_address_buy_error": "❌ Desculpe, seu número de transações sob custódia é insuficiente. Volte à página inicial para comprar um pacote de custódia.",
-
   "yhb_menu": "Pacote Vermelho U",
   "yhb_desc": "Bem-vindo à troca rápida de energia com Pacotes Vermelhos U do U Shield\n🔹 Transferir {energy_cost} Pacote Vermelho U = 1 unidade de energia\n🔹 Transferir {energy_cost_2x} Pacotes Vermelhos U = 2 unidades de energia\nEndereço de recebimento TRX:\n<code>{yhb_tron_address}</code>\n\nEndereço de recebimento de Pacotes Vermelhos U na BSC:\n<code>{yhb_bsc_address}</code>\n\nNotas importantes:\n1. Uma transação equivale a {energy_cost} Pacotes Vermelhos U, e assim por diante (máximo 10 transações = {energy_cost_10x} Pacotes Vermelhos U; valores excedentes não serão creditados)\n2. Transferir para um endereço sem U requer a compra de duas unidades de energia\n3. Após transferência bem-sucedida para o endereço de troca rápida, a energia será devolvida imediatamente pela mesma rota do endereço de recarga\n4. Primeiro envie seus 6 dígitos de aniversário (ex: 0.931018 TRX), ou qualquer outro número de 6 dígitos para vincular seu usuário. Depois, envie os últimos dígitos do valor do pacote mais .931018 para concluir a troca\n5. A energia é válida por uma hora\nBot oficial do U Shield: https://t.me/ushield_bot?start=8131076755\nCarteira Binance (sem taxa), suporta troca gratuita de Pacotes Vermelhos U: https://web3.binance.com/zh-CN/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f\nCarteira OKX (taxa de 0,85%), suporta conversão cross-chain de USDT TRX para Pacotes Vermelhos U: https://web3.okx.com/zh-hans/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f",
-
-
   "ushield_additional_services_menu": "Serviços Expandidos",
   "ushield_additional_services_desc": "Serviços Expandidos\n➖➖➖➖➖➖➖➖➖➖\n📱 Cartão SIM DuckChat de Hong Kong\nVálido por 1 ano, recarregável, inclui 18 GB de dados únicos e um número de Hong Kong para receber SMS gratuitamente.\n\n💳 Cartão de Crédito Anônimo\nIdeal para diversos cenários internacionais — pague globalmente com facilidade! Suporta AWS, TikTok, Facebook, Alipay, Google, PayPal, Twitter, Starlink, campanhas publicitárias, compra de domínios e servidores, compras, registros, assinaturas e muito mais. Transações multimoeda, ativação instantânea, crédito em tempo real e pagamentos ultrarrápidos.\n\n✈ Finanças de Energia\nO Telegram lançou números virtuais limitados como NFTs colecionáveis na blockchain TON. Os usuários podem se registrar sem um chip físico e receber códigos de verificação diretamente no Fragment.\n\n👥 Contas de Redes Sociais\nSuporte a contas do LinkedIn, Facebook, Google e serviços de campanhas publicitárias para auxiliar clientes no comércio internacional.\n\n🌍 Servidores Internacionais\nCompra anônima de servidores internacionais (ECS) suportada.",
   "ushield_additional_services_sim_desc": "Serviços Expandidos\n\n\n📱 Cartão SIM DuckChat de Hong Kong\n➖➖➖➖➖➖➖➖➖➖\nVálido por 1 ano, recarregável, inclui 18 GB de dados únicos e um número de Hong Kong para receber SMS gratuitamente.\n\n💰 Preço: 60 USDT por cartão\n🚚 Frete: Pagar na entrega\n\n📞 Para ativar: disque *103*800#\n📞 Para consultar saldo: disque *#130#",
@@ -205,14 +192,11 @@
   "ushield_additional_services_visa_desc": "💳 Cartão de Crédito Anônimo\n➖➖➖➖➖➖➖➖➖➖\nPerfeito para uso internacional! Suporta transações multimoeda, ativação instantânea, crédito em tempo real, pagamentos ultrarrápidos e verificação AVS.\n\n💰 Taxa de recarga: 5%\n💳 Taxa de emissão: 5 USD\n\n✅ Plataformas suportadas: Alipay, Facebook, Google, Amazon, GoDaddy, OpenAI, Twitter, Shopify, Starlink, WeChat, Alibaba, AliExpress, etc.\n\n⚠️ Estornos maliciosos são estritamente proibidos. Múltiplas falhas de pagamento ou estornos acionarão medidas de controle de risco, podendo resultar em penalidades ou cancelamento do cartão. Mantenha bons hábitos de pagamento. Se tiver assinaturas ativas, cancele-as diretamente nos respectivos sites!",
   "ushield_additional_services_sns_desc": "Suporte a contas do LinkedIn, Facebook, Google e serviços de campanhas publicitárias para auxiliar clientes no comércio internacional.",
   "ushield_additional_services_ecs_desc": "Compra anônima de servidores internacionais (ECS).",
-
-  "promotion_income":"Receita de Promoção",
+  "promotion_income": "Receita de Promoção",
   "address_detection_records": "Registro de débitos para verificação de endereço",
-
-
   "command_energy_menu": "⚡️ Aluguel Rápido de Energia por Comando",
   "command_energy_desc": "⚡️ Aluguel Rápido de Energia por Comando\n\n1. Comando: 1 Quantidade: 65000 (1 transação) Preço: {1_times_cost_trx} (TRX)\n2. Comando: 2 Quantidade: 131000 (2 transações) Preço: {2_times_cost_trx} (TRX)\n3. Comando: 3 Quantidade: 195000 (3 transações) Preço: {3_times_cost_trx} (TRX)\n4. Comando: 4 Quantidade: 260000 (4 transações) Preço: {4_times_cost_trx} (TRX)\n5. Comando: 5 Quantidade: 325000 (5 transações) Preço: {5_times_cost_trx} (TRX)\n\n⚠️ O endereço do destinatário não tem U — requer duas transações de energia!\n\n⏰ A energia no modo comando é válida por apenas 1 hora!\n⚠️ Este modo não exige confirmação — a energia chega instantaneamente! Use com cuidado!\n♻️ Se você vinculou 2 ou mais endereços, ao enviar o comando aparecerá uma lista — basta selecionar um para alugar energia imediatamente!",
-  "member_telegram_menu": "\uD83D\uDC8E Membro Telegram",
+  "member_telegram_menu": "💎 Membro Telegram",
   "member_telegram_desc": "🌟 Preço das estrelas: 0,03 U cada\n(Suporta compra única de 50 a 10.000 estrelas)\n\n\n🌟 Preços da assinatura:\n3 meses: 17 U\n6 meses: 27 U\n1 ano: 47 U\n\n\n\nNão recarregue via HuiWang — só aceitamos USDT da carteira!",
   "member_telegram_second_menu": "🌟 Comprar Assinatura",
   "star_telegram_second_menu": "⭐️ Comprar Estrelas",
@@ -239,8 +223,6 @@
   "successfully_purchased_stars": "✅ {count} estrelas compradas com sucesso. Aguarde. Em caso de dúvidas, entre em contato com o suporte.",
   "anonymous_mobile": "✈️ Número Anônimo\n➖➖➖➖➖➖➖➖➖➖\nNúmeros oficiais NFT888 nunca são excluídos\n\nEvita perda de conta • Valoriza rápido • Reciclável • Alta estabilidade\n\n\"Um número dura três gerações — quando você se vai, o número permanece\"\n\nNúmero Anônimo 【+888】\nO Telegram lançou números virtuais limitados como NFTs colecionáveis na blockchain TON. Os usuários podem se registrar sem chip e receber códigos diretamente no Fragment.\n\nConta Anônima 【Nome de usuário】\nNomes de usuário anônimos, assim como os números +888, são NFTs na blockchain TON. Podem ser vinculados a contas pessoais, grupos, canais ou bots. A diferença: números anônimos servem para registro; nomes de usuário, não.\n\nPara receber um número ou nome anônimo, você precisa de um endereço de carteira na rede TON.",
   "customer_service": "💁 Contatar Suporte",
-
-
   "coin_laundering_menu": "Lavar USDT",
   "coin_laundering_tips": "Por favor, selecione o valor de TRC20-USDT que deseja lavar:",
   "other_blockchain_usdt_tips": "USDT em outras blockchains",
@@ -251,7 +233,6 @@
   "input_receive_address": "Por favor, insira seu endereço de recebimento:",
   "coin_laundering_order_desc": "Pedido criado com sucesso\nNúmero do pedido: {orderNO}\nHora de criação do pedido: {RegTime}\nValidade do pedido: {ExpireTime}\n\nPar negociado selecionado: USDTTRC20 - {token}. Você enviará <code>{amount1} USDTTRC20</code>; receberá aproximadamente {amount2} {token}.\nSeu endereço de carteira de recebimento:\n<code>{to_address}</code>\n\nPor favor, envie <code>{amount1}</code> USDTTRC20 para o seguinte endereço:\n\n<code>{from_address}</code>",
   "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
-
   "chain_tron_title": "Rede TRON",
   "chain_bsc_title": "Rede BSC",
   "chain_tron_btn": "Rede TRON",
@@ -260,11 +241,11 @@
   "current_chain_label": "📡 Rede atual: ",
   "no_trace_address": "(Sem endereços rastreados)",
   "address_not_in_chain_list": "❌ Este endereço não está na lista de rastreamento da rede atual",
-
   "monitoring_address_list_title": "Lista de endereços em monitoramento",
   "set_default_address_success": "Endereço padrão configurado com sucesso",
   "delete_failed_tips": "❌ Falha ao excluir, tente novamente mais tarde",
   "feature_dev_promo": "📢 Recurso em desenvolvimento! Quer saber quando ele estiver disponível? Siga nosso canal oficial: @ushield1 🔔\n\n",
-  "keyboard_hidden_tips": "Teclado oculto. Envie /start para mostrá-lo novamente"
-
+  "keyboard_hidden_tips": "Teclado oculto. Envie /start para mostrá-lo novamente",
+  "chain_btc_title": "rede BTC Bitcoin",
+  "chain_btc_btn": "BTC Bitcoin"
 }

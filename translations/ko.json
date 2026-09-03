@@ -43,8 +43,8 @@
   "energy_swap_tips": "UShield 에너지 빠른 교환에 오신 것을 환영합니다\n🔘 송금 {energy_cost} TRX = 1 거래 분량 에너지\n🔘 송금 {energy_cost_2x} TRX = 2 거래 분량 에너지\n🔘 수신 주소: <code>{receiveAddress}</code>\n—————————클릭하여 복사—————————\n중요:\n1. 거래당 {energy_cost} TRX, 최대 10거래 ({energy_cost_10x} TRX, 초과분은 입금되지 않음)\n2. USDT 없음 주소로 송금 시 2거래 분량 에너지 필요\n3. 송금 성공 후 즉시 에너지 교환 완료\n4. 거래소 지갑 사용 금지\n5.1시간 동안의 에너지 효율성",
   "welcome_tips1": "🛡️ UShield, 온체인 자산의 방패가 되다!\n저렴한 에너지뿐만 아니라 보안에도 중점을 둡니다!\n모든 송금을 더 안전하게, 모든 온체인 상호작용을 신뢰할 수 있게!\n🤖 3가지 실용적인 기능으로 안전하고 효율적으로 온체인 자산 관리\n🔊 TRON 에너지 교환, 80% 이상 절약!\n🕵️ 주소 위험 검출, 모든 송금을 더 안전하게!\n🚨 USDT 동결 경고, 초 단위 응답, USDT가 영원히 동결되지 않도록!\n🎁 신규 사용자 혜택: 1일 1회 무료 주소 위험 검사",
   "welcome_tips": "🛡️ UShield, 온체인 자산의 방패가 되다!\n저렴한 에너지뿐만 아니라 보안에도 중점을 둡니다!\n모든 송금을 더 안전하게, 모든 온체인 상호작용을 신뢰할 수 있게!\n🤖 3가지 실용적인 기능으로 안전하고 효율적으로 온체인 자산 관리\n🔊 TRON 에너지 교환, 80% 이상 절약!\n🕵️ 주소 위험 검출, 모든 송금을 더 안전하게!\n🚨 USDT 동결 경고, 초 단위 응답, USDT가 영원히 동결되지 않도록!\n",
-  "address_check_tips": "UShield 주소 위험 검출에 오신 것을 환영합니다\n✅ TRON 또는 ETH 네트워크의 모든 주소 지원\n✅ 시스템은 온체인 행동, 위험 라벨, 관련 엔티티를 기반으로 점수 매기기 및 분석 수행\n📊 위험 수준 설명:\n🟢 저위험 (0-30): 이상 거래 없음, 알려진 위험 엔티티와의 연관성 없음\n🟡 중위험 (31-70): 소량의 고위험 상호작용 존재, 거래 상대 불명확\n🟠 고위험 (71-90): 빈번한 이상 송금, 또는 악의적인 주소와의 연관성 있음\n🔴 극히 높은 위험 (91-100): 사기, 제재, 해킹, 돈세탁 등의 고위험 행위 관련\n\n📌 각 사용자는 1일 1회 무료 검출 가능\n📌 추가 검출은 매회 {address_detection_cost} TRX 또는 {address_detection_cost_usdt} USDT (시스템은 TRX 우선 차감)\n💰 현재 잔액:\n- TRX: {tron_amount}\n- USDT: {amount}\n확인할 주소를 입력하세요 👇",
-  "address_check_tips1":"Welcome to U-Shield Address Risk Detection\n✅ Supports address queries on both TRON and ETH networks\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n\uD83D\uDCCA Risk Level Description:\n\uD83D\uDFE2 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n\uD83D\uDFE1 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n\uD83D\uDFE0 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n\uD83D\uDD34 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n\uD83D\uDCCC Each user gets 1 free detection per day\n\uD83D\uDCCC Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n\uD83D\uDCB0 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check \uD83D\uDC47",
+  "address_check_tips": "UShield 주소 위험 검출에 오신 것을 환영합니다\n✅ TRON 또는 ETH / BTC 네트워크의 모든 주소 지원\n✅ 시스템은 온체인 행동, 위험 라벨, 관련 엔티티를 기반으로 점수 매기기 및 분석 수행\n📊 위험 수준 설명:\n🟢 저위험 (0-30): 이상 거래 없음, 알려진 위험 엔티티와의 연관성 없음\n🟡 중위험 (31-70): 소량의 고위험 상호작용 존재, 거래 상대 불명확\n🟠 고위험 (71-90): 빈번한 이상 송금, 또는 악의적인 주소와의 연관성 있음\n🔴 극히 높은 위험 (91-100): 사기, 제재, 해킹, 돈세탁 등의 고위험 행위 관련\n\n📌 각 사용자는 1일 1회 무료 검출 가능\n📌 추가 검출은 매회 {address_detection_cost} TRX 또는 {address_detection_cost_usdt} USDT (시스템은 TRX 우선 차감)\n💰 현재 잔액:\n- TRX: {tron_amount}\n- USDT: {amount}\n확인할 주소를 입력하세요 👇",
+  "address_check_tips1": "Welcome to U-Shield Address Risk Detection\n✅ TRON / ETH / BTC 네트워크 임의 주소 조회 지원\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n📊 Risk Level Description:\n🟢 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n🟡 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n🟠 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n🔴 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n📌 Each user gets 1 free detection per day\n📌 Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n💰 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check 👇",
   "daily_free_limit": "일일 무료 횟수 제한을 초과했습니다. 충전 후 다시 사용하세요",
   "user_id": "사용자 ID",
   "username": "사용자 이름",
@@ -61,7 +61,7 @@
   "trx_deposit_records": "TRX 충전 기록",
   "usdt_deposit_records": "USDT 충전 기록",
   "deposit_records": "충전 기록",
-  "usdt_freeze_alert_tips": "UShield USDT 동결 경고 서비스에 오신 것을 환영합니다\n🛡️ UShield, 온체인 자산의 방패가 되다!\n주소가 온체인 위험 관리로 동결되면 자산 회복이 극히 어려우며 큰 손실을 초래합니다!\n매일 수백 개의 USDT 지갑 주소가 동결·잠금되며 위험은身邊에 존재합니다!\n✅ 다음에 적합: 빈번한 송수신/제재 주소 감염/사기 주소와의 상호작용\n✅ TRON/ETH 네트워크의 USDT 지갑 주소 지원\n📌 서비스 가격 (주소당):\n • {server_trx_price} TRX / 30일 또는 {server_usdt_price} USDT / 30일\n🎯 서비스 시작 후 UShield는 24시간体制로 자산을 보호합니다\n⏰ 시스템은 동결前에警告机制을启动し、10分间毎分通知をプッシュし、資産を及時に移動するよう通知します\n📩 모든 경고 정보는 Telegram으로 실시간 배송됩니다",
+  "usdt_freeze_alert_tips": "📩 모든 경고 정보는 Telegram으로 실시간 배송됩니다",
   "enable_freeze_alert": "동결 경고 활성화",
   "alert_monitoring_list": "경고 모니터링 목록",
   "freeze_alert_deduction_record": "동결 경고 공제 기록",
@@ -82,7 +82,7 @@
   "remaining": "남음:",
   "used": "     사용됨:",
   "dispatch_now": "원클릭 발송",
-  "dispatch_now_2":"원클릭 발송 2 거래",
+  "dispatch_now_2": "원클릭 발송 2 거래",
   "dispatch_other": "다른 주소로 발송",
   "add_address": "주소 추가",
   "remove_address": "주소 삭제",
@@ -126,16 +126,12 @@
   "confirm_stop_monitoring_address_tips": "현재 남은 일수: {days} 일\n모니터링停止后即시 모니터링이终止됩니다. 서비스 시간은 환불되지 않습니다\n🔒误操作을 방지하기 위해再次确认하세요:",
   "confirm_stop_monitoring_address_yes": "停止 확인",
   "confirm_stop_monitoring_address_success_tips": "주소 모니터링이 성공적으로停止되었습니다 ✅",
-  "address_list_empty_tips":"목록에 주소가 없습니다. 먼저 주소를 추가해 주세요.",
+  "address_list_empty_tips": "목록에 주소가 없습니다. 먼저 주소를 추가해 주세요.",
   "promotion_link": "전용 홍보 링크",
-  "join_vip_cooperation":"비즈니스 협력 VIP 그룹에 가입하세요:",
-  "visit_tutorial":"사용 설명서를 방문해 주세요:",
-
-
-
+  "join_vip_cooperation": "비즈니스 협력 VIP 그룹에 가입하세요:",
+  "visit_tutorial": "사용 설명서를 방문해 주세요:",
   "usdt_trx_swap": "USDT에서 TRX로 스왑",
-  "usdt_trx_swap_head": "U-Shield USDT에서 TRX로 스왑 서비스에 오신 것을 환영합니다\n\uD83D\uDCC8실시간 환율\n\uD83D\uDD381 USDT  ≈   {trx_amount} TRX\n\uD83D\uDD38스왑 수신 주소: <code>{swap_address}</code>\n➖➖➖➖\uD83D\uDC46클릭하여 복사\uD83D\uDC46➖➖➖➖\n⚙\uFE0F 기능 소개\nUSDT → TRX 스왑 (자동 반환)\n단일 거래 제한:\nUSDT: 최소 {min_amount}U   최대 {max_amount}U\n\n⚠\uFE0F 이체 시 탈중앙화 지갑을 사용하십시오",
-
+  "usdt_trx_swap_head": "U-Shield USDT에서 TRX로 스왑 서비스에 오신 것을 환영합니다\n📈실시간 환율\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸스왑 수신 주소: <code>{swap_address}</code>\n➖➖➖➖👆클릭하여 복사👆➖➖➖➖\n⚙️ 기능 소개\nUSDT → TRX 스왑 (자동 반환)\n단일 거래 제한:\nUSDT: 최소 {min_amount}U   최대 {max_amount}U\n\n⚠️ 이체 시 탈중앙화 지갑을 사용하십시오",
   "address_trace_add": "주소 추가",
   "address_trace_add_tips": "추가할 주소를 입력하십시오: ",
   "address_trace_add_repeat_tips": "입력하신 주소가 이미 존재합니다. 다시 입력하십시오.",
@@ -143,43 +139,37 @@
   "address_trace_delete": "주소 삭제",
   "address_trace_delete_tips": "삭제할 주소를 입력하십시오: ",
   "address_trace_menu": "주소 추적",
-  "address_trace_head_tips": "TRX 및 USDT 거래 정보에 대한 U-Shield 주소 모니터링 서비스에 오신 것을 환영합니다.\n",
-
+  "address_trace_head_tips": "TRX 및 USDT 거래 정보에 대한 U-Shield 주소 모니터링 서비스에 오신 것을 환영합니다. (TRON/BSC/BTC)\n",
   "backup_account_tips": "잘못된 사용자 이름 형식입니다. @ 기호를 제거하고 다시 입력하십시오.",
   "backup_account_tips2": "잘못된 사용자 이름 형식입니다. 다시 입력하십시오.",
   "backup_account_tip3": "두 번째 비상 연락처를 성공적으로 연결했습니다: ",
-
   "smart_transaction__list_empty_tips": "목록이 비어 있습니다. 먼저 스마트 거래를 구매하십시오.",
   "smart_transaction_auto_dispatch_close_successfully": "스마트 거래가 성공적으로 닫혔습니다.",
   "smart_transaction_auto_dispatch_open_successfully": "스마트 거래가 성공적으로 열렸습니다.",
   "smart_transaction_package_address_list": "스마트 거래 주소 목록",
-
   "smart_transaction_package_order_purchased_successfully": "스마트 거래 패키지 주문이 성공적으로 구매되었습니다.",
   "smart_transaction_plans_repeat_order": "이 주소에 대한 구독 기록이 이미 있으며 진행 중입니다. 다시 구매할 필요가 없습니다.\n\n",
   "smart_transaction_plans": "스마트 거래",
   "smart_transaction_plans_head1": "스마트 거래 소개",
   "smart_transaction_plans_head": "",
   "smart_transaction_plans_tips1": "시스템은 자동으로 에너지 잔액을 감지합니다. 한 번의 거래에 충분하지 않은 경우 자동으로 에너지를 보충합니다. 구매한 거래 수 내에서 TRX를 소모하여 거래를 구매하는 대신 실제 에너지 소비에 따라 요금이 부과됩니다. 65k를 소비하면 1회 거래가 차감되고, 131k를 소비하면 2회 거래가 차감됩니다.\n\n설명 1: 장기간 거래가 없는 경우 점유 요금으로 하루 2회 거래가 차감됩니다. 거래가 있는 경우에는 이 요금이 부과되지 않습니다.\n설명 2: 거래 간격이 너무 짧으면 에너지가 아직 도착하지 않았을 수 있습니다. 최소 1분 간격을 두는 것이 좋습니다.\n설명 3: 유휴 일시 중지 상태로 들어간 경우 목록에서 수동으로 켜십시오.",
-  "smart_transaction_plans_tips": "U-Shield 에너지 스마트 관리에 오신 것을 환영합니다.\n⚙\uFE0F 기능 소개\n\uD83E\uDD16스마트 관리가 활성화되면 시스템은 자동으로 주소의 에너지 잔액을 감지합니다. 에너지가 131k 미만이면 시스템이 자동으로 에너지를 보충합니다.\n\uD83D\uDCCC패키지 거래는 바인딩된 주소로만 제한되며 교차 공유할 수 없습니다.\n\uD83D\uDD0B65k를 소비하면 1회 거래가 차감되고, 131k를 소비하면 2회 거래가 차감됩니다.\n⛽각 거래에는 0.345TRX 대역폭이 필요합니다. 주소에 충분한 TRX가 있는지 확인하십시오.\n⏰에너지는 당일에 유효합니다. 거래가 없으면 점유 요금으로 2회 거래/일이 부과됩니다. 연속 거래의 경우 1분 간격을 두는 것이 좋습니다.\n\uD83D\uDCA4목록에서 관리를 켜거나 일시 중지할 수 있습니다. 주소가 이틀 동안 유휴 상태이면 시스템이 자동으로 관리를 일시 중지합니다.",
-
+  "smart_transaction_plans_tips": "U-Shield 에너지 스마트 관리에 오신 것을 환영합니다.\n⚙️ 기능 소개\n🤖스마트 관리가 활성화되면 시스템은 자동으로 주소의 에너지 잔액을 감지합니다. 에너지가 131k 미만이면 시스템이 자동으로 에너지를 보충합니다.\n📌패키지 거래는 바인딩된 주소로만 제한되며 교차 공유할 수 없습니다.\n🔋65k를 소비하면 1회 거래가 차감되고, 131k를 소비하면 2회 거래가 차감됩니다.\n⛽각 거래에는 0.345TRX 대역폭이 필요합니다. 주소에 충분한 TRX가 있는지 확인하십시오.\n⏰에너지는 당일에 유효합니다. 거래가 없으면 점유 요금으로 2회 거래/일이 부과됩니다. 연속 거래의 경우 1분 간격을 두는 것이 좋습니다.\n💤목록에서 관리를 켜거나 일시 중지할 수 있습니다. 주소가 이틀 동안 유휴 상태이면 시스템이 자동으로 관리를 일시 중지합니다.",
   "close_auto_dispatch_energy": "일시 중지",
   "open_auto_dispatch_energy": "열기",
   "tron_energy_menu": "Tron 에너지",
   "smart_transaction_disable": "관리: 🟢 활성화됨 ",
   "smart_transaction_enable": "관리: 🔴 일시 중지됨 ",
-
   "coin_swap_coin_menu": "코인 스왑",
-  "coin_swap_coin_tips": "코인 스왑 단계 설명\n1. 아래 버튼 【코인 교환】을 클릭하세요⬇\uFE0F\n2. 변환할 토큰(입력)과 출력 토큰(출력)을 입력하세요\n3. 수량을 입력하세요\n4. 수신할 주소를 입력하세요\n5. <b>선택 사항</b>, 도착 시 이메일 알림을 받을지 선택할 수 있습니다(알림 불필요 선택 가능)\n6. QR 코드 결제 주소를 기다린 후, 정확한 금액을 입력하여 송금하세요\n7. 3분 이내에 자금이 입금됩니다",
+  "coin_swap_coin_tips": "코인 스왑 단계 설명\n1. 아래 버튼 【코인 교환】을 클릭하세요⬇️\n2. 변환할 토큰(입력)과 출력 토큰(출력)을 입력하세요\n3. 수량을 입력하세요\n4. 수신할 주소를 입력하세요\n5. <b>선택 사항</b>, 도착 시 이메일 알림을 받을지 선택할 수 있습니다(알림 불필요 선택 가능)\n6. QR 코드 결제 주소를 기다린 후, 정확한 금액을 입력하여 송금하세요\n7. 3분 이내에 자금이 입금됩니다",
   "smart_transaction_address_list": "주소 목록",
-
   "catfee_smart_transaction_menu": "스마트 위탁",
   "catfee_smart_bundle_package_menu": "스마트 거래 패키지",
   "catfee_smart_transaction_pay_button": "결제하기",
   "catfee_smart_transaction_head_1": "✅  스마트 위탁 패키지 주문이 성공적으로 생성되었습니다\n패키지: ",
   "catfee_smart_transaction_head_2": "\n결제 금액: ",
   "catfee_smart_transaction_head_3": "\n수취 주소: ",
-  "catfee_smart_transaction_head_4": "\n주문 유효 기간: 10분\n⚠\uFE0F 반드시 정확한 금액을 입력하십시오. 그렇지 않으면 입금되지 않습니다!",
-  "catfee_smart_transaction_tips": "\uD83C\uDF89 {bundle_package_name} 스마트 위탁 패키지를 성공적으로 구매하였습니다",
+  "catfee_smart_transaction_head_4": "\n주문 유효 기간: 10분\n⚠️ 반드시 정확한 금액을 입력하십시오. 그렇지 않으면 입금되지 않습니다!",
+  "catfee_smart_transaction_tips": "🎉 {bundle_package_name} 스마트 위탁 패키지를 성공적으로 구매하였습니다",
   "placeholder_array_size_warning": "TRON 네트워크의 불안정으로 인해 거래가 지연되거나 실패할 수 있습니다.\n사용자 자산 보호를 위해 TRON 네트워크 입금 채널을 일시적으로 닫았으며, 네트워크가 안정되면 다시 열릴 예정입니다.\n✅ 기타 기능: 알림, 검사, 트랜잭션 패키지 등은 정상적으로 작동하며 영향을 받지 않습니다.\n권장 사항:\n입금이 필요하시면 10분 후 다시 시도해 주세요.\nTRON 네트워크 상황을 면밀히 모니터링하고 있습니다. 불편을 끼쳐드려 죄송합니다!",
   "catfee_add_address": "위탁 추가",
   "catfee_add_address_already_exit_tips": "이미 위탁 중인 주소입니다. 중복 추가할 필요 없습니다.",
@@ -189,15 +179,12 @@
   "catfee_disable_address_success": "성공적으로 일시 중지됨",
   "catfee_custody_address_list_head": "총 구매 {total_times}건, 사용 {used_times}건, 잔여 {rest_times}건",
   "catfee_custody_address_energy": "에너지",
-  "catfee_custody_address_count": "\uD83D\uDD0B위탁 주소 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
-  "catfee_custody_address_energy_rule": "\n\uD83D\uDD39【USDT 있는 주소로 이체】 65K 에너지 소모, 1건 차감\n\uD83D\uDD39【USDT 없는 주소로 이체】 131K 에너지 소모, 2건 차감",
-  "catfee_energy_address_limit_tips": "⚠\uFE0F 이미 5개의 주소를 추가하셨습니다. 새 주소를 추가하려면 먼저 기존 주소를 삭제하세요.\uD83D\uDEAB",
+  "catfee_custody_address_count": "🔋위탁 주소 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
+  "catfee_custody_address_energy_rule": "\n🔹【USDT 있는 주소로 이체】 65K 에너지 소모, 1건 차감\n🔹【USDT 없는 주소로 이체】 131K 에너지 소모, 2건 차감",
+  "catfee_energy_address_limit_tips": "⚠️ 이미 5개의 주소를 추가하셨습니다. 새 주소를 추가하려면 먼저 기존 주소를 삭제하세요.🚫",
   "catfee_energy_address_buy_error": "❌ 죄송합니다. 위탁 횟수가 부족합니다. 메인 페이지로 돌아가 위탁 패키지를 구매하세요.",
   "yhb_menu": "U 빨간봉투",
   "yhb_desc": "U실드 U 빨간봉투 에너지 즉시 교환 서비스에 오신 것을 환영합니다\n🔹 {energy_cost} U 빨간봉투 전송 = 에너지 1건\n🔹 {energy_cost_2x} U 빨간봉투 전송 = 에너지 2건\nTRX 수신 주소:\n<code>{yhb_tron_address}</code>\n\nBSC U 빨간봉투 수신 주소:\n<code>{yhb_bsc_address}</code>\n\n중요 안내:\n1. 한 번에 {energy_cost} U 빨간봉투 전송 가능하며, 최대 10건까지({energy_cost_10x} U 빨간봉투) 가능합니다. 초과 금액은 처리되지 않습니다.\n2. U 주소가 아닌 곳으로 전송 시 두 개의 에너지를 구매해야 합니다.\n3. 즉시 교환 주소로 전송 완료 후, 에너지는 원래 충전 주소를 통해 즉시 교환됩니다.\n4. 먼저 본인의 6자리 생일을 입력하세요 (예: 0.931018 TRX), 또는 임의의 6자리 숫자로 사용자 등록을 완료한 후, 빨간봉투 금액의 끝자리에 .931018을 붙여 전송하여 교환을 완료하세요.\n5. 에너지 유효 기간은 1시간입니다.\nU실드 공식 봇: https://t.me/ushield_bot?start=8131076755\n바이낸스 지갑(수수료 무료), U 빨간봉투 무료 교환 지원: https://web3.binance.com/zh-CN/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f\nOKX 지갑(수수료 0.85%), TRX의 USDT를 크로스체인으로 U 빨간봉투로 전환 가능: https://web3.okx.com/zh-hans/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f",
-
-
-
   "ushield_additional_services_menu": "확장 서비스",
   "ushield_additional_services_desc": "확장 서비스\n➖➖➖➖➖➖➖➖➖➖\n📱 홍콩 덕챗 심카드\n유효기간 1년, 충전 가능, 18GB 일회용 데이터 포함, 홍콩 전화번호 제공 (무료 문자 수신 가능)\n\n💳 익명 신용카드\n다양한 해외 결제 시나리오에 최적화! AWS, 틱톡, 페이스북, 알리페이, 구글, 페이팔, 트위터, 스타링크, 광고 집행, 도메인/서버 구매, 쇼핑, 가입, 구독 등 다양한 결제 상황 지원. 다중 통화 거래, 즉시 발급, 실시간 입금, 초고속 결제 가능.\n\n✈ 에너지 파이낸스\n텔레그램은 TON 블록체인 상에서 한정판 가상 전화번호를 NFT 컬렉션으로 출시했습니다. 사용자는 물리적 심카드 없이도 가입 가능하며, Fragment에서 직접 인증 코드를 수신할 수 있습니다.\n\n👥 소셜 계정\n링크드인, 페이스북, 구글 계정 및 광고 집행 서비스 제공 — 고객의 크로스보더 무역 지원\n\n🌍 해외 서버\n익명 해외 서버(ECS) 구매 지원",
   "ushield_additional_services_sim_desc": "확장 서비스\n\n\n📱 홍콩 덕챗 심카드\n➖➖➖➖➖➖➖➖➖➖\n유효기간 1년, 충전 가능, 18GB 일회용 데이터 포함, 홍콩 전화번호 제공 (무료 문자 수신 가능)\n\n💰 가격: 60 USDT/장\n🚚 배송비: 착불\n\n📞 활성화: *103*800# 다이얼\n📞 잔액 조회: *#130# 다이얼",
@@ -205,14 +192,11 @@
   "ushield_additional_services_visa_desc": "💳 익명 신용카드\n➖➖➖➖➖➖➖➖➖➖\n해외 결제에 최적화! 다중 통화 거래, 즉시 발급, 실시간 입금, 초고속 결제, AVS 인증 지원\n\n💰 충전 수수료: 5%\n💳 카드 발급 수수료: 5 USD\n\n✅ 지원 플랫폼: 알리페이, 페이스북, 구글, 아마존, 고대디, 오픈AI, 트위터, 샵파이, 스타링크, 위챗, 알리바바, 알리익스프레스 등\n\n⚠️ 악의적인 차지백은 엄격히 금지됩니다. 반복된 결제 실패 또는 차지백 발생 시 리스크 관리 시스템이 작동하여 제재 또는 카드 정지 조치가 취해질 수 있습니다. 올바른 결제 습관을 유지해 주세요. 구독 서비스 이용 시 해당 웹사이트에서 반드시 해지 또는 연결 해제를 완료하세요!",
   "ushield_additional_services_sns_desc": "링크드인, 페이스북, 구글 계정 및 광고 집행 서비스 제공 — 고객의 크로스보더 무역 지원",
   "ushield_additional_services_ecs_desc": "익명 해외 서버(ECS) 구매 가능",
-
-  "promotion_income":"프로모션 수익",
+  "promotion_income": "프로모션 수익",
   "address_detection_records": "주소 검증 관련 공제 내역",
-
-
   "command_energy_menu": "⚡️ 명령어로 에너지 빠른 대여",
   "command_energy_desc": "⚡️ 명령어로 에너지 빠른 대여\n\n1. 명령어: 1 수량: 65000(1건) 가격: {1_times_cost_trx}(TRX)\n2. 명령어: 2 수량: 131000(2건) 가격: {2_times_cost_trx}(TRX)\n3. 명령어: 3 수량: 195000(3건) 가격: {3_times_cost_trx}(TRX)\n4. 명령어: 4 수량: 260000(4건) 가격: {4_times_cost_trx}(TRX)\n5. 명령어: 5 수량: 325000(5건) 가격: {5_times_cost_trx}(TRX)\n\n⚠️ 상대방 주소에 U가 없으면 에너지 2건 필요!\n\n⏰ 명령어 모드의 에너지는 1시간 동안만 유효합니다!\n⚠️ 이 모드는 확인 없이 즉시 에너지가 도착합니다! 신중히 사용하세요!\n♻️ 2개 이상의 주소를 연결한 경우, 명령어를 보내면 주소 목록이 표시되며 선택만 하면 즉시 에너지를 대여할 수 있습니다!",
-  "member_telegram_menu": "\uD83D\uDC8E 텔레그램 프리미엄",
+  "member_telegram_menu": "💎 텔레그램 프리미엄",
   "member_telegram_desc": "🌟 스타 가격: 0.03 U/개\n(한 번에 50~10,000개 구매 가능)\n\n\n🌟 프리미엄 요금:\n3개월: 17 U\n6개월: 27 U\n1년: 47 U\n\n\n\n후이왕(HuiWang)으로 충전하지 마세요! 지갑 U로만 충전 가능합니다!",
   "member_telegram_second_menu": "🌟 프리미엄 구독하기",
   "star_telegram_second_menu": "⭐️ 스타 구매하기",
@@ -239,8 +223,6 @@
   "successfully_purchased_stars": "✅ {count}개의 스타 구매 성공! 잠시 기다려 주세요. 문제가 있으면 고객센터에 문의하세요.",
   "anonymous_mobile": "✈️ 익명 번호\n➖➖➖➖➖➖➖➖➖➖\n공식 NFT888 번호는 영구적으로 삭제되지 않습니다\n\n계정 삭제 방지 • 가치 급등 • 재판매 가능 • 안정성 최고\n\n\"한 번 번호를 가지면 삼대가 쓴다 — 사람이 떠나도 번호는 남는다\"\n\n익명 번호 【+888】\n텔레그램은 TON 블록체인 상에서 한정된 가상 전화번호를 NFT 컬렉션으로 출시했습니다. 사용자는 SIM 카드 없이도 이 번호로 가입하고 Fragment에서 직접 인증 코드를 받을 수 있습니다.\n\n익명 계정 【사용자명】\n익명 사용자명도 +888 번호와 마찬가지로 TON 블록체인에서 발행된 NFT 컬렉션입니다. 텔레그램 사용자는 이를 개인 계정, 그룹, 채널, 봇 등에 연결할 수 있습니다. 차이점은 익명 번호는 가입에 사용 가능하지만, 사용자명은 가입에 사용할 수 없습니다.\n\n익명 번호 및 사용자명 수령을 위해서는 TON 체인 지갑 주소가 필요합니다.",
   "customer_service": "💁 고객센터 문의",
-
-
   "coin_laundering_menu": "USDT 세탁",
   "coin_laundering_tips": "세탁하고자 하는 TRC20-USDT 금액을 선택하세요:",
   "other_blockchain_usdt_tips": "다른 체인의 USDT",
@@ -251,7 +233,6 @@
   "input_receive_address": "수신 주소를 입력해 주세요:",
   "coin_laundering_order_desc": "주문이 정상적으로 생성되었습니다\n주문 번호: {orderNO}\n주문 생성 시간: {RegTime}\n주문 만료 시간: {ExpireTime}\n\n선택된 거래 페어: USDTTRC20 - {token}. <code>{amount1} USDTTRC20</code>를 전송하면 약 {amount2} {token}을(를) 받게 됩니다.\n수신 지갑 주소:\n<code>{to_address}</code>\n\n다음 주소로 <code>{amount1}</code> USDTTRC20을 전송해 주세요:\n\n<code>{from_address}</code>",
   "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
-
   "chain_tron_title": "TRON 트론체인",
   "chain_bsc_title": "BSC 바이낸스체인",
   "chain_tron_btn": "TRON트론체인",
@@ -260,11 +241,11 @@
   "current_chain_label": "📡 현재 체인：",
   "no_trace_address": "（추적 주소 없음）",
   "address_not_in_chain_list": "❌ 해당 주소는 현재 체인의 추적 목록에 없습니다",
-
   "monitoring_address_list_title": "모니터링 주소 목록",
   "set_default_address_success": "기본 주소 설정 성공",
   "delete_failed_tips": "❌ 삭제에 실패했습니다. 나중에 다시 시도해 주세요",
   "feature_dev_promo": "📢 기능 개발 중! 출시 소식을 가장 먼저 받고 싶으신가요? 공식 채널을 팔로우하세요: @ushield1 🔔\n\n",
-  "keyboard_hidden_tips": "키보드가 숨겨졌습니다. /start를 보내서 다시 표시하세요"
-
+  "keyboard_hidden_tips": "키보드가 숨겨졌습니다. /start를 보내서 다시 표시하세요",
+  "chain_btc_title": "BTC 비트코인 네트워크",
+  "chain_btc_btn": "BTC비트코인"
 }

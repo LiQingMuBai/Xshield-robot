@@ -43,8 +43,8 @@
   "energy_swap_tips": "به صرافی فوری انرژی U-Shield خوش آمدید\n🔹 انتقال {energy_cost} TRX = ۱ واحد انرژی\n🔹 انتقال {energy_cost_2x} TRX = ۲ واحد انرژی\n🔹 آدرس دریافت برای صرافی فوری: <code>{receiveAddress}</code>\n➖➖➖➖ کلیک برای کپی ➖➖➖➖\nنکات مهم:\n۱. هر انتقال معادل {energy_cost} TRX برای یک واحد انرژی است. حداکثر می‌توانید ۱۰ واحد (معادل {energy_cost_10x} TRX) در یک تراکنش ارسال کنید. هر مقدار اضافه اعتباردهی نخواهد شد.\n۲. اگر به آدرس غیر-U انتقال دهید، ۲ واحد انرژی کسر می‌شود.\n۳. پس از انتقال موفق به آدرس صرافی فوری، انرژی بلافاصله تعویض شده و به آدرس شارژ اولیه بازمی‌گردد.\n۴. از کیف‌پول صرافی برای برداشت یا انتقال استفاده نکنید.\n۵. انرژی برای مدت یک ساعت معتبر است.",
   "welcome_tips1": "🛡️ U-Shield: محافظ نهایی دارایی‌های زنجیره‌ای شما!\nما نه‌تنها بر هزینه پایین انرژی، بلکه بر امنیت تراکنش‌ها نیز تمرکز داریم!\nهر انتقال را ایمن‌تر و هر تعامل زنجیره‌ای را قابل اعتمادتر کنید!\n\n🤖 سه ویژگی کاربردی برای مدیریت ایمن و کارآمد دارایی‌های زنجیره‌ای:\n🔋 صرافی انرژی ترون – صرفه‌جویی بیش از ۸۰٪!\n🕵️‍♂️ تشخیص ریسک آدرس – هر انتقال را ایمن‌تر کنید!\n🚨 هشدار قفل شدن USDT – در عرض چند ثانیه واکنش نشان دهید و USDT خود را همیشه آزاد نگه دارید!\n\n🎁 مزایای کاربر جدید: روزانه یک بار بررسی رایگان ریسک آدرس!",
   "welcome_tips": "🛡️ U-Shield: محافظ نهایی دارایی‌های زنجیره‌ای شما!\nما نه‌تنها بر هزینه پایین انرژی، بلکه بر امنیت تراکنش‌ها نیز تمرکز داریم!\nهر انتقال را ایمن‌تر و هر تعامل زنجیره‌ای را قابل اعتمادتر کنید!\n\n🤖 سه ویژگی کاربردی برای مدیریت ایمن و کارآمد دارایی‌های زنجیره‌ای:\n🔋 صرافی انرژی ترون – صرفه‌جویی بیش از ۸۰٪!\n🕵️‍♂️ تشخیص ریسک آدرس – هر انتقال را ایمن‌تر کنید!\n🚨 هشدار قفل شدن USDT – در عرض چند ثانیه واکنش نشان دهید و USDT خود را همیشه آزاد نگه دارید!\n\n",
-  "address_check_tips": "به سرویس تشخیص ریسک آدرس U-Shield خوش آمدید\n✅ پشتیبانی از جستجوی آدرس در شبکه‌های TRON و ETH\n✅ سیستم بر اساس رفتار زنجیره‌ای، برچسب‌های ریسک و موجودیت‌های مرتبط ارزیابی و تحلیل می‌کند\n\n📊 توضیح سطوح ریسک:\n🟢 ریسک پایین (۰–۳۰): بدون تراکنش مشکوک؛ ارتباطی با موجودیت‌های پرخطر شناخته‌شده ندارد\n🟡 ریسک متوسط (۳۱–۷۰): تعامل محدود با آدرس‌های پرخطر؛ طرف مقابل‌ها نامشخص\n🟠 ریسک بالا (۷۱–۹۰): انتقال‌های غیرعادی متعدد؛ احتمال ارتباط با آدرس‌های مخرب\n🔴 ریسک بسیار بالا (۹۱–۱۰۰): درگیری در کلاهبرداری، تحریم، هک، پول‌شویی یا سایر فعالیت‌های پرخطر\n\n📌 هر کاربر روزانه ۱ بار بررسی رایگان دارد\n📌 بررسی‌های اضافی معادل {address_detection_cost} TRX یا {address_detection_cost_usdt} USDT هزینه دارد (در صورت وجود TRX، ابتدا از آن کسر می‌شود)\n\n💰 موجودی فعلی:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nلطفاً آدرس مورد نظر برای بررسی را وارد کنید 👇",
-  "address_check_tips1":"Welcome to U-Shield Address Risk Detection\n✅ Supports address queries on both TRON and ETH networks\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n\uD83D\uDCCA Risk Level Description:\n\uD83D\uDFE2 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n\uD83D\uDFE1 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n\uD83D\uDFE0 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n\uD83D\uDD34 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n\uD83D\uDCCC Each user gets 1 free detection per day\n\uD83D\uDCCC Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n\uD83D\uDCB0 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check \uD83D\uDC47",
+  "address_check_tips": "به سرویس تشخیص ریسک آدرس U-Shield خوش آمدید\n✅ پشتیبانی از جستجوی آدرس در شبکه‌های TRON و ETH / BTC\n✅ سیستم بر اساس رفتار زنجیره‌ای، برچسب‌های ریسک و موجودیت‌های مرتبط ارزیابی و تحلیل می‌کند\n\n📊 توضیح سطوح ریسک:\n🟢 ریسک پایین (۰–۳۰): بدون تراکنش مشکوک؛ ارتباطی با موجودیت‌های پرخطر شناخته‌شده ندارد\n🟡 ریسک متوسط (۳۱–۷۰): تعامل محدود با آدرس‌های پرخطر؛ طرف مقابل‌ها نامشخص\n🟠 ریسک بالا (۷۱–۹۰): انتقال‌های غیرعادی متعدد؛ احتمال ارتباط با آدرس‌های مخرب\n🔴 ریسک بسیار بالا (۹۱–۱۰۰): درگیری در کلاهبرداری، تحریم، هک، پول‌شویی یا سایر فعالیت‌های پرخطر\n\n📌 هر کاربر روزانه ۱ بار بررسی رایگان دارد\n📌 بررسی‌های اضافی معادل {address_detection_cost} TRX یا {address_detection_cost_usdt} USDT هزینه دارد (در صورت وجود TRX، ابتدا از آن کسر می‌شود)\n\n💰 موجودی فعلی:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nلطفاً آدرس مورد نظر برای بررسی را وارد کنید 👇",
+  "address_check_tips1": "Welcome to U-Shield Address Risk Detection\n✅ پشتیبانی از هر آدرسی در شبکه‌های TRON / ETH / BTC\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n📊 Risk Level Description:\n🟢 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n🟡 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n🟠 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n🔴 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n📌 Each user gets 1 free detection per day\n📌 Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n💰 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check 👇",
   "daily_free_limit": "سهمیه رایگان روزانه تمام شده است. برای ادامه شارژ کنید.",
   "user_id": "شناسه",
   "username": "نام",
@@ -138,7 +138,7 @@
   "address_trace_delete": "حذف آدرس",
   "address_trace_delete_tips": "لطفاً آدرس مورد نظر برای حذف را وارد کنید: ",
   "address_trace_menu": "پیگیری آدرس",
-  "address_trace_head_tips": "به سرویس پیگیری آدرس U-Shield برای اطلاعات تراکنش TRX و USDT خوش آمدید\n⚠️ شما می‌توانید ۴ آدرس پرکاربرد اضافه کنید\n",
+  "address_trace_head_tips": "به سرویس پیگیری آدرس U-Shield برای اطلاعات تراکنش TRX و USDT خوش آمدید\n⚠️ شما می‌توانید ۴ آدرس پرکاربرد اضافه کنید (TRON/BSC/BTC)\n",
   "backup_account_tips": "فرمت نام کاربری نادرست است. نماد @ را حذف کرده و دوباره وارد کنید.",
   "backup_account_tips2": "فرمت نام کاربری نادرست است. لطفاً دوباره وارد کنید.",
   "backup_account_tip3": "مخاطب اضطراری جایگزین با موفقیت متصل شد: ",
@@ -184,8 +184,6 @@
   "catfee_energy_address_buy_error": "❌ متأسفیم، تعداد تراکنش‌های حفظت شما کافی نیست. لطفاً به صفحه اصلی بازگشته و بسته حفظت را خریداری کنید.",
   "yhb_menu": "قرمزی U",
   "yhb_desc": "به صرافی فوری انرژی قرمزی U Shield خوش آمدید\n🔹 انتقال {energy_cost} قرمزی U = ۱ واحد انرژی\n🔹 انتقال {energy_cost_2x} قرمزی U = ۲ واحد انرژی\nآدرس دریافت TRX:\n<code>{yhb_tron_address}</code>\n\nآدرس دریافت قرمزی U در شبکه BSC:\n<code>{yhb_bsc_address}</code>\n\nنکات مهم:\n۱. هر تراکنش معادل {energy_cost} قرمزی U است و به همین ترتیب. (حداکثر ۱۰ تراکنش = {energy_cost_10x} قرمزی U؛ هر مقدار اضافه اعتباردهی نخواهد شد)\n۲. انتقال به آدرس غیر-U نیازمند خرید دو واحد انرژی است\n۳. پس از انتقال موفق به آدرس صرافی فوری، انرژی بلافاصله از طریق آدرس شارژ اولیه تعویض و بازگردانده می‌شود\n۴. ابتدا تاریخ تولد ۶ رقمی خود را (مثلاً ۰٫۹۳۱۰۱۸ TRX) یا هر عدد ۶ رقمی دیگری ارسال کنید تا اتصال کاربر انجام شود. سپس ارقام انتهایی مبلغ قرمزی همراه با .۹۳۱۰۱۸ را ارسال کنید تا صرافی کامل شود\n۵. انرژی برای مدت یک ساعت معتبر است\nربات رسمی U Shield: https://t.me/ushield_bot?start=8131076755\nکیف‌پول بایننس (بدون کارمزد)، از صرافی رایگان قرمزی U پشتیبانی می‌کند: https://web3.binance.com/zh-CN/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f\nکیف‌پول OKX (کارمزد ۰٫۸۵٪)، از تبدیل متقاطع TRX و USDT به قرمزی U پشتیبانی می‌کند: https://web3.okx.com/zh-hans/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f",
-
-
   "ushield_additional_services_menu": "",
   "ushield_additional_services_desc": "خدمات گسترده\n➖➖➖➖➖➖➖➖➖➖\n📱 کارت سیم داک‌چت هنگ‌کنگ\nاعتبار کارت سیم داک‌چت هنگ‌کنگ ۱ ساله، قابل شارژ، شامل ۱۸ گیگابایت داده یک‌بار مصرف و یک شماره تلفن هنگ‌کنگ برای دریافت رایگان پیامک است.\n\n💳 کارت اعتباری ناشناس\nمناسب برای سناریوهای بین‌المللی — پرداخت جهانی آسان! پشتیبانی از AWS، تیک‌تاک، فیسبوک، علی‌پی، گوگل، پی‌پال، توییتر، استارلینک، تبلیغات، خرید دامنه و سرور، خرید، ثبت‌نام، اشتراک و غیره. تراکنش‌های چندارزی، فعال‌سازی فوری، واریز لحظه‌ای و پرداخت فوق‌سریع.\n\n✈ مدیریت انرژی\nتلگرام شماره‌های مجازی محدودی را به‌عنوان NFT در بلاکچین TON منتشر کرده است. کاربران می‌توانند بدون سیم‌کارت ثبت‌نام کنند و کدهای تأیید را مستقیماً در Fragment دریافت نمایند.\n\n👥 حساب‌های شبکه‌های اجتماعی\nپشتیبانی از حساب‌های LinkedIn، Facebook، Google و خدمات تبلیغاتی برای کمک به تجارت بین‌المللی مشتریان.\n\n🌍 سرورهای خارجی\nامکان خرید سرورهای ناشناس خارجی (ECS).",
   "ushield_additional_services_sim_desc": "خدمات گسترده\n\n\n📱 کارت سیم داک‌چت هنگ‌کنگ\n➖➖➖➖➖➖➖➖➖➖\nاعتبار ۱ ساله، قابل شارژ، شامل ۱۸ گیگابایت داده یک‌بار مصرف و شماره هنگ‌کنگ برای دریافت رایگان پیامک.\n\n💰 قیمت: ۶۰ USDT به ازای هر کارت\n🚚 هزینه ارسال: پرداخت در محل تحویل\n\n📞 برای فعال‌سازی: *103*800# را شماره‌گیری کنید\n📞 برای بررسی موجودی: *#130# را شماره‌گیری کنید",
@@ -193,16 +191,11 @@
   "ushield_additional_services_visa_desc": "💳 کارت اعتباری ناشناس\n➖➖➖➖➖➖➖➖➖➖\nایده‌آل برای استفاده بین‌المللی! پشتیبانی از تراکنش‌های چندارزی، فعال‌سازی فوری، واریز لحظه‌ای، پرداخت فوق‌سریع و تأیید AVS.\n\n💰 کارمزد شارژ: ۳٪\n💳 هزینه صدور کارت: ۶ دلار آمریکا\n\n✅ پلتفرم‌های پشتیبانی‌شده: علی‌پی، فیسبوک، گوگل، آمازون، GoDaddy، OpenAI، توییتر، Shopify، استارلینک، ویچت، علی‌بابا، علی‌اکسپرس و غیره.\n\n⚠️ بازگشت مخرب وجه ممنوع است. تراکنش‌های ناموفق یا بازگشت‌های مکرر، سیستم风控 را فعال کرده و منجر به جریمه یا لغو کارت می‌شود. لطفاً عادات پرداخت خوبی داشته باشید. در صورت وجود اشتراک فعال، آن را در وب‌سایت مربوطه لغو کنید!",
   "ushield_additional_services_sns_desc": "پشتیبانی از حساب‌های LinkedIn، Facebook، Google و خدمات تبلیغاتی برای کمک به تجارت بین‌المللی مشتریان.",
   "ushield_additional_services_ecs_desc": "خرید سرورهای ناشناس خارجی (ECS).",
-
-
-
-  "promotion_income":"درآمد تبلیغاتی",
-
+  "promotion_income": "درآمد تبلیغاتی",
   "address_detection_records": "رکورد کسر مبلغ برای تأیید آدرس",
-
   "command_energy_menu": "⚡️ اجاره سریع انرژی با دستور",
   "command_energy_desc": "⚡️ اجاره سریع انرژی با دستور\n\n1. دستور: 1 مقدار: 65000 (1 تراکنش) قیمت: {1_times_cost_trx} (TRX)\n2. دستور: 2 مقدار: 131000 (2 تراکنش) قیمت: {2_times_cost_trx} (TRX)\n3. دستور: 3 مقدار: 195000 (3 تراکنش) قیمت: {3_times_cost_trx} (TRX)\n4. دستور: 4 مقدار: 260000 (4 تراکنش) قیمت: {4_times_cost_trx} (TRX)\n5. دستور: 5 مقدار: 325000 (5 تراکنش) قیمت: {5_times_cost_trx} (TRX)\n\n⚠️ آدرس مقصد U ندارد — نیاز به دو تراکنش انرژی است!\n\n⏰ انرژی در حالت دستوری فقط یک ساعت معتبر است!\n⚠️ در این حالت نیازی به تأیید نیست — انرژی بلافاصله پس از دریافت دستور ارسال می‌شود! دقت کنید!\n♻️ اگر بیش از ۲ آدرس متصل کرده‌اید، با ارسال دستور لیست آدرس‌ها نمایش داده می‌شود — کافیست یکی را انتخاب کنید تا انرژی فوراً اجاره شود!",
-  "member_telegram_menu": "\uD83D\uDC8E عضویت تلگرام",
+  "member_telegram_menu": "💎 عضویت تلگرام",
   "member_telegram_desc": "🌟 قیمت استار: 0.03 U هر عدد\n(پشتیبانی از خرید 50 تا 10000 استار در هر بار)\n\n\n🌟 قیمت عضویت:\n3 ماهه: 17 U\n6 ماهه: 27 U\n1 ساله: 47 U\n\n\n\n⚠️ برای شارژ از HuiWang استفاده نکنید — فقط از کیف پول USDT استفاده کنید!",
   "member_telegram_second_menu": "🌟 خرید عضویت",
   "star_telegram_second_menu": "⭐️ خرید استار",
@@ -229,8 +222,6 @@
   "successfully_purchased_stars": "✅ خرید {count} استار با موفقیت انجام شد. لطفاً صبور باشید. در صورت وجود هرگونه مشکل، با پشتیبانی تماس بگیرید.",
   "anonymous_mobile": "✈️ شماره ناشناس\n➖➖➖➖➖➖➖➖➖➖\nشماره‌های رسمی NFT888 هرگز منقضی نمی‌شوند\n\nجلوگیری از حذف حساب • ارزش افزوده سریع • قابل بازیافت • پایداری بالا\n\n«یک شماره، سه نسل استفاده می‌شود — وقتی شما نباشید، شماره همچنان باقی است»\n\nشماره ناشناس 【+888】\nتلگرام شماره‌های مجازی محدودی را به‌صورت NFT در بلاک‌چین TON منتشر کرده است. کاربران تلگرام می‌توانند از این شماره‌ها بدون نیاز به سیم‌کارت ثبت‌نام کنند و کدهای تأیید را مستقیماً در Fragment دریافت نمایند.\n\nحساب ناشناس 【نام کاربری】\nنام‌های کاربری ناشناس نیز مانند شماره‌های +888، NFT جمع‌آوری‌شده در بلاک‌چین TON هستند. کاربران تلگرام می‌توانند این نام‌ها را به حساب‌های شخصی، گروه‌ها، کانال‌ها یا ربات‌ها متصل کنند. تفاوت این است که شماره‌های ناشناس قابل ثبت‌نام هستند، اما نام‌های کاربری نه.\n\nبرای دریافت شماره یا نام ناشناس، نیاز به آدرس کیف‌پول در شبکه TON دارید.",
   "customer_service": "💁 تماس با پشتیبانی",
-
-
   "coin_laundering_menu": " شست‌وشوی USDT",
   "coin_laundering_tips": "لطفاً مقدار TRC20-USDT مورد نظر برای شست‌وشو را انتخاب کنید:",
   "other_blockchain_usdt_tips": "USDT در بلاکچین‌های دیگر",
@@ -241,7 +232,6 @@
   "input_receive_address": "لطفاً آدرس دریافتی خود را وارد کنید:",
   "coin_laundering_order_desc": "سفارش با موفقیت ایجاد شد\nشماره سفارش: {orderNO}\nزمان ایجاد سفارش: {RegTime}\nزمان انقضای سفارش: {ExpireTime}\n\nجفت معاملاتی انتخاب‌شده: USDTTRC20 - {token}. شما <code>{amount1} USDTTRC20</code> ارسال خواهید کرد؛ و حدود {amount2} {token} دریافت خواهید کرد.\nآدرس کیف پول دریافتی شما:\n<code>{to_address}</code>\n\nلطفاً <code>{amount1}</code> USDTTRC20 را به آدرس زیر ارسال کنید:\n\n<code>{from_address}</code>",
   "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
-
   "chain_tron_title": "شبکه TRON",
   "chain_bsc_title": "شبکه BSC",
   "chain_tron_btn": "شبکه TRON",
@@ -250,11 +240,11 @@
   "current_chain_label": "📡 شبکه فعلی: ",
   "no_trace_address": "(آدرس ردیابی‌شده‌ای وجود ندارد)",
   "address_not_in_chain_list": "❌ این آدرس در لیست ردیابی شبکه فعلی نیست",
-
   "monitoring_address_list_title": "لیست آدرس‌های نظارتی",
   "set_default_address_success": "تنظیم آدرس پیش‌فرض موفق بود",
   "delete_failed_tips": "❌ حذف ناموفق بود، لطفاً دوباره تلاش کنید",
   "feature_dev_promo": "📢 قابلیت در حال توسعه است! می‌خواهید اولین نفری باشید که از راه‌اندازی آن را می‌داند؟ کانال رسمی ما را دنبال کنید: @ushield1 🔔\n\n",
-  "keyboard_hidden_tips": "صفحه کلید مخفی شد. /start را ارسال کنید تا دوباره نمایش داده شود"
-
+  "keyboard_hidden_tips": "صفحه کلید مخفی شد. /start را ارسال کنید تا دوباره نمایش داده شود",
+  "chain_btc_title": "شبکه BTC بیت‌کوین",
+  "chain_btc_btn": "BTC Bitcoin"
 }

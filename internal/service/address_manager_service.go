@@ -15,7 +15,7 @@ import (
 )
 
 func AddManagedAddress(lang string, message *tgbotapi.Message, db *gorm.DB, bot *tgbotapi.BotAPI) {
-	if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) {
+	if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) || IsValidBitcoinAddress(message.Text) {
 		userRepo := repositories.NewUserAddressMonitorRepo(db)
 		var record domain.UserAddressMonitor
 		record.ChatID = message.Chat.ID
@@ -26,6 +26,9 @@ func AddManagedAddress(lang string, message *tgbotapi.Message, db *gorm.DB, bot 
 		}
 		if IsValidEthereumAddress(message.Text) {
 			record.Network = "ethereum"
+		}
+		if IsValidBitcoinAddress(message.Text) {
+			record.Network = "bitcoin"
 		}
 		createErr := userRepo.Create(context.Background(), &record)
 		if createErr != nil {

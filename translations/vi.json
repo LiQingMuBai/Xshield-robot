@@ -43,8 +43,8 @@
   "energy_swap_tips": "Chào mừng đến với dịch vụ trao đổi năng lượng nhanh UShield\n🔘 Chuyển khoản {energy_cost} TRX = 1 giao dịch năng lượng\n🔘 Chuyển khoản {energy_cost_2x} TRX = 2 giao dịch năng lượng\n🔘 Địa chỉ nhận: <code>{receiveAddress}</code>\n—————————Nhấp để sao chép—————————\nQuan trọng:\n1. {energy_cost} TRX mỗi giao dịch, tối đa 10 giao dịch ({energy_cost_10x} TRX, vượt quá sẽ không được ghi có)\n2. Chuyển khoản đến địa chỉ không có USDT cần 2 giao dịch năng lượng\n3. Năng lượng sẽ được trao đổi ngay lập tức sau khi chuyển khoản thành công\n4. Cấm sử dụng ví từ sàn giao dịch\n5.Hiệu quả năng lượng trong một giờ",
   "welcome_tips1": "🛡️ UShield, lá chắn cho tài sản on-chain của bạn!\nChúng tôi không chỉ chú trọng năng lượng giá rẻ mà còn chú trọng bảo mật!\nGiúp mỗi chuyển khoản an toàn hơn, mỗi tương tác on-chain đáng tin cậy!\n🤖 3 tính năng thiết thực giúp quản lý tài sản on-chain an toàn và hiệu quả\n🔊 Trao đổi năng lượng TRON, tiết kiệm hơn 80%!\n🕵️ Phát hiện rủi ro địa chỉ, giúp mỗi chuyển khoản an toàn hơn!\n🚨 Cảnh báo đóng băng USDT, phản hồi trong vài giây, USDT của bạn sẽ không bao giờ bị đóng băng!\n🎁 Ưu đãi người dùng mới: Kiểm tra rủi ro địa chỉ miễn phí mỗi ngày 1 lần",
   "welcome_tips": "🛡️ UShield, lá chắn cho tài sản on-chain của bạn!\nChúng tôi không chỉ chú trọng năng lượng giá rẻ mà còn chú trọng bảo mật!\nGiúp mỗi chuyển khoản an toàn hơn, mỗi tương tác on-chain đáng tin cậy!\n🤖 3 tính năng thiết thực giúp quản lý tài sản on-chain an toàn và hiệu quả\n🔊 Trao đổi năng lượng TRON, tiết kiệm hơn 80%!\n🕵️ Phát hiện rủi ro địa chỉ, giúp mỗi chuyển khoản an toàn hơn!\n🚨 Cảnh báo đóng băng USDT, phản hồi trong vài giây, USDT của bạn sẽ không bao giờ bị đóng băng!\n",
-  "address_check_tips": "Chào mừng đến với dịch vụ kiểm tra rủi ro địa chỉ UShield\n✅ Hỗ trợ địa chỉ trên mạng TRON hoặc ETH\n✅ Hệ thống sẽ chấm điểm và phân tích dựa trên hành vi on-chain, nhãn rủi ro và thực thể liên quan\n📊 Mức độ rủi ro:\n🟢 Rủi ro thấp (0-30): Không có giao dịch bất thường, không liên quan đến thực thể rủi ro đã biết\n🟡 Rủi ro trung bình (31-70): Có một số tương tác rủi ro cao, đối tác không rõ ràng\n🟠 Rủi ro cao (71-90): Chuyển khoản bất thường thường xuyên hoặc liên quan đến địa chỉ độc hại\n🔴 Rủi ro rất cao (91-100): Liên quan đến hành vi rủi ro cao như lừa đảo, trừng phạt, hacker, rửa tiền\n\n📌 Mỗi người dùng được kiểm tra miễn phí 1 lần mỗi ngày\n📌 Mỗi lần kiểm tra thêm tốn {address_detection_cost} TRX hoặc {address_detection_cost_usdt} USDT (hệ thống ưu tiên TRX)\n💰 Số dư hiện tại:\n- TRX: {tron_amount}\n- USDT: {amount}\nVui lòng nhập địa chỉ để kiểm tra 👇",
-  "address_check_tips1":"Welcome to U-Shield Address Risk Detection\n✅ Supports address queries on both TRON and ETH networks\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n\uD83D\uDCCA Risk Level Description:\n\uD83D\uDFE2 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n\uD83D\uDFE1 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n\uD83D\uDFE0 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n\uD83D\uDD34 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n\uD83D\uDCCC Each user gets 1 free detection per day\n\uD83D\uDCCC Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n\uD83D\uDCB0 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check \uD83D\uDC47",
+  "address_check_tips": "Chào mừng đến với dịch vụ kiểm tra rủi ro địa chỉ UShield\n✅ Hỗ trợ địa chỉ trên mạng TRON hoặc ETH / BTC\n✅ Hệ thống sẽ chấm điểm và phân tích dựa trên hành vi on-chain, nhãn rủi ro và thực thể liên quan\n📊 Mức độ rủi ro:\n🟢 Rủi ro thấp (0-30): Không có giao dịch bất thường, không liên quan đến thực thể rủi ro đã biết\n🟡 Rủi ro trung bình (31-70): Có một số tương tác rủi ro cao, đối tác không rõ ràng\n🟠 Rủi ro cao (71-90): Chuyển khoản bất thường thường xuyên hoặc liên quan đến địa chỉ độc hại\n🔴 Rủi ro rất cao (91-100): Liên quan đến hành vi rủi ro cao như lừa đảo, trừng phạt, hacker, rửa tiền\n\n📌 Mỗi người dùng được kiểm tra miễn phí 1 lần mỗi ngày\n📌 Mỗi lần kiểm tra thêm tốn {address_detection_cost} TRX hoặc {address_detection_cost_usdt} USDT (hệ thống ưu tiên TRX)\n💰 Số dư hiện tại:\n- TRX: {tron_amount}\n- USDT: {amount}\nVui lòng nhập địa chỉ để kiểm tra 👇",
+  "address_check_tips1": "Welcome to U-Shield Address Risk Detection\n✅ Hỗ trợ bất kỳ địa chỉ nào trên mạng TRON / ETH / BTC\n✅ The system evaluates and analyzes based on on-chain behavior, risk labels, and associated entities\n\n📊 Risk Level Description:\n🟢 Low Risk (0–30): No suspicious transactions; not linked to known risky entities\n🟡 Medium Risk (31–70): Limited high-risk interactions; unclear counterparties\n🟠 High Risk (71–90): Frequent unusual transfers; potential ties to malicious addresses\n🔴 Extreme Risk (91–100): Involvement in scams, sanctions, hacking, money laundering, or other high-risk activities\n\n📌 Each user gets 1 free detection per day\n📌 Additional detections cost {address_detection_cost} TRX or {address_detection_cost_usdt} USDT (TRX will be deducted first if available)\n\n💰 Current Balance:\n\nTRX: {tron_amount}\n\nUSDT: {amount}\n\nPlease enter the address you want to check 👇",
   "daily_free_limit": "Đã hết số lần miễn phí hàng ngày, vui lòng nạp tiền để tiếp tục sử dụng",
   "user_id": "ID người dùng",
   "username": "Tên người dùng",
@@ -61,7 +61,7 @@
   "trx_deposit_records": "Lịch sử nạp TRX",
   "usdt_deposit_records": "Lịch sử nạp USDT",
   "deposit_records": "Lịch sử nạp tiền",
-  "usdt_freeze_alert_tips": "Chào mừng đến với dịch vụ cảnh báo đóng băng USDT của UShield\n🛡️ UShield, lá chắn cho tài sản on-chain của bạn!\nMột khi địa chỉ bị đóng băng bởi kiểm soát rủi ro on-chain, tài sản sẽ khó thu hồi, tổn thất lớn!\nHàng trăm ví USDT bị đóng băng khóa mỗi ngày, rủi ro ở ngay bên cạnh!\n✅ Phù hợp cho: Giao dịch thường xuyên/Nhiễm từ địa chỉ bị trừng phạt/Tương tác với địa chỉ lừa đảo\n✅ Hỗ trợ địa chỉ ví USDT trên mạng TRON/ETH\n📌 Giá dịch vụ (mỗi địa chỉ):\n • {server_trx_price} TRX / 30 ngày hoặc {server_usdt_price} USDT / 30 ngày\n🎯 Sau khi kích hoạt, UShield sẽ bảo vệ tài sản của bạn 24/7\n⏰ Hệ thống sẽ kích hoạt cơ chế cảnh báo trước khi đóng băng, gửi thông báo mỗi phút trong 10 phút\n📩 Tất cả thông tin cảnh báo được gửi real-time qua Telegram",
+  "usdt_freeze_alert_tips": "Chào mừng đến với dịch vụ cảnh báo đóng băng USDT của UShield\n🛡️ UShield, lá chắn cho tài sản on-chain của bạn!\nMột khi địa chỉ bị đóng băng bởi kiểm soát rủi ro on-chain, tài sản sẽ khó thu hồi, tổn thất lớn!\nHàng trăm ví USDT bị đóng băng khóa mỗi ngày, rủi ro ở ngay bên cạnh!\n✅ Phù hợp cho: Giao dịch thường xuyên/Nhiễm từ địa chỉ bị trừng phạt/Tương tác với địa chỉ lừa đảo\n✅ Hỗ trợ địa chỉ ví USDT trên mạng TRON/ETH/BTC\n📌 Giá dịch vụ (mỗi địa chỉ):\n • {server_trx_price} TRX / 30 ngày hoặc {server_usdt_price} USDT / 30 ngày\n🎯 Sau khi kích hoạt, UShield sẽ bảo vệ tài sản của bạn 24/7\n⏰ Hệ thống sẽ kích hoạt cơ chế cảnh báo trước khi đóng băng, gửi thông báo mỗi phút trong 10 phút\n📩 Tất cả thông tin cảnh báo được gửi real-time qua Telegram",
   "enable_freeze_alert": "Kích hoạt cảnh báo đóng băng",
   "alert_monitoring_list": "Danh sách giám sát cảnh báo",
   "freeze_alert_deduction_record": "Lịch sử khấu trừ cảnh báo đóng băng",
@@ -126,16 +126,12 @@
   "confirm_stop_monitoring_address_tips": "Số ngày còn lại hiện tại: {days} ngày\nGiám sát sẽ dừng ngay lập tức khi hủy. Thời gian dịch vụ không được hoàn lại\n🔒 Để tránh thao tác nhầm, vui lòng xác nhận lại:",
   "confirm_stop_monitoring_address_yes": "Xác nhận dừng",
   "confirm_stop_monitoring_address_success_tips": "Giám sát địa chỉ đã dừng thành công ✅",
-  "address_list_empty_tips":"Danh sách không có địa chỉ, vui lòng thêm địa chỉ trước.",
-  "promotion_link":"Liên kết quảng bá độc quyền",
-  "join_vip_cooperation":"Tham gia nhóm VIP hợp tác kinh doanh:",
-  "visit_tutorial":"Vui lòng truy cập hướng dẫn sử dụng của chúng tôi:",
-
-
-
+  "address_list_empty_tips": "Danh sách không có địa chỉ, vui lòng thêm địa chỉ trước.",
+  "promotion_link": "Liên kết quảng bá độc quyền",
+  "join_vip_cooperation": "Tham gia nhóm VIP hợp tác kinh doanh:",
+  "visit_tutorial": "Vui lòng truy cập hướng dẫn sử dụng của chúng tôi:",
   "usdt_trx_swap": "Hoán đổi USDT sang TRX",
-  "usdt_trx_swap_head": "Chào mừng bạn đến với Dịch vụ Hoán đổi USDT sang TRX của U-Shield\n\uD83D\uDCC8Tỷ giá hối đoái theo thời gian thực\n\uD83D\uDD381 USDT  ≈   {trx_amount} TRX\n\uD83D\uDD38Địa chỉ nhận hoán đổi: <code>{swap_address}</code>\n➖➖➖➖\uD83D\uDC46Nhấn để sao chép\uD83D\uDC46➖➖➖➖\n⚙\uFE0F Giới thiệu chức năng\nUSDT → TRX Hoán đổi (Tự động hoàn trả)\nGiới hạn giao dịch đơn lẻ:\nUSDT: Tối thiểu {min_amount}U   Tối đa {max_amount}U\n\n⚠\uFE0F Vui lòng sử dụng ví phi tập trung để chuyển khoản",
-
+  "usdt_trx_swap_head": "Chào mừng bạn đến với Dịch vụ Hoán đổi USDT sang TRX của U-Shield\n📈Tỷ giá hối đoái theo thời gian thực\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Địa chỉ nhận hoán đổi: <code>{swap_address}</code>\n➖➖➖➖👆Nhấn để sao chép👆➖➖➖➖\n⚙️ Giới thiệu chức năng\nUSDT → TRX Hoán đổi (Tự động hoàn trả)\nGiới hạn giao dịch đơn lẻ:\nUSDT: Tối thiểu {min_amount}U   Tối đa {max_amount}U\n\n⚠️ Vui lòng sử dụng ví phi tập trung để chuyển khoản",
   "address_trace_add": "Thêm địa chỉ",
   "address_trace_add_tips": "Vui lòng nhập địa chỉ cần thêm: ",
   "address_trace_add_repeat_tips": "Địa chỉ bạn đã nhập đã tồn tại, vui lòng nhập lại",
@@ -143,43 +139,37 @@
   "address_trace_delete": "Xóa địa chỉ",
   "address_trace_delete_tips": "Vui lòng nhập địa chỉ cần xóa: ",
   "address_trace_menu": "Theo dõi địa chỉ",
-  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT\n",
-
+  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT (TRON/BSC/BTC)\n",
   "backup_account_tips": "Định dạng tên người dùng không chính xác. Xóa ký hiệu @ và nhập lại.",
   "backup_account_tips2": "Định dạng tên người dùng không chính xác, vui lòng nhập lại",
   "backup_account_tip3": "Đã liên kết thành công người liên hệ khẩn cấp thứ hai: ",
-
   "smart_transaction__list_empty_tips": "Danh sách trống, vui lòng mua giao dịch thông minh trước",
   "smart_transaction_auto_dispatch_close_successfully": "Đã đóng giao dịch thông minh thành công",
   "smart_transaction_auto_dispatch_open_successfully": "Đã mở giao dịch thông minh thành công",
   "smart_transaction_package_address_list": "Danh sách địa chỉ giao dịch thông minh",
-
   "smart_transaction_package_order_purchased_successfully": "Đã mua thành công đơn hàng gói giao dịch thông minh",
   "smart_transaction_plans_repeat_order": "Đã có bản ghi đăng ký cho địa chỉ này và đang được tiến hành. Không cần mua lại.\n\n",
   "smart_transaction_plans": "Giao dịch thông minh",
   "smart_transaction_plans_head1": "Giới thiệu về Giao dịch thông minh",
   "smart_transaction_plans_head": "",
   "smart_transaction_plans_tips1": "Hệ thống sẽ tự động phát hiện số dư năng lượng của bạn. Nếu không đủ cho một giao dịch, nó sẽ tự động bổ sung năng lượng của bạn. Trong số lượng giao dịch đã mua, bạn sẽ không còn đốt TRX để mua giao dịch nữa, mà thay vào đó, phí sẽ được khấu trừ dựa trên năng lượng thực tế tiêu thụ. Tiêu thụ 65k sẽ trừ 1 giao dịch, tiêu thụ 131k sẽ trừ 2 giao dịch.\n\nGiải thích 1: Nếu không có giao dịch nào trong một thời gian dài, 2 giao dịch sẽ bị trừ mỗi ngày làm phí chiếm chỗ. Phí này sẽ không được tính nếu có giao dịch.\nGiải thích 2: Không thực hiện giao dịch quá thường xuyên, vì năng lượng có thể chưa đến. Nên có khoảng thời gian ít nhất là 1 phút.\nGiải thích 3: Nếu bạn chuyển sang trạng thái tạm dừng không hoạt động, vui lòng bật nó theo cách thủ công trong danh sách.",
-  "smart_transaction_plans_tips": "Chào mừng bạn đến với Quản lý thông minh năng lượng U-Shield\n⚙\uFE0F Giới thiệu chức năng\n\uD83E\uDD16Sau khi bật quản lý thông minh, hệ thống sẽ tự động phát hiện số dư năng lượng của địa chỉ. Khi năng lượng nhỏ hơn 131k, hệ thống sẽ tự động bổ sung năng lượng.\n\uD83D\uDCCCCác giao dịch gói chỉ giới hạn cho địa chỉ được liên kết và không thể chia sẻ chéo.\n\uD83D\uDD0BTiêu thụ 65k sẽ trừ 1 giao dịch, tiêu thụ 131k sẽ trừ 2 giao dịch.\n⛽Mỗi giao dịch yêu cầu băng thông 0,345TRX. Vui lòng đảm bảo rằng có đủ TRX trong địa chỉ.\n⏰Năng lượng có giá trị trong cùng ngày. Nếu không có giao dịch, phí chiếm chỗ là 2 giao dịch/ngày sẽ được tính. Đối với các giao dịch liên tiếp, nên có khoảng thời gian 1 phút.\n\uD83D\uDCA4Bạn có thể bật hoặc tạm dừng quản lý trong danh sách. Nếu địa chỉ không hoạt động trong hai ngày, hệ thống sẽ tự động tạm dừng quản lý.",
-
+  "smart_transaction_plans_tips": "Chào mừng bạn đến với Quản lý thông minh năng lượng U-Shield\n⚙️ Giới thiệu chức năng\n🤖Sau khi bật quản lý thông minh, hệ thống sẽ tự động phát hiện số dư năng lượng của địa chỉ. Khi năng lượng nhỏ hơn 131k, hệ thống sẽ tự động bổ sung năng lượng.\n📌Các giao dịch gói chỉ giới hạn cho địa chỉ được liên kết và không thể chia sẻ chéo.\n🔋Tiêu thụ 65k sẽ trừ 1 giao dịch, tiêu thụ 131k sẽ trừ 2 giao dịch.\n⛽Mỗi giao dịch yêu cầu băng thông 0,345TRX. Vui lòng đảm bảo rằng có đủ TRX trong địa chỉ.\n⏰Năng lượng có giá trị trong cùng ngày. Nếu không có giao dịch, phí chiếm chỗ là 2 giao dịch/ngày sẽ được tính. Đối với các giao dịch liên tiếp, nên có khoảng thời gian 1 phút.\n💤Bạn có thể bật hoặc tạm dừng quản lý trong danh sách. Nếu địa chỉ không hoạt động trong hai ngày, hệ thống sẽ tự động tạm dừng quản lý.",
   "close_auto_dispatch_energy": "Tạm dừng",
   "open_auto_dispatch_energy": "Mở",
   "tron_energy_menu": "Năng lượng Tron",
   "smart_transaction_disable": "Được quản lý: 🟢 Đã bật ",
   "smart_transaction_enable": "Được quản lý: 🔴 Đã tạm dừng ",
-
   "coin_swap_coin_menu": "Đổi Coin Nhanh",
-  "coin_swap_coin_tips": "Hướng dẫn các bước đổi coin\n1. Nhấn nút bên dưới 【Đổi coin】⬇\uFE0F\n2. Nhập token cần chuyển và token muốn nhận\n3. Nhập số lượng\n4. Nhập địa chỉ nhận\n5. <b>Không bắt buộc</b>, chọn có nhận thông báo qua email khi tiền đến hay không (có thể chọn không nhận)\n6. Chờ địa chỉ thanh toán dưới dạng mã QR, nhập đúng số tiền và chuyển\n7. Bạn sẽ nhận được tiền trong vòng 3 phút",
+  "coin_swap_coin_tips": "Hướng dẫn các bước đổi coin\n1. Nhấn nút bên dưới 【Đổi coin】⬇️\n2. Nhập token cần chuyển và token muốn nhận\n3. Nhập số lượng\n4. Nhập địa chỉ nhận\n5. <b>Không bắt buộc</b>, chọn có nhận thông báo qua email khi tiền đến hay không (có thể chọn không nhận)\n6. Chờ địa chỉ thanh toán dưới dạng mã QR, nhập đúng số tiền và chuyển\n7. Bạn sẽ nhận được tiền trong vòng 3 phút",
   "smart_transaction_address_list": "Danh sách địa chỉ",
-
   "catfee_smart_transaction_menu": "Ủy thác thông minh",
   "catfee_smart_bundle_package_menu": "Gói giao dịch thông minh",
   "catfee_smart_transaction_pay_button": "Vui lòng thanh toán",
   "catfee_smart_transaction_head_1": "✅  Tạo đơn đặt hàng gói ủy thác thông minh thành công\nGói: ",
   "catfee_smart_transaction_head_2": "\nSố tiền thanh toán: ",
   "catfee_smart_transaction_head_3": "\nĐịa chỉ nhận: ",
-  "catfee_smart_transaction_head_4": "\nThời hạn đơn hàng: 10 phút\n⚠\uFE0F Vui lòng nhập chính xác số tiền, nếu không sẽ không thể ghi nhận!",
-  "catfee_smart_transaction_tips": "\uD83C\uDF89 Mua thành công gói ủy thác thông minh {bundle_package_name}",
+  "catfee_smart_transaction_head_4": "\nThời hạn đơn hàng: 10 phút\n⚠️ Vui lòng nhập chính xác số tiền, nếu không sẽ không thể ghi nhận!",
+  "catfee_smart_transaction_tips": "🎉 Mua thành công gói ủy thác thông minh {bundle_package_name}",
   "placeholder_array_size_warning": "Do mạng TRON gặp sự cố không ổn định, có thể dẫn đến giao dịch bị trì hoãn hoặc thất bại.\nĐể đảm bảo an toàn tài sản người dùng, chúng tôi quyết định tạm thời đóng kênh nạp tiền qua mạng TRON và sẽ mở lại khi mạng ổn định.\n✅ Các chức năng khác: cảnh báo, kiểm tra, gói số lượng giao dịch,... đều hoạt động bình thường, không bị ảnh hưởng.\nKhuyến nghị:\nNếu cần nạp tiền, vui lòng đợi 10 phút rồi thử lại.\nChúng tôi đang theo dõi sát tình hình mạng TRON, rất mong sự thông cảm của bạn!",
   "catfee_add_address": "Thêm ủy thác",
   "catfee_add_address_already_exit_tips": "Địa chỉ đã tồn tại trong ủy thác, không cần thêm lại",
@@ -189,14 +179,12 @@
   "catfee_disable_address_success": "Tạm dừng thành công",
   "catfee_custody_address_list_head": "Tổng đã mua {total_times} lần Đã dùng {used_times} lần Còn lại {rest_times} lần",
   "catfee_custody_address_energy": "Năng lượng",
-  "catfee_custody_address_count": "\uD83D\uDD0BĐịa chỉ ủy thác 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
-  "catfee_custody_address_energy_rule": "\n\uD83D\uDD39【Chuyển đến địa chỉ có U】 Tiêu thụ 65K năng lượng Trừ 1 lần\n\uD83D\uDD39【Chuyển đến địa chỉ không có U】 Tiêu thụ 131K năng lượng Trừ 2 lần",
-  "catfee_energy_address_limit_tips": "⚠\uFE0F Bạn đã thêm 8 địa chỉ, nếu muốn thêm mới, vui lòng xóa địa chỉ cũ trước.\uD83D\uDEAB",
+  "catfee_custody_address_count": "🔋Địa chỉ ủy thác 【{custody_address_count}】\n➖➖➖➖➖➖➖➖➖➖",
+  "catfee_custody_address_energy_rule": "\n🔹【Chuyển đến địa chỉ có U】 Tiêu thụ 65K năng lượng Trừ 1 lần\n🔹【Chuyển đến địa chỉ không có U】 Tiêu thụ 131K năng lượng Trừ 2 lần",
+  "catfee_energy_address_limit_tips": "⚠️ Bạn đã thêm 8 địa chỉ, nếu muốn thêm mới, vui lòng xóa địa chỉ cũ trước.🚫",
   "catfee_energy_address_buy_error": "❌ Rất tiếc, số lần ủy thác của bạn không đủ, vui lòng quay lại trang chủ để mua gói ủy thác",
-
   "yhb_menu": "Phong bì đỏ U",
   "yhb_desc": "Chào mừng sử dụng dịch vụ đổi năng lượng U Shield Phong bì đỏ U tức thì\n🔹 Chuyển {energy_cost} phong bì đỏ U = 1 đơn vị năng lượng\n🔹 Chuyển {energy_cost_2x} phong bì đỏ U = 2 đơn vị năng lượng\nĐịa chỉ nhận TRX:\n<code>{yhb_tron_address}</code>\n\nĐịa chỉ nhận phong bì đỏ U trên BSC:\n<code>{yhb_bsc_address}</code>\n\nLưu ý quan trọng:\n1. Mỗi giao dịch tương đương {energy_cost} phong bì đỏ U, v.v. (tối đa 10 giao dịch = {energy_cost_10x} phong bì đỏ U, vượt quá sẽ không được ghi nhận)\n2. Chuyển đến địa chỉ không có U cần mua 2 đơn vị năng lượng\n3. Sau khi chuyển thành công đến địa chỉ đổi tức thì, năng lượng sẽ được hoàn trả ngay lập tức qua địa chỉ nạp tiền gốc\n4. Trước tiên hãy gửi 6 chữ số ngày sinh của bạn (ví dụ: 0.931018 TRX), hoặc bất kỳ số 6 chữ số nào để liên kết tài khoản, sau đó gửi phần cuối số tiền phong bì cộng thêm .931018 để hoàn tất đổi\n5. Năng lượng có hiệu lực trong 1 giờ\nBot chính thức U Shield: https://t.me/ushield_bot?start=8131076755\nVí Binance (miễn phí), hỗ trợ đổi phong bì đỏ U miễn phí: https://web3.binance.com/zh-CN/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f\nVí OKX (phí 0.85%), hỗ trợ chuyển đổi chéo chuỗi USDT TRX sang phong bì đỏ U: https://web3.okx.com/zh-hans/token/bsc/0x0d9f4cf4fe0880369e600031e4c4112f4e9a647f",
-
   "ushield_additional_services_menu": "Dịch vụ Mở rộng",
   "ushield_additional_services_desc": "Dịch vụ Mở rộng\n➖➖➖➖➖➖➖➖➖➖\n📱 Thẻ SIM DuckChat Hồng Kông\nThẻ SIM DuckChat Hồng Kông có hiệu lực 1 năm, nạp được, bao gồm 18GB dữ liệu dùng một lần và số điện thoại Hồng Kông để nhận tin nhắn miễn phí.\n\n💳 Thẻ Tín dụng Ẩn danh\nPhù hợp mọi giao dịch xuyên biên giới — thanh toán toàn cầu dễ dàng! Hỗ trợ AWS, TikTok, Facebook, Alipay, Google, PayPal, Twitter, Starlink, quảng cáo, mua tên miền & máy chủ, mua sắm, đăng ký, đăng ký gói và nhiều hơn nữa. Giao dịch đa tiền tệ, kích hoạt ngay lập tức, tiền vào tài khoản thời gian thực, thanh toán siêu tốc.\n\n✈ Tài chính Năng lượng\nTelegram đã phát hành số điện thoại ảo giới hạn dưới dạng NFT sưu tầm trên blockchain TON. Người dùng có thể đăng ký mà không cần SIM vật lý và nhận mã xác minh trực tiếp trên Fragment.\n\n👥 Tài khoản Mạng xã hội\nHỗ trợ tài khoản LinkedIn, Facebook, Google và dịch vụ quảng cáo để hỗ trợ khách hàng trong thương mại xuyên biên giới.\n\n🌍 Máy chủ Nước ngoài\nHỗ trợ mua máy chủ nước ngoài ẩn danh (ECS).",
   "ushield_additional_services_sim_desc": "Dịch vụ Mở rộng\n\n\n📱 Thẻ SIM DuckChat Hồng Kông\n➖➖➖➖➖➖➖➖➖➖\nHiệu lực 1 năm, nạp được, bao gồm 18GB dữ liệu dùng một lần và số điện thoại Hồng Kông để nhận tin nhắn miễn phí.\n\n💰 Giá: 60 USDT/thẻ\n🚚 Phí vận chuyển: Thanh toán khi nhận\n\n📞 Kích hoạt: Quay số *103*800#\n📞 Kiểm tra: Quay số *#130#",
@@ -204,14 +192,11 @@
   "ushield_additional_services_visa_desc": "💳 Thẻ Tín dụng Ẩn danh\n➖➖➖➖➖➖➖➖➖➖\nHoàn hảo cho giao dịch quốc tế! Hỗ trợ giao dịch đa tiền tệ, kích hoạt ngay, tiền vào tài khoản thời gian thực, thanh toán siêu tốc và xác minh AVS.\n\n💰 Phí nạp tiền: 5%\n💳 Phí phát hành thẻ: 5 USD\n\n✅ Các nền tảng hỗ trợ: Alipay, Facebook, Google, Amazon, GoDaddy, OpenAI, Twitter, Shopify, Starlink, WeChat, Alibaba, AliExpress, v.v.\n\n⚠️ Nghiêm cấm gian lận hoàn tiền. Nhiều lần thanh toán thất bại hoặc hoàn tiền sẽ kích hoạt hệ thống风控, dẫn đến phạt hoặc khóa thẻ. Vui lòng duy trì thói quen thanh toán tốt. Nếu có đăng ký dịch vụ, hãy hủy hoặc gỡ liên kết trên trang web tương ứng!",
   "ushield_additional_services_sns_desc": "Hỗ trợ tài khoản LinkedIn, Facebook, Google và dịch vụ quảng cáo để hỗ trợ khách hàng trong thương mại xuyên biên giới.",
   "ushield_additional_services_ecs_desc": "Mua máy chủ nước ngoài ẩn danh (ECS).",
-
-
-  "promotion_income":"Doanh thu quảng bá",
+  "promotion_income": "Doanh thu quảng bá",
   "address_detection_records": "Lịch sử khấu trừ cho việc xác minh địa chỉ",
-  
   "command_energy_menu": "⚡️ Thuê năng lượng nhanh bằng lệnh",
   "command_energy_desc": "⚡️ Thuê năng lượng nhanh bằng lệnh\n\n1. Lệnh: 1 Số lượng: 65000 (1 giao dịch) Giá: {1_times_cost_trx} (TRX)\n2. Lệnh: 2 Số lượng: 131000 (2 giao dịch) Giá: {2_times_cost_trx} (TRX)\n3. Lệnh: 3 Số lượng: 195000 (3 giao dịch) Giá: {3_times_cost_trx} (TRX)\n4. Lệnh: 4 Số lượng: 260000 (4 giao dịch) Giá: {4_times_cost_trx} (TRX)\n5. Lệnh: 5 Số lượng: 325000 (5 giao dịch) Giá: {5_times_cost_trx} (TRX)\n\n⚠️ Địa chỉ nhận không có U — cần 2 giao dịch năng lượng!\n\n⏰ Năng lượng theo lệnh chỉ hiệu lực trong 1 giờ!\n⚠️ Chế độ này không cần xác nhận — năng lượng đến ngay lập tức! Hãy cẩn thận khi sử dụng!\n♻️ Nếu bạn liên kết từ 2 địa chỉ trở lên, gửi lệnh sẽ hiện danh sách địa chỉ — chọn 1 cái để thuê năng lượng ngay!",
-  "member_telegram_menu": "\uD83D\uDC8E Thành viên Telegram",
+  "member_telegram_menu": "💎 Thành viên Telegram",
   "member_telegram_desc": "🌟 Giá sao: 0.03 U/sao\n(Hỗ trợ mua từ 50–10.000 sao mỗi lần)\n\n\n🌟 Giá thành viên:\n3 tháng: 17 U\n6 tháng: 27 U\n1 năm: 47 U\n\n\n\nKhông nạp qua HuiWang — chỉ chấp nhận nạp từ ví USDT!",
   "member_telegram_second_menu": "🌟 Mua thành viên",
   "star_telegram_second_menu": "⭐️ Mua sao",
@@ -238,8 +223,6 @@
   "successfully_purchased_stars": "✅ Đã mua thành công {count} sao. Vui lòng chờ đợi. Nếu có vấn đề, hãy liên hệ hỗ trợ.",
   "anonymous_mobile": "✈️ Số ẩn danh\n➖➖➖➖➖➖➖➖➖➖\nSố chính thức NFT888 vĩnh viễn không bị xóa\n\nChống mất số • Tăng giá nhanh • Có thể thu hồi • Ổn định cao\n\n\"Một số dùng ba đời — người đi rồi, số vẫn còn\"\n\nSố ẩn danh 【+888】\nTelegram đã phát hành số điện thoại ảo giới hạn dưới dạng NFT trên blockchain TON. Người dùng có thể đăng ký mà không cần SIM và nhận mã xác minh trực tiếp trên Fragment.\n\nTài khoản ẩn danh 【username】\nTên người dùng ẩn danh cũng là NFT trên blockchain TON, giống như số +888. Người dùng có thể gắn vào tài khoản cá nhân, nhóm, kênh hoặc bot. Khác biệt là số ẩn danh dùng để đăng ký, còn username thì không.\n\nĐể nhận số hoặc username ẩn danh, bạn cần địa chỉ ví trên mạng TON.",
   "customer_service": "💁 Liên hệ hỗ trợ",
-
-
   "coin_laundering_menu": "Rửa USDT",
   "coin_laundering_tips": "Vui lòng chọn số lượng TRC20-USDT bạn muốn rửa:",
   "other_blockchain_usdt_tips": "USDT trên các chuỗi khác",
@@ -250,7 +233,6 @@
   "input_receive_address": "Vui lòng nhập địa chỉ nhận của bạn:",
   "coin_laundering_order_desc": "Tạo đơn hàng thành công\nMã đơn hàng: {orderNO}\nThời gian tạo đơn: {RegTime}\nThời gian hết hạn đơn: {ExpireTime}\n\nCặp giao dịch đã chọn: USDTTRC20 - {token}. Bạn sẽ gửi <code>{amount1} USDTTRC20</code>; bạn sẽ nhận được khoảng {amount2} {token}.\nĐịa chỉ ví nhận của bạn là:\n<code>{to_address}</code>\n\nVui lòng gửi <code>{amount1}</code> USDTTRC20 đến địa chỉ sau:\n\n<code>{from_address}</code>",
   "fixedfloat_rules": "The exchange service is provided by FixedFloat. Creating an order confirms your agreement with the <b>FixedFloat rules</b>.",
-
   "chain_tron_title": "Mạng TRON",
   "chain_bsc_title": "Mạng BSC",
   "chain_tron_btn": "Mạng TRON",
@@ -259,11 +241,11 @@
   "current_chain_label": "📡 Mạng hiện tại：",
   "no_trace_address": "（Chưa có địa chỉ theo dõi）",
   "address_not_in_chain_list": "❌ Địa chỉ này không có trong danh sách theo dõi của mạng hiện tại",
-
   "monitoring_address_list_title": "Danh sách địa chỉ giám sát",
   "set_default_address_success": "Đặt địa chỉ mặc định thành công",
   "delete_failed_tips": "❌ Xóa không thành công, vui lòng thử lại sau",
   "feature_dev_promo": "📢 Tính năng đang phát triển! Muốn biết khi nào nó ra mắt không? Hãy theo dõi kênh chính thức của chúng tôi: @ushield1 🔔\n\n",
-  "keyboard_hidden_tips": "Bàn phím đã ẩn. Gửi /start để hiển thị lại"
-
+  "keyboard_hidden_tips": "Bàn phím đã ẩn. Gửi /start để hiển thị lại",
+  "chain_btc_title": "mạng BTC Bitcoin",
+  "chain_btc_btn": "BTC Bitcoin"
 }

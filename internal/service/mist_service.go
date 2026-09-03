@@ -74,7 +74,7 @@ func HandleAddressDetectionInput(lang string, cacheStore cache.Cache, message *t
 }
 
 func (s *AddressDetectionService) Detect(ctx context.Context, lang string, cacheStore cache.Cache, chatID int64, address string) (*AddressDetectionResult, error) {
-	if !IsValidAddress(address) && !IsValidEthereumAddress(address) {
+	if !IsValidAddress(address) && !IsValidEthereumAddress(address) && !IsValidBitcoinAddress(address) {
 		return nil, ErrAddressDetectionInvalidAddress
 	}
 
@@ -341,6 +341,9 @@ func hasEnoughAddressDetectionBalance(user domain.User, costs *addressDetectionC
 }
 
 func addressDetectionSymbol(address string) (string, string) {
+	if IsValidBitcoinAddress(address) {
+		return "BTC", "BTC"
+	}
 	if IsValidEthereumAddress(address) {
 		return "USDT-ERC20", "ETH"
 	}
@@ -348,6 +351,9 @@ func addressDetectionSymbol(address string) (string, string) {
 }
 
 func addressDetectionNetwork(address string) string {
+	if IsValidBitcoinAddress(address) {
+		return "Bitcoin"
+	}
 	if IsValidEthereumAddress(address) {
 		return "Ethereum"
 	}

@@ -5,10 +5,10 @@ set -euo pipefail
 # Ushield Robot Server-Side Deployment Script
 # Runs on Ubuntu target server.
 #
-# Both ushield-bot1 and ushield-bot2 are INDEPENDENT binaries.
+# Both ushield-new-bot and ushield-old-bot are INDEPENDENT binaries.
 # Flow:
 #   1. Build one fresh binary from source
-#   2. Stop BOTH ushield-bot1 and ushield-bot2 services
+#   2. Stop BOTH ushield-new-bot and ushield-old-bot services
 #   3. Backup EXISTING bot1 and bot2 binaries separately (timestamped)
 #   4. Replace BOTH bot1 and bot2 with the same newly built binary
 #   5. Services remain stopped (per requirement: 暂停服务)
@@ -17,15 +17,15 @@ set -euo pipefail
 # ---------- Paths (adjust if server layout changes) ----------
 REPO_DIR="/home/ubuntu/ushield/ushield-telegram-bot/new/ushield-robot"
 BOT1_DIR="/home/ubuntu/ushield/ushield-telegram-bot/new/ushield-robot"
-BOT1_BIN="${BOT1_DIR}/ushield-bot1"
+BOT1_BIN="${BOT1_DIR}/ushield-new-bot"
 BOT2_DIR="/home/ubuntu/ushield/ushield-telegram-bot/old/ushield-robot"
-BOT2_BIN="${BOT2_DIR}/ushield-bot2"
+BOT2_BIN="${BOT2_DIR}/ushield-old-bot"
 # Backups go to each binary's own directory
 BOT1_BACKUP_DIR="${BOT1_DIR}/backups"
 BOT2_BACKUP_DIR="${BOT2_DIR}/backups"
 
-BOT1_SERVICE="ushield-bot1"
-BOT2_SERVICE="ushield-bot2"
+BOT1_SERVICE="ushield-new-bot"
+BOT2_SERVICE="ushield-old-bot"
 
 TS="$(date +%Y%m%d_%H%M%S)"
 LOG_PREFIX="[deploy-${TS}]"
@@ -156,7 +156,7 @@ sleep 1
 
 # Pre-kill process-survey: ensure we know what we're stopping
 echo "    [before-stop process snapshot]"
-ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || echo "      (nothing matched by grep)"
+ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-new-bot|ushield-old-bot)" | grep -v grep || echo "      (nothing matched by grep)"
 
 kill_pids "bot1" "${BOT1_BIN}"
 sleep 1
@@ -164,7 +164,7 @@ kill_pids "bot2" "${BOT2_BIN}"
 sleep 1
 
 echo "    [after-stop process snapshot]"
-ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || echo "      (nothing matched by grep — all clean)"
+ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-new-bot|ushield-old-bot)" | grep -v grep || echo "      (nothing matched by grep — all clean)"
 sleep 1
 
 # ---------- 3. Backup BOTH existing binaries (to their own directories) ----------
@@ -179,9 +179,9 @@ backup_bin() {
     warn "  no existing ${name} found at ${src} (skip backup)"
   fi
 }
-backup_bin "${BOT1_BIN}" "ushield-bot1" "${BOT1_BACKUP_DIR}"
+backup_bin "${BOT1_BIN}" "ushield-new-bot" "${BOT1_BACKUP_DIR}"
 sleep 1
-backup_bin "${BOT2_BIN}" "ushield-bot2" "${BOT2_BACKUP_DIR}"
+backup_bin "${BOT2_BIN}" "ushield-old-bot" "${BOT2_BACKUP_DIR}"
 sleep 1
 
 # ---------- 4. Replace BOTH bot1 and bot2 with the same new binary ----------
@@ -215,7 +215,7 @@ sleep 1
 log "Step 5/5: confirming both services/processes remain STOPPED..."
 sleep 1
 echo "    [final process snapshot]"
-FINAL_PS="$(ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-bot1|ushield-bot2)" | grep -v grep || true)"
+FINAL_PS="$(ps -eo pid,ppid,user,etime,stat,cmd 2>/dev/null | grep -E "(ushield-new-bot|ushield-old-bot)" | grep -v grep || true)"
 if [ -n "${FINAL_PS}" ]; then
   echo "${FINAL_PS}"
   warn "WARNING: processes still running!  They were NOT started by systemd nor matched by our /proc exe/cmdline detection."
@@ -249,9 +249,9 @@ echo "  - Installed sha256: ${BUILD_SHA}"
 echo "  - Timestamped backups (each in its own directory):"
 echo "      bot1 backup dir: ${BOT1_BACKUP_DIR}"
 echo "      bot2 backup dir: ${BOT2_BACKUP_DIR}"
-echo "  - Processes ushield-bot1 + ushield-bot2 are STOPPED (both systemctl stop + direct pid-kill were applied)."
+echo "  - Processes ushield-new-bot + ushield-old-bot are STOPPED (both systemctl stop + direct pid-kill were applied)."
 echo ""
 echo "To start manually later, pick ONE depending on how you run them:"
 echo "  (A) If you use systemd:   sudo systemctl start ${BOT1_SERVICE} ; sudo systemctl start ${BOT2_SERVICE}"
-echo "  (B) If you use nohup:     nohup ${BOT1_BIN} >/var/log/ushield-bot1.log 2>&1 &  (similar for bot2)"
+echo "  (B) If you use nohup:     nohup ${BOT1_BIN} >/var/log/ushield-new-bot.log 2>&1 &  (similar for bot2)"
 echo "  (C) If you use screen/tmux/supervisor: use your existing wrapper"
