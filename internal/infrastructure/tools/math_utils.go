@@ -136,3 +136,19 @@ func CompareNumberStrings(a, b string) (int, error) {
 	}
 	return 0, nil
 }
+
+// StringInverse computes 1 / x for a decimal string and rounds to the given
+// precision. Used to derive the reverse swap rate (e.g. 1 USDT = 2.8814 TRX
+// implies 1 TRX ≈ 0.3470 USDT). Returns "0" on invalid input or zero.
+func StringInverse(s string, precision int) string {
+	num, err := strconv.ParseFloat(s, 64)
+	if err != nil || num == 0 {
+		return "0"
+	}
+	result := 1.0 / num
+	if precision <= 0 {
+		precision = 6
+	}
+	format := "%." + strconv.Itoa(precision) + "f"
+	return fmt.Sprintf(format, result)
+}
