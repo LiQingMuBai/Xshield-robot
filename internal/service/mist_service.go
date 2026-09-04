@@ -270,6 +270,7 @@ func (s *AddressDetectionService) chargeAndRecord(ctx context.Context, user *dom
 		}
 		user.TronAmount = tronAmount
 		record.Amount = costs.TRX
+		record.Currency = "TRX"
 		if err := userRepo.Save(ctx, user); err != nil {
 			return "", err
 		}
@@ -285,6 +286,7 @@ func (s *AddressDetectionService) chargeAndRecord(ctx context.Context, user *dom
 	}
 	user.Amount = amount
 	record.Amount = costs.USDT
+	record.Currency = "USDT"
 	if err := userRepo.Save(ctx, user); err != nil {
 		return "", err
 	}

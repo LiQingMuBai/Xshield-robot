@@ -11,6 +11,14 @@ import (
 	"gorm.io/gorm"
 )
 
+func dedupeCurrency(cur string) string {
+	cur = strings.ToUpper(strings.TrimSpace(cur))
+	if cur == "" {
+		return "USDT"
+	}
+	return cur
+}
+
 func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
 
 	userAddressDetectionRepo := repositories.NewUserAddressDetectionRepository(db)
@@ -27,9 +35,11 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 		builder.WriteString("]")
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
-		builder.WriteString(" TRX ")
+		builder.WriteString(" ")
+		builder.WriteString(dedupeCurrency(word.Currency))
+		builder.WriteString(" ")
 
-		builder.WriteString("\n") // 添加分隔符
+		builder.WriteString("\n")
 	}
 
 	// 去除最后一个空格
@@ -67,16 +77,18 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		info.PageInfo.PageSize = 10
 		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
-		builder.WriteString("\n") // 添加分隔符
+		builder.WriteString("\n")
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
-			builder.WriteString(" TRX ")
+			builder.WriteString(" ")
+			builder.WriteString(dedupeCurrency(word.Currency))
+			builder.WriteString(" ")
 
-			builder.WriteString("\n") // 添加分隔符
+			builder.WriteString("\n")
 		}
 
 		// 去除最后一个空格
@@ -103,16 +115,18 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		info.PageInfo.PageSize = 10
 		trxlist, _, _ := usdtDepositRepo.ListByChatIDPage(context.Background(), info, callbackQuery.Message.Chat.ID)
 		var builder strings.Builder
-		builder.WriteString("\n") // 添加分隔符
+		builder.WriteString("\n")
 		for _, word := range trxlist {
 			builder.WriteString("[")
 			builder.WriteString(word.CreatedDate)
 			builder.WriteString("]")
 			builder.WriteString("-")
 			builder.WriteString(word.Amount)
-			builder.WriteString(" TRX ")
+			builder.WriteString(" ")
+			builder.WriteString(dedupeCurrency(word.Currency))
+			builder.WriteString(" ")
 
-			builder.WriteString("\n") // 添加分隔符
+			builder.WriteString("\n")
 		}
 
 		// 去除最后一个空格
@@ -154,16 +168,18 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		return true
 	}
 	var builder strings.Builder
-	builder.WriteString("\n") // 添加分隔符
+	builder.WriteString("\n")
 	for _, word := range trxlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
 		builder.WriteString("]")
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
-		builder.WriteString(" TRX ")
+		builder.WriteString(" ")
+		builder.WriteString(dedupeCurrency(word.Currency))
+		builder.WriteString(" ")
 
-		builder.WriteString("\n") // 添加分隔符
+		builder.WriteString("\n")
 	}
 
 	// 去除最后一个空格
