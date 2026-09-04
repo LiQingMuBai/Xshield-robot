@@ -11,15 +11,12 @@ import (
 	"gorm.io/gorm"
 )
 
-func dedupeCurrency(cur string) string {
-	cur = strings.ToUpper(strings.TrimSpace(cur))
-	if cur == "TRX" {
+func detectionDisplayCurrency(amount string, _ string) string {
+	trimmed := strings.TrimSpace(amount)
+	if trimmed == "1" || trimmed == "1.0" || trimmed == "1.00" {
 		return "USDT"
 	}
-	if cur == "" {
-		return "USDT"
-	}
-	return cur
+	return "TRX"
 }
 
 func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQuery *tgbotapi.CallbackQuery) tgbotapi.MessageConfig {
@@ -39,7 +36,7 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" ")
-		builder.WriteString(dedupeCurrency(word.Currency))
+		builder.WriteString(detectionDisplayCurrency(word.Amount, word.Currency))
 		builder.WriteString(" ")
 
 		builder.WriteString("\n")
@@ -88,7 +85,7 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" ")
-			builder.WriteString(dedupeCurrency(word.Currency))
+			builder.WriteString(detectionDisplayCurrency(word.Amount, word.Currency))
 			builder.WriteString(" ")
 
 			builder.WriteString("\n")
@@ -126,7 +123,7 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 			builder.WriteString("-")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" ")
-			builder.WriteString(dedupeCurrency(word.Currency))
+			builder.WriteString(detectionDisplayCurrency(word.Amount, word.Currency))
 			builder.WriteString(" ")
 
 			builder.WriteString("\n")
@@ -179,7 +176,7 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 		builder.WriteString("-")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" ")
-		builder.WriteString(dedupeCurrency(word.Currency))
+		builder.WriteString(detectionDisplayCurrency(word.Amount, word.Currency))
 		builder.WriteString(" ")
 
 		builder.WriteString("\n")
