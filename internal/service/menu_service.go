@@ -112,7 +112,8 @@ func buildEnergySwapText(lang string, db *gorm.DB) string {
 
 func buildSwapExchangeText(lang string, db *gorm.DB) string {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
-	sharedSwapAddress := getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address")
+	usdtSwapAddress := getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address")
+	trxSwapAddress := "TSigGjoNwk7XgGHTpvEoFxVLBhGu9Prada"
 	usdtToTrxRate := getDictionaryDetail(dictRepo, "usdt_swap_trx_amount_real")
 	trxToUsdtRate := StringInverse(usdtToTrxRate, 4, 0.85)
 
@@ -120,11 +121,11 @@ func buildSwapExchangeText(lang string, db *gorm.DB) string {
 		"{trx_amount}":       usdtToTrxRate,
 		"{min_amount}":       getDictionaryDetail(dictRepo, "usdt_swap_trx_min_amount"),
 		"{max_amount}":       getDictionaryDetail(dictRepo, "usdt_swap_trx_max_amount"),
-		"{swap_address}":     sharedSwapAddress,
+		"{swap_address}":     usdtSwapAddress,
 		"{usdt_amount}":      trxToUsdtRate,
 		"{trx_min_amount}":   getDictionaryDetail(dictRepo, "trx_swap_usdt_min_amount"),
 		"{trx_max_amount}":   getDictionaryDetail(dictRepo, "trx_swap_usdt_max_amount"),
-		"{trx_swap_address}": sharedSwapAddress,
+		"{trx_swap_address}": trxSwapAddress,
 	})
 }
 
