@@ -82,7 +82,7 @@ func (s *FreezeAlertService) Start(chatID int64) error {
 
 func (s *FreezeAlertService) Preview(address string) (*FreezeAlertPreview, error) {
 	normalizedAddress := strings.TrimSpace(address)
-	if !IsValidAddress(normalizedAddress) && !IsValidEthereumAddress(normalizedAddress) && !IsValidBitcoinAddress(normalizedAddress) {
+	if !IsValidAddress(normalizedAddress) && !IsValidEthereumAddress(normalizedAddress) {
 		return nil, ErrFreezeAlertInvalidAddress
 	}
 
@@ -248,8 +248,6 @@ func hasEnoughFreezeAlertBalance(user domain.User, trxPrice, usdtPrice string) b
 
 func freezeAlertNetwork(address string) string {
 	switch {
-	case IsValidBitcoinAddress(address):
-		return "Bitcoin"
 	case IsValidEthereumAddress(address):
 		return "Ethereum"
 	case IsValidAddress(address):

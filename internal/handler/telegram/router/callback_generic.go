@@ -70,22 +70,20 @@ func handleGenericCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		return true
 	case strings.HasPrefix(callbackQuery.Data, "address_trace_chain_"):
 		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_chain_")
-		if chain != "tron" && chain != "bsc" && chain != "bitcoin" {
+		if chain != "tron" && chain != "bsc" {
 			return false
 		}
 		service.ShowAddressTraceChainMenu(lang, ctx.Cache, ctx.Bot, callbackQuery.Message.Chat.ID, ctx.DB, chain)
 		return true
 	case strings.HasPrefix(callbackQuery.Data, "address_trace_add_"):
 		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_add_")
-		if chain != "tron" && chain != "bsc" && chain != "bitcoin" {
+		if chain != "tron" && chain != "bsc" {
 			return false
 		}
 		tips := global.Translations[lang]["address_trace_add_tips"]
 		switch chain {
 		case "bsc":
 			tips += "\n（请输入 BSC 链 0x 开头地址）"
-		case "bitcoin":
-			tips += "\n（请输入 BTC 主网地址：1 / 3 / bc1 开头）"
 		default:
 			tips += "\n（请输入 TRON 链 T 开头地址）"
 		}
@@ -96,15 +94,13 @@ func handleGenericCallback(lang string, callbackQuery *tgbotapi.CallbackQuery, c
 		return true
 	case strings.HasPrefix(callbackQuery.Data, "address_trace_delete_"):
 		chain := strings.TrimPrefix(callbackQuery.Data, "address_trace_delete_")
-		if chain != "tron" && chain != "bsc" && chain != "bitcoin" {
+		if chain != "tron" && chain != "bsc" {
 			return false
 		}
 		tips := global.Translations[lang]["address_trace_delete_tips"]
 		switch chain {
 		case "bsc":
 			tips += "\n（请输入 BSC 链 0x 开头地址）"
-		case "bitcoin":
-			tips += "\n（请输入 BTC 主网地址：1 / 3 / bc1 开头）"
 		default:
 			tips += "\n（请输入 TRON 链 T 开头地址）"
 		}

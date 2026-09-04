@@ -246,15 +246,11 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 	userRepo := repositories.NewUserAddressTraceRepo(db)
 	tronList, tronErr := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, "tron")
 	bscList, bscErr := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, "bsc")
-	btcList, btcErr := userRepo.ListByChatIDAndNetwork(context.Background(), chatID, "bitcoin")
 	if tronErr != nil {
 		logger.Errorf("address_trace list tron err: %v", tronErr)
 	}
 	if bscErr != nil {
 		logger.Errorf("address_trace list bsc err: %v", bscErr)
-	}
-	if btcErr != nil {
-		logger.Errorf("address_trace list btc err: %v", btcErr)
 	}
 
 	var builder strings.Builder
@@ -280,16 +276,6 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 		}
 	}
 
-	builder.WriteString("\n\n🟠 <b>" + global.Translations[lang]["chain_btc_title"] + "</b>")
-	if len(btcList) == 0 {
-		builder.WriteString("\n" + global.Translations[lang]["no_data_short"])
-	} else {
-		for _, order := range btcList {
-			builder.WriteString("\n")
-			builder.WriteString("<code>" + order.Address + "</code>")
-		}
-	}
-
 	result := strings.TrimSpace(builder.String())
 
 	msg := tgbotapi.NewMessage(chatID, originStr+"\n"+
@@ -300,7 +286,6 @@ func MenuNavigateAddressTrace(lang string, cache cache.Cache, bot *tgbotapi.BotA
 		tgbotapi.NewInlineKeyboardRow(
 			tgbotapi.NewInlineKeyboardButtonData("🔷 "+global.Translations[lang]["chain_tron_btn"], "address_trace_chain_tron"),
 			tgbotapi.NewInlineKeyboardButtonData("🟡 "+global.Translations[lang]["chain_bsc_btn"], "address_trace_chain_bsc"),
-			tgbotapi.NewInlineKeyboardButtonData("🟠 "+global.Translations[lang]["chain_btc_btn"], "address_trace_chain_bitcoin"),
 		),
 	)
 	msg.ReplyMarkup = inlineKeyboard

@@ -24,7 +24,7 @@ func extractChainFromStatus(status, prefix string) string {
 	rest := strings.TrimPrefix(status, prefix)
 	rest = strings.TrimPrefix(rest, "_")
 	switch rest {
-	case "tron", "bsc", "ethereum", "bitcoin":
+	case "tron", "bsc", "ethereum":
 		return rest
 	default:
 		return ""
@@ -37,10 +37,8 @@ func isValidAddressForChain(address, chain string) bool {
 		return IsValidAddress(address)
 	case "bsc", "ethereum":
 		return IsValidEthereumAddress(address)
-	case "bitcoin":
-		return IsValidBitcoinAddress(address)
 	default:
-		return IsValidAddress(address) || IsValidEthereumAddress(address) || IsValidBitcoinAddress(address)
+		return IsValidAddress(address) || IsValidEthereumAddress(address)
 	}
 }
 
@@ -80,7 +78,7 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 
 	case strings.HasPrefix(status, "address_list_trace"):
 	case strings.HasPrefix(status, "address_manager_remove"):
-		if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) || IsValidBitcoinAddress(message.Text) {
+		if IsValidAddress(message.Text) || IsValidEthereumAddress(message.Text) {
 			userRepo := repositories.NewUserAddressMonitorRepo(ctx.DB)
 			_ = userRepo.DeleteByChatIDAndAddress(context.Background(), message.Chat.ID, message.Text)
 			msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"</b>"+"\n")
@@ -239,8 +237,6 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 		switch chain {
 		case "bsc":
 			chainTip = "BSC"
-		case "bitcoin", "btc":
-			chainTip = "BTC"
 		}
 		msg := tgbotapi.NewMessage(message.Chat.ID, "✅ "+"<b>"+global.Translations[lang]["address_deleted_success"]+"（"+chainTip+"）"+"</b>"+"\n")
 		msg.ReplyMarkup = tgbotapi.NewInlineKeyboardMarkup(
