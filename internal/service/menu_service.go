@@ -114,7 +114,7 @@ func buildSwapExchangeText(lang string, db *gorm.DB) string {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
 	sharedSwapAddress := getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address")
 	usdtToTrxRate := getDictionaryDetail(dictRepo, "usdt_swap_trx_amount_real")
-	trxToUsdtRate := StringInverse(usdtToTrxRate, 4)
+	trxToUsdtRate := StringInverse(usdtToTrxRate, 4, 0.85)
 
 	return renderMenuTemplate(global.Translations[lang]["usdt_trx_swap_head"], map[string]string{
 		"{trx_amount}":       usdtToTrxRate,
