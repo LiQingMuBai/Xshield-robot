@@ -13,6 +13,9 @@ import (
 
 func dedupeCurrency(cur string) string {
 	cur = strings.ToUpper(strings.TrimSpace(cur))
+	if cur == "TRX" {
+		return "USDT"
+	}
 	if cur == "" {
 		return "USDT"
 	}
