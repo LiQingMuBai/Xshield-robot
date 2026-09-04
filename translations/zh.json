@@ -134,7 +134,7 @@
   "usdt_trx_swap": "TRX闪兑",
   "coin_swap_coin_menu": "币币闪兑",
   "coin_swap_coin_tips": "币币闪兑步骤说明\n1.点击⬇️下方按钮【币币闪兑】\n2.输入您需要的转换的代币以及输出代币\n3.输入数量\n4.输入需要接收的地址\n5.<b>非必选项</b>，是否接受到账时邮箱通知，可选择无须通知\n6.等待二维码接款地址，输入正确金额进行转账\n7.3分钟内您将收到到账资金",
-  "usdt_trx_swap_head": "欢迎使用U盾TRX闪兑服务\n📈实时汇率\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸闪兑收款地址: <code>{swap_address}</code>\n➖➖➖➖👆点击复制👆➖➖➖➖\n⚙️ 功能介绍\nUSDT → TRX 闪兑（自动原路返回）\n单笔转入限额:\nUSDT ：最少{min_amount}U   最大{max_amount}U\n\n⚠️ 转账请务必使用去中心化钱包",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈实时汇率\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸闪兑收款地址: <code>{swap_address}</code>\n➖➖➖➖👆点击复制👆➖➖➖➖\n⚙️ 功能介绍\nUSDT → TRX 闪兑（自动原路返回）\n单笔转入限额:\nUSDT ：最少{min_amount}U   最大{max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 TRX → USDT 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈实时汇率\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸闪兑收款地址: <code>{trx_swap_address}</code>\n➖➖➖➖👆点击复制👆➖➖➖➖\n⚙️ 功能介绍\nTRX → USDT 闪兑（自动原路返回）\n单笔转入限额:\nTRX: 最少{trx_min_amount}TRX  最大{trx_max_amount}TRX\n\n⚠️ 转账请务必使用去中心化钱包",
   "address_trace_add": "添加地址",
   "address_trace_add_tips": "请输入需添加的地址: ",
   "address_trace_add_repeat_tips": "您输入的地址已存在，请重新输入",

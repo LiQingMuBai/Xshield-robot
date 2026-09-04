@@ -131,7 +131,7 @@
   "join_vip_cooperation": "Junte-se ao grupo VIP de cooperação empresarial:",
   "visit_tutorial": "Por favor, visite nosso tutorial:",
   "usdt_trx_swap": "Troca de USDT para TRX",
-  "usdt_trx_swap_head": "Bem-vindo ao Serviço de Troca de USDT para TRX da U-Shield\n📈Taxa de câmbio em tempo real\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Endereço de recebimento da troca: <code>{swap_address}</code>\n➖➖➖➖👆Clique para copiar👆➖➖➖➖\n⚙️ Introdução à função\nTroca de USDT → TRX (Retorno automático)\nLimite de transação única:\nUSDT: Mínimo {min_amount}U   Máximo {max_amount}U\n\n⚠️ Use uma carteira descentralizada para transferências",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈Taxa de câmbio em tempo real\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Endereço de recebimento da troca: <code>{swap_address}</code>\n➖➖➖➖👆Clique para copiar👆➖➖➖➖\n⚙️ Introdução à função\nTroca de USDT → TRX (Retorno automático)\nLimite de transação única:\nUSDT: Mínimo {min_amount}U   Máximo {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 Troca TRX → USDT\n━━━━━━━━━━━━━━━━━━━\n📈 Taxa de câmbio em tempo real\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸 Endereço de recebimento: <code>{trx_swap_address}</code>\n➖➖➖➖👆Clique para copiar👆➖➖➖➖\n⚙️ Descrição da função\nTroca TRX → USDT (devolução automática pela rota original)\nLimite por transferência:\nTRX: Mín {trx_min_amount}TRX  Máx {trx_max_amount}TRX\n\n⚠️ Use uma carteira descentralizada para transferências",
   "address_trace_add": "Adicionar endereço",
   "address_trace_add_tips": "Por favor, insira o endereço a ser adicionado: ",
   "address_trace_add_repeat_tips": "O endereço que você inseriu já existe, por favor, insira novamente",

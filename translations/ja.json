@@ -131,7 +131,7 @@
   "join_vip_cooperation": "VIPビジネス提携グループに参加：",
   "visit_tutorial": "使用チュートリアルをご覧ください：",
   "usdt_trx_swap": "USDTからTRXへのスワップ",
-  "usdt_trx_swap_head": "U-Shield USDTからTRXへのスワップサービスへようこそ\n📈リアルタイム為替レート\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸スワップ受取アドレス: <code>{swap_address}</code>\n➖➖➖➖👆クリックしてコピー👆➖➖➖➖\n⚙️ 機能紹介\nUSDT → TRX スワップ (自動返送)\n1回あたりの送金額制限:\nUSDT: 最低 {min_amount}U   最高 {max_amount}U\n\n⚠️ 送金には必ず分散型ウォレットを使用してください",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈リアルタイム為替レート\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸スワップ受取アドレス: <code>{swap_address}</code>\n➖➖➖➖👆クリックしてコピー👆➖➖➖➖\n⚙️ 機能紹介\nUSDT → TRX スワップ (自動返送)\n1回あたりの送金額制限:\nUSDT: 最低 {min_amount}U   最高 {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 TRX → USDT スワップ\n━━━━━━━━━━━━━━━━━━━\n📈リアルタイム為替レート\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸スワップ受取アドレス: <code>{trx_swap_address}</code>\n➖➖➖➖👆クリックでコピー👆➖➖➖➖\n⚙️ 機能紹介\nTRX → USDT スワップ（自動で原路返送）\n1回あたりの送金額制限:\nTRX: 最低 {trx_min_amount}TRX  最高 {trx_max_amount}TRX\n\n⚠️ 送金には必ず分散型ウォレットを使用してください",
   "address_trace_add": "アドレス追加",
   "address_trace_add_tips": "追加するアドレスを入力してください: ",
   "address_trace_add_repeat_tips": "入力されたアドレスはすでに存在します。再入力してください",

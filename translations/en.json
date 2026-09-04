@@ -130,7 +130,7 @@
   "join_vip_cooperation": "Join the VIP business cooperation group:",
   "visit_tutorial": "Please visit our tutorial:",
   "usdt_trx_swap": "USDT to TRX Swap",
-  "usdt_trx_swap_head": "Welcome to U-Shield USDT to TRX Swap Service\n📈Real-time Exchange Rate\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Swap Receiving Address: <code>{swap_address}</code>\n➖➖➖➖👆Click to Copy👆➖➖➖➖\n⚙️ Function Introduction\nUSDT → TRX Swap (Automatic Return)\nSingle Transaction Limit:\nUSDT: Minimum {min_amount}U   Maximum {max_amount}U\n\n⚠️ Please use a decentralized wallet for transfers",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈Real-time Exchange Rate\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Swap Receiving Address: <code>{swap_address}</code>\n➖➖➖➖👆Click to Copy👆➖➖➖➖\n⚙️ Function Introduction\nUSDT → TRX Swap (Automatic Return)\nSingle Transaction Limit:\nUSDT: Minimum {min_amount}U   Maximum {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 TRX → USDT Swap\n━━━━━━━━━━━━━━━━━━━\n📈Real-time Exchange Rate\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸Swap Receiving Address: <code>{trx_swap_address}</code>\n➖➖➖➖👆Click to Copy👆➖➖➖➖\n⚙️ Function Introduction\nTRX → USDT Swap (Auto return via original path)\nSingle transfer limit:\nTRX: Min {trx_min_amount}TRX  Max {trx_max_amount}TRX\n\n⚠️ Please use a decentralized wallet for transfers",
   "address_trace_add": "Add Address",
   "address_trace_add_tips": "Please enter the address to add: ",
   "address_trace_add_repeat_tips": "The address you entered already exists, please re-enter",

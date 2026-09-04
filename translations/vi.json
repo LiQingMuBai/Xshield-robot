@@ -131,7 +131,7 @@
   "join_vip_cooperation": "Tham gia nhóm VIP hợp tác kinh doanh:",
   "visit_tutorial": "Vui lòng truy cập hướng dẫn sử dụng của chúng tôi:",
   "usdt_trx_swap": "Hoán đổi USDT sang TRX",
-  "usdt_trx_swap_head": "Chào mừng bạn đến với Dịch vụ Hoán đổi USDT sang TRX của U-Shield\n📈Tỷ giá hối đoái theo thời gian thực\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Địa chỉ nhận hoán đổi: <code>{swap_address}</code>\n➖➖➖➖👆Nhấn để sao chép👆➖➖➖➖\n⚙️ Giới thiệu chức năng\nUSDT → TRX Hoán đổi (Tự động hoàn trả)\nGiới hạn giao dịch đơn lẻ:\nUSDT: Tối thiểu {min_amount}U   Tối đa {max_amount}U\n\n⚠️ Vui lòng sử dụng ví phi tập trung để chuyển khoản",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈Tỷ giá hối đoái theo thời gian thực\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸Địa chỉ nhận hoán đổi: <code>{swap_address}</code>\n➖➖➖➖👆Nhấn để sao chép👆➖➖➖➖\n⚙️ Giới thiệu chức năng\nUSDT → TRX Hoán đổi (Tự động hoàn trả)\nGiới hạn giao dịch đơn lẻ:\nUSDT: Tối thiểu {min_amount}U   Tối đa {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 Đổi TRX → USDT\n━━━━━━━━━━━━━━━━━━━\n📈 Tỷ giá hối đoái thời gian thực\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸 Địa chỉ nhận đổi: <code>{trx_swap_address}</code>\n➖➖➖➖👆Nhấn để sao chép👆➖➖➖➖\n⚙️ Giới thiệu chức năng\nĐổi TRX → USDT (hoàn trả tự động theo đường dẫn gốc)\nGiới hạn mỗi lần chuyển:\nTRX: Tối thiểu {trx_min_amount}TRX  Tối đa {trx_max_amount}TRX\n\n⚠️ Vui lòng sử dụng ví phi tập trung để chuyển khoản",
   "address_trace_add": "Thêm địa chỉ",
   "address_trace_add_tips": "Vui lòng nhập địa chỉ cần thêm: ",
   "address_trace_add_repeat_tips": "Địa chỉ bạn đã nhập đã tồn tại, vui lòng nhập lại",

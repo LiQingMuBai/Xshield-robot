@@ -133,7 +133,7 @@
   "join_vip_cooperation": "加入商務合作VIP群：",
   "visit_tutorial": "請訪問我們的使用教程：",
   "usdt_trx_swap": "USDT 兌換 TRX",
-  "usdt_trx_swap_head": "歡迎使用 U 盾 USDT 兌換 TRX 服務\n📈 實時匯率\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸 兌換收款地址: <code>{swap_address}</code>\n➖➖➖➖👆 點擊複製👆➖➖➖➖\n⚙️ 功能介紹\nUSDT → TRX 兌換 (自動原路返回)\n單筆轉入限額:\nUSDT: 最少 {min_amount}U   最多 {max_amount}U\n\n⚠️ 轉賬請務必使用去中心化錢包",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈 實時匯率\n🔸1 USDT  ≈   {trx_amount} TRX\n🔸 兌換收款地址: <code>{swap_address}</code>\n➖➖➖➖👆 點擊複製👆➖➖➖➖\n⚙️ 功能介紹\nUSDT → TRX 兌換 (自動原路返回)\n單筆轉入限額:\nUSDT: 最少 {min_amount}U   最多 {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 TRX → USDT 閃兌\n━━━━━━━━━━━━━━━━━━━\n📈 實時匯率\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸 閃兌收款地址: <code>{trx_swap_address}</code>\n➖➖➖➖👆點擊複製👆➖➖➖➖\n⚙️ 功能介紹\nTRX → USDT 閃兌（自動原路返回）\n單筆轉入限額:\nTRX: 最少{trx_min_amount}TRX  最大{trx_max_amount}TRX\n\n⚠️ 轉賬請務必使用去中心化錢包",
   "address_trace_add": "添加地址",
   "address_trace_add_tips": "請輸入需添加嘅地址: ",
   "address_trace_add_repeat_tips": "您輸入嘅地址已存在，請重新輸入",

@@ -130,7 +130,7 @@
   "join_vip_cooperation": "به گروه همکاری تجاری VIP بپیوندید:",
   "visit_tutorial": "لطفاً آموزش‌های ما را مشاهده کنید:",
   "usdt_trx_swap": "تبدیل USDT به TRX",
-  "usdt_trx_swap_head": "به سرویس تبدیل USDT به TRX U-Shield خوش آمدید\n📈 نرخ صرافی لحظه‌ای\n🔹 ۱ USDT ≈ {trx_amount} TRX\n🔹 آدرس دریافت تبدیل: <code>{swap_address}</code>\n➖➖➖➖👆 برای کپی کلیک کنید 👆➖➖➖➖\n⚙️ معرفی عملکرد\nتبدیل USDT → TRX (بازگشت خودکار)\nمحدودیت تراکنش واحد:\nUSDT: حداقل {min_amount}U   حداکثر {max_amount}U\n\n⚠️ لطفاً از کیف‌پول غیرمتمرکز برای انتقال استفاده کنید",
+  "usdt_trx_swap_head": "━━━━━━━━━━━━━━━━━━━\n🟢 USDT→ TRX 闪兑\n━━━━━━━━━━━━━━━━━━━\n📈 نرخ صرافی لحظه‌ای\n🔹 ۱ USDT ≈ {trx_amount} TRX\n🔹 آدرس دریافت تبدیل: <code>{swap_address}</code>\n➖➖➖➖👆 برای کپی کلیک کنید 👆➖➖➖➖\n⚙️ معرفی عملکرد\nتبدیل USDT → TRX (بازگشت خودکار)\nمحدودیت تراکنش واحد:\nUSDT: حداقل {min_amount}U   حداکثر {max_amount}U\n\n\n━━━━━━━━━━━━━━━━━━━\n🟢 مبادله TRX → USDT\n━━━━━━━━━━━━━━━━━━━\n📈 نرخ ارز لحظه‌ای\n🔸1 TRX  ≈   {usdt_amount} USDT\n🔸 آدرس دریافت برای مبادله: <code>{trx_swap_address}</code>\n➖➖➖➖👆برای کپی کلیک کنید👆➖➖➖➖\n⚙️ معرفی عملکرد\nمبادله TRX → USDT (بازگرداندن خودکار در همان مسیر)\nسقف هر واریز:\nTRX: حداقل {trx_min_amount}TRX  حداکثر {trx_max_amount}TRX\n\n⚠️ لطفاً از کیف‌پول غیرمتمرکز برای انتقال استفاده کنید",
   "address_trace_add": "افزودن آدرس",
   "address_trace_add_tips": "لطفاً آدرس مورد نظر را وارد کنید: ",
   "address_trace_add_repeat_tips": "آدرس واردشده از قبل وجود دارد. لطفاً دوباره وارد کنید",
