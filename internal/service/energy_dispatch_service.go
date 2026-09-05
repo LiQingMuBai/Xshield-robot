@@ -35,6 +35,7 @@ type DispatchResult struct {
 	DispatchedTimes int
 	RemainingTimes  int64
 	UserLang        string
+	OrderNo         string
 }
 
 func NewEnergyDispatchService(db *gorm.DB, trxfeeURL, trxfeeAPIKey, trxfeeSecret string, catfeeClient *trxfee.CatfeeService) *EnergyDispatchService {
@@ -89,9 +90,16 @@ func (s *EnergyDispatchService) DispatchFromPackageAddress(ctx context.Context, 
 		return nil, ErrDispatchForbidden
 	}
 
+	source := "MANUAL_1"
+	if times == 2 {
+		source = "MANUAL_2"
+	} else if times > 2 {
+		source = "MANUAL_" + strconv.Itoa(times)
+	}
+
 	var result *DispatchResult
 	for i := 0; i < times; i++ {
-		result, err = s.dispatchWithUserBundleTimes(ctx, chatID, record.Address)
+		result, err = s.dispatchWithUserBundleTimes(ctx, chatID, record.Address, source, "", packageAddressID)
 		if err != nil {
 			return nil, err
 		}
@@ -104,7 +112,7 @@ func (s *EnergyDispatchService) DispatchFromPackageAddress(ctx context.Context, 
 }
 
 func (s *EnergyDispatchService) DispatchToManualAddress(ctx context.Context, chatID int64, address string) (*DispatchResult, error) {
-	return s.dispatchWithUserBundleTimes(ctx, chatID, address)
+	return s.dispatchWithUserBundleTimes(ctx, chatID, address, "OTHER_ADDRESS", "", "")
 }
 
 func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bundleID, address string, chatID int64) (*DispatchResult, error) {
@@ -132,19 +140,44 @@ func (s *EnergyDispatchService) DispatchFromSubscription(ctx context.Context, bu
 		return nil, err
 	}
 
-	if err := s.createAndSendEnergyOrder(ctx, chatID, address); err != nil {
-		return nil, err
+	orderNo, provider, orderErr := s.createAndSendEnergyOrder(ctx, chatID, address)
+	if orderErr != nil {
+		s.logDeployment(ctx, &domain.EnergyDeploymentLog{
+			ChatID:            chatID,
+			TargetAddress:     address,
+			Quantity:          1,
+			Source:            "SUBSCRIPTION",
+			SourceBundleID:    bundleID,
+			PackageTimesAfter: restTimes,
+			Provider:          provider,
+			Status:            2,
+			ErrorMessage:      orderErr.Error(),
+		})
+		return nil, orderErr
 	}
+
+	s.logDeployment(ctx, &domain.EnergyDeploymentLog{
+		ChatID:            chatID,
+		TargetAddress:     address,
+		Quantity:          1,
+		Source:            "SUBSCRIPTION",
+		SourceBundleID:    bundleID,
+		PackageTimesAfter: restTimes,
+		OrderNo:           orderNo,
+		Provider:          provider,
+		Status:            1,
+	})
 
 	return &DispatchResult{
 		Address:         address,
 		DispatchedTimes: 1,
 		RemainingTimes:  restTimes,
 		UserLang:        user.Lang,
+		OrderNo:         orderNo,
 	}, nil
 }
 
-func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context, chatID int64, address string) (*DispatchResult, error) {
+func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context, chatID int64, address, source, sourceBundleID, sourceAddressID string) (*DispatchResult, error) {
 	if len(address) <= 10 {
 		return nil, ErrDispatchInvalidAddress
 	}
@@ -164,22 +197,49 @@ func (s *EnergyDispatchService) dispatchWithUserBundleTimes(ctx context.Context,
 		return nil, err
 	}
 
-	if err := s.createAndSendEnergyOrder(ctx, chatID, address); err != nil {
-		return nil, err
+	orderNo, provider, orderErr := s.createAndSendEnergyOrder(ctx, chatID, address)
+	if orderErr != nil {
+		s.logDeployment(ctx, &domain.EnergyDeploymentLog{
+			ChatID:           chatID,
+			TargetAddress:    address,
+			Quantity:         1,
+			Source:           source,
+			SourceBundleID:   sourceBundleID,
+			SourceAddressID:  sourceAddressID,
+			BundleTimesAfter: remainingTimes,
+			Provider:         provider,
+			Status:           2,
+			ErrorMessage:     orderErr.Error(),
+		})
+		return nil, orderErr
 	}
+
+	s.logDeployment(ctx, &domain.EnergyDeploymentLog{
+		ChatID:           chatID,
+		TargetAddress:    address,
+		Quantity:         1,
+		Source:           source,
+		SourceBundleID:   sourceBundleID,
+		SourceAddressID:  sourceAddressID,
+		BundleTimesAfter: remainingTimes,
+		OrderNo:          orderNo,
+		Provider:         provider,
+		Status:           1,
+	})
 
 	return &DispatchResult{
 		Address:         address,
 		DispatchedTimes: 1,
 		RemainingTimes:  remainingTimes,
 		UserLang:        user.Lang,
+		OrderNo:         orderNo,
 	}, nil
 }
 
-func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, chatID int64, address string) error {
+func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, chatID int64, address string) (string, string, error) {
 	orderNo, err := GenerateOrderID(address, 4)
 	if err != nil {
-		return err
+		return "", "", err
 	}
 
 	sysOrder := domain.UserEnergyOrders{
@@ -192,28 +252,42 @@ func (s *EnergyDispatchService) createAndSendEnergyOrder(ctx context.Context, ch
 
 	ueoRepo := repositories.NewUserEnergyOrdersRepo(s.db)
 	if err := ueoRepo.Create(ctx, &sysOrder); err != nil {
-		return err
+		return orderNo, "", err
 	}
 
 	flag, err := s.isTrxfee()
 	if err != nil {
-		return err
+		return orderNo, "", err
 	}
 
 	if flag {
-
 		trxfeeClient := trxfee.NewTrxfeeClient(s.trxfeeURL, s.trxfeeAPIKey, s.trxfeeSecret)
 		if err := trxfeeClient.Order(orderNo, address, 65_000); err != nil {
-
 			fmt.Printf("=====>err: %v\n", err)
-
-			return err
+			return orderNo, "TRXFEE", err
 		}
-		return nil
+		return orderNo, "TRXFEE", nil
 	} else {
 		s.catfeeClient.Order(address)
 	}
-	return nil
+	return orderNo, "CATFEE", nil
+}
+
+func (s *EnergyDispatchService) logDeployment(ctx context.Context, record *domain.EnergyDeploymentLog) {
+	if record.CreatedAt.IsZero() {
+		record.CreatedAt = time.Now()
+	}
+	go func(r domain.EnergyDeploymentLog, db *gorm.DB, pCtx context.Context) {
+		defer func() {
+			if rec := recover(); rec != nil {
+				fmt.Printf("energy_deployment_log async write panic(addr=%s): %v\n", r.TargetAddress, rec)
+			}
+		}()
+		repo := repositories.NewEnergyDeploymentLogRepo(db)
+		if createErr := repo.Create(pCtx, &r); createErr != nil {
+			fmt.Printf("energy_deployment_log create err: %v\n", createErr)
+		}
+	}(*record, s.db, ctx)
 }
 
 func (s *EnergyDispatchService) inTrxfeeTimeRange() (bool, error) {
