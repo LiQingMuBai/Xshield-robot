@@ -113,7 +113,7 @@ func ToggleCustodyAddressOption(lang string, db *gorm.DB, chatID int64, messageI
 
 	logger.Printf("用户：%s，当前状态：%s\n", ID, status)
 	record, err := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
-	if err != nil || record == nil {
+	if err != nil || record.ID == 0 {
 		logger.Errorf("custody address record not found id=%s err=%v", ID, err)
 		return
 	}

@@ -5,6 +5,7 @@ import (
 	"strconv"
 	"strings"
 	"ushield_bot/internal/global"
+	logger "ushield_bot/internal/logger"
 	"ushield_bot/internal/service"
 	"ushield_bot/internal/service/catfee"
 
