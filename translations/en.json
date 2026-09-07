@@ -138,7 +138,7 @@
   "address_trace_delete": "Delete Address",
   "address_trace_delete_tips": "Please enter the address to delete: ",
   "address_trace_menu": "Address Tracking",
-  "address_trace_head_tips": "Welcome to U-Shield Address Monitoring Service for TRX and USDT transaction information (TRON/BSC/BTC)\n",
+  "address_trace_head_tips": "Welcome to U-Shield Address Monitoring Service for TRX and USDT transaction information (TRON/BSC)\n",
   "backup_account_tips": "Incorrect username format. Remove the @ symbol and re-enter.",
   "backup_account_tips2": "Incorrect username format, please re-enter",
   "backup_account_tip3": "Successfully bound the second emergency contact: ",

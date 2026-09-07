@@ -141,7 +141,7 @@
   "address_trace_delete": "刪除地址",
   "address_trace_delete_tips": "請輸入需刪除嘅地址: ",
   "address_trace_menu": "地址追蹤",
-  "address_trace_head_tips": "歡迎使用 U 盾地址監控 TRX 同 USDT 動賬資訊 (TRON/BSC/BTC)\n",
+  "address_trace_head_tips": "歡迎使用 U 盾地址監控 TRX 同 USDT 動賬資訊 (TRON/BSC)\n",
   "backup_account_tips": "用戶名格式有誤，請移除 @ 符號並重新輸入",
   "backup_account_tips2": "用戶名格式有誤，請重新輸入",
   "backup_account_tip3": "成功綁定第二緊急聯絡人: ",

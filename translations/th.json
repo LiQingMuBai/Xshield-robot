@@ -138,7 +138,7 @@
   "address_trace_delete": "ลบที่อยู่",
   "address_trace_delete_tips": "โปรดป้อนที่อยู่ที่ต้องการลบ: ",
   "address_trace_menu": "ติดตามที่อยู่",
-  "address_trace_head_tips": "ยินดีต้อนรับสู่บริการตรวจสอบที่อยู่ U-Shield สำหรับข้อมูลการทำธุรกรรม TRX และ USDT (TRON/BSC/BTC)\n",
+  "address_trace_head_tips": "ยินดีต้อนรับสู่บริการตรวจสอบที่อยู่ U-Shield สำหรับข้อมูลการทำธุรกรรม TRX และ USDT (TRON/BSC)\n",
   "backup_account_tips": "รูปแบบชื่อผู้ใช้ไม่ถูกต้อง โปรดนำสัญลักษณ์ @ ออกแล้วป้อนใหม่",
   "backup_account_tips2": "รูปแบบชื่อผู้ใช้ไม่ถูกต้อง โปรดป้อนใหม่",
   "backup_account_tip3": "ผูกผู้ติดต่อฉุกเฉินที่สองสำเร็จ: ",

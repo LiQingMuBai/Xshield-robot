@@ -142,7 +142,7 @@
   "address_trace_delete": "删除地址",
   "address_trace_delete_tips": "请输入需删除的地址: ",
   "address_trace_menu": "地址跟踪",
-  "address_trace_head_tips": "欢迎使用U盾地址监控TRX和USDT动账信息，支持 TRON/BSC/BTC 网络\n",
+  "address_trace_head_tips": "欢迎使用U盾地址监控TRX和USDT动账信息，支持 TRON/BSC网络\n",
   "backup_account_tips": "用户名格式有误，去掉@符号，请重新输入",
   "backup_account_tips2": "用户名格式有误，请重新输入",
   "backup_account_tip3": "成功绑定第二紧急联系人 : ",

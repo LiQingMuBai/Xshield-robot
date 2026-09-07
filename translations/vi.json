@@ -139,7 +139,7 @@
   "address_trace_delete": "Xóa địa chỉ",
   "address_trace_delete_tips": "Vui lòng nhập địa chỉ cần xóa: ",
   "address_trace_menu": "Theo dõi địa chỉ",
-  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT (TRON/BSC/BTC)\n",
+  "address_trace_head_tips": "Chào mừng bạn đến với Dịch vụ Giám sát Địa chỉ U-Shield cho thông tin giao dịch TRX và USDT (TRON/BSC)\n",
   "backup_account_tips": "Định dạng tên người dùng không chính xác. Xóa ký hiệu @ và nhập lại.",
   "backup_account_tips2": "Định dạng tên người dùng không chính xác, vui lòng nhập lại",
   "backup_account_tip3": "Đã liên kết thành công người liên hệ khẩn cấp thứ hai: ",

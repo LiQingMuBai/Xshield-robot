@@ -138,7 +138,7 @@
   "address_trace_delete": "حذف آدرس",
   "address_trace_delete_tips": "لطفاً آدرس مورد نظر برای حذف را وارد کنید: ",
   "address_trace_menu": "پیگیری آدرس",
-  "address_trace_head_tips": "به سرویس پیگیری آدرس U-Shield برای اطلاعات تراکنش TRX و USDT خوش آمدید\n⚠️ شما می‌توانید ۴ آدرس پرکاربرد اضافه کنید (TRON/BSC/BTC)\n",
+  "address_trace_head_tips": "به سرویس پیگیری آدرس U-Shield برای اطلاعات تراکنش TRX و USDT خوش آمدید\n⚠️ شما می‌توانید ۴ آدرس پرکاربرد اضافه کنید (TRON/BSC)\n",
   "backup_account_tips": "فرمت نام کاربری نادرست است. نماد @ را حذف کرده و دوباره وارد کنید.",
   "backup_account_tips2": "فرمت نام کاربری نادرست است. لطفاً دوباره وارد کنید.",
   "backup_account_tip3": "مخاطب اضطراری جایگزین با موفقیت متصل شد: ",
