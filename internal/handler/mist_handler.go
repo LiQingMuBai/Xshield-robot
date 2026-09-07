@@ -112,9 +112,16 @@ func GetAddressInfo(symbol string, address, cookie string) (SlowMistAddressInfo,
 }
 
 func BuildRiskSummaryText(lang string, cache cache.Cache, addressInfo SlowMistAddressInfo) string {
-	_item0 := addressInfo.RiskDic.TriangleLevel[0]
-	_item1 := addressInfo.RiskDic.TriangleLevel[1]
-	_item2 := addressInfo.RiskDic.TriangleLevel[2]
+	var _item0, _item1, _item2 int
+	if l := len(addressInfo.RiskDic.TriangleLevel); l >= 1 {
+		_item0 = addressInfo.RiskDic.TriangleLevel[0]
+	}
+	if l := len(addressInfo.RiskDic.TriangleLevel); l >= 2 {
+		_item1 = addressInfo.RiskDic.TriangleLevel[1]
+	}
+	if l := len(addressInfo.RiskDic.TriangleLevel); l >= 3 {
+		_item2 = addressInfo.RiskDic.TriangleLevel[2]
+	}
 
 	_text0 := "🔍" + global.Translations[lang]["risk_score"] + ":" + strconv.Itoa(addressInfo.RiskDic.Score)
 

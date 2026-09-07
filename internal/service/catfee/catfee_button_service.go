@@ -104,11 +104,19 @@ func ToggleCustodyAddressOption(lang string, db *gorm.DB, chatID int64, messageI
 	userSmartTransactionAddressesRepo := repositories.NewUserSmartTransactionAddressesRepository(db)
 	result := strings.ReplaceAll(data, "custody_address_check_", "")
 
-	ID := strings.Split(result, "_")[0]
-	status := strings.Split(result, "_")[1]
+	parts := strings.Split(result, "_")
+	if len(parts) < 2 {
+		logger.Errorf("malformed custody_address_check data: %q", data)
+		return
+	}
+	ID, status := parts[0], parts[1]
 
 	logger.Printf("用户：%s，当前状态：%s\n", ID, status)
-	record, _ := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
+	record, err := userSmartTransactionAddressesRepo.GetByID(context.Background(), ID)
+	if err != nil || record == nil {
+		logger.Errorf("custody address record not found id=%s err=%v", ID, err)
+		return
+	}
 	if status == "1" {
 		logger.Printf("用户ID %d，当前状态：%s，地址：%s 需要暂停为3", chatID, status, record.Address)
 		userSmartTransactionAddressesRepo.DisableByChatIDAndAddress(context.Background(), strconv.FormatInt(chatID, 10), record.Address)

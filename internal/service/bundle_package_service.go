@@ -316,8 +316,12 @@ func ShowBundlePackageAddressActions(lang string, address string, cache cache.Ca
 }
 func ApplyBundlePackageAddress(lang string, bundleAddress string, cache cache.Cache, bot *tgbotapi.BotAPI, message *tgbotapi.Message, db *gorm.DB) {
 
-	bundleID := strings.Split(bundleAddress, "_")[0]
-	address := strings.Split(bundleAddress, "_")[1]
+	parts := strings.Split(bundleAddress, "_")
+	if len(parts) < 2 {
+		logger.Errorf("malformed bundleAddress: %q", bundleAddress)
+		return
+	}
+	bundleID, address := parts[0], parts[1]
 
 	userOperationBundlesRepo := repositories.NewUserOperationBundlesRepository(db)
 	bundlePackage, err := userOperationBundlesRepo.GetByID(context.Background(), bundleID)

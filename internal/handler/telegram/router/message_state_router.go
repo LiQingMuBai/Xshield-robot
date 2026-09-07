@@ -329,8 +329,12 @@ func handleStateMessage(message *tgbotapi.Message, ctx Context, lang string, sta
 
 	case strings.HasPrefix(status, "click_laundering_"):
 		content := strings.ReplaceAll(status, "click_laundering_", "")
-		token := strings.Split(content, "_")[0]
-		amount := strings.Split(content, "_")[1]
+		parts := strings.Split(content, "_")
+		if len(parts) < 2 {
+			logger.Errorf("malformed click_laundering status: %q", status)
+			return
+		}
+		token, amount := parts[0], parts[1]
 
 		if strings.ToUpper(token) != "BTC" && !IsValidEthereumAddress(message.Text) {
 			msg := tgbotapi.NewMessage(message.Chat.ID, "💬"+"<b>"+global.Translations[lang]["address_wrong_tips"]+"</b>"+"\n")

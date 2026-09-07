@@ -71,8 +71,12 @@ func RouteCommandUpdate(update tgbotapi.Update, ctx Context) {
 		if !strings.Contains(command, "_") {
 			command = command + "_1"
 		}
-		subscribeBundleIDStr := strings.Split(command, "_")[0]
-		timesStr := strings.Split(command, "_")[1]
+		parts := strings.Split(command, "_")
+		if len(parts) < 2 {
+			logger.Errorf("malformed dispatchNow command: %q", command)
+			return
+		}
+		subscribeBundleIDStr, timesStr := parts[0], parts[1]
 		times, _ := strconv.Atoi(timesStr)
 		subscribeBundleID := strings.ReplaceAll(subscribeBundleIDStr, "dispatchNow", "")
 

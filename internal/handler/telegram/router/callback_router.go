@@ -51,8 +51,12 @@ func HandleCallbackQuery(callbackQuery *tgbotapi.CallbackQuery, ctx Context) {
 		setShortState(ctx.Cache, callbackQuery.Message.Chat.ID, "dispatch_others")
 	case strings.HasPrefix(callbackQuery.Data, "dispatch_others_"):
 		bundleAddress := strings.ReplaceAll(callbackQuery.Data, "dispatch_others_", "")
-		bundleID := strings.Split(bundleAddress, "_")[0]
-		address := strings.Split(bundleAddress, "_")[1]
+		parts := strings.Split(bundleAddress, "_")
+		if len(parts) < 2 {
+			logger.Errorf("malformed dispatch_others callback: %q", callbackQuery.Data)
+			return
+		}
+		bundleID, address := parts[0], parts[1]
 
 		dispatchService := service.NewEnergyDispatchService(ctx.DB, ctx.TrxfeeURL, ctx.TrxfeeAPIKey, ctx.TrxfeeSecret, ctx.CatfeeClient)
 		result, dispatchErr := dispatchService.DispatchFromSubscription(context.Background(), bundleID, address, callbackQuery.Message.Chat.ID)
