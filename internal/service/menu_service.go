@@ -113,7 +113,8 @@ func buildEnergySwapText(lang string, db *gorm.DB) string {
 func buildSwapExchangeText(lang string, db *gorm.DB) string {
 	dictRepo := repositories.NewSysDictionariesRepo(db)
 	usdtSwapAddress := getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address")
-	trxSwapAddress := "TSigGjoNwk7XgGHTpvEoFxVLBhGu9Prada"
+	trxSwapAddress := getDictionaryDetail(dictRepo, "usdt_swap_trx_swap_address")
+	//trxSwapAddress := "TSigGjoNwk7XgGHTpvEoFxVLBhGu9Prada"
 	usdtToTrxRate := getDictionaryDetail(dictRepo, "usdt_swap_trx_amount_real")
 	trxToUsdtRate := StringInverse(usdtToTrxRate, 4, 0.85)
 
