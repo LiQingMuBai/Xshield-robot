@@ -41,7 +41,7 @@ func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 		builder.WriteString("+")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" USDT ")
-		builder.WriteString(" （订单 #TOPUP- ")
+		builder.WriteString("（订单#TOPUP-")
 		builder.WriteString(word.OrderNO)
 		builder.WriteString("）")
 
@@ -128,7 +128,7 @@ func ShowTRXDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 		builder.WriteString("+")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" TRX ")
-		builder.WriteString(" （订单 #TOPUP- ")
+		builder.WriteString("（订单#TOPUP-")
 		builder.WriteString(word.OrderNO)
 		builder.WriteString("）")
 
