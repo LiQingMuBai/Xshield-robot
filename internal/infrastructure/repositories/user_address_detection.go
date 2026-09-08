@@ -27,7 +27,7 @@ func (r *UserAddressDetectionRepo) ListHistoryByChatIDAndStatus(ctx context.Cont
 	var detections []domain.UserAddressDetection
 
 	err := r.db.WithContext(ctx).
-		Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").
+		Select("id,amount,address, DATE_FORMAT(created_at, '%Y-%m-%d') as created_date").
 		Where("chat_id = ?", chatID).
 		Where("status = ?", status).
 		Find(&detections).Error
@@ -38,7 +38,7 @@ func (r *UserAddressDetectionRepo) ListByChatIDPage(ctx context.Context, info re
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.WithContext(ctx).Model(&domain.UserAddressDetection{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ?", chatID)
+	db := r.db.WithContext(ctx).Model(&domain.UserAddressDetection{}).Select("id,amount,address, DATE_FORMAT(created_at, '%Y-%m-%d') as created_date").Where("chat_id = ?", chatID)
 	var detections []domain.UserAddressDetection
 	// 如果有条件搜索 下方会自动创建搜索语句
 

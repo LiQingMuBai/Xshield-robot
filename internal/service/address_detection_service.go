@@ -45,7 +45,7 @@ func BuildAddressDetectionCostRecordsMessage(lang string, db *gorm.DB, callbackQ
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_payment_history"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_payment_history"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -93,7 +93,7 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n"+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -131,7 +131,7 @@ func ShowPrevAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 
 		// 去除最后一个空格
 		result := strings.TrimSpace(builder.String())
-		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n "+
+		msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n"+
 			result+"\n")
 		msg.ParseMode = "HTML"
 		inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -184,7 +184,7 @@ func ShowNextAddressDetectionPage(lang string, callbackQuery *tgbotapi.CallbackQ
 
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "📜"+global.Translations[lang]["address_detection_records"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(

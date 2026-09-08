@@ -65,7 +65,7 @@ func (r *UserAddressMonitorEventRepo) ListByChatIDPage(ctx context.Context, info
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
 	// 创建db
-	db := r.db.Model(&domain.UserAddressMonitorEvent{}).Select("id,amount,address, DATE_FORMAT(created_at, '%m-%d') as created_date").Where("chat_id = ? ", chatID)
+	db := r.db.Model(&domain.UserAddressMonitorEvent{}).Select("id,amount,address, DATE_FORMAT(created_at, '%Y-%m-%d') as created_date").Where("chat_id = ? ", chatID)
 	var events []domain.UserAddressMonitorEvent
 	// 如果有条件搜索 下方会自动创建搜索语句
 

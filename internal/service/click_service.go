@@ -34,9 +34,6 @@ func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 	var builder strings.Builder
 	builder.WriteString("\n") // 添加分隔符
 
-	// 去除最后一个空格
-	result := strings.TrimSpace(builder.String())
-
 	for _, word := range usdtlist {
 		builder.WriteString("[")
 		builder.WriteString(word.CreatedDate)
@@ -50,10 +47,10 @@ func ShowUSDTDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Ca
 
 		builder.WriteString("\n") // 添加分隔符
 	}
-	//
-	//// 去除最后一个空格
-	result = strings.TrimSpace(builder.String())
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
+
+	// 去除最后一个空格
+	result := strings.TrimSpace(builder.String())
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
@@ -141,7 +138,7 @@ func ShowTRXDepositRecords(lang string, db *gorm.DB, callbackQuery *tgbotapi.Cal
 	// 去除最后一个空格
 	result := strings.TrimSpace(builder.String())
 
-	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n "+
+	msg := tgbotapi.NewMessage(callbackQuery.Message.Chat.ID, "🧾"+global.Translations[lang]["deposit_records"]+"\n\n"+
 		result+"\n")
 	msg.ParseMode = "HTML"
 	inlineKeyboard := tgbotapi.NewInlineKeyboardMarkup(
