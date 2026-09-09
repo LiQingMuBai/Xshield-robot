@@ -87,6 +87,7 @@
   "add_address": "เพิ่มที่อยู่",
   "remove_address": "ลบออก",
   "order_id": "รหัสคำสั่งซื้อ",
+  "order_label": "คำสั่งซื้อ",
   "payment_amount": "จำนวนเงินที่ชำระ",
   "package_name": "ชื่อแพ็กเกจ",
   "address": "ที่อยู่",

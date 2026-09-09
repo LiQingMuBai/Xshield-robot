@@ -87,6 +87,7 @@
   "add_address": "Adicionar endereço",
   "remove_address": "Excluir endereço",
   "order_id": "Número do pedido",
+  "order_label": "Pedido",
   "payment_amount": "Valor do pagamento",
   "package_name": "Pacote",
   "address": "Endereço",

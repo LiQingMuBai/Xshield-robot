@@ -87,6 +87,7 @@
   "add_address": "アドレス追加",
   "remove_address": "アドレス削除",
   "order_id": "注文番号",
+  "order_label": "注文",
   "payment_amount": "支払金額",
   "package_name": "パッケージ",
   "address": "アドレス",

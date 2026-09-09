@@ -87,6 +87,7 @@
   "add_address": "주소 추가",
   "remove_address": "주소 삭제",
   "order_id": "주문 번호",
+  "order_label": "주문",
   "payment_amount": "결제 금액",
   "package_name": "패키지",
   "address": "주소",

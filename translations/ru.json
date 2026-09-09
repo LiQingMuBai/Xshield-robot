@@ -87,6 +87,7 @@
   "add_address": "Добавить адрес",
   "remove_address": "Удалить адрес",
   "order_id": "Номер заказа",
+  "order_label": "Заказ",
   "payment_amount": "Сумма оплаты",
   "package_name": "Пакет",
   "address": "Адрес",

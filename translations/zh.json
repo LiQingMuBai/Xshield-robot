@@ -88,6 +88,7 @@
   "add_address": "添加地址",
   "remove_address": "删除地址",
   "order_id": "订单号",
+  "order_label": "订单",
   "payment_amount": "支付金额",
   "package_name": "套餐",
   "address": "地址",

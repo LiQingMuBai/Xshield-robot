@@ -87,6 +87,7 @@
   "add_address": "Add Address",
   "remove_address": "Remove Address",
   "order_id": "Order ID",
+  "order_label": "Order",
   "payment_amount": "Payment Amount",
   "package_name": "Package Name",
   "address": "Address",

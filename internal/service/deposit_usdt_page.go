@@ -35,7 +35,9 @@ func ShowPrevUSDTDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" USDT ")
-			builder.WriteString("（订单#TOPUP-")
+			builder.WriteString("（")
+			builder.WriteString(global.Translations[lang]["order_label"])
+			builder.WriteString("#TOPUP-")
 			builder.WriteString(word.OrderNO)
 			builder.WriteString("）")
 
@@ -74,7 +76,9 @@ func ShowPrevUSDTDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 			builder.WriteString("+")
 			builder.WriteString(word.Amount)
 			builder.WriteString(" USDT ")
-			builder.WriteString("（订单#TOPUP-")
+			builder.WriteString("（")
+			builder.WriteString(global.Translations[lang]["order_label"])
+			builder.WriteString("#TOPUP-")
 			builder.WriteString(word.OrderNO)
 			builder.WriteString("）")
 
@@ -133,7 +137,9 @@ func ShowNextUSDTDepositPage(lang string, callbackQuery *tgbotapi.CallbackQuery,
 		builder.WriteString("+")
 		builder.WriteString(word.Amount)
 		builder.WriteString(" USDT ")
-		builder.WriteString("（订单#TOPUP-")
+		builder.WriteString("（")
+		builder.WriteString(global.Translations[lang]["order_label"])
+		builder.WriteString("#TOPUP-")
 		builder.WriteString(word.OrderNO)
 		builder.WriteString("）")
 
