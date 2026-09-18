@@ -71,7 +71,7 @@
   "currently_monitoring_addresses": "現在監視中のアドレス:",
   "stop_monitoring": "監視を停止",
   "NAACUAMS": "現在警告監視サービス中のアドレスはありません",
-  "monitoring_address_list": "警告アドレスリスト如下:",
+  "monitoring_address_list": "警告アドレスリストは以下の通り:",
   "transaction_plans_tips": "UShieldエネルギー取引パッケージへようこそ\n一回の購入/複数アドレス使用/ワンクリックエネルギー送信\n⚙️ 機能説明\n➕アドレス追加: 4つの常用アドレスを追加可能\n📍アドレスリスト: 4つの保存アドレスまたは他のアドレスへ迅速にエネルギー送信可能\n⏳ エネルギー有効期限1時間、期限切れで自動回収",
   "address_list": "アドレスリスト",
   "transaction_plans_usdt_payment": "USDT支払",
